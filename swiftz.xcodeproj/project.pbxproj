@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5910FD5F193D41AD005A69FC /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910FD5E193D41AD005A69FC /* List.swift */; };
+		59B719BE193D4028004764F7 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B719BD193D4028004764F7 /* Monad.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AF2193D3A0A006F1341 /* swiftzTests.swift */; };
+		59F35AFD193D3CCE006F1341 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AFC193D3CCE006F1341 /* Functor.swift */; };
+		59F35AFF193D3F69006F1341 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AFE193D3F69006F1341 /* Applicative.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +27,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5910FD5E193D41AD005A69FC /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		59B719BD193D4028004764F7 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
+		59B719BF193D40B4004764F7 /* Examples.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Examples.playground; sourceTree = "<group>"; };
 		59F35AE0193D3A0A006F1341 /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AE4193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59F35AE5193D3A0A006F1341 /* swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz.h; sourceTree = "<group>"; };
 		59F35AEB193D3A0A006F1341 /* swiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AF1193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59F35AF2193D3A0A006F1341 /* swiftzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftzTests.swift; sourceTree = "<group>"; };
+		59F35AFC193D3CCE006F1341 /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functor.swift; sourceTree = "<group>"; };
+		59F35AFE193D3F69006F1341 /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Applicative.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +82,11 @@
 			children = (
 				59F35AE5193D3A0A006F1341 /* swiftz.h */,
 				59F35AE3193D3A0A006F1341 /* Supporting Files */,
+				59F35AFC193D3CCE006F1341 /* Functor.swift */,
+				59F35AFE193D3F69006F1341 /* Applicative.swift */,
+				59B719BD193D4028004764F7 /* Monad.swift */,
+				5910FD5E193D41AD005A69FC /* List.swift */,
+				59B719BF193D40B4004764F7 /* Examples.playground */,
 			);
 			path = swiftz;
 			sourceTree = "<group>";
@@ -210,6 +224,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F35AFF193D3F69006F1341 /* Applicative.swift in Sources */,
+				5910FD5F193D41AD005A69FC /* List.swift in Sources */,
+				59B719BE193D4028004764F7 /* Monad.swift in Sources */,
+				59F35AFD193D3CCE006F1341 /* Functor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +334,7 @@
 		59F35AF7193D3A0A006F1341 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -327,12 +346,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		59F35AF8193D3A0A006F1341 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -400,6 +421,7 @@
 				59F35AF8193D3A0A006F1341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59F35AF9193D3A0A006F1341 /* Build configuration list for PBXNativeTarget "swiftzTests" */ = {
 			isa = XCConfigurationList;
@@ -408,6 +430,7 @@
 				59F35AFB193D3A0A006F1341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
