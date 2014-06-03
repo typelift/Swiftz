@@ -35,7 +35,7 @@ func ▹<A, B>(a: A, f: A -> B) -> B {
 }
 
 // Unsafe tap
-// Warning: Unstable radr://17109199
+// Warning: Unstable rdar://17109199
 //func unsafeTap<A>(a: A, f: A -> Any) -> A {
 //  f(a)
 //  return a

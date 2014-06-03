@@ -17,7 +17,7 @@ func mconcat<M, S: Monoid where S.M == M>(s: S, t: Array<M>) -> M {
 
 class Sum<A, N: Num where N.N == A>: Monoid {
   typealias M = A
-  let n: () -> N // work around for radr://17109323
+  let n: () -> N // work around for rdar://17109323
   
   // explicit instance passing
   init(i: () -> N) {
