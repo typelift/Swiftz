@@ -40,6 +40,12 @@ class swiftzTests: XCTestCase {
     
   }
   
+  func testDataSemigroup() {
+    let xs = [1, 2, 0, 3, 4]
+    XCTAssert(sconcat(Min(), 2, xs) == 0, "sconcat works")
+    
+  }
+  
 //  func testDataList() {
 //    let ls: List<Int> = .Nil()
 //    println(ls)
