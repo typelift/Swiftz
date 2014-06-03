@@ -38,3 +38,33 @@ class Max<A: Comparable>: Semigroup {
     }
   }
 }
+
+class First<A: Comparable>: Semigroup {
+  typealias M = A
+  
+  func op(x: M, y: M) -> M {
+    return x;
+  }
+}
+
+class Last<A: Comparable>: Semigroup {
+  typealias M = A
+  
+  func op(x: M, y: M) -> M {
+    return y;
+  }
+}
+
+//class SemigroupMaybe<A>: Semigroup {
+//  typealias M = Maybe<A>
+//
+//  func op(x: M, y: M) -> M {
+//    switch x {
+//      case .Nothing: return y
+//      case let .Just(a): switch y {
+//        case .Nothing: return x
+//        case let .Just(b): return op(a, b)
+//      }
+//    }
+//  }
+//}
