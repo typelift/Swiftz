@@ -44,6 +44,10 @@ class swiftzTests: XCTestCase {
     XCTAssert(m1 < m2, "Nothing < Just 1")
     XCTAssert(.Just(2) > m2, "Just 2 > Just 1")
     XCTAssert(m2 >= m1, "Nothing >= Just 1")
+    
+    // functor
+    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}, fc: m1) == .Nothing, "map works")
+    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}, fc: m2) == .Just(2), "map still works")
   }
   
 //  func testDataEither() {

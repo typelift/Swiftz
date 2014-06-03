@@ -16,8 +16,7 @@ It defines purely functional data structures and functions.
 
 **Note:**
 
-The "currently impossible" data structures we believe are temporary and
-the language intends to support.
+The "currently impossible" data structures we think the language intends to support.
 
 **Not realised:**
 

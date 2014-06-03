@@ -13,6 +13,14 @@
 enum Maybe<A> {
   case Nothing
   case Just(A)
+
+  // Functor
+  func map<B>(f: A -> B, fc: Maybe<A>) -> Maybe<B> {
+    switch fc {
+      case .Nothing: return Maybe<B>.Nothing
+      case let .Just(x): return Maybe<B>.Just(f(x))
+    }
+  }
 }
 
 // Equatable
