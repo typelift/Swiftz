@@ -43,7 +43,12 @@ class swiftzTests: XCTestCase {
   func testDataSemigroup() {
     let xs = [1, 2, 0, 3, 4]
     XCTAssert(sconcat(Min(), 2, xs) == 0, "sconcat works")
-    
+  }
+  
+  func testDataMonoid() {
+    let xs: Array<Int8> = [1, 2, 0, 3, 4]
+    XCTAssert(mconcat(Sum    <Int8, NInt8>(i: { return NInt8() }), xs) == 10, "monoid sum works")
+    XCTAssert(mconcat(Product<Int8, NInt8>(i: { return NInt8() }), xs) == 0, "monoid product works")
   }
   
 //  func testDataList() {
