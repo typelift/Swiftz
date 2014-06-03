@@ -1,18 +1,28 @@
-swiftz
+Swiftz
 ======
 
-Functional programming in Swift
+Swiftz is a Swift library for functional programming.
 
+It defines purely functional data structures and functions.
 
-SwiftZ is an effort to try to provide higher order, composable functional programming abstractions 
-in the Swift programming language. These include but arent limited to: 
+**Implemented:**
 
-* Functor
-* Applicative
-* Monad
-* Monoid
-* Semigroup
+- `Maybe<A>` with `Equatable`, 
 
-Many of these are somewhat difficult to use compose/used in the Swift Language currently because
-of a lack of support for Higher Kinded types as type params, Type indexed Protocols (indexed by potentially higher kinded types),
-and Enums indexed by Higher Kinded types.   
+**Typechecks but currently impossible:**
+
+- List
+
+**Note:**
+
+The "currently impossible" data structures we believe are temporary and
+the language intends to support.
+
+**Not realised:**
+
+These abstractions require language features that Swift does not support yet.
+
+- Functor, Applicative, Monad, Comonad. To enable these, a higher kind,
+  C++ template-template, or Scala-like kind system is needed. `radr://???`
+- `enum` should derive Equatable and Comparable if possible, similar to case classes in Scala. Or a deriving mechanic
+  like generics should be present. `radr://???`
