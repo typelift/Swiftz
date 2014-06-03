@@ -9,6 +9,8 @@ It defines purely functional data structures and functions.
 
 - `Control/Base` functions
 - `Maybe<A>` with `Equatable` and `Comparable`
+- `Num` typeclass
+- `Semigroup<A>` and `Monoid<A>` with some instances
 
 **Typechecks but currently impossible:**
 
