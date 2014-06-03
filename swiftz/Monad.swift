@@ -7,7 +7,5 @@
 //
 
 protocol Monad: Applicative {
-    typealias FB
-    typealias FATB
-    func bind<A, B>(FA) -> (A -> FB) -> FB
+    func bind(FA) -> (A -> FB) -> FB
 }

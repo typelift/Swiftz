@@ -7,7 +7,7 @@
 //
 
 protocol Applicative: Functor {
-    typealias FATB
-    func pure<A>(A) -> FA
-    func apply<A, B>(FATB) -> FA -> FB
+    typealias FATB // F (A -> B)
+    func pure(A) -> FA
+    func apply(FATB) -> FA -> FB
 }

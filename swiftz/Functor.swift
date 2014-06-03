@@ -7,7 +7,9 @@
 //
 
 protocol Functor {
-    typealias FA
-    typealias FB
-    func map<A, B>(A -> B) -> FA -> FB
+    typealias A
+    typealias B
+    typealias FA // F A
+    typealias FB // F B
+    func map(A -> B) -> FA -> FB
 }
