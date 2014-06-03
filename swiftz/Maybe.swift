@@ -16,7 +16,7 @@ enum Maybe<A> {
 }
 
 // Equatable
-func ==<A : Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
   switch lhs {
     case .Nothing: switch rhs {
       case .Nothing: return true
@@ -29,7 +29,7 @@ func ==<A : Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
   }
 }
 
-func !=<A : Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+func !=<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
   return !(lhs == rhs)
 }
 

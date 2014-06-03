@@ -46,6 +46,14 @@ class swiftzTests: XCTestCase {
     XCTAssert(m2 >= m1, "Nothing >= Just 1")
   }
   
+//  func testDataEither() {
+//    // eq
+//    let m1: Either<String, Int> = .Left("fail")
+//    let m2: Either<String, Int> = .Right(9001)
+//    XCTAssert(m1 == .Left("fail"), "either eq")
+//    XCTAssert(m1 != .Right(0), "either not eq")
+//  }
+  
   func testPerformanceExample() {
     // This is an example of a performance test case.
     self.measureBlock() {
