@@ -7,6 +7,7 @@ It defines purely functional data structures and functions.
 
 **Implemented:**
 
+- `Control/Base` functions
 - `Maybe<A>` with `Equatable` and `Comparable`
 
 **Typechecks but currently impossible:**
@@ -22,9 +23,9 @@ The "currently impossible" data structures we think the language intends to supp
 
 These abstractions require language features that Swift does not support yet.
 
-- `Either<A, B>` crashes with `unimplemented IRGen feature! non-fixed multi-payload enum layout`. `radr://???`
+- `Either<A, B>` crashes with `unimplemented IRGen feature! non-fixed multi-payload enum layout`. `radr://17109392`
 - `List<A>` by an enum crashes the compiler. `radr://???`
-- `List<A>` via a super class and 2 sub classes crashes with `unimplemented IRGen feature! non-fixed class layout`. `radr://???`
+- `List<A>` via a super class and 2 sub classes crashes with `unimplemented IRGen feature! non-fixed class layout`. `radr://17109323`
 - Functor, Applicative, Monad, Comonad. To enable these, a higher kind,
   C++ template-template, or Scala-like kind system is needed. `radr://???`
 
