@@ -19,3 +19,35 @@ func uncurry<A, B, C>(f: (A -> (B -> C)), ab: (A, B)) -> C {
     case let (a, b): return (f(a)(b))
   }
 }
+
+operator infix |> {}
+operator infix ▹ {}
+//operator infix <| {}
+//operator infix ◃ {}
+
+// Thrush
+func |><A, B>(a: A, f: A -> B) -> B {
+  return f(a)
+}
+
+func ▹<A, B>(a: A, f: A -> B) -> B {
+  return f(a)
+}
+
+// Unsafe tap
+// Warning: Unstable radr://17109199
+//func unsafeTap<A>(a: A, f: A -> Any) -> A {
+//  f(a)
+//  return a
+//}
+//
+//func <|<A>(a: A, f: A -> Any) -> A {
+//  f(a)
+//  return a
+//}
+//
+//func ◃<A>(a: A, f: A -> Any) -> A {
+//  f(a)
+//  return a
+//}
+

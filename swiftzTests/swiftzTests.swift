@@ -34,6 +34,10 @@ class swiftzTests: XCTestCase {
         return (a + b)
       })
     }, (x, y)) == 3, "uncurry")
+    
+    XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")
+//    XCTAssert((x <| {(a: Int) -> String in return a.description}) == 1, "thrush")
+    
   }
   
 //  func testDataList() {
