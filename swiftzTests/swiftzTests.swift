@@ -21,6 +21,21 @@ class swiftzTests: XCTestCase {
     super.tearDown()
   }
   
+  func testControlBase() {
+    let x = 1
+    let y = 2
+    XCTAssert(identity(x) == x, "identity")
+    XCTAssert(curry({ (ab: (Int, Int)) -> Int in switch ab {
+      case let (l, r): return (l + r)
+    }}, x, y) == 3, "curry")
+    XCTAssert(uncurry({
+      (a: Int) -> Int -> Int in
+      return ({(b: Int) -> Int in
+        return (a + b)
+      })
+    }, (x, y)) == 3, "uncurry")
+  }
+  
 //  func testDataList() {
 //    let ls: List<Int> = .Nil()
 //    println(ls)
