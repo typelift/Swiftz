@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import swiftz.List
 
 class swiftzTests: XCTestCase {
     
@@ -21,6 +22,9 @@ class swiftzTests: XCTestCase {
     }
     
     func testExample() {
+        let ls: List<Int> = .Nil()
+        println(ls)
+
         XCTAssert(true, "Pass")
     }
     

@@ -6,9 +6,20 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+/* @virtual */ class List<A> {
+    
+}
 
-enum List<T> {
-    case Nil
-    case Cons(T, List<T>)
+class Nil<A>: List<A> {
+    
+}
+
+class Cons<A>: List<A> {
+    typealias T = A
+    let head: A
+    let tail: List<A>
+    init(h: A, t: List<A>) {
+        head = h
+        tail = t
+    }
 }
