@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 protocol Functor {
     typealias FA
-    func map<A, B>(A -> B) -> FA -> B
+    typealias FB
+    func map<A, B>(A -> B) -> FA -> FB
 }
