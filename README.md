@@ -40,7 +40,7 @@ Implementation
 - `Future<A>`
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` signature and functors
-- `Maybe<A>` with `Equatable` and `Comparable`
+- `flatMap` for `Optional<A>`
 
 **Typechecks but currently impossible:**
 

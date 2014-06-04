@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		5910EA9A193DCEE9008F6D71 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910EA99193DCEE9008F6D71 /* Base.swift */; };
 		593C913D193DDC060067F2BE /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913C193DDC060067F2BE /* Monoid.swift */; };
 		593C913F193DDC610067F2BE /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913E193DDC610067F2BE /* Semigroup.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590BE97A193DB8F3003DAC87 /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
 		5910EA99193DCEE9008F6D71 /* Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		5910FD5E193D41AD005A69FC /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				593C913C193DDC060067F2BE /* Monoid.swift */,
 				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				593C9140193DE6AB0067F2BE /* ArrayExt.swift */,
+				590522CB193F5DBA0036614F /* OptionalExt.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				593C913D193DDC060067F2BE /* Monoid.swift in Sources */,
 				593E7389193F16B10071B91D /* Future.swift in Sources */,
 				593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */,
+				590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */,
 				59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */,
 				593C913F193DDC610067F2BE /* Semigroup.swift in Sources */,
 				5910EA9A193DCEE9008F6D71 /* Base.swift in Sources */,
