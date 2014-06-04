@@ -21,6 +21,23 @@ class swiftzTests: XCTestCase {
     super.tearDown()
   }
   
+  func testConcurrentFuture() {
+    var e: NSError?
+    let x: Future<Int> = Future(exec: gcdExecutionContext, {
+      sleep(1)
+      return 4
+
+    })
+    XCTAssert(x.result() == x.result())
+    
+//    let x: Future<Int> = Future(exec: gcdExecutionContext, {
+//      return NSString.stringWithContentsOfURL(NSURL.URLWithString("http://github.com"), encoding: 0, error: nil)
+//    })
+//    let x1 = (x.result().lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+//    let x2 = (x.result().lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+//    XCTAssert(x1 == x2)
+  }
+  
   func testControlBase() {
     let x = 1
     let y = 2
@@ -47,8 +64,8 @@ class swiftzTests: XCTestCase {
   
   func testDataMonoid() {
     let xs: Array<Int8> = [1, 2, 0, 3, 4]
-    XCTAssert(mconcat(Sum    <Int8, NInt8>(i: { return NInt8() }), xs) == 10, "monoid sum works")
-    XCTAssert(mconcat(Product<Int8, NInt8>(i: { return NInt8() }), xs) == 0, "monoid product works")
+    XCTAssert(mconcat(Sum    <Int8, NInt8>(i: { return nint8 }), xs) == 10, "monoid sum works")
+    XCTAssert(mconcat(Product<Int8, NInt8>(i: { return nint8 }), xs) == 0, "monoid product works")
   }
   
 //  func testDataList() {
