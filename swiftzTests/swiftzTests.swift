@@ -77,28 +77,6 @@ class swiftzTests: XCTestCase {
 //
 //    XCTAssert(true, "Pass")
 //  }
-
-  func testDataOption() {
-    // eq
-    let m1: Optional<Int> = .None
-    let m2: Optional<Int> = .Some(1)
-    let m3: Optional<String> = .Some("swift")
-    XCTAssert(m3 == .Some("swift"), "maybe eq")
-    XCTAssert(m1 != m2, "maybe not eq")
-    
-    // ord
-    XCTAssert(m1 <= m1, "Nothing <= Nothing")
-    XCTAssert(!(m1 < m1), "Nothing >= Nothing")
-    XCTAssert(m1 <= m2, "Nothing <= Just 1")
-    XCTAssert(!(m2 <= m1), "Just 1 > Nothing")
-    XCTAssert(m1 < m2, "Nothing < Just 1")
-    XCTAssert(.Some(2) > m2, "Just 2 > Just 1")
-    XCTAssert(m2 >= m1, "Nothing >= Just 1")
-    
-    // functor
-    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}) == .None, "map works")
-    XCTAssert(m2.map({ (i: Int) -> Int in i + 1}) == .Some(2), "map still works")
-  }
   
   func testDataArrayExt() {
     // segfaults. rdar://17148872
