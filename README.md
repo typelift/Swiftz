@@ -23,6 +23,12 @@ let x: Future<Int> = Future(exec: gcdExecutionContext, {
   return 4
 })
 x.result() == x.result() // true, returns in 1 second
+
+// we can map and flatMap over futures
+x.map({ $0.description }).result() // "4", returns instantly
+x.flatMap({ (x: Int) -> Future<Int> in
+  return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
+}).result() // sleeps another second, then returns 5
 ```
 
 Implementation
