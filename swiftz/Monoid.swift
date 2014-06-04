@@ -7,7 +7,6 @@
 //
 
 protocol Monoid: Semigroup {
-  typealias M
   func mzero() -> M
 }
 
