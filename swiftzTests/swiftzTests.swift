@@ -41,6 +41,12 @@ class swiftzTests: XCTestCase {
     //    XCTAssert(x1 == x2)
   }
   
+  func testConcurrentChan() {
+    var chan: Chan<Int> = Chan()
+    let ft = Future<Int>(exec: gcdExecutionContext, { sleep(1); chan.write(2); return 2 })
+    XCTAssert(chan.read() == ft.result(), "simple read chan")
+  }
+  
   func testControlBase() {
     let x = 1
     let y = 2
