@@ -5,12 +5,36 @@ Swiftz is a Swift library for functional programming.
 
 It defines purely functional data structures and functions.
 
+Examples
+--------
+
+```swift
+let xs = [1, 2, 0, 3, 4]
+
+// we can use the Min semigroup to find the minimal element in xs
+sconcat(Min(), 2, xs) // 0
+
+// we can use the Sum monoid to find the sum of xs
+mconcat(Sum<Int8, NInt8>(i: { return nint8 }), xs) // 10
+
+// we can delay computations with futures
+let x: Future<Int> = Future(exec: gcdExecutionContext, {
+  sleep(1)
+  return 4
+})
+x.result() == x.result() // true, returns in 1 second
+```
+
+Implementation
+--------------
+
 **Implemented:**
 
 - `Control/Base` functions
 - `Maybe<A>` with `Equatable` and `Comparable`
 - `Num` typeclass
 - `Semigroup<A>` and `Monoid<A>` with some instances
+- `Future<A>`
 
 **Typechecks but currently impossible:**
 
