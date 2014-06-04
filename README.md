@@ -37,10 +37,10 @@ Implementation
 **Implemented:**
 
 - `Control/Base` functions
-- `Maybe<A>` with `Equatable` and `Comparable`
-- `Num` typeclass
-- `Semigroup<A>` and `Monoid<A>` with some instances
 - `Future<A>`
+- `Semigroup<A>` and `Monoid<A>` with some instances
+- `Num` signature and functors
+- `Maybe<A>` with `Equatable` and `Comparable`
 
 **Typechecks but currently impossible:**
 

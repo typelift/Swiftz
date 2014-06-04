@@ -100,6 +100,19 @@ class swiftzTests: XCTestCase {
     XCTAssert(m1.map({ (i: Int) -> Int in i + 1}, fc: m2) == .Just(2), "map still works")
   }
   
+  func testDataArrayExt() {
+    // segfaults. rdar://17148872
+//    let xsM: Array<Maybe<Int>> = [Maybe.Just(1), .Nothing, .Just(0)]
+//    let exM: Array<Int> = mapFlatten(xsM)
+//    let xsO: Array<Optional<Int>> = [Optional.Some(1), .Some(2), .None]
+//    let exO: Array<Int> = mapFlatten(xsO)
+//    XCTAssert(exM == [1, 0], "mapflatten maybe")
+//    XCTAssert(exO == [1, 2], "mapflatten option")
+//    
+//    let exJ = join([[1, 2], [3, 4]])
+//    XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
+  }
+  
 //  func testDataEither() {
 //    // eq
 //    let m1: Either<String, Int> = .Left("fail")
