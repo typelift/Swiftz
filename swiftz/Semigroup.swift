@@ -55,15 +55,15 @@ class Last<A: Comparable>: Semigroup {
   }
 }
 
-//class SemigroupMaybe<A>: Semigroup {
-//  typealias M = Maybe<A>
+//class SemigroupOptional<A>: Semigroup {
+//  typealias M = Optional<A>
 //
 //  func op(x: M, y: M) -> M {
 //    switch x {
-//      case .Nothing: return y
-//      case let .Just(a): switch y {
-//        case .Nothing: return x
-//        case let .Just(b): return op(a, b)
+//      case .None: return y
+//      case let .Some(a): switch y {
+//        case .None: return x
+//        case let .Some(b): return op(a, b)
 //      }
 //    }
 //  }

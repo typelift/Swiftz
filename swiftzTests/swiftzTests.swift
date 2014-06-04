@@ -78,12 +78,12 @@ class swiftzTests: XCTestCase {
 //    XCTAssert(true, "Pass")
 //  }
 
-  func testDataMaybe() {
+  func testDataOption() {
     // eq
-    let m1: Maybe<Int> = .Nothing
-    let m2: Maybe<Int> = .Just(1)
-    let m3: Maybe<String> = .Just("swift")
-    XCTAssert(m3 == .Just("swift"), "maybe eq")
+    let m1: Optional<Int> = .None
+    let m2: Optional<Int> = .Some(1)
+    let m3: Optional<String> = .Some("swift")
+    XCTAssert(m3 == .Some("swift"), "maybe eq")
     XCTAssert(m1 != m2, "maybe not eq")
     
     // ord
@@ -92,21 +92,18 @@ class swiftzTests: XCTestCase {
     XCTAssert(m1 <= m2, "Nothing <= Just 1")
     XCTAssert(!(m2 <= m1), "Just 1 > Nothing")
     XCTAssert(m1 < m2, "Nothing < Just 1")
-    XCTAssert(.Just(2) > m2, "Just 2 > Just 1")
+    XCTAssert(.Some(2) > m2, "Just 2 > Just 1")
     XCTAssert(m2 >= m1, "Nothing >= Just 1")
     
     // functor
-    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}, fc: m1) == .Nothing, "map works")
-    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}, fc: m2) == .Just(2), "map still works")
+    XCTAssert(m1.map({ (i: Int) -> Int in i + 1}) == .None, "map works")
+    XCTAssert(m2.map({ (i: Int) -> Int in i + 1}) == .Some(2), "map still works")
   }
   
   func testDataArrayExt() {
     // segfaults. rdar://17148872
-//    let xsM: Array<Maybe<Int>> = [Maybe.Just(1), .Nothing, .Just(0)]
-//    let exM: Array<Int> = mapFlatten(xsM)
 //    let xsO: Array<Optional<Int>> = [Optional.Some(1), .Some(2), .None]
 //    let exO: Array<Int> = mapFlatten(xsO)
-//    XCTAssert(exM == [1, 0], "mapflatten maybe")
 //    XCTAssert(exO == [1, 2], "mapflatten option")
 //    
 //    let exJ = join([[1, 2], [3, 4]])
