@@ -24,11 +24,20 @@ let x: Future<Int> = Future(exec: gcdExecutionContext, {
 })
 x.result() == x.result() // true, returns in 1 second
 
+// Channels
+let chan: Chan<Int> = Chan()
+chan.write(1)
+chan.write(2) // this could happen asynchronously
+let x1 = chan.read()
+let x2 = chan.read()
+println((x1, x2)) // 1, 2
+
 // we can map and flatMap over futures
 x.map({ $0.description }).result() // "4", returns instantly
 x.flatMap({ (x: Int) -> Future<Int> in
   return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
 }).result() // sleeps another second, then returns 5
+
 ```
 
 Implementation
@@ -38,6 +47,7 @@ Implementation
 
 - `Control/Base` functions
 - `Future<A>`
+- `Chan<A>`
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` signature and functors
 - `flatMap` for `Optional<A>`
