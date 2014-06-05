@@ -8,6 +8,8 @@ It defines purely functional data structures and functions.
 Examples
 --------
 
+**Data abstractions:**
+
 ```swift
 let xs = [1, 2, 0, 3, 4]
 
@@ -16,7 +18,21 @@ sconcat(Min(), 2, xs) // 0
 
 // we can use the Sum monoid to find the sum of xs
 mconcat(Sum<Int8, NInt8>(i: { return nint8 }), xs) // 10
+```
 
+**JSON:**
+
+```swift
+let js: NSData = ("[1,\"foo\"]").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+let lhs: JSValue = JSValue.decode(js)
+let rhs: JSValue = JSValue.JSArray([JSValue.JSNumber(1), JSValue.JSString("foo")])
+XCTAssert(lhs == rhs)
+XCTAssert(rhs.encode() == js)
+```
+
+**Concurrency:**
+
+```swift
 // we can delay computations with futures
 let x: Future<Int> = Future(exec: gcdExecutionContext, {
   sleep(1)
@@ -37,7 +53,6 @@ x.map({ $0.description }).result() // "4", returns instantly
 x.flatMap({ (x: Int) -> Future<Int> in
   return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
 }).result() // sleeps another second, then returns 5
-
 ```
 
 Implementation
@@ -45,12 +60,12 @@ Implementation
 
 **Implemented:**
 
-- `Control/Base` functions
-- `Future<A>`
-- `Chan<A>`
+- `Future<A>` and `Chan<A>` concurrency abstractions
+- `JSON` types and encode / decode protocols
 - `Semigroup<A>` and `Monoid<A>` with some instances
-- `Num` signature and functors
-- `flatMap` for `Optional<A>`
+- `Num` protocol
+- `flatMap` and `maybe` for `Optional<A>`
+- `Dictionary` and `Array` extensions
 
 **Typechecks but currently impossible:**
 

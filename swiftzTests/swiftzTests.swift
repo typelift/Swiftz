@@ -24,13 +24,13 @@ class swiftzTests: XCTestCase {
   func testConcurrentFuture() {
     var e: NSError?
     let x: Future<Int> = Future(exec: gcdExecutionContext, {
-      sleep(1)
+      usleep(1)
       return 4
     })
     XCTAssert(x.result() == x.result(), "future")
     XCTAssert(x.map({ $0.description }).result() == "4", "future map")
     XCTAssert(x.flatMap({ (x: Int) -> Future<Int> in
-      return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
+      return Future(exec: gcdExecutionContext, { usleep(1); return x + 1 })
     }).result() == 5, "future flatMap")
     
     //    let x: Future<Int> = Future(exec: gcdExecutionContext, {
@@ -43,7 +43,7 @@ class swiftzTests: XCTestCase {
   
   func testConcurrentChan() {
     var chan: Chan<Int> = Chan()
-    let ft = Future<Int>(exec: gcdExecutionContext, { sleep(1); chan.write(2); return 2 })
+    let ft = Future<Int>(exec: gcdExecutionContext, { usleep(1); chan.write(2); return 2 })
     XCTAssert(chan.read() == ft.result(), "simple read chan")
   }
   
@@ -64,6 +64,15 @@ class swiftzTests: XCTestCase {
     XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")
 //    XCTAssert((x <| {(a: Int) -> String in return a.description}) == 1, "thrush")
     
+  }
+  
+  
+  func testDataJSON() {
+    let js: NSData = ("[1,\"foo\"]").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let lhs: JSValue = JSValue.decode(js)
+    let rhs: JSValue = JSValue.JSArray([JSValue.JSNumber(1), JSValue.JSString("foo")])
+    XCTAssert(lhs == rhs)
+    XCTAssert(rhs.encode() == js)
   }
   
   func testDataSemigroup() {
