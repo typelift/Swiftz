@@ -97,6 +97,14 @@ class swiftzTests: XCTestCase {
 //    XCTAssert(x.flatMap(f) == .Some(2), "optional flatMap")
   }
   
+  func testMaybeOptionalExt() {
+    let x = Optional.Some(4)
+    let y = Optional<Int>.None
+
+    //XCTAssert(x.maybe(0, { x in x + 1}) == 4, "maybe for Some works")
+    //XCTAssert(y.maybe(0, { x in x + 1}) == 0, "maybe for None works")
+  }
+  
   func testDataArrayExt() {
     // segfaults. rdar://17148872
 //    let xsO: Array<Optional<Int>> = [Optional.Some(1), .Some(2), .None]

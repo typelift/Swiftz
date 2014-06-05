@@ -9,8 +9,12 @@
 // warning: flatMap can not be linked. rdar://17149404
 extension Optional {
   func flatMap<B>(f: (T -> Optional<B>)) -> Optional<B> {
+    return self.maybe(.None, f)
+  }
+
+  func maybe<B>(z : B, f : T -> B) -> B {
     switch self {
-      case .None: return .None
+      case .None: return z
       case let .Some(x): return f(x)
     }
   }
