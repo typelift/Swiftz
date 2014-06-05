@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
+
 extension NSArray {
   func mapToArray<U>(transform: AnyObject -> (U)) -> Array<U> {
     var xs: Array<U> = Array()

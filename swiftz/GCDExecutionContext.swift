@@ -6,10 +6,13 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
+
 let gcdExecutionContext = GCDExecutionContext()
+let gcdDispatchQueueGlobal = dispatch_queue_create("swiftz.global", DISPATCH_QUEUE_CONCURRENT)
+
 class GCDExecutionContext: ExecutionContext {
-  func submit<A>(x: A -> (), y: () -> A) {
-    var once = dispatch_once_t()
-    dispatch_once(&once, { x(y()) })
+  func submit<A>(x: Future<A>, work: () -> A) {
+    dispatch_async(gcdDispatchQueueGlobal, { x.sig(work()) })
   }
 }

@@ -6,39 +6,43 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
 
 class Chan<A> {
   var stream: Array<A>
   
-  var lock: pthread_mutex_t
-  var cond: pthread_cond_t
+  var mutex: CMutablePointer<pthread_mutex_t>
+  var cond: CMutablePointer<pthread_cond_t>
+  let matt: CConstPointer<pthread_mutexattr_t>
   
   init() {
-    var mattr:pthread_mutexattr_t = pthread_mutexattr_t(__sig: 0, __opaque: (0, 0, 0, 0, 0, 0, 0, 0))
-    lock = pthread_mutex_t(__sig: 0, __opaque: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-    cond = pthread_cond_t(__sig: 0, __opaque: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-    pthread_mutexattr_init(&mattr)
-    pthread_mutexattr_settype(&mattr, PTHREAD_MUTEX_DEFAULT)
-    pthread_mutex_init(&lock, &mattr)
-    pthread_cond_init(&cond, nil)
+    var mattr:CMutablePointer<pthread_mutexattr_t> = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutexattr_t))).value)
+    // TODO: is owner nil ok? is malloc leaking?
+    mutex = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutex_t))).value)
+    cond = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_cond_t))).value)
+    pthread_mutexattr_init(mattr)
+    pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
+    matt = CConstPointer(nil, mattr.value)
+    pthread_mutex_init(mutex, matt)
+    pthread_cond_init(cond, nil)
     stream = []
   }
   
   func write(a: A) {
-    pthread_mutex_lock(&lock)
+    pthread_mutex_lock(mutex)
     stream.append(a)
-    pthread_cond_signal(&cond)
-    pthread_mutex_unlock(&lock)
+    pthread_mutex_unlock(mutex)
+    pthread_cond_signal(cond)
   }
   
   func read() -> A {
-    pthread_mutex_lock(&lock)
-    if (stream.isEmpty) {
-      pthread_cond_wait(&cond, &lock)
+    pthread_mutex_lock(mutex)
+    while (stream.isEmpty) {
+      pthread_cond_wait(cond, mutex)
     }
     let v = stream[0]
     stream.removeAtIndex(0)
-    pthread_mutex_unlock(&lock)
+    pthread_mutex_unlock(mutex)
     return v
   }
   

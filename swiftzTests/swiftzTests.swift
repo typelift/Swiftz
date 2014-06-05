@@ -134,8 +134,26 @@ class swiftzTests: XCTestCase {
   
   func testPerformanceExample() {
     // This is an example of a performance test case.
+    
+    func term(ch: Chan<CDouble>, k: CDouble) -> Void {
+      ch.write(4 * pow(-1, k) / (2 * k + 1))
+    }
+    
+    func pi(n: Int) -> CDouble {
+      let ch = Chan<CDouble>()
+      for k in (0..n) {
+        Future<Void>(exec: gcdExecutionContext, a: { return term(ch, CDouble(k)) })
+      }
+      var f = 0.0
+      for k in (0..n) {
+        f = f + ch.read()
+      }
+      return f
+    }
+    
     self.measureBlock() {
-        // Put the code you want to measure the time of here.
+      pi(200)
+      Void()
     }
   }
     

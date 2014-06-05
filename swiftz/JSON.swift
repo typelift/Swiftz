@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
+
 enum JSValue: Printable {
   case JSArray(Array<JSValue>)
   case JSObject(Dictionary<String, JSValue>)
