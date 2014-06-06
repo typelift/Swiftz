@@ -20,8 +20,12 @@ func uncurry<A, B, C>(f: (A -> (B -> C)), ab: (A, B)) -> C {
   }
 }
 
-operator infix |> {}
-operator infix ▹ {}
+operator infix |> {
+associativity left
+}
+operator infix ▹ {
+associativity left
+}
 //operator infix <| {}
 //operator infix ◃ {}
 

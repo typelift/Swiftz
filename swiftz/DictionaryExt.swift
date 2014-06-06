@@ -26,4 +26,16 @@ extension Dictionary {
         }
         return f
     }
+    
+    func reduce<A>(start:A, reduce:(key:KeyType, val:ValueType, start:A) -> A) -> A {
+        var reduced:A?
+        for(k,v) in self {
+            reduced = reduce(key:k, val:v, start:start)
+        }
+        
+        switch reduced {
+        case let .Some(a): return a
+        case .None: return start
+        }
+    }
 }
