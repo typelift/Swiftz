@@ -47,3 +47,15 @@ class Chan<A> {
   }
   
 }
+
+operator infix <- {}
+@infix func <-<A>(chan: Chan<A>, value: A) -> Void
+{
+    chan.write(value)
+}
+
+operator prefix <- {}
+@prefix func <-<A>(chan: Chan<A>) -> A
+{
+    return chan.read()
+}
