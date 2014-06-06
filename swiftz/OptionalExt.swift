@@ -18,4 +18,12 @@ extension Optional {
       case let .Some(x): return f(x)
     }
   }
+  
+  // scala's getOrElse
+  func getOrElse(x: T) -> T {
+    switch self {
+      case .None: return x
+      case let .Some(x): return x
+    }
+  }
 }

@@ -103,7 +103,9 @@ class swiftzTests: XCTestCase {
       }
     }
     // rdar://17149404
-//    XCTAssert(x.flatMap(f) == .Some(2), "optional flatMap")
+    //    XCTAssert(x.flatMap(f) == .Some(2), "optional flatMap")
+    //    maybe(...)
+    //    XCTAssert(Optional.None.getOrElse(1) == 1, "optional getOrElse")
   }
   
   func testMaybeOptionalExt() {
