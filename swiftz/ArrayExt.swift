@@ -11,7 +11,7 @@
 // segfaults. rdar://17148872
 
 //func mapFlatten<A>(xs: Array<Optional<A>>) -> Array<A> {
-//  var w = Array<A>()
+//  var w = Array<A>(self.count)
 //  xs.map({ (c: Optional<A>) -> Void in
 //    switch c {
 //      case .None: ()
@@ -22,7 +22,7 @@
 //}
 //
 //func join<A>(xs: Array<Array<A>>) -> Array<A> {
-//  var w = Array<A>()
+//  var w = Array<A>(self.count)
 //  xs.map({ $0.map { w.append($0) } })
 //  return w
 //}
