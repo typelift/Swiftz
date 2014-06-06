@@ -70,7 +70,7 @@ class swiftzTests: XCTestCase {
   func testDataJSON() {
     let js: NSData = ("[1,\"foo\"]").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let lhs: JSValue = JSValue.decode(js)
-    let rhs: JSValue = JSValue.JSArray([JSValue.JSNumber(1), JSValue.JSString("foo")])
+    let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
     XCTAssert(lhs == rhs)
     XCTAssert(rhs.encode() == js)
   }
