@@ -32,7 +32,7 @@ class Future<A> {
     pthread_cond_init(cond, nil)
     
     execCtx = exec
-    exec.submit(self, work: a) // { (x: A) -> () in self.sig(x) }, a)
+    exec.submit(self, work: a)
   }
   
   func sig(x: A) {
