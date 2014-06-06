@@ -156,5 +156,8 @@ class swiftzTests: XCTestCase {
       Void()
     }
   }
-    
+  func testThrush() {
+    let x = 1 |> ({$0.advancedBy($0)}) |> ({$0.advancedBy($0)}) |> ({$0 * $0})
+    XCTAssertTrue(x == 16, "Should equal 16")
+  }
 }
