@@ -8,6 +8,8 @@
 
 import Foundation
 
+// the standard library has _.1, _.2 functions
+// these functions are more useful when "doing fp"
 func fst<A, B>(ab: (A, B)) -> A {
   switch ab {
     case let (a, b): return a
