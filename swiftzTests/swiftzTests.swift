@@ -115,6 +115,13 @@ class swiftzTests: XCTestCase {
     XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")
 //    XCTAssert((x <| {(a: Int) -> String in return a.description}) == 1, "thrush")
     
+    
+    let xs = [1, 2, 3]
+    func fs(x: Int) -> Array<Int> {
+      return [x, x+1, x+2]
+    }
+    let rs = xs >>= fs
+    XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5])
   }
   
   
