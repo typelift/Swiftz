@@ -119,20 +119,20 @@ class swiftzTests: XCTestCase {
   
   
   func testDataJSON() {
-    let js: NSData = ("[1,\"foo\"]").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let js: NSData = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let lhs: JSValue = JSValue.decode(js)
     let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
     XCTAssert(lhs == rhs)
     XCTAssert(rhs.encode() == js)
     
     // user example
-    let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let userjs: NSData = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
+      .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let user: User? = JSValue.decode(userjs) >>= User.fromJSON
-    let userExpect: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
     XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
     
     // not a user, missing age
-    let notuserjs: NSData = ("{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let notuserjs: NSData = "{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let notUser: User? = JSValue.decode(notuserjs) >>= User.fromJSON
     if notUser {
       XCTFail("expected none")
