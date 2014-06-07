@@ -28,6 +28,12 @@ class Chan<A> {
     stream = []
   }
   
+  deinit {
+    free(CMutableVoidPointer(owner: nil, value: mutex.value))
+    free(CMutableVoidPointer(owner: nil, value: cond.value))
+    free(CMutableVoidPointer(owner: nil, value: matt.value))
+  }
+  
   func write(a: A) {
     pthread_mutex_lock(mutex)
     stream.append(a)

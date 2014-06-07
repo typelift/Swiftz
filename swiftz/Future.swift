@@ -35,6 +35,12 @@ class Future<A> {
     exec.submit(self, work: a)
   }
   
+  deinit {
+    free(CMutableVoidPointer(owner: nil, value: mutex.value))
+    free(CMutableVoidPointer(owner: nil, value: cond.value))
+    free(CMutableVoidPointer(owner: nil, value: matt.value))
+  }
+  
   func sig(x: A) {
     pthread_mutex_lock(mutex)
     self.value = { return x }
