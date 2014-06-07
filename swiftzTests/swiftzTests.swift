@@ -9,8 +9,50 @@
 import XCTest
 import swiftz
 
+// A user example
+// an example of why we need SYB, Generics or macros
+class User: JSONDecode {
+  typealias J = User
+  let name: String
+  let age: Int
+  let tweets: Array<String>
+  let attrs: Dictionary<String, String>
+  
+  init(_ n: String, _ a: Int, _ t: Array<String>, _ r: Dictionary<String, String>) {
+    name = n
+    age = a
+    tweets = t
+    attrs = r
+  }
+  
+  class func fromJSON(x: JSValue) -> User? {
+    var n: String?
+    var a: Int?
+    var t: Array<String>?
+    var r: Dictionary<String, String>?
+    switch x {
+      case let .JSObject(d):
+        n = d["name"]   >>= JString.fromJSON
+        a = d["age"]    >>= JInt.fromJSON
+        t = d["tweets"] >>= JArray<String, JString>.fromJSON
+        r = d["attrs"]  >>= JDictionary<String, JString>.fromJSON
+        if (n && a && t && r) {
+          return User(n!, a!, t!, r!)
+        } else {
+          return .None
+        }
+      default:
+        return .None
+    }
+  }
+}
+
+func ==(lhs: User, rhs: User) -> Bool {
+  return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
+}
+
 class swiftzTests: XCTestCase {
-    
+  
   override func setUp() {
     super.setUp()
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -82,6 +124,19 @@ class swiftzTests: XCTestCase {
     let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
     XCTAssert(lhs == rhs)
     XCTAssert(rhs.encode() == js)
+    
+    // user example
+    let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let user: User? = JSValue.decode(userjs) >>= User.fromJSON
+    let userExpect: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
+    XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
+    
+    // not a user, missing age
+    let notuserjs: NSData = ("{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let notUser: User? = JSValue.decode(notuserjs) >>= User.fromJSON
+    if notUser {
+      XCTFail("expected none")
+    }
   }
   
   func testDataSemigroup() {

@@ -137,7 +137,7 @@ func !=(lhs: JSValue, rhs: JSValue) -> Bool {
 
 protocol JSONDecode {
   typealias J
-  func fromJSON(x: JSValue) -> J?
+  class func fromJSON(x: JSValue) -> J?
 }
 
 protocol JSONEncode {
@@ -155,7 +155,7 @@ let jdouble = JDouble()
 class JDouble: JSON {
   typealias J = Double
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
     case let .JSNumber(n): return n
     default: return Optional.None
@@ -171,7 +171,7 @@ let jint = JInt()
 class JInt: JSON {
   typealias J = Int
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       case let .JSNumber(n): return Int(n)
       default: return Optional.None
@@ -187,7 +187,7 @@ let jbool = JBool()
 class JBool: JSON {
   typealias J = Bool
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       case let .JSBool(n): return n
       case .JSNumber(0): return false
@@ -205,7 +205,7 @@ let jstring = JString()
 class JString: JSON {
   typealias J = String
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       case let .JSString(n): return n
       default: return Optional.None
@@ -222,7 +222,7 @@ let jnull = JNull()
 class JNull: JSON {
   typealias J = ()
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       case .JSNull(): return ()
       default: return Optional.None
@@ -242,11 +242,11 @@ class JArray<A, B: JSON where B.J == A>: JSON {
     inst = i
   }
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       // TODO: sequence / mapM
       case let .JSArray(xs): return xs.map { (x: JSValue) -> A in
-        return self.inst().fromJSON(x)!
+        return B.fromJSON(x)!
       }
       default: return Optional.None
     }
@@ -264,10 +264,10 @@ class JDictionary<A, B: JSON where B.J == A>: JSON {
     inst = i
   }
   
-  func fromJSON(x: JSValue) -> J? {
+  class func fromJSON(x: JSValue) -> J? {
     switch x {
       case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
-        return (k, self.inst().fromJSON(x)!)
+        return (k, B.fromJSON(x)!)
       }
     default: return Optional.None
     }
