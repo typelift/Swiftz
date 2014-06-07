@@ -21,10 +21,10 @@ func uncurry<A, B, C>(f: (A -> (B -> C)), ab: (A, B)) -> C {
 }
 
 operator infix |> {
-associativity left
+  associativity left
 }
 operator infix ▹ {
-associativity left
+  associativity left
 }
 //operator infix <| {}
 //operator infix ◃ {}
@@ -55,3 +55,12 @@ func ▹<A, B>(a: A, f: A -> B) -> B {
 //  return a
 //}
 
+// the "if the arg is Some, apply the function that returns an optional
+// value and if the arg is None, just return None" function.
+func >>=<A, B>(a: A?, f: A -> B?) -> B? {
+  if a {
+    return f(a!)
+  } else {
+    return .None
+  }
+}
