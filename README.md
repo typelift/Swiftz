@@ -32,7 +32,8 @@ XCTAssert(rhs.encode() == js)
 
 // The User class https://github.com/maxpow4h/swiftz/blob/fc9fead44ed3926a9c1987af871f5ba9373ea11c/swiftzTests/swiftzTests.swift#L14-L48
 // implements JSONDecode, so we can decode JSON into it and get a `User?`
-let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}")
+  .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
 let user: User? = JSValue.decode(userjs) >>= User.fromJSON
 XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
 ```
