@@ -151,6 +151,90 @@ protocol JSON: JSONDecode, JSONEncode {
 
 // instances
 
+let jdouble = JDouble()
+class JDouble: JSON {
+  typealias J = Double
+  
+  func fromJSON(x: JSValue) -> J? {
+    switch x {
+    case let .JSNumber(n): return n
+    default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSNumber(xs)
+  }
+}
+
+let jint = JInt()
+class JInt: JSON {
+  typealias J = Int
+  
+  func fromJSON(x: JSValue) -> J? {
+    switch x {
+      case let .JSNumber(n): return Int(n)
+      default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSNumber(Double(xs))
+  }
+}
+
+let jbool = JBool()
+class JBool: JSON {
+  typealias J = Bool
+  
+  func fromJSON(x: JSValue) -> J? {
+    switch x {
+      case let .JSBool(n): return n
+      case .JSNumber(0): return false
+      case .JSNumber(1): return true
+      default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSNumber(Double(xs))
+  }
+}
+
+let jstring = JString()
+class JString: JSON {
+  typealias J = String
+  
+  func fromJSON(x: JSValue) -> J? {
+    switch x {
+      case let .JSString(n): return n
+      default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSString(xs)
+  }
+}
+
+// or unit...
+let jnull = JNull()
+class JNull: JSON {
+  typealias J = ()
+  
+  func fromJSON(x: JSValue) -> J? {
+    switch x {
+      case .JSNull(): return ()
+      default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSNull()
+  }
+}
+
+
 class JArray<A, B: JSON where B.J == A>: JSON {
   typealias J = Array<A>
   let inst: () -> B
