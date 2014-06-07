@@ -21,8 +21,11 @@
 		593E7389193F16B10071B91D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593E7388193F16B10071B91D /* Future.swift */; };
 		5951313C19406DA600AB490C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
 		59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B26544193F365A007AA82B /* GCDExecutionContext.swift */; };
+		59B2DCBA19434706002ACB3E /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2DCB919434706002ACB3E /* Tuple.swift */; };
 		59B39E3E1943094F00F4B222 /* Curry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B39E3D1943094F00F4B222 /* Curry.swift */; };
 		59B39E401943268200F4B222 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590BE97A193DB8F3003DAC87 /* Either.swift */; };
+		59BF7D931943347800EAFFAA /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D921943347800EAFFAA /* SYB.swift */; };
+		59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */; };
 		59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C50C3C193DEB8100FE8C86 /* Num.swift */; };
 		59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -57,7 +60,10 @@
 		593E7388193F16B10071B91D /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		5951313B19406DA600AB490C /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		59B26544193F365A007AA82B /* GCDExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDExecutionContext.swift; sourceTree = "<group>"; };
+		59B2DCB919434706002ACB3E /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
 		59B39E3D1943094F00F4B222 /* Curry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Curry.swift; sourceTree = "<group>"; };
+		59BF7D921943347800EAFFAA /* SYB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYB.swift; sourceTree = "<group>"; };
+		59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftCheck.swift; sourceTree = "<group>"; };
 		59C50C3C193DEB8100FE8C86 /* Num.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Num.swift; sourceTree = "<group>"; };
 		59DB16241940895D00E656F9 /* NSDictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDictionaryExt.swift; sourceTree = "<group>"; };
 		59F35AE0193D3A0A006F1341 /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,11 +102,6 @@
 				593C913C193DDC060067F2BE /* Monoid.swift */,
 				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				5951313B19406DA600AB490C /* JSON.swift */,
-				593C9140193DE6AB0067F2BE /* ArrayExt.swift */,
-				590522CB193F5DBA0036614F /* OptionalExt.swift */,
-				5908C1B7194076810024A36C /* DictionaryExt.swift */,
-				5931F2E919407DC600B0526A /* NSArrayExt.swift */,
-				59DB16241940895D00E656F9 /* NSDictionaryExt.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -110,6 +111,7 @@
 			children = (
 				5910EA99193DCEE9008F6D71 /* Base.swift */,
 				59B39E3D1943094F00F4B222 /* Curry.swift */,
+				59B2DCB919434706002ACB3E /* Tuple.swift */,
 			);
 			name = Control;
 			sourceTree = "<group>";
@@ -132,6 +134,34 @@
 				59B26544193F365A007AA82B /* GCDExecutionContext.swift */,
 			);
 			name = Concurrent;
+			sourceTree = "<group>";
+		};
+		59BF7D911943346900EAFFAA /* Generics */ = {
+			isa = PBXGroup;
+			children = (
+				59BF7D921943347800EAFFAA /* SYB.swift */,
+			);
+			name = Generics;
+			sourceTree = "<group>";
+		};
+		59BF7D9419433EBE00EAFFAA /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */,
+			);
+			name = Testing;
+			sourceTree = "<group>";
+		};
+		59BF7D9719433F8200EAFFAA /* Ext */ = {
+			isa = PBXGroup;
+			children = (
+				593C9140193DE6AB0067F2BE /* ArrayExt.swift */,
+				590522CB193F5DBA0036614F /* OptionalExt.swift */,
+				5908C1B7194076810024A36C /* DictionaryExt.swift */,
+				5931F2E919407DC600B0526A /* NSArrayExt.swift */,
+				59DB16241940895D00E656F9 /* NSDictionaryExt.swift */,
+			);
+			name = Ext;
 			sourceTree = "<group>";
 		};
 		59F35AD6193D3A09006F1341 = {
@@ -159,7 +189,10 @@
 				593E7387193F16A60071B91D /* Concurrent */,
 				590BE977193DA93D003DAC87 /* Control */,
 				590BE976193DA939003DAC87 /* Data */,
+				59BF7D9719433F8200EAFFAA /* Ext */,
+				59BF7D911943346900EAFFAA /* Generics */,
 				591A21921941D43C005FE900 /* Unsound */,
+				59BF7D9419433EBE00EAFFAA /* Testing */,
 				59F35AE3193D3A0A006F1341 /* Supporting Files */,
 			);
 			path = swiftz;
@@ -308,13 +341,16 @@
 				591A21941941D453005FE900 /* Functor.swift in Sources */,
 				590522CE193F61210036614F /* Chan.swift in Sources */,
 				59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */,
+				59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */,
 				59B39E3E1943094F00F4B222 /* Curry.swift in Sources */,
 				593C913F193DDC610067F2BE /* Semigroup.swift in Sources */,
+				59BF7D931943347800EAFFAA /* SYB.swift in Sources */,
 				591451111942B41300809E7E /* ExecutionContext.swift in Sources */,
 				5910EA9A193DCEE9008F6D71 /* Base.swift in Sources */,
 				5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */,
 				59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */,
 				59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */,
+				59B2DCBA19434706002ACB3E /* Tuple.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

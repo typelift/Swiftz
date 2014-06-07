@@ -47,8 +47,52 @@ class User: JSONDecode {
   }
 }
 
+
 func ==(lhs: User, rhs: User) -> Bool {
   return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
+}
+
+// shape example for SYB
+enum Shape : Dataable {
+  case Boat
+  case Plane(wingspan: Int)
+  
+  static func typeRep() -> Any.Type {
+    return reflect(self).valueType
+  }
+  
+  static func fromRep(r: Data) -> Shape? {
+    switch (r.con, r.vals) {
+    case let (0, xs):
+      return Boat
+    case let (1, xs):
+      let x1 = ind(xs, 0)
+      let x2 = x1 >>= { $1 as? Int }
+      return { Plane(wingspan: $0) } <^> x2
+    default:
+      return .None
+    }
+  }
+  
+  func toRep() -> Data {
+    switch self {
+      case .Boat: return Data(con: 0, vals: [])
+      case let .Plane(w): return Data(con: 1, vals: [("wingspan", w)])
+    }
+  }
+}
+
+func ==(lhs: Shape, rhs: Shape) -> Bool {
+  switch lhs {
+    case .Boat: switch rhs {
+      case .Boat: return true
+      case let .Plane(q): return false
+    }
+    case let .Plane(w): switch rhs {
+      case let .Plane(q): return w == q
+      case let .Boat: return false
+    }
+  }
 }
 
 class swiftzTests: XCTestCase {
@@ -122,6 +166,11 @@ class swiftzTests: XCTestCase {
     }
     let rs = xs >>= fs
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5])
+  }
+  
+  func testThrush() {
+    let x = 1 |> ({$0.advancedBy($0)}) |> ({$0.advancedBy($0)}) |> ({$0 * $0})
+    XCTAssertTrue(x == 16, "Should equal 16")
   }
   
   func testDataEither() {
@@ -213,13 +262,29 @@ class swiftzTests: XCTestCase {
 //    XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
   }
   
-//  func testDataEither() {
-//    // eq
-//    let m1: Either<String, Int> = .Left("fail")
-//    let m2: Either<String, Int> = .Right(9001)
-//    XCTAssert(m1 == .Left("fail"), "either eq")
-//    XCTAssert(m1 != .Right(0), "either not eq")
-//  }
+  func testGenericsSYB() {
+    let b = Shape.Plane(wingspan: 2)
+    let b2 = Shape.fromRep(b.toRep()) // identity?
+    XCTAssert(b == b2!)
+    
+    // not sure why you would use SYB at the moment...
+    // without some kind of extendable generic dispatch, it isn't very useful.
+    func gJSON(d: Data) -> JSValue {
+      var r = Dictionary<String, JSValue>()
+      for (n, vs) in d.vals {
+        switch vs {
+          case let x as Int: r[n] = JSValue.JSNumber(Double(x))
+          case let x as String: r[n] = JSValue.JSString(x)
+          case let x as Bool: r[n] = JSValue.JSBool(x)
+          case let x as Double: r[n] = JSValue.JSNumber(x)
+          default: r[n] = JSValue.JSNull()
+        }
+      }
+      return .JSObject(r)
+    }
+    
+    XCTAssert(gJSON(b.toRep()) == .JSObject(["wingspan" : .JSNumber(2)]))
+  }
   
   func testPerformanceExample() {
     // This is an example of a performance test case.
@@ -244,9 +309,5 @@ class swiftzTests: XCTestCase {
       pi(200)
       Void()
     }
-  }
-  func testThrush() {
-    let x = 1 |> ({$0.advancedBy($0)}) |> ({$0.advancedBy($0)}) |> ({$0 * $0})
-    XCTAssertTrue(x == 16, "Should equal 16")
   }
 }

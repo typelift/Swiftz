@@ -101,11 +101,13 @@ func ==(lhs: JSValue, rhs: JSValue) -> Bool {
       default: return false
     }
     case let .JSObject(l): switch rhs {
-      case let .JSObject(r): return l == r
+      case let .JSObject(r): return equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in
+        return v1.0 == v2.0 && v1.1 == v2.1
+      })
       default: return false
     }
     case let .JSArray(l): switch rhs {
-    case let .JSArray(r): return (equal(l, r, { $0 == $1 }))
+    case let .JSArray(r): return equal(l, r, { $0 == $1 })
       default: return false
     }
   }
