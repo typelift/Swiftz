@@ -25,6 +25,10 @@ class User: JSONDecode {
     attrs = r
   }
   
+  class func create(x: String) -> Int -> Array<String> -> Dictionary<String, String> -> User {
+    return { (y: Int) in { (z: Array<String>) in { User(x, y, z, $0) } } }
+  }
+  
   class func fromJSON(x: JSValue) -> User? {
     var n: String?
     var a: Int?
@@ -36,11 +40,7 @@ class User: JSONDecode {
         a = d["age"]    >>= JInt.fromJSON
         t = d["tweets"] >>= JArray<String, JString>.fromJSON
         r = d["attrs"]  >>= JDictionary<String, JString>.fromJSON
-        if (n && a && t && r) {
-          return User(n!, a!, t!, r!)
-        } else {
-          return .None
-        }
+        return (User.create <^> n <*> a <*> t <*> r)
       default:
         return .None
     }

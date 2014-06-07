@@ -64,3 +64,29 @@ func >>=<A, B>(a: A?, f: A -> B?) -> B? {
     return .None
   }
 }
+
+operator infix <^> {
+  associativity left
+}
+
+func <^><A, B>(f: A -> B, a: A?) -> B? {
+  if a {
+    return (f(a!))
+  } else {
+    return .None
+  }
+}
+
+operator infix <*> {
+  associativity left
+}
+
+func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
+  if f && a {
+    return (f!(a!))
+  } else {
+    return .None
+  }
+}
+
+
