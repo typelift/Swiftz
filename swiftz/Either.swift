@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-enum Either<A, B> {
-  case Left(() -> A)
-  case Right(() -> B)
+enum Either<L, R> {
+  case Left(() -> L)
+  case Right(() -> R)
 }
 
 // Equatable
-func ==<A: Equatable, B: Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   switch lhs {
     case let .Left(l): switch rhs {
       case let .Left(r): return l() == r()
@@ -25,6 +25,6 @@ func ==<A: Equatable, B: Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Boo
   }
 }
 
-func !=<A: Equatable, B: Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   return !(lhs == rhs)
 }

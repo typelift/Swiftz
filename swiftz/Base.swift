@@ -147,4 +147,3 @@ func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
 }
 
 // TODO: reader
-
