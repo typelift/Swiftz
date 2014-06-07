@@ -53,7 +53,7 @@ class MVar<A> {
     pthread_cond_signal(condPut)
   }
   
-  func read() -> A {
+  func take() -> A {
     pthread_mutex_lock(mutex)
     while !(value) {
       pthread_cond_wait(condPut, mutex)

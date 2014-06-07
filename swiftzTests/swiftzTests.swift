@@ -93,8 +93,8 @@ class swiftzTests: XCTestCase {
     var mvar: MVar<String> = MVar()
     let ft = Future<Void>(exec: gcdExecutionContext, { mvar.put("hello"); mvar.put("max") })
     XCTAssert(mvar.isEmpty(), "mvar is full")
-    XCTAssert(mvar.read() == "hello", "mvar read")
-    XCTAssert(mvar.read() == "max", "mvar read")
+    XCTAssert(mvar.take() == "hello", "mvar read")
+    XCTAssert(mvar.take() == "max", "mvar read")
     XCTAssert(mvar.isEmpty(), "mvar empty")
   }
   
