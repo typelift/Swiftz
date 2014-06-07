@@ -47,6 +47,14 @@ class swiftzTests: XCTestCase {
     XCTAssert(chan.read() == ft.result(), "simple read chan")
   }
   
+  func testConcurrentMVar() {
+    var mvar: MVar<String> = MVar()
+    let ft = Future<Void>(exec: gcdExecutionContext, { usleep(1); mvar.put("hello") })
+    XCTAssert(mvar.isEmpty(), "mvar is full")
+    XCTAssert(mvar.read() == "hello", "mvar read")
+    XCTAssert(mvar.isEmpty(), "mvar empty")
+  }
+  
   func testControlBase() {
     let x = 1
     let y = 2
