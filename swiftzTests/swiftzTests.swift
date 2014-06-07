@@ -124,6 +124,22 @@ class swiftzTests: XCTestCase {
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5])
   }
   
+  func testDataEither() {
+    func divTwoEvenly(x: Int) -> Either<String, Int> {
+      if x % 2 == 0 {
+        return .Left({ "\(x) was div by 2" })
+      } else {
+        return .Right({ x / 2 })
+      }
+    }
+    
+    let start = 17
+    let first: Either<String, Int> = divTwoEvenly(start)
+    let prettyPrinted: Either<String, String> = { $0.description } <^> first
+    let snd = first >>= divTwoEvenly
+    XCTAssert(prettyPrinted == .Right({ "8" }))
+    XCTAssert(snd == .Left({ "8 was div by 2" }))
+  }
   
   func testDataJSON() {
     let js: NSData = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)

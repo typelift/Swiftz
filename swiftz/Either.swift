@@ -7,20 +7,20 @@
 //
 
 enum Either<A, B> {
-  case Left(A)
-  case Right(B)
+  case Left(() -> A)
+  case Right(() -> B)
 }
 
 // Equatable
 func ==<A: Equatable, B: Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
   switch lhs {
     case let .Left(l): switch rhs {
-      case let .Left(r): return l == r
+      case let .Left(r): return l() == r()
       case .Right(_): return false
     }
     case let .Right(l): switch rhs {
       case let .Left(_): return false
-      case let .Right(r): return l == r
+      case let .Right(r): return l() == r()
     }
   }
 }

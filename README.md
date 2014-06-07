@@ -30,9 +30,10 @@ let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
 XCTAssert(lhs == rhs)
 XCTAssert(rhs.encode() == js)
 
-// The User class https://github.com/maxpow4h/swiftz/blob/fc9fead44ed3926a9c1987af871f5ba9373ea11c/swiftzTests/swiftzTests.swift#L14-L48
+// The User class blob/fc9fead44/swiftzTests/swiftzTests.swift#L14-L48
 // implements JSONDecode, so we can decode JSON into it and get a `User?`
-let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}")
+let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\":
+                       [\"hello\"], \"attrs\": {\"one\": \"1\"}}")
   .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
 let user: User? = JSValue.decode(userjs) >>= User.fromJSON
 XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
@@ -63,21 +64,39 @@ x.flatMap({ (x: Int) -> Future<Int> in
 }).result() // sleeps another second, then returns 5
 ```
 
+Operators
+---------
+
+Operator | Name  | Type
+-------- | ----- | ------------------------------------------
+`pure`   | pure  | `pure<A>(a: A) -> F<A>`
+`<^>`    | fmap  | `<^><A, B>(f: A -> B, a: F<A>) -> F<B>`
+`<*>`    | apply | `<*><A, B>(f: F<A -> B>, a: F<A>) -> F<B>`
+`>>=`    | bind  | `>>=<A, B>(a: F<A>, f: A -> F<B>) -> F<B>`
+
+Types with instances of these operators:
+
+- Optional
+- Array (non-determinism, cross product)
+- Either (right bias)
+
+*Note: these functions are not in any protocol. They are in global scope.*
+
 Implementation
 --------------
 
 **Implemented:**
 
-- `Future<A>` and `Chan<A>` concurrency abstractions
+- `Future<A>`, `MVar<A>` and `Chan<A>` concurrency abstractions
 - `JSON` types and encode / decode protocols
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` protocol
-- `flatMap` and `maybe` for `Optional<A>`
+- `Either<L, R>`
+- `maybe` for `Optional<A>`, 
 - `Dictionary` and `Array` extensions
 
 **Typechecks but currently impossible:**
 
-- `Either<A, B>` with `Equatable`
 - `List<A>`
 
 **Note:**

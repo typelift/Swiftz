@@ -48,7 +48,7 @@ class MVar<A> {
     while (value) {
       pthread_cond_wait(condRead, mutex)
     }
-    self.value = { return x }
+    self.value = { x }
     pthread_mutex_unlock(mutex)
     pthread_cond_signal(condPut)
   }

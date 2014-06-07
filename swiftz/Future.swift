@@ -39,7 +39,7 @@ class Future<A> {
   
   func sig(x: A) {
     pthread_mutex_lock(mutex)
-    self.value = { return x }
+    self.value = { x }
     pthread_mutex_unlock(mutex)
     pthread_cond_signal(cond)
   }
