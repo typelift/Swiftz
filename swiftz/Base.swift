@@ -6,6 +6,12 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+// the building blocks of FP
+
+func flip<A, B, C>(f: ((A, B) -> C), b: B, a: A) -> C {
+  return f(a, b)
+}
+
 func identity<A>(a: A) -> A {
   return a;
 }

@@ -26,3 +26,11 @@
 //  xs.map({ $0.map { w.append($0) } })
 //  return w
 //}
+
+func ind<A>(xs: Array<A>, i: Int) -> A? {
+  if i < xs.count {
+    return xs[i]
+  } else {
+    return nil
+  }
+}
