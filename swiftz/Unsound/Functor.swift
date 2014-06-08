@@ -69,3 +69,15 @@ extension Maybe: Functor {
 		}
 	}
 }
+
+func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+	if !lhs && !rhs {
+		return true
+	}
+
+	if lhs && rhs {
+		return lhs.fromJust() == rhs.fromJust()
+	}
+
+	return false
+}
