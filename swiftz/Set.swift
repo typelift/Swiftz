@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+operator infix ∩ {}
+operator infix ∪ {}
+
 struct Set<A: Hashable> : Sequence {
     var bucket:Dictionary<A, Bool> = Dictionary()
     
@@ -15,10 +18,12 @@ struct Set<A: Hashable> : Sequence {
             arr += key
         }
         return arr
+        
     }
     
     var count:Int {
-    return bucket.count
+        return bucket.count
+        
     }
     
     init(items:A...) {
@@ -90,6 +95,16 @@ struct Set<A: Hashable> : Sequence {
         return Set(array: current)
     }
     
+    func add(item:A) -> Set<A> {
+        if contains(item) {
+            return self
+        } else {
+            var arr = array
+            arr += item
+            return Set(array:arr)
+        }
+    }
+    
     func filter(f:(A -> Bool)) -> Set<A> {
         var array = Array<A>()
         for x in self {
@@ -128,7 +143,7 @@ struct SetGenerator<A> : Generator {
     
 }
 
-extension Set : Printable, DebugPrintable {
+extension Set : Printable,DebugPrintable {
     var description:String {
     return "\(self.array)"
     }
@@ -144,4 +159,26 @@ func ==<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
 
 func !=<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
     return lhs.bucket != rhs.bucket
+}
+
+func +=<A>(set:Set<A>, item:A) -> Set<A> {
+    if set.contains(item) {
+        return set
+    } else {
+        var arr = set.array
+        arr += item
+        return Set(array:arr)
+    }
+}
+
+func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+    return lhs.minus(rhs)
+}
+
+func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+    return lhs.intersect(rhs)
+}
+
+func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+    return lhs.union(rhs)
 }
