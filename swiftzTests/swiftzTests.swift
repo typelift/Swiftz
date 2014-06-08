@@ -312,9 +312,9 @@ class swiftzTests: XCTestCase {
   func testMaybeFunctor() {
 	// This doesn't work because it infers x.fmap to be Maybe<B> instead of 
 	// Maybe<Int> :(
-//    let x: Maybe<Int> = Maybe.just(2)
-//    let y: Maybe<Int> = x.fmap({ $0 * 2 })
-//    XCTAssert(y == Maybe.just(4));
+    let x: Maybe<Int> = Maybe.just(2)
+    let y: Maybe<Int> = MaybeF(m: x).fmap({ $0 * 2 })
+    XCTAssert(y == Maybe.just(4));
   }
   
   func testPerformanceExample() {
