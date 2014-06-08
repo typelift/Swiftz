@@ -50,7 +50,7 @@ class User: JSONDecode {
   class func luserName() -> Lens<User, String>.LensConst {
     return { (fn: (String -> Const<String, User>)) -> User -> Const<String, User> in
       return { (a: User) -> Const<String, User> in
-        return Const<String, User>(a.name)
+        return fn(a.name)
       }
     }
   }
@@ -58,7 +58,7 @@ class User: JSONDecode {
   class func luserName() -> Lens<User, String>.LensId {
     return { (fn: (String -> Id<String>)) -> User -> Id<User> in
       return { (a: User) -> Id<User> in
-        return Id<User>(a)
+        return Id<User>(User(fn(a.name).runId(), a.age, a.tweets, a.attrs))
       }
     }
   }
@@ -79,7 +79,7 @@ class Party {
   class func lpartyHost() -> Lens<Party, User>.LensConst {
     return { (fn: (User -> Const<User, Party>)) -> Party -> Const<User, Party> in
       return { (a: Party) -> Const<User, Party> in
-        return Const<User, Party>(a.host)
+        return fn(a.host)
       }
     }
   }
@@ -87,7 +87,8 @@ class Party {
   class func lpartyHost() -> Lens<Party, User>.LensId {
     return { (fn: (User -> Id<User>)) -> Party -> Id<Party> in
       return { (a: Party) -> Id<Party> in
-        return Id<Party>(a)
+        let x = fn(a.host).runId()
+        return Id<Party>(Party(h: fn(a.host).runId()))
       }
     }
   }
@@ -214,8 +215,11 @@ class swiftzTests: XCTestCase {
     let party = Party(h: User("max", 1, [], Dictionary()))
     // 10 points to who ever works out how to get it to work with function comp.
     // Party -> Host -> Name
-    let hostname: String = Lens.get(Party.lpartyHost(), party) |> { Lens.get(User.luserName(), $0) }
-    XCTAssert(hostname == "max")
+    let hostname: Party -> String = { Lens.get(Party.lpartyHost(), $0) |> { Lens.get(User.luserName(), $0) } }
+    let updatedParty: Party = Lens.modify(Party.lpartyHost(), { (Lens.set(User.luserName(), "Max", $0)) }, party)
+    XCTAssert(hostname(party) == "max")
+    XCTAssert(hostname(updatedParty) == "Max")
+    
   }
   
   func testThrush() {
