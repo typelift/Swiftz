@@ -38,8 +38,8 @@ class Maybe<A: Any>: F<A> {
 
 	func isJust() -> Bool {
 		switch value {
-		case .Some(_): return true
-		case .None: return false
+			case .Some(_): return true
+			case .None: return false
 		}
 	}
 
