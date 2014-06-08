@@ -358,6 +358,14 @@ class swiftzTests: XCTestCase {
     
     //    swiftCheck(prop_linesUnlines) // can't explain this one!
   }
+
+  func testMaybeFunctor() {
+	// This doesn't work because it infers x.fmap to be Maybe<B> instead of 
+	// Maybe<Int> :(
+    let x: Maybe<Int> = Maybe.just(2)
+    let y: Maybe<Int> = MaybeF(m: x).fmap({ $0 * 2 })
+    XCTAssert(y == Maybe.just(4));
+  }
   
   func testPerformanceExample() {
     // This is an example of a performance test case.
