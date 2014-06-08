@@ -58,11 +58,11 @@ extension Maybe: LogicValue {
 	}
 }
 
-extension Maybe: Functor {
-	typealias B = Any
+struct MaybeF<A, B>: Functor {
+	let m: Maybe<A>
 	func fmap(fn: (A -> B)) -> Maybe<B> {
-		if self.isJust() {
-			let b: B = fn(self.fromJust())
+		if m.isJust() {
+			let b: B = fn(m.fromJust())
 			return Maybe<B>.just(b);
 		} else {
 			return Maybe<B>.none()
