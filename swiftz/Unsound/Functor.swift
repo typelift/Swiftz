@@ -52,6 +52,12 @@ class Maybe<A: Any>: F<A> {
 	}
 }
 
+extension Maybe: LogicValue {
+	func getLogicValue() -> Bool {
+		return isJust()
+	}
+}
+
 extension Maybe: Functor {
 	typealias B = Any
 	func fmap(fn: (A -> B)) -> Maybe<B> {
