@@ -45,11 +45,52 @@ class User: JSONDecode {
         return .None
     }
   }
+  
+  // lens
+  class func luserName() -> Lens<User, String>.LensConst {
+    return { (fn: (String -> Const<String, User>)) -> User -> Const<String, User> in
+      return { (a: User) -> Const<String, User> in
+        return Const<String, User>(a.name)
+      }
+    }
+  }
+  
+  class func luserName() -> Lens<User, String>.LensId {
+    return { (fn: (String -> Id<String>)) -> User -> Id<User> in
+      return { (a: User) -> Id<User> in
+        return Id<User>(a)
+      }
+    }
+  }
 }
-
 
 func ==(lhs: User, rhs: User) -> Bool {
   return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
+}
+
+// lens ex
+class Party {
+  let host: User
+  init(h: User) {
+    host = h
+  }
+  
+  // lens
+  class func lpartyHost() -> Lens<Party, User>.LensConst {
+    return { (fn: (User -> Const<User, Party>)) -> Party -> Const<User, Party> in
+      return { (a: Party) -> Const<User, Party> in
+        return Const<User, Party>(a.host)
+      }
+    }
+  }
+  
+  class func lpartyHost() -> Lens<Party, User>.LensId {
+    return { (fn: (User -> Id<User>)) -> Party -> Id<Party> in
+      return { (a: Party) -> Id<Party> in
+        return Id<Party>(a)
+      }
+    }
+  }
 }
 
 // shape example for SYB
@@ -80,6 +121,7 @@ enum Shape : Dataable {
       case let .Plane(w): return Data(con: 1, vals: [("wingspan", w)])
     }
   }
+  
 }
 
 func ==(lhs: Shape, rhs: Shape) -> Bool {
@@ -166,6 +208,14 @@ class swiftzTests: XCTestCase {
     }
     let rs = xs >>= fs
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5])
+  }
+  
+  func testControlLens() {
+    let party = Party(h: User("max", 1, [], Dictionary()))
+    // 10 points to who ever works out how to get it to work with function comp.
+    // Party -> Host -> Name
+    let hostname: String = Lens.get(Party.lpartyHost(), party) |> { Lens.get(User.luserName(), $0) }
+    XCTAssert(hostname == "max")
   }
   
   func testThrush() {
@@ -333,4 +383,5 @@ class swiftzTests: XCTestCase {
       Void()
     }
   }
+  
 }
