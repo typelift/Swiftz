@@ -286,6 +286,29 @@ class swiftzTests: XCTestCase {
     XCTAssert(gJSON(b.toRep()) == .JSObject(["wingspan" : .JSNumber(2)]))
   }
   
+  func testTestingSwiftCheck() {
+    func prop_reverseLen(xs: Array<Int>) {
+      XCTAssert(xs.reverse().count == xs.count)
+    }
+    
+    func prop_reverseReverse(xs: Array<Int>) {
+      XCTAssert(xs.reverse().reverse() == xs)
+    }
+    
+    swiftCheck(prop_reverseLen)
+    swiftCheck(prop_reverseReverse)
+    
+    
+    // test guards work (they don't)
+    func prop_linesUnlines(xs: String) {
+      // guard(xs.last == "\n") { // just to test guarding, it's a bad guard
+      XCTAssert((xs.lines() |> String.unlines) == xs)
+      // }
+    }
+    
+    //    swiftCheck(prop_linesUnlines) // can't explain this one!
+  }
+  
   func testPerformanceExample() {
     // This is an example of a performance test case.
     
