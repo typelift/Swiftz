@@ -314,9 +314,9 @@ class swiftzTests: XCTestCase {
     let y = MaybeF(m: x).fmap({ $0 * 2 })
     XCTAssert(y == Maybe.just(4))
 
-	let a = Maybe<Int>.none()
-	let b = MaybeF(m: a).fmap({ $0 * 2 })
-	XCTAssert(b == a);
+    let a = Maybe<Int>.none()
+    let b = MaybeF(m: a).fmap({ $0 * 2 })
+    XCTAssert(b == a);
   }
   
   func testPerformanceExample() {
