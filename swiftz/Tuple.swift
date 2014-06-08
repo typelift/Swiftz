@@ -12,12 +12,12 @@ import Foundation
 // these functions are more useful when "doing fp"
 func fst<A, B>(ab: (A, B)) -> A {
   switch ab {
-    case let (a, b): return a
+    case let (a, _): return a
   }
 }
 
-func snd<A, B>(ab: (A, B)) -> A {
+func snd<A, B>(ab: (A, B)) -> B {
   switch ab {
-    case let (a, b): return a
+    case let (_, b): return b
   }
 }
