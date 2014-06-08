@@ -10,10 +10,13 @@
 		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		590522CE193F61210036614F /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CD193F61210036614F /* Chan.swift */; };
 		5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908C1B7194076810024A36C /* DictionaryExt.swift */; };
+		590FCB391943E2EB008E5D94 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FCB381943E2EB008E5D94 /* Parser.swift */; };
+		590FCB3B1943EA91008E5D94 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FCB3A1943EA91008E5D94 /* StringExt.swift */; };
 		5910EA9A193DCEE9008F6D71 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910EA99193DCEE9008F6D71 /* Base.swift */; };
 		5914510F1942B40300809E7E /* MVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5914510E1942B40300809E7E /* MVar.swift */; };
 		591451111942B41300809E7E /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591451101942B41300809E7E /* ExecutionContext.swift */; };
 		591A21941941D453005FE900 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591A21931941D453005FE900 /* Functor.swift */; };
+		592A122919435308003BF787 /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };
 		5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931F2E919407DC600B0526A /* NSArrayExt.swift */; };
 		593C913D193DDC060067F2BE /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913C193DDC060067F2BE /* Monoid.swift */; };
 		593C913F193DDC610067F2BE /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913E193DDC610067F2BE /* Semigroup.swift */; };
@@ -48,11 +51,14 @@
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
 		5908C1B7194076810024A36C /* DictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExt.swift; sourceTree = "<group>"; };
 		590BE97A193DB8F3003DAC87 /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
+		590FCB381943E2EB008E5D94 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		590FCB3A1943EA91008E5D94 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		5910EA99193DCEE9008F6D71 /* Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		5910FD5E193D41AD005A69FC /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		5914510E1942B40300809E7E /* MVar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVar.swift; sourceTree = "<group>"; };
 		591451101942B41300809E7E /* ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContext.swift; sourceTree = "<group>"; };
 		591A21931941D453005FE900 /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Functor.swift; path = Unsound/Functor.swift; sourceTree = "<group>"; };
+		592A122819435308003BF787 /* Lens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lens.swift; sourceTree = "<group>"; };
 		5931F2E919407DC600B0526A /* NSArrayExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArrayExt.swift; sourceTree = "<group>"; };
 		593C913C193DDC060067F2BE /* Monoid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monoid.swift; sourceTree = "<group>"; };
 		593C913E193DDC610067F2BE /* Semigroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Semigroup.swift; sourceTree = "<group>"; };
@@ -112,8 +118,17 @@
 				5910EA99193DCEE9008F6D71 /* Base.swift */,
 				59B39E3D1943094F00F4B222 /* Curry.swift */,
 				59B2DCB919434706002ACB3E /* Tuple.swift */,
+				592A122819435308003BF787 /* Lens.swift */,
 			);
 			name = Control;
+			sourceTree = "<group>";
+		};
+		590FCB371943E2DB008E5D94 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				590FCB381943E2EB008E5D94 /* Parser.swift */,
+			);
+			name = Text;
 			sourceTree = "<group>";
 		};
 		591A21921941D43C005FE900 /* Unsound */ = {
@@ -156,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				593C9140193DE6AB0067F2BE /* ArrayExt.swift */,
+				590FCB3A1943EA91008E5D94 /* StringExt.swift */,
 				590522CB193F5DBA0036614F /* OptionalExt.swift */,
 				5908C1B7194076810024A36C /* DictionaryExt.swift */,
 				5931F2E919407DC600B0526A /* NSArrayExt.swift */,
@@ -191,8 +207,9 @@
 				590BE976193DA939003DAC87 /* Data */,
 				59BF7D9719433F8200EAFFAA /* Ext */,
 				59BF7D911943346900EAFFAA /* Generics */,
-				591A21921941D43C005FE900 /* Unsound */,
 				59BF7D9419433EBE00EAFFAA /* Testing */,
+				590FCB371943E2DB008E5D94 /* Text */,
+				591A21921941D43C005FE900 /* Unsound */,
 				59F35AE3193D3A0A006F1341 /* Supporting Files */,
 			);
 			path = swiftz;
@@ -340,6 +357,8 @@
 				590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */,
 				591A21941941D453005FE900 /* Functor.swift in Sources */,
 				590522CE193F61210036614F /* Chan.swift in Sources */,
+				592A122919435308003BF787 /* Lens.swift in Sources */,
+				590FCB3B1943EA91008E5D94 /* StringExt.swift in Sources */,
 				59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */,
 				59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */,
 				59B39E3E1943094F00F4B222 /* Curry.swift in Sources */,
@@ -351,6 +370,7 @@
 				59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */,
 				59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */,
 				59B2DCBA19434706002ACB3E /* Tuple.swift in Sources */,
+				590FCB391943E2EB008E5D94 /* Parser.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
