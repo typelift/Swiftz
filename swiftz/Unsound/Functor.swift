@@ -59,7 +59,7 @@ extension Maybe: LogicValue {
 }
 
 struct MaybeF<A, B>: Functor {
-  let m: Maybe<A>
+	let m: Maybe<A>
 	func fmap(fn: (A -> B)) -> Maybe<B> {
 		if m.isJust() {
 			let b: B = fn(m.fromJust())
