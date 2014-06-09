@@ -13,6 +13,14 @@ import Foundation
 enum Result<V> {
   case Error(NSError)
   case Value(() -> V)
+  
+  init(_ e: NSError?, _ v: V) {
+    if let ex = e {
+      self = Result.Error(ex)
+    } else {
+      self = Result.Value({ v })
+    }
+  }
 }
 
 // Equatable

@@ -65,6 +65,10 @@ class DataTests: XCTestCase {
     let snd = first >>= divTwoEvenly
     XCTAssert(prettyPrinted == .Value({ "8" }))
     XCTAssert(snd == .Error(divisionError))
+    
+    // special constructor
+    XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
+    XCTAssert(Result(nil, 1) == .Value({ 1 }), "special Result cons value")
   }
   
   func testFunctor() {
