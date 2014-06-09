@@ -318,6 +318,12 @@ class swiftzTests: XCTestCase {
     let b = MaybeF(m: a).fmap({ $0 * 2 })
     XCTAssert(b == a);
   }
+    
+    func testListFunctor() {
+        let x : List<Int> = [1, 2, 3]
+        let y = ListF(l: x).fmap({ Double($0 * 2) })
+        XCTAssert(y == [2.0, 4.0, 6.0])
+    }
   
   func testPerformanceExample() {
     // This is an example of a performance test case.
