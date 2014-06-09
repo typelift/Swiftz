@@ -44,8 +44,8 @@ func decodeWeb(str: String) -> Result<User> {
 let getUser: Result<User> = getWeb() >>= decodeWeb
 
 switch (getUser) {
-  case .Error(e): println("NSError: \(e)")
-  case .Value(user): println(user.name)
+  case let .Error(e): println("NSError: \(e)")
+  case let .Value(user): println(user.name)
 }
 
 // If we use getUser and getWeb fails, the NSError will be from doStuff.
@@ -124,13 +124,9 @@ Implementation
 - `JSON` types and encode / decode protocols
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` protocol
-- `Either<L, R>`
+- `Either<L, R>` and `Result<V>`
 - `maybe` for `Optional<A>`, 
 - `Dictionary` and `Array` extensions
-
-**Typechecks but currently impossible:**
-
-- `List<A>`
 
 **Note:**
 
