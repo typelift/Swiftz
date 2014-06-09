@@ -20,6 +20,39 @@ sconcat(Min(), 2, xs) // 0
 mconcat(Sum<Int8, NInt8>(i: { return nint8 }), xs) // 10
 ```
 
+**Either and Result:**
+
+```swift
+// Result represents something that could work or be an NSError.
+// Say we have 2 functions, the first fetches from a web services,
+// the second decodes the string into a User.
+// Both *could* fail with an NSError, so we use a Result<A>.
+func getWeb() -> Result<String> {
+  var e: NSError?
+  let str = doStuff("foo", e)
+  return Result(e, str)
+}
+
+func decodeWeb(str: String) -> Result<User> {
+  var e: NSError?
+  let user = decode(str, e)
+  return Result(e, user)
+}
+
+// We can compose these two functions with the `>>=` function.
+
+let getUser: Result<User> = getWeb() >>= decodeWeb
+
+switch (getUser) {
+  case let .Error(e): println("NSError: \(e)")
+  case let .Value(user): println(user.name)
+}
+
+// If we use getUser and getWeb fails, the NSError will be from doStuff.
+// If decodeWeb fails, then it will be an NSError from decode.
+// If both steps work, then it will be a User!
+```
+
 **JSON:**
 
 ```swift
@@ -91,13 +124,9 @@ Implementation
 - `JSON` types and encode / decode protocols
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` protocol
-- `Either<L, R>`
+- `Either<L, R>` and `Result<V>`
 - `maybe` for `Optional<A>`, 
 - `Dictionary` and `Array` extensions
-
-**Typechecks but currently impossible:**
-
-- `List<A>`
 
 **Note:**
 

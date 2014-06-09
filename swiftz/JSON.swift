@@ -80,36 +80,20 @@ enum JSValue: Printable {
 
 }
 
-// this is the most un fun I have ever had
+// you'll have more fun if you match tuples
 // Equatable
 func ==(lhs: JSValue, rhs: JSValue) -> Bool {
-  switch lhs {
-    case .JSNull(): switch rhs {
-      case .JSNull(): return true
-      default: return false
-    }
-    case let .JSBool(l): switch rhs {
-      case let .JSBool(r): return l == r
-      default: return false
-    }
-    case let .JSString(l): switch rhs {
-      case let .JSString(r): return l == r
-      default: return false
-    }
-    case let .JSNumber(l): switch rhs {
-      case let .JSNumber(r): return l == r
-      default: return false
-    }
-    case let .JSObject(l): switch rhs {
-      case let .JSObject(r): return equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in
-        return v1.0 == v2.0 && v1.1 == v2.1
-      })
-      default: return false
-    }
-    case let .JSArray(l): switch rhs {
-    case let .JSArray(r): return equal(l, r, { $0 == $1 })
-      default: return false
-    }
+  switch (lhs, rhs) {
+    case (.JSNull(), .JSNull()): return true
+    case let (.JSBool(l), .JSBool(r)) where l == r: return true
+    case let (.JSString(l), .JSString(r)) where l == r: return true
+    case let (.JSNumber(l), .JSNumber(r)) where l == r: return true
+    case let (.JSObject(l), .JSObject(r))
+      where equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
+        return true
+    case let (.JSArray(l), .JSArray(r)) where equal(l, r, { $0 == $1 }):
+      return true
+    default: return false
   }
 }
 
@@ -246,10 +230,14 @@ class JArray<A, B: JSON where B.J == A>: JSON {
   
   class func fromJSON(x: JSValue) -> J? {
     switch x {
-      // TODO: sequence / mapM
-      case let .JSArray(xs): return xs.map { (x: JSValue) -> A in
-        return B.fromJSON(x)!
-      }
+      case let .JSArray(xs):
+        let r = xs.map({ B.fromJSON($0) })
+        let rp = mapFlatten(r)
+        if r.count == rp.count {
+          return rp
+        } else {
+          return nil
+        }
       default: return Optional.None
     }
   }

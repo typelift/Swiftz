@@ -16,6 +16,14 @@ func identity<A>(a: A) -> A {
   return a;
 }
 
+func comp<A, B, C>(f: B -> C) -> (A -> B) -> A -> C {
+  return { (g: (A -> B)) -> A -> C in
+    return { (a: A) -> C in
+      return f(g(a))
+    }
+  }
+}
+
 operator infix |> {
   associativity left
 }
@@ -67,8 +75,8 @@ func pure<A>(a: A) -> A? {
 }
 
 func <^><A, B>(f: A -> B, a: A?) -> B? {
-  if a {
-    return (f(a!))
+  if let x = a {
+    return (f(x))
   } else {
     return .None
   }
@@ -85,8 +93,8 @@ func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
 // the "if the arg is Some, apply the function that returns an optional
 // value and if the arg is None, just return None" function.
 func >>=<A, B>(a: A?, f: A -> B?) -> B? {
-  if a {
-    return f(a!)
+  if let x = a {
+    return f(x)
   } else {
     return .None
   }
@@ -100,15 +108,20 @@ func pure<A>(a: A) -> Array<A> {
   return v
 }
 
+// Note well! This is not map! Map mutates the array, this copies it.
 func <^><A, B>(f: A -> B, a: Array<A>) -> Array<B> {
-  return a.map(f)
+  var xs = Array<B>()
+  for x in a {
+    xs.append(f(x))
+  }
+  return xs
 }
 
 func <*><A, B>(f: Array<A -> B>, a: Array<A>) -> Array<B> {
   var re = Array<B>()
-  f.map { (g: A -> B) in
-    a.map {
-      re.append(g($0))
+  for g in f {
+    for h in a {
+      re.append(g(h))
     }
   }
   return re
@@ -121,35 +134,3 @@ func >>=<A, B>(a: Array<A>, f: A -> Array<B>) -> Array<B> {
   }
   return re
 }
-
-// either
-
-func pure<L, R>(a: R) -> Either<L, R> {
-  return .Right({ a })
-}
-
-func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
-  switch a {
-    case let .Left(l): return .Left(l)
-    case let .Right(r): return Either<L, RB>.Right({ f(r()) })
-  }
-}
-
-func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
-  switch a {
-    case let .Left(l): return .Left(l)
-    case let .Right(r): switch f {
-      case let .Left(m): return .Left(m)
-      case let .Right(g): return Either<L, RB>.Right({ g()(r()) })
-    }
-  }
-}
-
-func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
-  switch a {
-    case let .Left(l): return .Left(l)
-    case let .Right(r): return f(r())
-  }
-}
-
-// TODO: reader
