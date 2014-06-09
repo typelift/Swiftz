@@ -8,8 +8,6 @@
 
 // Array extensions
 
-// segfaults. rdar://17148872
-
 func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
   var w = Array<A>()
   xs.map({ (c: A?) -> A? in
@@ -18,18 +16,18 @@ func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
     } else {
       // nothing
     }
-    return c // TODO: oh no... mutability
+    return c // we are making a copy of the array, to not mutate this one.
   })
   return w
 }
 
-//func join<A>(xs: Array<Array<A>>) -> Array<A> {
-//  var w = Array<A>(self.count)
-//  xs.map({ $0.map { w.append($0) } })
-//  return w
-//}
+func join<A>(xs: Array<Array<A>>) -> Array<A> {
+  var w = Array<A>()
+  xs.map({ $0.map { (e: A) -> A in w.append(e); return e } })
+  return w
+}
 
-func ind<A>(xs: Array<A>, i: Int) -> A? {
+func indexArray<A>(xs: Array<A>, i: Int) -> A? {
   if i < xs.count {
     return xs[i]
   } else {

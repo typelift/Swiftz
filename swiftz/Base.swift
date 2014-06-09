@@ -108,15 +108,20 @@ func pure<A>(a: A) -> Array<A> {
   return v
 }
 
+// Note well! This is not map! Map mutates the array, this copies it.
 func <^><A, B>(f: A -> B, a: Array<A>) -> Array<B> {
-  return a.map(f)
+  var xs = Array<B>()
+  for x in a {
+    xs.append(f(x))
+  }
+  return xs
 }
 
 func <*><A, B>(f: Array<A -> B>, a: Array<A>) -> Array<B> {
   var re = Array<B>()
-  f.map { (g: A -> B) in
-    a.map {
-      re.append(g($0))
+  for g in f {
+    for h in a {
+      re.append(g(h))
     }
   }
   return re

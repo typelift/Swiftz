@@ -1,5 +1,5 @@
 //
-//  Tuple.swift
+//  TupleExt.swift
 //  swiftz
 //
 //  Created by Maxwell Swadling on 7/06/2014.
@@ -9,7 +9,7 @@
 import Foundation
 
 // the standard library has _.1, _.2 functions
-// these functions are more useful when "doing fp"
+// these functions are more useful when "doing fp" (point-free-ish forms)
 func fst<A, B>(ab: (A, B)) -> A {
   switch ab {
     case let (a, _): return a

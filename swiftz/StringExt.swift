@@ -21,7 +21,9 @@ extension String {
         line += x
       }
     }
-    xs.append(line)
+    if line != "" {
+      xs.append(line)
+    }
     return xs
   }
   
