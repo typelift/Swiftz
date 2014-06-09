@@ -67,8 +67,8 @@ func pure<A>(a: A) -> A? {
 }
 
 func <^><A, B>(f: A -> B, a: A?) -> B? {
-  if a {
-    return (f(a!))
+  if let x = a {
+    return (f(x))
   } else {
     return .None
   }
@@ -149,6 +149,34 @@ func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): return f(r())
+  }
+}
+
+// result
+
+func pure<V>(a: V) -> Result<V> {
+  return .Value({ a })
+}
+
+func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
+  switch a {
+    case let .Error(l): return .Error(l)
+    case let .Value(r): return Result.Value({ f(r()) })
+  }
+}
+
+func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
+  switch (a, f) {
+    case let (.Error(l), _): return .Error(l)
+    case let (.Value(r), .Error(m)): return .Error(m)
+    case let (.Value(r), .Value(g)): return Result<VB>.Value({ g()(r()) })
+  }
+}
+
+func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
+  switch a {
+    case let .Error(l): return .Error(l)
+    case let .Value(r): return f(r())
   }
 }
 
