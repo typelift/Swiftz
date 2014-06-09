@@ -23,6 +23,24 @@ enum List<A> {
     init(_ head : A, _ tail : List<A>) {
         self = .Cons(head, Box(tail))
     }
+    
+    func safeHead() -> A? {
+        switch self {
+        case .Nil:
+            return nil
+        case let .Cons(head, _):
+            return head
+        }
+    }
+    
+    func safeTail() -> List<A>? {
+        switch self {
+        case .Nil:
+            return nil
+        case let .Cons(_, tail):
+            return tail.value()
+        }
+    }
 }
 
 func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
