@@ -89,8 +89,8 @@ func ==(lhs: JSValue, rhs: JSValue) -> Bool {
     case let (.JSString(l), .JSString(r)) where l == r: return true
     case let (.JSNumber(l), .JSNumber(r)) where l == r: return true
     case let (.JSObject(l), .JSObject(r))
-    where equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in v1.0 == v2.0 && v1.1 == v2.1 }:
-      return true
+      where equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
+        return true
     case let (.JSArray(l), .JSArray(r)) where equal(l, r, { $0 == $1 }):
       return true
     default: return false

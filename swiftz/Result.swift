@@ -27,3 +27,31 @@ func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   return !(lhs == rhs)
 }
+
+
+// 'functions'
+func pure<V>(a: V) -> Result<V> {
+  return .Value({ a })
+}
+
+func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
+  switch a {
+  case let .Error(l): return .Error(l)
+  case let .Value(r): return Result.Value({ f(r()) })
+  }
+}
+
+func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
+  switch (a, f) {
+  case let (.Error(l), _): return .Error(l)
+  case let (.Value(r), .Error(m)): return .Error(m)
+  case let (.Value(r), .Value(g)): return Result<VB>.Value({ g()(r()) })
+  }
+}
+
+func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
+  switch a {
+  case let .Error(l): return .Error(l)
+  case let .Value(r): return f(r())
+  }
+}
