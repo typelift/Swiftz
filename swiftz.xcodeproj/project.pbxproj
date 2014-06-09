@@ -36,7 +36,6 @@
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AF2193D3A0A006F1341 /* swiftzTests.swift */; };
 		E8615FD41946419A00E98C0B /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8615FD31946419A00E98C0B /* Box.swift */; };
-		E8615FD51946419A00E98C0B /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8615FD31946419A00E98C0B /* Box.swift */; };
 		E89D280219456A950090C251 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910FD5E193D41AD005A69FC /* List.swift */; };
 /* End PBXBuildFile section */
 
@@ -391,7 +390,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */,
-				E8615FD51946419A00E98C0B /* Box.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

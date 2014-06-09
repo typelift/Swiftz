@@ -67,14 +67,28 @@ extension List : ArrayLiteralConvertible {
     }
 }
 
+class ListGenerator<A> : Generator {
+    var l : Box<List<A>?>
+    func next() -> A? {
+        var r = l.value()?.head();
+        l = Box(self.l.value()?.tail())
+        return r
+    }
+    init(l : List<A>) {
+        self.l = Box(l)
+    }
+}
+
+extension List : Sequence {
+    func generate() -> ListGenerator<A> {
+        return ListGenerator(l: self)
+    }
+}
+
 extension List : Printable {
     var description : String {
-    switch self {
-    case .Nil:
-        return "()"
-    case let .Cons(head, tail):
-        return "(\(head) . \(tail.value()))"
-        }
+        var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
+        return "[\(x)]"
     }
 }
 
