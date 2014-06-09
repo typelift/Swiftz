@@ -230,10 +230,14 @@ class JArray<A, B: JSON where B.J == A>: JSON {
   
   class func fromJSON(x: JSValue) -> J? {
     switch x {
-      // TODO: sequence / mapM
-      case let .JSArray(xs): return xs.map { (x: JSValue) -> A in
-        return B.fromJSON(x)!
-      }
+      case let .JSArray(xs):
+        let r = xs.map({ B.fromJSON($0) })
+        let rp = mapFlatten(r)
+        if r.count == rp.count {
+          return rp
+        } else {
+          return nil
+        }
       default: return Optional.None
     }
   }
