@@ -35,6 +35,7 @@
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AF2193D3A0A006F1341 /* swiftzTests.swift */; };
+		E89D280219456A950090C251 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910FD5E193D41AD005A69FC /* List.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -351,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E89D280219456A950090C251 /* List.swift in Sources */,
 				59B39E401943268200F4B222 /* Either.swift in Sources */,
 				5914510F1942B40300809E7E /* MVar.swift in Sources */,
 				593C913D193DDC060067F2BE /* Monoid.swift in Sources */,
