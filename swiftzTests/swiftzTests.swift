@@ -45,11 +45,53 @@ class User: JSONDecode {
         return .None
     }
   }
+  
+  // lens
+  class func luserName() -> Lens<User, String>.LensConst {
+    return { (fn: (String -> Const<String, User>)) -> User -> Const<String, User> in
+      return { (a: User) -> Const<String, User> in
+        return fn(a.name)
+      }
+    }
+  }
+  
+  class func luserName() -> Lens<User, String>.LensId {
+    return { (fn: (String -> Id<String>)) -> User -> Id<User> in
+      return { (a: User) -> Id<User> in
+        return Id<User>(User(fn(a.name).runId(), a.age, a.tweets, a.attrs))
+      }
+    }
+  }
 }
-
 
 func ==(lhs: User, rhs: User) -> Bool {
   return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
+}
+
+// lens ex
+class Party {
+  let host: User
+  init(h: User) {
+    host = h
+  }
+  
+  // lens
+  class func lpartyHost() -> Lens<Party, User>.LensConst {
+    return { (fn: (User -> Const<User, Party>)) -> Party -> Const<User, Party> in
+      return { (a: Party) -> Const<User, Party> in
+        return fn(a.host)
+      }
+    }
+  }
+  
+  class func lpartyHost() -> Lens<Party, User>.LensId {
+    return { (fn: (User -> Id<User>)) -> Party -> Id<Party> in
+      return { (a: Party) -> Id<Party> in
+        let x = fn(a.host).runId()
+        return Id<Party>(Party(h: fn(a.host).runId()))
+      }
+    }
+  }
 }
 
 // shape example for SYB
@@ -80,6 +122,7 @@ enum Shape : Dataable {
       case let .Plane(w): return Data(con: 1, vals: [("wingspan", w)])
     }
   }
+  
 }
 
 func ==(lhs: Shape, rhs: Shape) -> Bool {
@@ -166,6 +209,17 @@ class swiftzTests: XCTestCase {
     }
     let rs = xs >>= fs
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5])
+  }
+  
+  func testControlLens() {
+    let party = Party(h: User("max", 1, [], Dictionary()))
+    // 10 points to who ever works out how to get it to work with function comp.
+    // Party -> Host -> Name
+    let hostname: Party -> String = { Lens.get(Party.lpartyHost(), $0) |> { Lens.get(User.luserName(), $0) } }
+    let updatedParty: Party = Lens.modify(Party.lpartyHost(), { (Lens.set(User.luserName(), "Max", $0)) }, party)
+    XCTAssert(hostname(party) == "max")
+    XCTAssert(hostname(updatedParty) == "Max")
+    
   }
   
   func testThrush() {
@@ -343,4 +397,5 @@ class swiftzTests: XCTestCase {
       Void()
     }
   }
+  
 }
