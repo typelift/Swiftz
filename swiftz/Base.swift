@@ -85,8 +85,8 @@ func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
 // the "if the arg is Some, apply the function that returns an optional
 // value and if the arg is None, just return None" function.
 func >>=<A, B>(a: A?, f: A -> B?) -> B? {
-  if a {
-    return f(a!)
+  if let x = a {
+    return f(x)
   } else {
     return .None
   }
