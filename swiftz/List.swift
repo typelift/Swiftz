@@ -6,13 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-class Box<T> {
-    let value : () -> T
-    init(_ value : T) {
-        self.value = { value }
-    }
-}
-
 enum List<A> {
     case Nil
     case Cons(A, Box<List<A>>)
@@ -23,8 +16,8 @@ enum List<A> {
     init(_ head : A, _ tail : List<A>) {
         self = .Cons(head, Box(tail))
     }
-    
-    func safeHead() -> A? {
+
+    func head() -> A? {
         switch self {
         case .Nil:
             return nil
@@ -32,8 +25,8 @@ enum List<A> {
             return head
         }
     }
-    
-    func safeTail() -> List<A>? {
+
+    func tail() -> List<A>? {
         switch self {
         case .Nil:
             return nil

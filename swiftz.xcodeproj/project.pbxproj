@@ -35,6 +35,8 @@
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F35AF2193D3A0A006F1341 /* swiftzTests.swift */; };
+		E8615FD41946419A00E98C0B /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8615FD31946419A00E98C0B /* Box.swift */; };
+		E8615FD51946419A00E98C0B /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8615FD31946419A00E98C0B /* Box.swift */; };
 		E89D280219456A950090C251 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910FD5E193D41AD005A69FC /* List.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +83,7 @@
 		59F35AEB193D3A0A006F1341 /* swiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AF1193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59F35AF2193D3A0A006F1341 /* swiftzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftzTests.swift; sourceTree = "<group>"; };
+		E8615FD31946419A00E98C0B /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
+				E8615FD31946419A00E98C0B /* Box.swift */,
 				5910FD5E193D41AD005A69FC /* List.swift */,
 				590BE97A193DB8F3003DAC87 /* Either.swift */,
 				593C913C193DDC060067F2BE /* Monoid.swift */,
@@ -352,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8615FD41946419A00E98C0B /* Box.swift in Sources */,
 				E89D280219456A950090C251 /* List.swift in Sources */,
 				59B39E401943268200F4B222 /* Either.swift in Sources */,
 				5914510F1942B40300809E7E /* MVar.swift in Sources */,
@@ -386,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59F35AF3193D3A0A006F1341 /* swiftzTests.swift in Sources */,
+				E8615FD51946419A00E98C0B /* Box.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
