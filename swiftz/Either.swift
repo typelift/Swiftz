@@ -13,15 +13,10 @@ enum Either<L, R> {
 
 // Equatable
 func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
-  switch lhs {
-    case let .Left(l): switch rhs {
-      case let .Left(r): return l() == r()
-      case .Right(_): return false
-    }
-    case let .Right(l): switch rhs {
-      case let .Left(_): return false
-      case let .Right(r): return l() == r()
-    }
+  switch (lhs, rhs) {
+    case let (.Left(l), .Left(r)) where l() == r(): return true
+    case let (.Right(l), .Right(r)) where l() == r(): return true
+    default: return false
   }
 }
 
