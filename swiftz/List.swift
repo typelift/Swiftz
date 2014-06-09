@@ -6,8 +6,14 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// Desired implementation:
 enum List<A> {
-  case Nil()
-  case Cons(A, List<A>)
+    case Nil()
+    case Cons(A, OnHeap<List<A>>)
+    
+    init() {
+        self = .Nil()
+    }
+    init(_ head : A, _ tail : List<A>) {
+        self = .Cons(head, OnHeap(tail))
+    }
 }
