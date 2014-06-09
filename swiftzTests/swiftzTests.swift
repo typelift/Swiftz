@@ -308,6 +308,16 @@ class swiftzTests: XCTestCase {
     
     //    swiftCheck(prop_linesUnlines) // can't explain this one!
   }
+
+  func testMaybeFunctor() {
+    let x = Maybe.just(2)
+    let y = MaybeF(m: x).fmap({ $0 * 2 })
+    XCTAssert(y == Maybe.just(4))
+
+    let a = Maybe<Int>.none()
+    let b = MaybeF(m: a).fmap({ $0 * 2 })
+    XCTAssert(b == a);
+  }
   
   func testPerformanceExample() {
     // This is an example of a performance test case.
