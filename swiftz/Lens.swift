@@ -8,39 +8,6 @@
 
 import Foundation
 
-class Id<A>: F<A> {
-  let a: () -> A
-  init(_ aa: A) {
-    a = { aa }
-  }
-  func runId() -> A {
-    return a()
-  }
-}
-
-extension Id: Functor {
-  typealias B = Any
-  func fmap(fn: (A -> B)) -> Id<B> {
-    return (Id<B>(fn(self.runId())))
-  }
-}
-
-class Const<B, A>: F<A> {
-  let a: () -> B
-  init(_ aa: B) {
-    a = { aa }
-  }
-  func runConst() -> B {
-    return a()
-  }
-}
-
-extension Const: Functor {
-  func fmap(fn: (A -> B)) -> Const<B, B> {
-    return (Const<B, B>(self.runConst()))
-  }
-}
-
 class Lens<A, B> {
   typealias LensConst = (B -> Const<B, A>) -> A -> Const<B, A>
   typealias LensId = (B -> Id<B>) -> A -> Id<A>
