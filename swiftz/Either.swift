@@ -7,8 +7,8 @@
 //
 
 enum Either<L, R> {
-  case Left(() -> L)
-  case Right(() -> R)
+  case Left(@auto_closure () -> L)
+  case Right(@auto_closure () -> R)
 }
 
 // Equatable
@@ -27,13 +27,13 @@ func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Boo
 // 'functions'
 
 func pure<L, R>(a: R) -> Either<L, R> {
-  return .Right({ a })
+  return .Right(a)
 }
 
 func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
   switch a {
   case let .Left(l): return .Left(l)
-  case let .Right(r): return Either<L, RB>.Right({ f(r()) })
+  case let .Right(r): return Either<L, RB>.Right(f(r()))
   }
 }
 
@@ -42,7 +42,7 @@ func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
   case let .Left(l): return .Left(l)
   case let .Right(r): switch f {
   case let .Left(m): return .Left(m)
-  case let .Right(g): return Either<L, RB>.Right({ g()(r()) })
+  case let .Right(g): return Either<L, RB>.Right(g()(r()))
     }
   }
 }
