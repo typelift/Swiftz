@@ -25,7 +25,11 @@ struct Set<A: Hashable> : Sequence {
         return bucket.count
         
     }
-    
+
+    init() {
+        // an empty set
+    }
+
     init(items:A...) {
         for obj in items {
             bucket[obj] = true
@@ -38,10 +42,14 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    func any() -> A {
-        let ar = self.array
-        let index = Int(arc4random_uniform(UInt32(ar.count)))
-        return ar[index]
+  func any() -> A? {
+      let ar = self.array
+      if ar.isEmpty {
+          return nil
+      } else {
+          let index = Int(arc4random_uniform(UInt32(ar.count)))
+          return ar[index]
+      }
     }
     
     func contains(item:A) -> Bool {
@@ -145,11 +153,11 @@ struct SetGenerator<A> : Generator {
 
 extension Set : Printable,DebugPrintable {
     var description:String {
-    return "\(self.array)"
+        return "\(self.array)"
     }
     
     var debugDescription:String {
-    return "\(self.array)"
+        return "\(self.array)"
     }
 }
 
