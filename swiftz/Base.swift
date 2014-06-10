@@ -65,11 +65,11 @@ operator infix <^> {
 }
 
 operator infix <^^> {
-associativity left
+  associativity left
 }
 
 operator infix <!> {
-associativity left
+  associativity left
 }
 
 operator infix <*> {
