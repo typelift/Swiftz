@@ -17,10 +17,9 @@ class Future<A> {
   let execCtx: ExecutionContext // for map
   
   init(exec: ExecutionContext, a: () -> A) {
-    var mattr:CMutablePointer<pthread_mutexattr_t> = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutexattr_t))).value)
-    // TODO: is owner nil ok? is malloc leaking?
-    mutex = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutex_t))).value)
-    cond = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_cond_t))).value)
+    var mattr:CMutablePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
+    mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
+    cond = UnsafePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
     matt = CConstPointer(nil, mattr.value)
@@ -32,9 +31,9 @@ class Future<A> {
   }
   
   deinit {
-    free(CMutableVoidPointer(owner: nil, value: mutex.value))
-    free(CMutableVoidPointer(owner: nil, value: cond.value))
-    free(CMutableVoidPointer(owner: nil, value: matt.value))
+    UnsafePointer(mutex).destroy()
+    UnsafePointer(cond).destroy()
+    UnsafePointer(matt).destroy()
   }
   
   func sig(x: A) {
