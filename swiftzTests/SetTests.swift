@@ -50,9 +50,11 @@ class SetTests: XCTestCase {
     func testAny() {
         let set = Set(array:[1,2,3,4,4,4,5,5,5])
         for i in 0...3000 {
-            var any = set.any()
+            var any = set.any()!
             XCTAssert(any >= 1 && any <= 5, "should always be in range")
         }
+        let setEmpty = Set<Int>()
+        XCTAssert(setEmpty.any() == nil, "should return nil on empty")
     }
     
     func testUnion() {

@@ -49,6 +49,8 @@
 		DB76117D19439CB000A0AF82 /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117C19439CB000A0AF82 /* SetTests.swift */; };
 		DBA02FE219464F39007F3829 /* ImArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE119464F39007F3829 /* ImArray.swift */; };
 		DBA02FE419464F75007F3829 /* ImArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE319464F75007F3829 /* ImArrayTests.swift */; };
+		E8615FD41946419A00E98C0B /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8615FD31946419A00E98C0B /* Box.swift */; };
+		E89D280219456A950090C251 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5910FD5E193D41AD005A69FC /* List.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,7 @@
 		DB76117A19439C8300A0AF82 /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		DB76117C19439CB000A0AF82 /* SetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetTests.swift; sourceTree = "<group>"; };
 		DBA02FE119464F39007F3829 /* ImArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArray.swift; sourceTree = "<group>"; };
+		E8615FD31946419A00E98C0B /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DBA02FE319464F75007F3829 /* ImArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArrayTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
+				E8615FD31946419A00E98C0B /* Box.swift */,
 				5910FD5E193D41AD005A69FC /* List.swift */,
 				590BE97A193DB8F3003DAC87 /* Either.swift */,
 				593CB65B19455ABB00668CD1 /* Result.swift */,
@@ -272,6 +276,7 @@
 				59B9E7D51945979800F5B3E1 /* TestTests.swift */,
 				59B9E7D9194597FD00F5B3E1 /* TextTests.swift */,
 				DBA02FE319464F75007F3829 /* ImArrayTests.swift */,
+				DB76117C19439CB000A0AF82 /* SetTests.swift */,
 				59F35AF0193D3A0A006F1341 /* Supporting Files */,
 			);
 			path = swiftzTests;
@@ -393,6 +398,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8615FD41946419A00E98C0B /* Box.swift in Sources */,
+				E89D280219456A950090C251 /* List.swift in Sources */,
 				59B39E401943268200F4B222 /* Either.swift in Sources */,
 				5914510F1942B40300809E7E /* MVar.swift in Sources */,
 				593C913D193DDC060067F2BE /* Monoid.swift in Sources */,

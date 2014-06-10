@@ -23,8 +23,10 @@ class DataTests: XCTestCase {
     // TODO: test num
   }
   
-  func testList() {
-    // TODO: test list
+  func testListFunctor() {
+    let x : List<Int> = [1, 2, 3]
+    let y = ListF(l: x).fmap({ Double($0 * 2) })
+    XCTAssert(y == [2.0, 4.0, 6.0])
   }
   
   func testEither() {
