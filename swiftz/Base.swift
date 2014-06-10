@@ -64,6 +64,14 @@ operator infix <^> {
   associativity left
 }
 
+operator infix <^^> {
+associativity left
+}
+
+operator infix <!> {
+associativity left
+}
+
 operator infix <*> {
   associativity left
 }
