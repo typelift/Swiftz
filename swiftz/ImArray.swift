@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ImArray<A: Equatable> : Sequence {
+struct ImArray<A> : Sequence {
     let backing:Array<A> = Array()
     
     var array:Array<A> {
@@ -201,11 +201,11 @@ extension ImArray {
     }
 }
 
-func ==<A>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+func ==<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return lhs.array == rhs.array
 }
 
-func !=<A>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return !(lhs.array == rhs.array)
 }
 
