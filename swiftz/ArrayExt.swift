@@ -10,20 +10,23 @@
 
 func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
   var w = Array<A>()
-  xs.map({ (c: A?) -> A? in
+  for c in xs {
     if let x = c {
       w.append(x)
     } else {
       // nothing
     }
-    return c // we are making a copy of the array, to not mutate this one.
-  })
+  }
   return w
 }
 
 func join<A>(xs: Array<Array<A>>) -> Array<A> {
   var w = Array<A>()
-  xs.map({ $0.map { (e: A) -> A in w.append(e); return e } })
+  for x in xs {
+    for e in x {
+      w.append(e)
+    }
+  }
   return w
 }
 
