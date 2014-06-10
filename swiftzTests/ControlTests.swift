@@ -91,4 +91,9 @@ class ControlTests: XCTestCase {
     XCTAssert(hostname(party) == "max")
     XCTAssert(hostname(updatedParty) == "Max")
   }
+  
+  func testLibc() {
+    let s: CMutablePointer<String> = mallocPtr(nil)
+    freePtr(s)
+  }
 }
