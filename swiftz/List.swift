@@ -70,30 +70,31 @@ extension List : ArrayLiteralConvertible {
 class ListGenerator<A> : Generator {
     var l : Box<List<A>?>
     func next() -> A? {
-        var r = l.value()?.head();
+        var r = l.value()?.head()
         l = Box(self.l.value()?.tail())
         return r
     }
-    init(l : List<A>) {
+    init(_ l : List<A>) {
         self.l = Box(l)
     }
 }
 
 extension List : Sequence {
     func generate() -> ListGenerator<A> {
-        return ListGenerator(l: self)
+        return ListGenerator(self)
     }
 }
 
 extension List : Printable {
     var description : String {
-        var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
+  var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
         return "[\(x)]"
     }
 }
 
 struct ListF<A, B> : Functor {
     let l : List<A>
+    // TODO: is recursion ok here?
     func fmap(fn : (A -> B)) -> List<B> {
         switch l {
         case .Nil:
