@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		118EAA9119479877008250F3 /* IxCont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118EAA9019479877008250F3 /* IxCont.swift */; };
 		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		590522CE193F61210036614F /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CD193F61210036614F /* Chan.swift */; };
 		5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908C1B7194076810024A36C /* DictionaryExt.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
 		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
 		5908C1B7194076810024A36C /* DictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExt.swift; sourceTree = "<group>"; };
@@ -144,11 +146,6 @@
 				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				593C913C193DDC060067F2BE /* Monoid.swift */,
 				5951313B19406DA600AB490C /* JSON.swift */,
-				593C9140193DE6AB0067F2BE /* ArrayExt.swift */,
-				590522CB193F5DBA0036614F /* OptionalExt.swift */,
-				5908C1B7194076810024A36C /* DictionaryExt.swift */,
-				5931F2E919407DC600B0526A /* NSArrayExt.swift */,
-				59DB16241940895D00E656F9 /* NSDictionaryExt.swift */,
 				DB76117A19439C8300A0AF82 /* Set.swift */,
 			);
 			name = Data;
@@ -157,6 +154,7 @@
 		590BE977193DA93D003DAC87 /* Control */ = {
 			isa = PBXGroup;
 			children = (
+				118EAA9019479877008250F3 /* IxCont.swift */,
 				5910EA99193DCEE9008F6D71 /* Base.swift */,
 				59B39E3D1943094F00F4B222 /* Curry.swift */,
 				592A122819435308003BF787 /* Lens.swift */,
@@ -405,6 +403,7 @@
 				5914510F1942B40300809E7E /* MVar.swift in Sources */,
 				593C913D193DDC060067F2BE /* Monoid.swift in Sources */,
 				5951313C19406DA600AB490C /* JSON.swift in Sources */,
+				118EAA9119479877008250F3 /* IxCont.swift in Sources */,
 				593E7389193F16B10071B91D /* Future.swift in Sources */,
 				593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */,
 				593CB65C19455ABB00668CD1 /* Result.swift in Sources */,
