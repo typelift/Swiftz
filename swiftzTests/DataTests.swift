@@ -29,6 +29,12 @@ class DataTests: XCTestCase {
     XCTAssert(y == [2.0, 4.0, 6.0])
   }
   
+  func testNonEmptyListFunctor() {
+    let x : NonEmptyList<Int> = [1, 2, 3]
+    let y = NonEmptyListF(l: x).fmap({ Double($0 * 2) })
+    XCTAssert(y == [2.0, 4.0, 6.0])
+  }
+  
   func testEither() {
     func divTwoEvenly(x: Int) -> Either<String, Int> {
       if x % 2 == 0 {

@@ -20,10 +20,10 @@ class MVar<A> {
   let matt: CConstPointer<pthread_mutexattr_t>
   
   init() {
-    var mattr:CMutablePointer<pthread_mutexattr_t> = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutexattr_t))).value)
-    mutex = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_mutex_t))).value)
-    condPut = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_cond_t))).value)
-    condRead = CMutablePointer(owner: nil, value: malloc(UInt(sizeof(pthread_cond_t))).value)
+    var mattr:CMutablePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
+    mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
+    condPut = UnsafePointer.alloc(sizeof(pthread_cond_t))
+    condRead = UnsafePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
     matt = CConstPointer(nil, mattr.value)
@@ -38,10 +38,10 @@ class MVar<A> {
   }
   
   deinit {
-    free(CMutableVoidPointer(owner: nil, value: mutex.value))
-    free(CMutableVoidPointer(owner: nil, value: condPut.value))
-    free(CMutableVoidPointer(owner: nil, value: condRead.value))
-    free(CMutableVoidPointer(owner: nil, value: matt.value))
+    UnsafePointer(mutex).destroy()
+    UnsafePointer(condPut).destroy()
+    UnsafePointer(condRead).destroy()
+    UnsafePointer(matt).destroy()
   }
   
   func put(x: A) {pthread_mutex_lock(mutex)
