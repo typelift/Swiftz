@@ -110,6 +110,12 @@ struct ImArrayGenerator<A> : Generator {
     var items:Slice<A>
 }
 
+extension ImArray : ArrayLiteralConvertible {
+    static func convertFromArrayLiteral(elements: A...) -> ImArray<A> {
+        return ImArray(array:elements)
+    }
+}
+
 extension ImArray {
     func scanl<B>(start:B, r:(B, A) -> B) -> ImArray<B> {
         if self.isEmpty {
