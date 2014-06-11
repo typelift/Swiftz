@@ -16,6 +16,17 @@ func identity<A>(a: A) -> A {
   return a;
 }
 
+// Function composition
+operator infix .... {
+associativity right
+}
+
+func ....<A, B, C>(f: B -> C, g: A -> B)  -> A -> C {
+    return { (a: A) -> C in
+        return f(g(a))
+    }
+}
+
 func comp<A, B, C>(f: B -> C) -> (A -> B) -> A -> C {
   return { (g: (A -> B)) -> A -> C in
     return { (a: A) -> C in
