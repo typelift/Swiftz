@@ -56,11 +56,3 @@ func comp<S, T, I, J, A, B>(l1: Lens<S, T, I, J>)(l2: Lens<I, J, A, B>) -> Lens<
           return (x, { f1(f2($0)) })
      }
 }
-
-func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
-     return Lens { (x, y) in (x, { ($0, y) }) }
-}
-
-func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
-     return Lens { (x, y) in (y, { (x, $0) }) }
-}

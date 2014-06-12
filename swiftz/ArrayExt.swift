@@ -7,6 +7,11 @@
 //
 
 // Array extensions
+extension Array {
+     func safeIndex(i: Int) -> T? {
+          return indexArray(self, i)
+     }
+}
 
 func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
   var w = Array<A>()
@@ -36,10 +41,4 @@ func indexArray<A>(xs: Array<A>, i: Int) -> A? {
   } else {
     return nil
   }
-}
-
-extension Array {
-     func safeIndex(i: Int) -> T? {
-          return indexArray(self, i)
-     }
 }
