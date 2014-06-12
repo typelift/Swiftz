@@ -8,18 +8,18 @@
 
 import Foundation
 
-class Lens<S, T, A, B> {
+struct Lens<S, T, A, B> {
      let run: S -> (A, B -> T)
 
      init(_ run: S -> (A, B -> T)) {
           self.run = run
      }
 
-     convenience init(get: S -> A, set: (S, B) -> T) {
+     init(get: S -> A, set: (S, B) -> T) {
           self.init({ v in (get(v), { set(v, $0) }) })
      }
 
-     convenience init(get: S -> A, modify: (S, A -> B) -> T) {
+     init(get: S -> A, modify: (S, A -> B) -> T) {
           self.init(get: get, set: { v, x in modify(v, { _ in x }) })
      }
 
@@ -55,4 +55,12 @@ func comp<S, T, I, J, A, B>(l1: Lens<S, T, I, J>)(l2: Lens<I, J, A, B>) -> Lens<
           let (x, f2) = l2.run(k)
           return (x, { f1(f2($0)) })
      }
+}
+
+func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
+     return Lens { (x, y) in (x, { ($0, y) }) }
+}
+
+func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
+     return Lens { (x, y) in (y, { (x, $0) }) }
 }
