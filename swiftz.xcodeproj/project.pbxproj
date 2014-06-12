@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		118EAA9119479877008250F3 /* IxCont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118EAA9019479877008250F3 /* IxCont.swift */; };
+		11DA49FB194908F20024F104 /* IxState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DA49FA194908F20024F104 /* IxState.swift */; };
 		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		590522CE193F61210036614F /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CD193F61210036614F /* Chan.swift */; };
 		5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908C1B7194076810024A36C /* DictionaryExt.swift */; };
@@ -65,6 +66,7 @@
 
 /* Begin PBXFileReference section */
 		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
+		11DA49FA194908F20024F104 /* IxState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxState.swift; sourceTree = "<group>"; };
 		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
 		5908C1B7194076810024A36C /* DictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExt.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				118EAA9019479877008250F3 /* IxCont.swift */,
+				11DA49FA194908F20024F104 /* IxState.swift */,
 				5910EA99193DCEE9008F6D71 /* Base.swift */,
 				59B39E3D1943094F00F4B222 /* Curry.swift */,
 				592A122819435308003BF787 /* Lens.swift */,
@@ -407,6 +410,7 @@
 				593E7389193F16B10071B91D /* Future.swift in Sources */,
 				593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */,
 				593CB65C19455ABB00668CD1 /* Result.swift in Sources */,
+				11DA49FB194908F20024F104 /* IxState.swift in Sources */,
 				590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */,
 				591A21941941D453005FE900 /* Functor.swift in Sources */,
 				590522CE193F61210036614F /* Chan.swift in Sources */,
