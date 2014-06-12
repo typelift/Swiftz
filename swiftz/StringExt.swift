@@ -30,4 +30,9 @@ extension String {
   static func unlines(xs: Array<String>) -> String {
     return xs.reduce("", combine: { "\($0)\($1)\n" } )
   }
+
+  // actually an isomorphism
+  static func lines() -> Lens<String, String, Array<String>, Array<String>> {
+     return Lens { str in (str.lines(), self.unlines) }
+  }
 }

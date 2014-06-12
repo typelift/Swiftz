@@ -10,7 +10,7 @@ operator infix ∩ {}
 operator infix ∪ {}
 
 struct Set<A: Hashable> : Sequence {
-    var bucket:Dictionary<A, Bool> = Dictionary()
+    let bucket:Dictionary<A, Bool> = Dictionary()
     
     var array:Array<A> {
     var arr = Array<A>()

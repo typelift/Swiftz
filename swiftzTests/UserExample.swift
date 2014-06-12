@@ -49,20 +49,8 @@ class User: JSONDecode {
   }
   
   // lens example
-  class func luserName() -> Lens<User, String>.LensConst {
-    return { (fn: (String -> Const<String, User>)) -> User -> Const<String, User> in
-      return { (a: User) -> Const<String, User> in
-        return fn(a.name)
-      }
-    }
-  }
-  
-  class func luserName() -> Lens<User, String>.LensId {
-    return { (fn: (String -> Id<String>)) -> User -> Id<User> in
-      return { (a: User) -> Id<User> in
-        return Id<User>(User(fn(a.name).runId(), a.age, a.tweets, a.attrs))
-      }
-    }
+  class func luserName() -> Lens<User, User, String, String> {
+     return Lens { user in (user.name, { User($0, user.age, user.tweets, user.attrs) }) }
   }
 }
 
