@@ -18,7 +18,6 @@
 		5914510F1942B40300809E7E /* MVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5914510E1942B40300809E7E /* MVar.swift */; };
 		591451111942B41300809E7E /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591451101942B41300809E7E /* ExecutionContext.swift */; };
 		591A21941941D453005FE900 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591A21931941D453005FE900 /* Functor.swift */; };
-		592A122919435308003BF787 /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };
 		5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931F2E919407DC600B0526A /* NSArrayExt.swift */; };
 		593C913D193DDC060067F2BE /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913C193DDC060067F2BE /* Monoid.swift */; };
 		593C913F193DDC610067F2BE /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913E193DDC610067F2BE /* Semigroup.swift */; };
@@ -414,7 +413,6 @@
 				590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */,
 				591A21941941D453005FE900 /* Functor.swift in Sources */,
 				590522CE193F61210036614F /* Chan.swift in Sources */,
-				592A122919435308003BF787 /* Lens.swift in Sources */,
 				590FCB3B1943EA91008E5D94 /* StringExt.swift in Sources */,
 				59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */,
 				59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */,

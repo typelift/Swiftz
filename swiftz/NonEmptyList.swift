@@ -11,13 +11,13 @@ import Foundation
 struct NonEmptyList<A> {
   let head: Box<A>
 
-  static let head: Lens<NonEmptyList<A>, NonEmptyList<A>, Box<A>, Box<A>> =
-    Lens { nel in (nel.head, { NonEmptyList($0, nel.tail) }) }
+//  static let head: Lens<NonEmptyList<A>, NonEmptyList<A>, Box<A>, Box<A>> =
+//    Lens { nel in (nel.head, { NonEmptyList($0, nel.tail) }) }
 
   let tail: List<A>
 
-  static let tail: Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> =
-    Lens { nel in (nel.tail, { NonEmptyList(nel.head, $0) }) }
+//  static let tail: Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> =
+//    Lens { nel in (nel.tail, { NonEmptyList(nel.head, $0) }) }
 
   init(_ a: A, _ t: List<A>) {
     head = Box(a)

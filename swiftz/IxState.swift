@@ -35,9 +35,9 @@ struct IxState<I, O, A> {
           return f <^^> self
      }
 
-     func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
-          return f <*> self
-     }
+//     func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
+//          return f <*> self
+//     }
 
      func flatMap<E, B>(f: A -> IxState<O, E, B>) -> IxState<I, E, B> {
           return self >>= f
@@ -66,13 +66,13 @@ func <^^><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
      }
 }
 
-func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
-     return IxState { s1 in
-          let (g, s2) = f.run(s1)
-          let (x, s3) = a.run(s2)
-          return (g(x), s3)
-     }
-}
+//func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
+//     return IxState { s1 in
+//          let (g, s2) = f.run(s1)
+//          let (x, s3) = a.run(s2)
+//          return (g(x), s3)
+//     }
+//}
 
 func >>=<I, J, O, A, B>(a: IxState<I, J, A>, f: A -> IxState<J, O, B>) -> IxState<I, O, B> {
      return IxState { s1 in

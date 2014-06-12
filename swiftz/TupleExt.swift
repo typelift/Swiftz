@@ -16,9 +16,9 @@ func fst<A, B>(ab: (A, B)) -> A {
   }
 }
 
-func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
-     return Lens { (x, y) in (x, { ($0, y) }) }
-}
+//func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
+//     return Lens { (x, y) in (x, { ($0, y) }) }
+//}
 
 func snd<A, B>(ab: (A, B)) -> B {
   switch ab {
@@ -26,6 +26,6 @@ func snd<A, B>(ab: (A, B)) -> B {
   }
 }
 
-func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
-     return Lens { (x, y) in (y, { (x, $0) }) }
-}
+//func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
+//     return Lens { (x, y) in (y, { (x, $0) }) }
+//}

@@ -32,7 +32,7 @@ extension String {
   }
 
   // actually an isomorphism
-  static func lines() -> Lens<String, String, Array<String>, Array<String>> {
-     return Lens { str in (str.lines(), self.unlines) }
-  }
+//  static func lines() -> Lens<String, String, Array<String>, Array<String>> {
+//     return Lens { str in (str.lines(), self.unlines) }
+//  }
 }
