@@ -31,9 +31,15 @@ func join<A>(xs: Array<Array<A>>) -> Array<A> {
 }
 
 func indexArray<A>(xs: Array<A>, i: Int) -> A? {
-  if i < xs.count {
+  if i < xs.count && i >= 0 {
     return xs[i]
   } else {
     return nil
   }
+}
+
+extension Array {
+     func safeIndex(i: Int) -> T? {
+          return indexArray(self, i)
+     }
 }
