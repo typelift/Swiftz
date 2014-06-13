@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		118EAA9119479877008250F3 /* IxCont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118EAA9019479877008250F3 /* IxCont.swift */; };
+		11934312194A79C400E9DDDD /* IxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11934311194A79C400E9DDDD /* IxStore.swift */; };
+		11934313194A7ECD00E9DDDD /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };
 		11DA49FB194908F20024F104 /* IxState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DA49FA194908F20024F104 /* IxState.swift */; };
 		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		590522CE193F61210036614F /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CD193F61210036614F /* Chan.swift */; };
@@ -65,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
+		11934311194A79C400E9DDDD /* IxStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxStore.swift; sourceTree = "<group>"; };
 		11DA49FA194908F20024F104 /* IxState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxState.swift; sourceTree = "<group>"; };
 		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
@@ -160,6 +163,7 @@
 				5910EA99193DCEE9008F6D71 /* Base.swift */,
 				59B39E3D1943094F00F4B222 /* Curry.swift */,
 				592A122819435308003BF787 /* Lens.swift */,
+				11934311194A79C400E9DDDD /* IxStore.swift */,
 			);
 			name = Control;
 			sourceTree = "<group>";
@@ -419,8 +423,10 @@
 				59B39E3E1943094F00F4B222 /* Curry.swift in Sources */,
 				593C913F193DDC610067F2BE /* Semigroup.swift in Sources */,
 				59BF7D931943347800EAFFAA /* SYB.swift in Sources */,
+				11934313194A7ECD00E9DDDD /* Lens.swift in Sources */,
 				59BE90181945663400F79B22 /* FunctorBase.swift in Sources */,
 				591451111942B41300809E7E /* ExecutionContext.swift in Sources */,
+				11934312194A79C400E9DDDD /* IxStore.swift in Sources */,
 				5910EA9A193DCEE9008F6D71 /* Base.swift in Sources */,
 				DB76117B19439C8300A0AF82 /* Set.swift in Sources */,
 				5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */,

@@ -76,6 +76,10 @@ operator infix <*> {
   associativity left
 }
 
+operator infix =>> {
+  associativity left
+}
+
 // Optional
 
 func pure<A>(a: A) -> A? {

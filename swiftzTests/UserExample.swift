@@ -49,9 +49,9 @@ class User: JSONDecode {
   }
   
   // lens example
-//  class func luserName() -> Lens<User, User, String, String> {
-//     return Lens { user in (user.name, { User($0, user.age, user.tweets, user.attrs) }) }
-//  }
+  class func luserName() -> Lens<User, User, String, String> {
+     return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
+  }
 }
 
 func ==(lhs: User, rhs: User) -> Bool {

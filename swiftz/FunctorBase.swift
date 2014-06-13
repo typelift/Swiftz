@@ -31,6 +31,10 @@ extension Id: Functor {
   }
 }
 
+func isoId<A, B>() -> Lens<Id<A>, Id<B>, A, B> {
+     return Lens { v in IxStore(v.runId()) { Id($0) } }
+}
+
 // instance Functor (Const m)
 class Const<B, A>: F<A> {
   let a: () -> B
@@ -46,4 +50,8 @@ extension Const: Functor {
   func fmap(fn: (A -> B)) -> Const<B, B> {
     return (Const<B, B>(self.runConst()))
   }
+}
+
+func isoConst<A, B, X>() -> Lens<Const<A, X>, Const<B, X>, A, B> {
+     return Lens { v in IxStore(v.runConst()) { Const($0) } }
 }

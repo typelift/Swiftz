@@ -10,22 +10,22 @@ import Foundation
 
 struct NonEmptyList<A> {
   let head: Box<A>
-
-//  static let head: Lens<NonEmptyList<A>, NonEmptyList<A>, Box<A>, Box<A>> =
-//    Lens { nel in (nel.head, { NonEmptyList($0, nel.tail) }) }
-
   let tail: List<A>
-
-//  static let tail: Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> =
-//    Lens { nel in (nel.tail, { NonEmptyList(nel.head, $0) }) }
-
   init(_ a: A, _ t: List<A>) {
     head = Box(a)
     tail = t
   }
 }
 
-func==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
+     return Lens { nel in IxStore(nel.head.value()) { NonEmptyList($0, nel.tail) } }
+}
+
+func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
+     return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value(), $0) } }
+}
+
+func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
   return (lhs.head.value() == rhs.head.value() && lhs.tail == rhs.tail)
 }
 

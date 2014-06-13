@@ -9,14 +9,14 @@
 import Foundation
 
 struct Lens<S, T, A, B> {
-     let run: S -> (A, B -> T)
+     let run: S -> IxStore<A, B, T>
 
-     init(_ run: S -> (A, B -> T)) {
+     init(_ run: S -> IxStore<A, B, T>) {
           self.run = run
      }
 
      init(get: S -> A, set: (S, B) -> T) {
-          self.init({ v in (get(v), { set(v, $0) }) })
+          self.init({ v in IxStore(get(v)) { set(v, $0) } })
      }
 
      init(get: S -> A, modify: (S, A -> B) -> T) {
@@ -24,35 +24,35 @@ struct Lens<S, T, A, B> {
      }
 
      func get(v: S) -> A {
-          return run(v).0
+          return run(v).pos
      }
 
      func set(v: S, _ x: B) -> T {
-          return (run(v).1)(x)
+          return run(v).peek(x)
      }
 
      func modify(v: S, _ f: A -> B) -> T {
-          let (x, g) = run(v)
-          return g(f(x))
+          let q = run(v)
+          return q.peek(f(q.pos))
      }
 
      func zoom<X>(a: IxState<A, B, X>) -> IxState<S, T, X> {
           return IxState { s1 in
-               let (s2, f) = self.run(s1)
-               let (x, s3) = a.run(s2)
-               return (x, f(s3))
+               let q = self.run(s1)
+               let (x, s2) = a.run(q.pos)
+               return (x, q.peek(s2))
           }
      }
 }
 
 func identity<S, T>() -> Lens<S, T, S, T> {
-     return Lens { ($0, identity) }
+     return Lens { IxStore($0, identity) }
 }
 
 func comp<S, T, I, J, A, B>(l1: Lens<S, T, I, J>)(l2: Lens<I, J, A, B>) -> Lens<S, T, A, B> {
      return Lens { v in
-          let (k, f1) = l1.run(v)
-          let (x, f2) = l2.run(k)
-          return (x, { f1(f2($0)) })
+          let q1 = l1.run(v)
+          let q2 = l2.run(q1.pos)
+          return IxStore(q2.pos) { q1.peek(q2.peek($0)) }
      }
 }
