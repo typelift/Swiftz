@@ -82,7 +82,7 @@ class ControlTests: XCTestCase {
     let rs = xs >>= fs
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5], "array bind")
     
-    XCTAssert(pure(1) == [1], "array pure")
+    XCTAssert((pure(1) as Int[]) == [1], "array pure")
   }
   
   func testLens() {
