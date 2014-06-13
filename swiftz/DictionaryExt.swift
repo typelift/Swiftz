@@ -17,6 +17,14 @@ extension Dictionary {
         return d
     }
     
+    func mapValues<V>(transform: Element -> V) -> Dictionary<KeyType, V> {
+      var d = Dictionary<KeyType, V>(minimumCapacity: self.count)
+      for (key, value) in self {
+         d.updateValue(transform(key, value), forKey: key)
+      }
+      return d
+    }
+
     func filter(filter: Element -> Bool) -> Dictionary {
         var f = Dictionary()
         for (k, v) in self {
