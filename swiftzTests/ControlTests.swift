@@ -50,7 +50,7 @@ class ControlTests: XCTestCase {
     XCTAssert(comp({ $0.description })({ $0 + 1 })(0) == "1", "function composition")
     
     let composed = {(num:Int) in String(num) + String(1)} .... {$0 + 1} .... {$0 + 1} .... {$0 + 1}
-    XCTAssert(composed(0) == "31", "Should be 3")
+    XCTAssert(composed(0) == "31", "Should be 31")
   }
   
   

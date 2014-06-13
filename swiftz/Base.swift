@@ -18,7 +18,7 @@ func identity<A>(a: A) -> A {
 
 // Function composition
 operator infix .... {
-associativity right
+  associativity right
 }
 
 func ....<A, B, C>(f: B -> C, g: A -> B)  -> A -> C {
