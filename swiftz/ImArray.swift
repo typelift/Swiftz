@@ -12,7 +12,7 @@ struct ImArray<A> : Sequence {
     let backing:Array<A> = Array()
     
     var array:Array<A> {
-    return backing
+    return Array(backing)
     }
     
     subscript(index:Int) -> A {
