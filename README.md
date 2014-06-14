@@ -115,6 +115,14 @@ Types with instances of these operators:
 
 *Note: these functions are not in any protocol. They are in global scope.*
 
+Adding Swiftz to a Project
+--------------------------
+
+1. Build the `.framework`
+2. Copy it to your project
+3. Add a build phase to copy frameworks, and add that swiftz to the list
+4. Add `--deep` to "Other Code Signing Flags"
+
 Implementation
 --------------
 
