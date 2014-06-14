@@ -31,7 +31,7 @@ enum List<A> {
         case .Nil:
             return nil
         case let .Cons(_, tail):
-            return tail.value()
+            return tail.value
         }
     }
 }
@@ -41,7 +41,7 @@ func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
     case (.Nil, .Nil):
         return true
     case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
-        return lHead == rHead && lTail.value() == rTail.value()
+        return lHead == rHead && lTail.value == rTail.value
     default:
         return false
     }
@@ -70,8 +70,8 @@ extension List : ArrayLiteralConvertible {
 class ListGenerator<A> : Generator {
     var l : Box<List<A>?>
     func next() -> A? {
-        var r = l.value()?.head()
-        l = Box(self.l.value()?.tail())
+        var r = l.value?.head()
+        l = Box(self.l.value?.tail())
         return r
     }
     init(_ l : List<A>) {
@@ -100,7 +100,7 @@ struct ListF<A, B> : Functor {
         case .Nil:
            return List()
         case let .Cons(head, tail):
-            return List(fn(head), ListF(l: tail.value()).fmap(fn))
+            return List(fn(head), ListF(l: tail.value).fmap(fn))
         }
     }
 }

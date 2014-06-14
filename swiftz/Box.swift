@@ -9,12 +9,18 @@
 // An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
 // using struct causes crash. rdar exists. Should be @final, but that also crashes.
 /*@final*/ class Box<T> {
-    let value : () -> T
+    let _value : () -> T
     init(_ value : T) {
-        self.value = { value }
+        self._value = { value }
+    }
+  
+    var value: T {
+        get {
+            return _value()
+        }
     }
 }
 
 func isoBox<A, B>() -> Lens<Box<A>, Box<B>, A, B> {
-     return Lens { v in IxStore(v.value()) { Box($0) } }
+     return Lens { v in IxStore(v.value) { Box($0) } }
 }
