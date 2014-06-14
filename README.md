@@ -122,6 +122,9 @@ Adding Swiftz to a Project
 2. Copy it to your project
 3. Add a build phase to copy frameworks, and add that swiftz to the list
 4. Add `--deep` to "Other Code Signing Flags"
+5. Check `Versions/A/Frameworks/` doesn't contain the Swift runtime (it will
+    be duplicated with the App's copy of the runtime, causing a 4mb increase
+    in file size)
 
 Implementation
 --------------

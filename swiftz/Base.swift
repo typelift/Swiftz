@@ -21,7 +21,17 @@ operator infix .... {
   associativity right
 }
 
-func ....<A, B, C>(f: B -> C, g: A -> B)  -> A -> C {
+func ....<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
+    return { (a: A) -> C in
+        return f(g(a))
+    }
+}
+
+operator infix • {
+  associativity right
+}
+
+func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
     return { (a: A) -> C in
         return f(g(a))
     }

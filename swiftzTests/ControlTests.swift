@@ -51,6 +51,9 @@ class ControlTests: XCTestCase {
     
     let composed = {(num:Int) in String(num) + String(1)} .... {$0 + 1} .... {$0 + 1} .... {$0 + 1}
     XCTAssert(composed(0) == "31", "Should be 31")
+    
+    let composed2 = {(num:Int) in String(num) + String(1)} • {$0 + 1} • {$0 + 1} • {$0 + 1}
+    XCTAssert(composed2(0) == "31", "Should be 31")
   }
   
   
