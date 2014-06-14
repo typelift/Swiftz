@@ -16,14 +16,15 @@ extension Dictionary {
         }
         return d
     }
-    
-    func mapValues<V>(transform: Element -> V) -> Dictionary<KeyType, V> {
-      var d = Dictionary<KeyType, V>(minimumCapacity: self.count)
-      for (key, value) in self {
-         d.updateValue(transform(key, value), forKey: key)
-      }
-      return d
-    }
+
+// Linker bug
+//    func mapValues<V>(transform: Element -> V) -> Dictionary<KeyType, V> {
+//      var d = Dictionary<KeyType, V>(minimumCapacity: self.count)
+//      for (key, value) in self {
+//         d.updateValue(transform(key, value), forKey: key)
+//      }
+//      return d
+//    }
 
     func filter(filter: Element -> Bool) -> Dictionary {
         var f = Dictionary()
@@ -46,4 +47,13 @@ extension Dictionary {
             case .None: return start
         }
     }
+}
+
+
+func mapValues<KeyType, ElementType, V>(dict: Dictionary<KeyType, ElementType>, transform: (KeyType, ElementType) -> V) -> Dictionary<KeyType, V> {
+  var d = Dictionary<KeyType, V>(minimumCapacity: dict.count)
+  for (key, value) in dict {
+    d.updateValue(transform(key, value), forKey: key)
+  }
+  return d
 }
