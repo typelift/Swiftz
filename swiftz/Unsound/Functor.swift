@@ -58,17 +58,7 @@ extension Maybe: LogicValue {
 	}
 }
 
-struct MaybeF<A, B>: Functor {
-	let m: Maybe<A>
-	func fmap(fn: (A -> B)) -> Maybe<B> {
-		if m.isJust() {
-			let b: B = fn(m.fromJust())
-			return Maybe<B>.just(b);
-		} else {
-			return Maybe<B>.none()
-		}
-	}
-}
+// Maybe's functor is defined in Applicative
 
 func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
 	if !lhs && !rhs {

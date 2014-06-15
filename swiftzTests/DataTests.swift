@@ -83,6 +83,10 @@ class DataTests: XCTestCase {
     // TODO: test functor in general?
   }
   
+  func testApplicative() {
+    //TODO: test applicative in general?
+  }
+  
   func testMaybeFunctor() {
     let x = Maybe.just(2)
     let y = MaybeF(m: x).fmap({ $0 * 2 })
@@ -91,6 +95,17 @@ class DataTests: XCTestCase {
     let a = Maybe<Int>.none()
     let b = MaybeF(m: a).fmap({ $0 * 2 })
     XCTAssert(b == a);
+  }
+  
+  func testMaybeApplicative() {
+    let x = MaybeF<Int, Int>.pure(2)
+    let fn = Maybe.just({ $0 * 2 })
+    let y = MaybeF(m: x).ap(fn)
+    XCTAssert(y == Maybe.just(4))
+    
+    let fno = Maybe<Int -> String>.none()
+    let b = MaybeF<Int, String>(m: x).ap(fno)
+    XCTAssert(b == Maybe.none());
   }
   
   func testDataSemigroup() {
