@@ -18,15 +18,15 @@ struct NonEmptyList<A> {
 }
 
 func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
-     return Lens { nel in IxStore(nel.head.value()) { NonEmptyList($0, nel.tail) } }
+     return Lens { nel in IxStore(nel.head.value) { NonEmptyList($0, nel.tail) } }
 }
 
 func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
-     return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value(), $0) } }
+     return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
 }
 
 func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
-  return (lhs.head.value() == rhs.head.value() && lhs.tail == rhs.tail)
+  return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
@@ -54,17 +54,17 @@ class NonEmptyListGenerator<A> : Generator {
   var head: Box<A?>
   var l: Box<List<A>?>
   func next() -> A? {
-    if let h = head.value() {
+    if let h = head.value {
       head = Box(nil)
       return h
     } else {
-      var r = l.value()?.head()
-      l = Box(self.l.value()?.tail())
+      var r = l.value?.head()
+      l = Box(self.l.value?.tail())
       return r
     }
   }
   init(_ l : NonEmptyList<A>) {
-    head = Box(l.head.value())
+    head = Box(l.head.value)
     self.l = Box(l.tail)
   }
 }
@@ -85,6 +85,6 @@ extension NonEmptyList : Printable {
 struct NonEmptyListF<A, B> : Functor {
   let l : NonEmptyList<A>
   func fmap(fn : (A -> B)) -> NonEmptyList<B> {
-    return NonEmptyList(fn(l.head.value()), ListF(l: l.tail).fmap(fn))
+    return NonEmptyList(fn(l.head.value), ListF(l: l.tail).fmap(fn))
   }
 }
