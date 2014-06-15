@@ -46,11 +46,15 @@ class ConcurrentTests: XCTestCase {
   }
 
   func testConcurrentMVar() {
-    var mvar: MVar<String> = MVar()
-    let ft = Future<Void>(exec: gcdExecutionContext, { mvar.put("hello"); mvar.put("max") })
-    XCTAssert(mvar.take() == "hello", "mvar read")
-    XCTAssert(mvar.take() == "max", "mvar read")
-    XCTAssert(mvar.isEmpty(), "mvar empty")
+    var pingvar: MVar<String> = MVar()
+    var pongvar: MVar<String> = MVar()
+    var done: MVar<()> = MVar()
+    
+    let ping = Future<Void>(exec: gcdExecutionContext, { pingvar.put("hello"); XCTAssert(pongvar.take() == "max", "mvar read"); done.put(()) })
+    let pong = Future<Void>(exec: gcdExecutionContext, { XCTAssert(pingvar.take() == "hello", "mvar read"); pongvar.put("max") })
+    
+    XCTAssert(done.take() == (), "mvar read finished")
+    XCTAssert(pingvar.isEmpty() && pongvar.isEmpty(), "mvar empty")
   }
   
   func testPerformanceExample() {
