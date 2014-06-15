@@ -112,7 +112,8 @@ Types with instances of these operators:
 - Optional
 - Array (non-determinism, cross product)
 - Either (right bias)
-
+- ImArray
+- Set, except <*>
 *Note: these functions are not in any protocol. They are in global scope.*
 
 Adding Swiftz to a Project
@@ -136,8 +137,9 @@ Implementation
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` protocol
 - `Either<L, R>` and `Result<V>`
-- `maybe` for `Optional<A>`, 
+- `maybe` for `Optional<A>`,
 - `Dictionary` and `Array` extensions
+- Immutable `Set<A: Hashable>` and `ImArray<A>`
 
 **Note:**
 

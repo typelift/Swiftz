@@ -161,6 +161,12 @@ extension Set : Printable,DebugPrintable {
     }
 }
 
+extension Set : ArrayLiteralConvertible {
+    static func convertFromArrayLiteral(elements: A...) -> Set<A> {
+        return Set(array:elements)
+    }
+}
+
 func ==<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
     return lhs.bucket == rhs.bucket
 }
