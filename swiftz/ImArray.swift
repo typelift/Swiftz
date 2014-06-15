@@ -218,3 +218,32 @@ func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
 func +=<A>(lhs:ImArray<A>, rhs:A) -> ImArray<A> {
     return lhs.append(rhs)
 }
+
+// ImArray 'functions'
+
+func pure<A>(a:A) -> ImArray<A> {
+  return ImArray(item:a)
+}
+
+func<^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
+  return a.map(f)
+}
+
+func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
+  var re = Array<B>()
+  for g in f {
+    for h in a {
+      re.append(g(h))
+    }
+  }
+  return ImArray(array:re)
+}
+
+func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
+  var re = Array<B>()
+  for x in a {
+    re.extend(f(x))
+  }
+  return ImArray(array:re)
+}
+

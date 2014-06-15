@@ -196,3 +196,27 @@ func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
 func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.union(rhs)
 }
+
+// Set 'functions'
+
+func pure<A>(a:A) -> Set<A> {
+  return Set(items: a)
+}
+
+func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+  return set.map(f)
+}
+
+// Can't do applicative on a Set currently
+//func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
+//
+//    return Set<B>()
+//}
+
+func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+  var se = Array<B>()
+  for x in a {
+    se.extend(f(x))
+  }
+  return Set(array:se)
+}
