@@ -17,7 +17,7 @@ func fst<A, B>(ab: (A, B)) -> A {
 }
 
 func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
-     return Lens { (x, y) in IxStore(x) { ($0, y) } }
+  return Lens { (x, y) in IxStore(x) { ($0, y) } }
 }
 
 func snd<A, B>(ab: (A, B)) -> B {
@@ -27,5 +27,10 @@ func snd<A, B>(ab: (A, B)) -> B {
 }
 
 func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
-     return Lens { (x, y) in IxStore(y) { (x, $0) } }
+  return Lens { (x, y) in IxStore(y) { (x, $0) } }
 }
+
+func ==(lhs: (), rhs: ()) -> Bool {
+  return true
+}
+
