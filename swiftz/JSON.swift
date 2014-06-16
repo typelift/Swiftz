@@ -169,6 +169,22 @@ class JInt: JSON {
   }
 }
 
+let jnumber = JNumber()
+class JNumber: JSON {
+  typealias J = NSNumber
+  
+  class func fromJSON(x: JSValue) -> J? {
+    switch x {
+    case let .JSNumber(n): return NSNumber(double: n)
+    default: return Optional.None
+    }
+  }
+  
+  func toJSON(xs: J) -> JSValue {
+    return JSValue.JSNumber(Double(xs))
+  }
+}
+
 let jbool = JBool()
 class JBool: JSON {
   typealias J = Bool
