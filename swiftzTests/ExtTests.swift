@@ -23,6 +23,21 @@ class ExtTests: XCTestCase {
     XCTAssert(fst((1,2)) == 1, "tuple fst")
     XCTAssert(snd((1,2)) == 2, "tuple snd")
   }
+    
+  func testTupleEquality() {
+    XCTAssert(("a",1,[1,2]) == ("a",1,[1,2]))
+    XCTAssert(() == ())
+    XCTAssert((0) == (0))
+    XCTAssert((0,1) == (0,1))
+    XCTAssert((0,1,2) == (0,1,2))
+    XCTAssert((0,1,2,3) == (0,1,2,3))
+    XCTAssert((0,1,2,3,4) == (0,1,2,3,4))
+    XCTAssert((0,1,2,3,4,5) == (0,1,2,3,4,5))
+    //  Only 6tuples and smaller currently supported.
+    //  XCTAssert((0,1,2,3,4,5,6) == (0,1,2,3,4,5,6))
+    //  Not currently possible as tuples cannot be generically made Equatable
+    //  XCTAssert(((),(1),(2,2),(3,3,3),(4,4,4,4)) == ((),(1),(2,2),(3,3,3),(4,4,4,4)))
+  }
   
   func testArrayExt() {
     let xsO: Array<Optional<Int>> = [Optional.Some(1), .Some(2), .None]
