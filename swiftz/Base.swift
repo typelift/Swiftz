@@ -18,7 +18,7 @@ func identity<A>(a: A) -> A {
 
 // Function composition
 operator infix .... {
-associativity right
+  associativity right
 }
 
 func ....<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
@@ -28,7 +28,7 @@ func ....<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
 }
 
 operator infix • {
-associativity right
+  associativity right
 }
 
 func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
@@ -46,10 +46,10 @@ func comp<A, B, C>(f: B -> C) -> (A -> B) -> A -> C {
 }
 
 operator infix |> {
-associativity left
+  associativity left
 }
 operator infix ▹ {
-associativity left
+  associativity left
 }
 //operator infix <| {}
 //operator infix ◃ {}
@@ -82,23 +82,23 @@ func ▹<A, B>(a: A, f: A -> B) -> B {
 
 
 operator infix <^> {
-associativity left
+  associativity left
 }
 
 operator infix <^^> {
-associativity left
+  associativity left
 }
 
 operator infix <!> {
-associativity left
+  associativity left
 }
 
 operator infix <*> {
-associativity left
+  associativity left
 }
 
 operator infix =>> {
-associativity left
+  associativity left
 }
 
 // Optional
