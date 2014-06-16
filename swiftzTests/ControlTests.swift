@@ -90,9 +90,12 @@ class ControlTests: XCTestCase {
   
   func testLens() {
     let party = Party(h: User("max", 1, [], Dictionary()))
-	let user = Party.lpartyHost().get(party)
+	let hostnameLens = Party.lpartyHost() • User.luserName()
 
-	XCTAssert(user == party.host)
+	XCTAssert(hostnameLens.get(party) == "max")
+
+	let updatedParty: Party = Party.lpartyHost().modify(party, { User.luserName().set($0, "Max") })
+	XCTAssert(hostnameLens.get(updatedParty) == "Max")
     // 10 points to who ever works out how to get it to work with function comp.
     // Party -> Host -> Name
 //    let hostname: Party -> String = { Lens.get(Party.lpartyHost(), $0) |> { Lens.get(User.luserName(), $0) } }
