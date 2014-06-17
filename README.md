@@ -149,7 +149,7 @@ The "currently impossible" data structures we think the language intends to supp
 
 These abstractions require language features that Swift does not support yet.
 
-- `Either<A, B>` crashes with `unimplemented IRGen feature! non-fixed multi-payload enum layout`. `rdar://17109392`
+- `Either<A, B>` crashes with `unimplemented IRGen feature! non-fixed multi-payload enum layout`. `rdar://15666173`
 - `List<A>` by an enum crashes the compiler. `rdar://???`
 - `List<A>` via a super class and 2 sub classes crashes with `unimplemented IRGen feature! non-fixed class layout`. `rdar://17109323`
 - Functor, Applicative, Monad, Comonad. To enable these, a higher kind,
