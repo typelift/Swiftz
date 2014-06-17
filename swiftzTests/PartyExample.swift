@@ -17,21 +17,15 @@ class Party {
     host = h
   }
   
-//  // lens
-//  class func lpartyHost() -> Lens<Party, User>.LensConst {
-//    return { (fn: (User -> Const<User, Party>)) -> Party -> Const<User, Party> in
-//      return { (a: Party) -> Const<User, Party> in
-//        return fn(a.host)
-//      }
-//    }
-//  }
-  
-//  class func lpartyHost() -> Lens<Party, User>.LensId {
-//    return { (fn: (User -> Id<User>)) -> Party -> Id<Party> in
-//      return { (a: Party) -> Id<Party> in
-//        let x = fn(a.host).runId()
-//        return Id<Party>(Party(h: fn(a.host).runId()))
-//      }
-//    }
-//  }
+	class func lpartyHost() -> Lens<Party, Party, User, User> {
+		let getter = { (party: Party) -> User in
+			party.host
+		}
+
+		let setter = { (party: Party, host: User) -> Party in
+			Party(h: host)
+		}
+
+		return Lens(get: getter, set: setter)
+	}
 }
