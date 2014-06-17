@@ -91,4 +91,30 @@ class ImArrayTests: XCTestCase {
         XCTAssert(withArray.splitAt(0).0 == ImArray() && withArray.splitAt(0).1 == ImArray(items: 1,2,3,4), "Should be equal")
         XCTAssert(withArray == ImArray(array: [1,2,3,4]), "Should be equal(immutablility test)")
     }
+  
+    func testBuiltInArraySort() {
+        var a = [3,2,1]
+        var b = sort(a)
+        // XCTAssert(a == [3,2,1], "Should be unalterred") - Currently fails (Swift bug)
+        XCTAssert(a != [3,2,1], "Swift bug may be fixed. Update tests and workarounds")
+        var c = [3,2,1]
+        var d = sort(c.copy())
+        XCTAssert(c == [3,2,1], "Should be unalterred")
+        XCTAssert(d == [1,2,3], "Should be sorted")
+        XCTAssert(b == [1,2,3], "Should be sorted")
+    }
+    
+    func testImArraySort() {
+        var a = ImArray(items: 3,2,1)
+        var b = sort(a)
+        XCTAssert(a == ImArray(items: 3,2,1), "Should be unalterred")
+        XCTAssert(b == ImArray(items: 1,2,3), "Should be sorted")
+    }
+    
+    func testImArraySortPred() {
+        var a = ImArray(items: 1,2,3)
+        var b = sort(a) { $0 > $1 }
+        XCTAssert(a == ImArray(items: 1,2,3), "Should be unalterred")
+        XCTAssert(b == ImArray(items: 3,2,1), "Should be sorted in reverse")
+    }
 }
