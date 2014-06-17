@@ -8,18 +8,18 @@
 
 import Foundation
 
-struct Lens<S, T, A, B> {
+class Lens<S, T, A, B> {
      let run: S -> IxStore<A, B, T>
 
      init(_ run: S -> IxStore<A, B, T>) {
           self.run = run
      }
 
-     init(get: S -> A, set: (S, B) -> T) {
+     convenience init(get: S -> A, set: (S, B) -> T) {
           self.init({ v in IxStore(get(v)) { set(v, $0) } })
      }
 
-     init(get: S -> A, modify: (S, A -> B) -> T) {
+     convenience init(get: S -> A, modify: (S, A -> B) -> T) {
           self.init(get: get, set: { v, x in modify(v, { _ in x }) })
      }
 
