@@ -95,7 +95,7 @@ class ImArrayTests: XCTestCase {
     func testBuiltInArraySort() {
         var a = [3,2,1]
         var b = sort(a)
-        // XCTAssert(a == [3,2,1], "Should be unalterred") - Currently fails (Swift bug)
+        // XCTAssert(a == [3,2,1], "Should be unalterred") // rdar://?? Currently fails (Swift bug)
         XCTAssert(a != [3,2,1], "Swift bug may be fixed. Update tests and workarounds")
         var c = [3,2,1]
         var d = sort(c.copy())
