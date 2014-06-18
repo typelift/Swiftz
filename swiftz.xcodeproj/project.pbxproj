@@ -48,6 +48,7 @@
 		59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */; };
 		59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C50C3C193DEB8100FE8C86 /* Num.swift */; };
 		59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
+		59DDB4DE195085EF002CB212 /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DDB4DD195085EF002CB212 /* Nothing.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		DB76117B19439C8300A0AF82 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117A19439C8300A0AF82 /* Set.swift */; };
@@ -111,6 +112,7 @@
 		59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftCheck.swift; sourceTree = "<group>"; };
 		59C50C3C193DEB8100FE8C86 /* Num.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Num.swift; sourceTree = "<group>"; };
 		59DB16241940895D00E656F9 /* NSDictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDictionaryExt.swift; sourceTree = "<group>"; };
+		59DDB4DD195085EF002CB212 /* Nothing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nothing.swift; sourceTree = "<group>"; };
 		59F35AE0193D3A0A006F1341 /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AE4193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59F35AE5193D3A0A006F1341 /* swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz.h; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				5951313B19406DA600AB490C /* JSON.swift */,
 				DB76117A19439C8300A0AF82 /* Set.swift */,
 				DBA02FE119464F39007F3829 /* ImArray.swift */,
+				59DDB4DD195085EF002CB212 /* Nothing.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				5951313C19406DA600AB490C /* JSON.swift in Sources */,
 				118EAA9119479877008250F3 /* IxCont.swift in Sources */,
 				593E7389193F16B10071B91D /* Future.swift in Sources */,
+				59DDB4DE195085EF002CB212 /* Nothing.swift in Sources */,
 				593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */,
 				593CB65C19455ABB00668CD1 /* Result.swift in Sources */,
 				11DA49FB194908F20024F104 /* IxState.swift in Sources */,
