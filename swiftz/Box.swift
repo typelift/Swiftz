@@ -7,8 +7,8 @@
 //
 
 // An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
-// using struct causes crash. rdar exists. Should be @final, but that also crashes.
-/*@final*/ class Box<T> {
+// using struct causes crash. rdar fixed in Beta2
+@final class Box<T> {
     let _value : () -> T
     init(_ value : T) {
         self._value = { value }
