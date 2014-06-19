@@ -16,7 +16,6 @@ protocol TypeEquality {
   func apply(a: A) -> B
 }
 
-// Always provide X.
 @final class Refl<X> : TypeEquality {
   typealias A = X
   typealias B = X
