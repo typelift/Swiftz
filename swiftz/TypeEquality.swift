@@ -8,6 +8,8 @@
 
 import Foundation
 
+// find more info at http://hackage.haskell.org/package/type-equality-0.1.2/docs/Data-Type-Equality.html
+
 protocol TypeEquality {
   typealias A
   typealias B
