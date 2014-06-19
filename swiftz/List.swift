@@ -45,6 +45,7 @@ enum List<A> {
     }
 
     func lookup<K: Equatable, V, EQ: TypeEquality where EQ.A == A, EQ.B == Tuple2<K, V>>(ev: EQ, key: K) -> V? {
+      // this code exploits an implicit unsafe coerce
       func pred(t: Tuple2<K, V>) -> Bool {
         return t.a == key
       }

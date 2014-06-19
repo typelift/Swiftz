@@ -28,7 +28,10 @@ class DataTests: XCTestCase {
     let one: (Int, String) = x.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
     XCTAssert(one.0 == 1 && one.1 == "one")
     
-    XCTAssert(x.lookup(Refl(), key: 1) == "one")
+    // careful, nothing inference exists... always annotate Refl.
+    let xs: List<Tuple2<Int, String>> = [Tuple2(a: 1, b: "one"), Tuple2(a: 2, b: "two")]
+    let re: String? = xs.lookup(Refl<Tuple2<Int, String>>(), key: 1)
+    XCTAssert(re! == "one")
   }
   
   func testListFunctor() {
