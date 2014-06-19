@@ -34,6 +34,25 @@ enum List<A> {
             return tail.value
         }
     }
+
+    func find(pred: A -> Bool) -> A? {
+        for x in self {
+            if pred(x) {
+                return x
+            }
+        }
+      return nil
+    }
+  
+    func lookup<K: Equatable, V, EQ: TypeEquality where EQ.A == A, EQ.B == Tuple2<K, V>>(ev: EQ, key: K) -> V? {
+      func pred(t: Tuple2<K, V>) -> Bool {
+        return t.a == key
+      }
+      func val(t: Tuple2<K, V>) -> V {
+        return t.b
+      }
+      return (({ return val(ev.apply($0)) }) <^> self.find({ return pred(ev.apply($0)) }))
+    }
 }
 
 func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {

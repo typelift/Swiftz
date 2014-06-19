@@ -23,6 +23,14 @@ class DataTests: XCTestCase {
     // TODO: test num
   }
   
+  func testList() {
+    let x : List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
+    let one: (Int, String) = x.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
+    XCTAssert(one.0 == 1 && one.1 == "one")
+    
+    XCTAssert(x.lookup(Refl(), key: 1) == "one")
+  }
+  
   func testListFunctor() {
     let x : List<Int> = [1, 2, 3]
     let y = ListF(l: x).fmap({ Double($0 * 2) })
