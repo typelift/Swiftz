@@ -20,10 +20,10 @@ protocol Functor {
 
 class Maybe<A: Any>: F<A> {
 	// Hack to get around IR codegen bug
-	var value: (() -> A)?
+	var value: Box<A>?
 
 	init(_ v: A) {
-		value = { return v }
+		value = Box(v)
 	}
 
 	init() {}
@@ -48,7 +48,7 @@ class Maybe<A: Any>: F<A> {
 	}
 
 	func fromJust() -> A {
-		return self.value!()
+		return self.value!.value
 	}
 }
 
