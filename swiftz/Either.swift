@@ -9,6 +9,13 @@
 enum Either<L, R> {
   case Left(@auto_closure () -> L)
   case Right(@auto_closure () -> R)
+  
+  func toResult<EV: TypeEquality where EV.A == L, EV.B == NSError>(ev: EV) -> Result<R> {
+    switch self {
+      case let Left(e): return Result.Error(ev.apply(e()))
+      case let Right(v): return .Value(v())
+    }
+  }
 }
 
 // Equatable

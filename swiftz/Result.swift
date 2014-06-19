@@ -12,13 +12,20 @@ import Foundation
 
 enum Result<V> {
   case Error(NSError)
-  case Value(() -> V)
+  case Value(@auto_closure () -> V)
   
   init(_ e: NSError?, _ v: V) {
     if let ex = e {
       self = Result.Error(ex)
     } else {
-      self = Result.Value({ v })
+      self = Result.Value(v)
+    }
+  }
+  
+  func toEither() -> Either<NSError, V> {
+    switch self {
+      case let Error(e): return .Left(e)
+      case let Value(v): return Either.Right(v())
     }
   }
 }
@@ -39,13 +46,13 @@ func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 
 // 'functions'
 func pure<V>(a: V) -> Result<V> {
-  return .Value({ a })
+  return .Value(a)
 }
 
 func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
-  case let .Value(r): return Result.Value({ f(r()) })
+  case let .Value(r): return Result.Value(f(r()))
   }
 }
 
@@ -53,7 +60,7 @@ func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
   switch (a, f) {
   case let (.Error(l), _): return .Error(l)
   case let (.Value(r), .Error(m)): return .Error(m)
-  case let (.Value(r), .Value(g)): return Result<VB>.Value({ g()(r()) })
+  case let (.Value(r), .Value(g)): return Result<VB>.Value(g()(r()))
   }
 }
 

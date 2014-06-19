@@ -63,7 +63,7 @@ class DataTests: XCTestCase {
       if x % 2 == 0 {
         return .Error(divisionError)
       } else {
-        return .Value({ x / 2 })
+        return .Value(x / 2)
       }
     }
     
@@ -71,12 +71,23 @@ class DataTests: XCTestCase {
     let first: Result<Int> = divTwoEvenly(start)
     let prettyPrinted: Result<String> = { $0.description } <^> first
     let snd = first >>= divTwoEvenly
-    XCTAssert(prettyPrinted == .Value({ "8" }))
+    XCTAssert(prettyPrinted == .Value("8"))
     XCTAssert(snd == .Error(divisionError))
     
     // special constructor
     XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
-    XCTAssert(Result(nil, 1) == .Value({ 1 }), "special Result cons value")
+    XCTAssert(Result(nil, 1) == .Value(1), "special Result cons value")
+  }
+  
+  func testEitherResult() {
+    // tests:
+    // - either -> result
+    // - result -> either
+    
+    let resultOne: Result<Int> = Result.Value(1)
+    let eitherOne: Either<NSError, Int> = resultOne.toEither()
+    let resultAgain: Result<Int> = eitherOne.toResult(Refl())
+    XCTAssert(resultOne == resultAgain)
   }
   
   func testFunctor() {
