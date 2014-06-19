@@ -152,5 +152,10 @@ class DataTests: XCTestCase {
       XCTFail("expected none")
     }
   }
+  
+  func testHList() {
+    let list: HCons<Int, HCons<String, HNil>> = HCons(h: 10, t: HCons(h: "banana", t: HNil()))
+    let newlist: HCons<Int, HCons<String, HNil>> = map(list, { (x: Int) -> Int in x + 1 })
+  }
 
 }
