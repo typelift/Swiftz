@@ -16,7 +16,7 @@ protocol TypeEquality {
   func apply(a: A) -> B
 }
 
-@final class Refl<X> : TypeEquality {
+struct Refl<X> : TypeEquality {
   typealias A = X
   typealias B = X
   func apply(a: A) -> B {
