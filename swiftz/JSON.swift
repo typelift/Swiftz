@@ -36,9 +36,9 @@ enum JSValue: Printable {
     switch a {
       case let xs as NSArray: return .JSArray(xs.mapToArray { self.make($0 as NSObject) })
       case let xs as NSDictionary:
-        return JSValue.JSObject(xs.mapValuesToDictionary { switch $0 {
-          case let (k, v): return (String(k as NSString), self.make(v as NSObject))
-          }})
+        return JSValue.JSObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
+            return (String(k as NSString), self.make(v as NSObject))
+        })
       case let xs as NSNumber:
         // TODO: number or bool?...
         return .JSNumber(Double(xs.doubleValue))
