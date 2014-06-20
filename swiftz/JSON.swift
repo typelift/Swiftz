@@ -9,7 +9,7 @@
 import Foundation
 
 enum JSValue: Printable {
-  case JSArray(Array<JSValue>)
+  case JSArray(JSValue[])
   case JSObject(Dictionary<String, JSValue>)
   case JSNumber(Double)
   case JSString(String)
@@ -238,7 +238,7 @@ class JNull: JSON {
 
 
 class JArray<A, B: JSON where B.J == A>: JSON {
-  typealias J = Array<A>
+  typealias J = A[]
   let inst: () -> B
   init(i: () -> B) {
     inst = i

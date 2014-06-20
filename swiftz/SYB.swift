@@ -16,5 +16,5 @@ protocol Dataable {
 
 struct Data {
   let con: Int
-  let vals: Array<(String, Any)>
+  let vals: (String, Any)[]
 }

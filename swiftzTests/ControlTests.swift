@@ -79,7 +79,7 @@ class ControlTests: XCTestCase {
     
     XCTAssert((Optional<Int -> Int>.Some({ $0 + 1 }) <*> .Some(1)) == 2, "array apply")
     
-    func fs(x: Int) -> Array<Int> {
+    func fs(x: Int) -> Int[] {
       return [x, x+1, x+2]
     }
     let rs = xs >>= fs

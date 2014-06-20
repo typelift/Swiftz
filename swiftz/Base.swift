@@ -135,23 +135,23 @@ func >>=<A, B>(a: A?, f: A -> B?) -> B? {
 
 // array
 
-func pure<A>(a: A) -> Array<A> {
-  var v = Array<A>()
+func pure<A>(a: A) -> A[] {
+  var v = A[]()
   v.append(a)
   return v
 }
 
 // Note well! This is not map! Map mutates the array, this copies it.
-func <^><A, B>(f: A -> B, a: Array<A>) -> Array<B> {
-  var xs = Array<B>()
+func <^><A, B>(f: A -> B, a: A[]) -> B[] {
+  var xs = B[]()
   for x in a {
     xs.append(f(x))
   }
   return xs
 }
 
-func <*><A, B>(f: Array<A -> B>, a: Array<A>) -> Array<B> {
-  var re = Array<B>()
+func <*><A, B>(f: (A -> B)[], a: A[]) -> B[] {
+  var re = B[]()
   for g in f {
     for h in a {
       re.append(g(h))
@@ -160,8 +160,8 @@ func <*><A, B>(f: Array<A -> B>, a: Array<A>) -> Array<B> {
   return re
 }
 
-func >>=<A, B>(a: Array<A>, f: A -> Array<B>) -> Array<B> {
-  var re = Array<B>()
+func >>=<A, B>(a: A[], f: A -> B[]) -> B[] {
+  var re = B[]()
   for x in a {
     re.extend(f(x))
   }

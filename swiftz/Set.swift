@@ -14,8 +14,8 @@ operator infix ∪ {}
 struct Set<A: Hashable> : Sequence {
     let bucket:Dictionary<A, Bool> = Dictionary()
     
-    var array:Array<A> {
-    var arr = Array<A>()
+    var array:A[] {
+    var arr = A[]()
         for (key, _) in bucket {
             arr += key
         }
@@ -38,7 +38,7 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    init(array:Array<A>) {
+    init(array:A[]) {
         for obj in array {
             bucket[obj] = true
         }
@@ -116,7 +116,7 @@ struct Set<A: Hashable> : Sequence {
     }
     
     func filter(f:(A -> Bool)) -> Set<A> {
-        var array = Array<A>()
+        var array = A[]()
         for x in self {
             if f(x) {
                 array += x
@@ -126,7 +126,7 @@ struct Set<A: Hashable> : Sequence {
     }
     
     func map<B>(f:(A -> B)) -> Set<B> {
-        var array:Array<B> = Array()
+        var array:B[] = Array()
         for x in self {
             array += f(x)
         }
@@ -216,7 +216,7 @@ func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
 //}
 
 func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
-  var se = Array<B>()
+  var se = B[]()
   for x in a {
     se.extend(f(x))
   }

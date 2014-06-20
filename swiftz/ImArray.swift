@@ -9,9 +9,9 @@
 import Foundation
 
 struct ImArray<A> : Sequence {
-    let backing:Array<A> = Array()
+    let backing:A[] = Array()
     
-    var array:Array<A> {
+    var array:A[] {
     return Array(backing)
     }
     
@@ -51,7 +51,7 @@ struct ImArray<A> : Sequence {
         return ImArray(array: arr)
     }
     
-    func join(array:Array<A>) -> ImArray<A> {
+    func join(array:A[]) -> ImArray<A> {
         switch array {
         case []: return self
         case _: var newArr = Array(backing)
@@ -121,7 +121,7 @@ extension ImArray {
         if self.isEmpty {
             return ImArray<B>(array: [])
         }
-        var arr = Array<B>()
+        var arr = B[]()
         arr += start
         var reduced = start
         for x in self {
@@ -134,7 +134,7 @@ extension ImArray {
     //tuples can not be compared with '==' so I will hold off on this for now. rdar://17219478
     //    func zip<B>(scd:ImArray<B>) -> ImArray<(A,B)> {
     //        var size = min(self.count, scd.count)
-    //        var newArr = Array<(A,B)>()
+    //        var newArr = (A,B)[]()
     //        for x in 0..size {
     //            newArr += (self[x], scd[x])
     //        }
@@ -143,25 +143,25 @@ extension ImArray {
     //
     //    func zip3<B,C>(scd:ImArray<B>, thrd:ImArray<C>) -> ImArray<(A,B,C)> {
     //        var size = min(self.count, scd.count, thrd.count)
-    //        var newArr = Array<(A,B,C)>()
+    //        var newArr = (A,B,C)[]()
     //        for x in 0..size {
     //            newArr += (self[x], scd[x], thrd[x])
     //        }
     //        return ImArray<(A,B,C)>(array:newArr)
     //    }
     //
-    //    func zipWith<B,C>(scd:Array<B>, f:((A, B) -> C)) -> ImArray<C> {
+    //    func zipWith<B,C>(scd:B[], f:((A, B) -> C)) -> ImArray<C> {
     //        var size = min(self.count, scd.count)
-    //        var newArr = Array<C>()
+    //        var newArr = C[]()
     //        for x in 0..size {
     //            newArr += f(self[x], scd[x])
     //        }
     //        return ImArray<C>(array:newArr)
     //    }
     //
-    //    func zipWith3<B,C,D>(scd:Array<B>, thrd:Array<C>, f:((A, B, C) -> D)) -> ImArray<D> {
+    //    func zipWith3<B,C,D>(scd:B[], thrd:C[], f:((A, B, C) -> D)) -> ImArray<D> {
     //        var size = min(self.count, scd.count, thrd.count)
-    //        var newArr = Array<D>()
+    //        var newArr = D[]()
     //        for x in 0..size {
     //            newArr += f(self[x], scd[x], thrd[x])
     //        }
@@ -185,7 +185,7 @@ extension ImArray {
     }
     
     func intersperse(item:A) -> ImArray<A> {
-        func prependAll(item:A, array:Array<A>) -> Array<A> {
+        func prependAll(item:A, array:A[]) -> A[] {
             var arr = Array([item])
             for i in 0..(array.count - 1) {
                 arr += array[i]
@@ -230,7 +230,7 @@ func<^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
 }
 
 func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
-  var re = Array<B>()
+  var re = B[]()
   for g in f {
     for h in a {
       re.append(g(h))
@@ -240,7 +240,7 @@ func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
 }
 
 func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
-  var re = Array<B>()
+  var re = B[]()
   for x in a {
     re.extend(f(x))
   }

@@ -61,15 +61,15 @@ class ExtTests: XCTestCase {
   }
   
   func testArrayExt() {
-    let xsO: Array<Optional<Int>> = [Optional.Some(1), .Some(2), .None]
-    let exO: Array<Int> = mapFlatten(xsO)
+    let xsO: Optional<Int>[] = [Optional.Some(1), .Some(2), .None]
+    let exO: Int[] = mapFlatten(xsO)
     XCTAssert(exO == [1, 2], "mapflatten option")
     
     let exJ = join([[1, 2], [3, 4]])
     XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
     
     XCTAssert(indexArray([1], 0) == 1, "index array 0")
-    XCTAssert(indexArray(Array<Int>(), 0) == nil, "index array empty")
+    XCTAssert(indexArray(Int[](), 0) == nil, "index array empty")
   }
   
   func testStringExt() {
