@@ -15,10 +15,10 @@ class User: JSONDecode {
   typealias J = User
   let name: String
   let age: Int
-  let tweets: Array<String>
+  let tweets: String[]
   let attrs: Dictionary<String, String>
   
-  init(_ n: String, _ a: Int, _ t: Array<String>, _ r: Dictionary<String, String>) {
+  init(_ n: String, _ a: Int, _ t: String[], _ r: Dictionary<String, String>) {
     name = n
     age = a
     tweets = t
@@ -26,14 +26,14 @@ class User: JSONDecode {
   }
   
   // JSON
-  class func create(x: String) -> Int -> Array<String> -> Dictionary<String, String> -> User {
-    return { (y: Int) in { (z: Array<String>) in { User(x, y, z, $0) } } }
+  class func create(x: String) -> (Int) -> ((String[]) -> ((Dictionary<String, String>) -> User)) {
+    return { (y: Int) in { (z: String[]) in { User(x, y, z, $0) } } }
   }
   
   class func fromJSON(x: JSValue) -> User? {
     var n: String?
     var a: Int?
-    var t: Array<String>?
+    var t: String[]?
     var r: Dictionary<String, String>?
     switch x {
     case let .JSObject(d):

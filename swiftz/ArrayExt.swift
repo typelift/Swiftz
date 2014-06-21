@@ -13,8 +13,8 @@ extension Array {
      }
 }
 
-func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
-  var w = Array<A>()
+func mapFlatten<A>(xs: A?[]) -> A[] {
+  var w = A[]()
   for c in xs {
     if let x = c {
       w.append(x)
@@ -25,8 +25,8 @@ func mapFlatten<A>(xs: Array<A?>) -> Array<A> {
   return w
 }
 
-func join<A>(xs: Array<Array<A>>) -> Array<A> {
-  var w = Array<A>()
+func join<A>(xs: A[][]) -> A[] {
+  var w = A[]()
   for x in xs {
     for e in x {
       w.append(e)
@@ -35,7 +35,7 @@ func join<A>(xs: Array<Array<A>>) -> Array<A> {
   return w
 }
 
-func indexArray<A>(xs: Array<A>, i: Int) -> A? {
+func indexArray<A>(xs: A[], i: Int) -> A? {
   if i < xs.count && i >= 0 {
     return xs[i]
   } else {

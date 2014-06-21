@@ -12,9 +12,9 @@ import Foundation
 
 protocol Arbitrary {
   // TODO: should be a lazy generator
-  class func arbitrary() -> Array<Self>
+  class func arbitrary() -> Self[]
   // TODO: implement and use shrink()
-  func shrink() -> Array<Self>
+  func shrink() -> Self[]
 }
 
 func swiftCheck<A: Arbitrary>(f: (A -> Void)) -> Void {
@@ -26,35 +26,35 @@ func swiftCheck<A: Arbitrary>(f: (A -> Void)) -> Void {
 // instances
 
 extension Int: Arbitrary {
-  static func arbitrary() -> Array<Int> {
+  static func arbitrary() -> Int[] {
     var xs = [Int.min, 0, Int.max]
     xs.extend((-100..100))
     return xs
   }
   
-  func shrink() -> Array<Int> {
+  func shrink() -> Int[] {
     return []
   }
 }
 
 extension String: Arbitrary {
-  static func arbitrary() -> Array<String> {
+  static func arbitrary() -> String[] {
     // TODO: should have some emoji in here
     let xs = ["", "\n", "a"]
     return xs
   }
   
-  func shrink() -> Array<String> {
+  func shrink() -> String[] {
     return []
   }
 }
 
 extension Array: Arbitrary {
-  static func arbitrary() -> Array<Array<Element>> {
+  static func arbitrary() -> Element[][] {
     return []
   }
   
-  func shrink() -> Array<Array<Element>> {
+  func shrink() -> Element[][] {
     return []
   }
 }
