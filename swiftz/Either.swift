@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
+
 enum Either<L, R> {
   case Left(@auto_closure () -> L)
   case Right(@auto_closure () -> R)
