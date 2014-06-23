@@ -34,6 +34,13 @@ enum List<A> {
             return tail.value
         }
     }
+  
+    func length() -> Int {
+        switch self {
+            case .Nil: return 0
+            case let .Cons(_, xs): return 1 + xs.value.length()
+        }
+    }
 
     func find(pred: A -> Bool) -> A? {
         for x in self {

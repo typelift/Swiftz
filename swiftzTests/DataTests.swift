@@ -32,6 +32,14 @@ class DataTests: XCTestCase {
     let xs: List<Tuple2<Int, String>> = [Tuple2(a: 1, b: "one"), Tuple2(a: 2, b: "two")]
     let re: String? = xs.lookup(Refl<Tuple2<Int, String>>(), key: 1)
     XCTAssert(re! == "one")
+    
+    self.measureBlock() {
+      var lst: List<Int> = List()
+      for x: Int in (0..26000) {
+        lst = List(x, lst)
+      }
+      XCTAssert(lst.length() == 26000)
+    }
   }
   
   func testListFunctor() {
