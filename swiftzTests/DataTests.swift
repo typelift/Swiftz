@@ -171,5 +171,11 @@ class DataTests: XCTestCase {
       XCTFail("expected none")
     }
   }
+  
+  func testHList() {
+    let list: HCons<Int, HCons<String, HNil>> = HCons(h: 10, t: HCons(h: "banana", t: HNil()))
+    XCTAssert(list.head.value == 10)
+    XCTAssert(list.tail.value.head.value == "banana")
+  }
 
 }
