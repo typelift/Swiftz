@@ -54,3 +54,5 @@ import Foundation
     abort() // impossible
   }
 }
+
+// TODO: map, reverse and length
