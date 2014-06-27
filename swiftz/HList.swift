@@ -8,12 +8,15 @@
 
 import Foundation
 
+// A HList can be thought of like a tuple, but with list-like operations on the types.
+
 /* closed */ protocol HList {
   typealias Head
   typealias Tail // : HList can't show Nothing is in HList, recursive defn.
   class func isNil() -> Bool
   class func makeNil() -> Self
   class func makeCons(h: Head, t: Tail) -> Self
+  class func length() -> Int
 }
 
 @final class HCons<H, T: HList> : HList {
@@ -35,6 +38,10 @@ import Foundation
   class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
     return HCons<H, T>(h: h, t: t)
   }
+  
+  class func length() -> Int {
+    return (1 + Tail.length())
+  }
 }
 
 @final class HNil : HList {
@@ -53,6 +60,10 @@ import Foundation
   class func makeCons(h: Head, t: Tail) -> HNil {
     abort() // impossible
   }
+  
+  class func length() -> Int {
+    return 0
+  }
 }
 
-// TODO: map, reverse and length
+// TODO: map and reverse
