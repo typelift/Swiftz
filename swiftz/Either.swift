@@ -8,6 +8,8 @@
 
 import Foundation
 
+import swiftz_core
+
 enum Either<L, R> {
   case Left(@auto_closure () -> L)
   case Right(@auto_closure () -> R)

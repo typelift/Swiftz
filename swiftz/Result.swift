@@ -9,6 +9,7 @@
 // Result is similar to an Either, except the Left side is always an NSError.
 
 import Foundation
+import swiftz_core
 
 enum Result<V> {
   case Error(NSError)

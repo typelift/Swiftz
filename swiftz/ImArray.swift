@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 struct ImArray<A> : Sequence {
     let backing:A[] = Array()

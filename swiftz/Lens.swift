@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 class Lens<S, T, A, B> {
      let run: S -> IxStore<A, B, T>
@@ -57,10 +58,6 @@ func comp<S, T, I, J, A, B>(l1: Lens<S, T, I, J>)(l2: Lens<I, J, A, B>) -> Lens<
      }
 }
 
-operator infix • {
-associativity right
-}
-
 func •<S, T, I, J, A, B>(l1: Lens<S, T, I, J>, l2: Lens<I, J, A, B>) -> Lens<S, T, A, B> {
 	return Lens { v in
 		let q1 = l1.run(v)
@@ -69,3 +66,18 @@ func •<S, T, I, J, A, B>(l1: Lens<S, T, I, J>, l2: Lens<I, J, A, B>) -> Lens<S
 	}
 }
 
+// Box iso
+
+func isoBox<A, B>() -> Lens<Box<A>, Box<B>, A, B> {
+  return Lens { v in IxStore(v.value) { Box($0) } }
+}
+
+// Functor base types
+
+func isoId<A, B>() -> Lens<Id<A>, Id<B>, A, B> {
+  return Lens { v in IxStore(v.runId()) { Id($0) } }
+}
+
+func isoConst<A, B, X>() -> Lens<Const<A, X>, Const<B, X>, A, B> {
+  return Lens { v in IxStore(v.runConst()) { Const($0) } }
+}

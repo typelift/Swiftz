@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 struct NonEmptyList<A> {
   let head: Box<A>

@@ -97,6 +97,12 @@ x.flatMap({ (x: Int) -> Future<Int> in
 }).result() // sleeps another second, then returns 5
 ```
 
+Swiftz Core
+-----------
+
+Swiftz Core only contains interfaces to concepts and implementations
+for data abstractions from the standard library.
+
 Operators
 ---------
 
