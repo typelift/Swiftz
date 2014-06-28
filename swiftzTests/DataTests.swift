@@ -74,8 +74,6 @@ class DataTests: XCTestCase {
   }
   
   func testResult() {
-    // TODO: test <^>, <*> and pure
-    
     let divisionError = NSError.errorWithDomain("DivisionDomain", code: 1, userInfo: nil)
     
     func divTwoEvenly(x: Int) -> Result<Int> {
@@ -93,6 +91,11 @@ class DataTests: XCTestCase {
     XCTAssert(prettyPrinted == .Value("8"))
     XCTAssert(snd == .Error(divisionError))
     
+    let startResult: Result<Int> = pure(start)
+    XCTAssert(startResult == .Value(17))
+    let doubleResult: Result<Int -> Int> = pure({$0 * 2})
+    XCTAssert((doubleResult <*> startResult) == .Value(34), "test ap")
+
     // special constructor
     XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
     XCTAssert(Result(nil, 1) == .Value(1), "special Result cons value")
