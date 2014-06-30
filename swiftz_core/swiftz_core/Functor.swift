@@ -1,14 +1,24 @@
 //
-//  FunctorBase.swift
-//  swiftz
+//  Functor.swift
+//  swiftz_core
 //
-//  Created by Maxwell Swadling on 9/06/2014.
-//  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
+//  Created by Josh Abernathy on 6/7/2014.
+//  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
 import Foundation
 
-// instance Functor ((->) r)
+class F<A> {
+}
+
+protocol Functor {
+  typealias A
+  typealias B
+  typealias FB = F<B>
+  func fmap(fn: (A -> B)) -> FB
+}
+
+// TODO: instance Functor ((->) r)
 //class Function1<A, B>: F<A> {
 //
 //}
@@ -31,10 +41,6 @@ extension Id: Functor {
   }
 }
 
-func isoId<A, B>() -> Lens<Id<A>, Id<B>, A, B> {
-     return Lens { v in IxStore(v.runId()) { Id($0) } }
-}
-
 // instance Functor (Const m)
 class Const<B, A>: F<A> {
   let a: () -> B
@@ -50,8 +56,4 @@ extension Const: Functor {
   func fmap(fn: (A -> B)) -> Const<B, B> {
     return (Const<B, B>(self.runConst()))
   }
-}
-
-func isoConst<A, B, X>() -> Lens<Const<A, X>, Const<B, X>, A, B> {
-     return Lens { v in IxStore(v.runConst()) { Const($0) } }
 }

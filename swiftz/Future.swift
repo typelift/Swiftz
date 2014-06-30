@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 class Future<A> {
   // FIXME: Closure indirection here to work around unimplemented Swift feature.

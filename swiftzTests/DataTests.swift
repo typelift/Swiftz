@@ -8,6 +8,7 @@
 
 import XCTest
 import swiftz
+import swiftz_core
 
 class DataTests: XCTestCase {
   
@@ -24,13 +25,11 @@ class DataTests: XCTestCase {
   }
   
   func testList() {
-    let x : List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
-    let one: (Int, String) = x.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
+    let xs: List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
+    let one: (Int, String) = xs.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
     XCTAssert(one.0 == 1 && one.1 == "one")
     
-    // careful, nothing inference exists... always annotate Refl.
-    let xs: List<Tuple2<Int, String>> = [Tuple2(a: 1, b: "one"), Tuple2(a: 2, b: "two")]
-    let re: String? = xs.lookup(Refl<Tuple2<Int, String>>(), key: 1)
+    let re: String? = xs.lookup(identity, key: 1)
     XCTAssert(re! == "one")
     
     self.measureBlock() {
@@ -108,10 +107,10 @@ class DataTests: XCTestCase {
     
     let resultOne: Result<Int> = Result.Value(1)
     let eitherOne: Either<NSError, Int> = resultOne.toEither()
-    let resultAgain: Result<Int> = eitherOne.toResult(Refl())
+    let resultAgain: Result<Int> = eitherOne.toResult(identity)
     XCTAssert(resultOne == resultAgain)
     
-    let typeinfworkplz = Result.Value(1).toEither().toResult(Refl())
+    let typeinfworkplz = Result.Value(1).toEither().toResult(identity)
   }
   
   func testFunctor() {
