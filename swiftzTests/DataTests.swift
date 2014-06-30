@@ -94,7 +94,12 @@ class DataTests: XCTestCase {
     let startResult: Result<Int> = pure(start)
     XCTAssert(startResult == .Value(17))
     let doubleResult: Result<Int -> Int> = pure({$0 * 2})
-    XCTAssert((doubleResult <*> startResult) == .Value(34), "test ap")
+    XCTAssert((doubleResult <*> startResult) == .Value(34), "test ap: (result, result)")
+    let noF: Result<Int -> Int> = .Error(divisionError)
+    let noX: Result<Int> = snd
+    XCTAssert((noF <*> startResult) == .Error(divisionError), "test ap: (error, result)")
+    XCTAssert((doubleResult <*> noX) == .Error(divisionError), "test ap: (result, error)")
+    XCTAssert((noF <*> noX) == .Error(divisionError), "test ap: (error, error)")
 
     // special constructor
     XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
