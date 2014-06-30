@@ -121,7 +121,7 @@ Types with instances of these operators:
 - `Array` (non-determinism, cross product)
 - `Either` (right bias)
 - `ImArray`
-- `Set`, except `<*>`
+- `Set` (except `<*>`)
 
 *Note: these functions are not in any protocol. They are in global scope.*
 
