@@ -107,10 +107,10 @@ class DataTests: XCTestCase {
     
     let resultOne: Result<Int> = Result.Value(1)
     let eitherOne: Either<NSError, Int> = resultOne.toEither()
-    let resultAgain: Result<Int> = eitherOne.toResult(Refl())
+    let resultAgain: Result<Int> = eitherOne.toResult(identity)
     XCTAssert(resultOne == resultAgain)
     
-    let typeinfworkplz = Result.Value(1).toEither().toResult(Refl())
+    let typeinfworkplz = Result.Value(1).toEither().toResult(identity)
   }
   
   func testFunctor() {

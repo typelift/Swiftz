@@ -9,7 +9,6 @@
 // Result is similar to an Either, except the Left side is always an NSError.
 
 import Foundation
-import swiftz_core
 
 enum Result<V> {
   case Error(NSError)
@@ -25,8 +24,8 @@ enum Result<V> {
   
   func toEither() -> Either<NSError, V> {
     switch self {
-      case let Error(e): return .Left(e)
-      case let Value(v): return Either.Right(v())
+    case let Error(e): return .Left(e)
+    case let Value(v): return Either.Right(v())
     }
   }
 }
@@ -34,9 +33,9 @@ enum Result<V> {
 // Equatable
 func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   switch (lhs, rhs) {
-    case let (.Error(l), .Error(r)) where l == r: return true
-    case let (.Value(l), .Value(r)) where l() == r(): return true
-    default: return false
+  case let (.Error(l), .Error(r)) where l == r: return true
+  case let (.Value(l), .Value(r)) where l() == r(): return true
+  default: return false
   }
 }
 

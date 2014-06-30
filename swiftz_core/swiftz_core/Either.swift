@@ -8,16 +8,14 @@
 
 import Foundation
 
-import swiftz_core
-
 enum Either<L, R> {
   case Left(@auto_closure () -> L)
   case Right(@auto_closure () -> R)
   
-  func toResult<EV: TypeEquality where EV.A == L, EV.B == NSError>(ev: EV) -> Result<R> {
+  func toResult(ev: L -> NSError) -> Result<R> {
     switch self {
-      case let Left(e): return Result.Error(ev.apply(e()))
-      case let Right(v): return .Value(v())
+    case let Left(e): return Result.Error(ev(e()))
+    case let Right(v): return .Value(v())
     }
   }
 }
@@ -25,9 +23,9 @@ enum Either<L, R> {
 // Equatable
 func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   switch (lhs, rhs) {
-    case let (.Left(l), .Left(r)) where l() == r(): return true
-    case let (.Right(l), .Right(r)) where l() == r(): return true
-    default: return false
+  case let (.Left(l), .Left(r)) where l() == r(): return true
+  case let (.Right(l), .Right(r)) where l() == r(): return true
+  default: return false
   }
 }
 
