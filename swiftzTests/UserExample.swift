@@ -7,8 +7,14 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz
 import swiftz_core
+#else
+import swiftz_ios
+import swiftz_core_ios
+#endif
+
 
 // A user example
 // an example of why we need SYB, Generics or macros

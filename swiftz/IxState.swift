@@ -7,7 +7,12 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz_core
+#else
+import swiftz_core_ios
+#endif
+
 
 struct IxState<I, O, A> {
      let run: I -> (A, O)

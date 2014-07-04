@@ -7,8 +7,13 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz
 import swiftz_core
+#else
+import swiftz_ios
+import swiftz_core_ios
+#endif
 
 // shape example for SYB
 enum Shape : Dataable {

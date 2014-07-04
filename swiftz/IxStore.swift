@@ -7,7 +7,12 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz_core
+#else
+import swiftz_core_ios
+#endif
+
 
 // N.B.:  In the indexed store comonad transformer, set, put, and peek are all distinct,
 // as are puts and peeks.  The lack of distinction here is due to the lack of tranformer

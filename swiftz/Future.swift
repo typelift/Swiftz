@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz_core
+#else
+import swiftz_core_ios
+#endif
 
 class Future<A> {
   // FIXME: Closure indirection here to work around unimplemented Swift feature.
