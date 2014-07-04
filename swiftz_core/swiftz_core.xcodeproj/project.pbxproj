@@ -23,6 +23,8 @@
 		506A61F91967698A00994ADB /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9814195F0603002C0FA1 /* Comonad.swift */; };
 		506A61FA1967698A00994ADB /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9802195EFDF6002C0FA1 /* Optional.swift */; };
 		506A61FB1967698A00994ADB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9804195EFE41002C0FA1 /* Array.swift */; };
+		507A4A84196773E600F02E30 /* swiftz_core.h in Resources */ = {isa = PBXBuildFile; fileRef = 59BB97E1195EFAF2002C0FA1 /* swiftz_core.h */; };
+		507A4A85196773F000F02E30 /* swiftz_core_ios.h in Resources */ = {isa = PBXBuildFile; fileRef = 506A61D21967692800994ADB /* swiftz_core_ios.h */; };
 		59380E2519615647007B9568 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59380E2419615647007B9568 /* Either.swift */; };
 		59380E2719615657007B9568 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59380E2619615657007B9568 /* Result.swift */; };
 		59BB97E2195EFAF2002C0FA1 /* swiftz_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 59BB97E1195EFAF2002C0FA1 /* swiftz_core.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -423,6 +425,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				507A4A85196773F000F02E30 /* swiftz_core_ios.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +440,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				507A4A84196773E600F02E30 /* swiftz_core.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

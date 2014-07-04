@@ -1097,6 +1097,7 @@
 				506A622719676A8200994ADB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		506A622819676A8200994ADB /* Build configuration list for PBXNativeTarget "swiftz_iosTests" */ = {
 			isa = XCConfigurationList;
@@ -1105,6 +1106,7 @@
 				506A622A19676A8200994ADB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59F35ADA193D3A09006F1341 /* Build configuration list for PBXProject "swiftz" */ = {
 			isa = XCConfigurationList;
