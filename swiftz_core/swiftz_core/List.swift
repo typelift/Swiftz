@@ -53,7 +53,6 @@ enum List<A> {
     return nil
   }
   func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
-    // this code exploits an implicit unsafe coerce
     func pred(t: (K, V)) -> Bool {
       return t.0 == key
     }
@@ -62,19 +61,6 @@ enum List<A> {
     }
     return (({ val(ev($0)) }) <^> self.find({ pred(ev($0)) }))
   }
-  
-  // this approach is unsound.
-  //  func lookup<K: Equatable, V, EQ: TypeEquality where EQ.A == A, EQ.B == Tuple2<K, V>>(ev: EQ, key: K) -> V? {
-  //    // this code exploits an implicit unsafe coerce
-  //    func pred(t: Tuple2<K, V>) -> Bool {
-  //      return t.a == key
-  //    }
-  //    func val(t: Tuple2<K, V>) -> V {
-  //      return t.b
-  //    }
-  //    return (({ val(ev.apply($0)) }) <^> self.find({ pred(ev.apply($0)) }))
-  //  }
-  
 }
 
 func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
