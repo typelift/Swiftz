@@ -144,13 +144,6 @@
 			remoteGlobalIDString = 506A621119676A8200994ADB;
 			remoteInfo = swiftz_ios;
 		};
-		506A622B19676BC300994ADB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 506A61FC19676A5700994ADB /* swiftz_core.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 59BB97DB195EFAF2002C0FA1;
-			remoteInfo = swiftz_core;
-		};
 		506A625919676DC400994ADB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 59F35AD7193D3A09006F1341 /* Project object */;
@@ -171,6 +164,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 506A621119676A8200994ADB;
 			remoteInfo = swiftz_ios;
+		};
+		5081876119677F3B00BBDF35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 506A61FC19676A5700994ADB /* swiftz_core.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 506A61CD1967692800994ADB;
+			remoteInfo = swiftz_core_ios;
 		};
 		59F35AED193D3A0A006F1341 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -519,7 +519,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				506A622C19676BC300994ADB /* PBXTargetDependency */,
+				5081876219677F3B00BBDF35 /* PBXTargetDependency */,
 			);
 			name = swiftz_ios;
 			productName = swiftz_ios;
@@ -825,11 +825,6 @@
 			target = 506A621119676A8200994ADB /* swiftz_ios */;
 			targetProxy = 506A621E19676A8200994ADB /* PBXContainerItemProxy */;
 		};
-		506A622C19676BC300994ADB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = swiftz_core;
-			targetProxy = 506A622B19676BC300994ADB /* PBXContainerItemProxy */;
-		};
 		506A625A19676DC400994ADB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 506A621119676A8200994ADB /* swiftz_ios */;
@@ -844,6 +839,11 @@
 			isa = PBXTargetDependency;
 			target = 506A621119676A8200994ADB /* swiftz_ios */;
 			targetProxy = 506A625D19676DC600994ADB /* PBXContainerItemProxy */;
+		};
+		5081876219677F3B00BBDF35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = swiftz_core_ios;
+			targetProxy = 5081876119677F3B00BBDF35 /* PBXContainerItemProxy */;
 		};
 		59F35AEE193D3A0A006F1341 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
