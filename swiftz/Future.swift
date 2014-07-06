@@ -24,10 +24,12 @@ class Future<A> {
   let resultQueue = dispatch_queue_create("swift.future", DISPATCH_QUEUE_CONCURRENT)
 
   let execCtx: ExecutionContext // for map
-
-  init(exec: ExecutionContext, a: () -> A) {
-    dispatch_suspend(resultQueue)
-
+  init(exec: ExecutionContext) {
+    dispatch_suspend(self.resultQueue)
+    execCtx = exec
+  }
+  init(exec: ExecutionContext, _ a: () -> A) {
+    dispatch_suspend(self.resultQueue)
     execCtx = exec
     exec.submit(self, work: a)
   }
