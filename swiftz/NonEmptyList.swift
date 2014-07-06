@@ -7,7 +7,12 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz_core
+#else
+import swiftz_core_ios
+#endif
+
 
 struct NonEmptyList<A> {
   let head: Box<A>

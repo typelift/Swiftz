@@ -7,7 +7,12 @@
 //
 
 import XCTest
+#if TARGET_OS_MAC
 import swiftz
+#else
+import swiftz_ios
+#endif
+
 class ImArrayTests: XCTestCase {
     
     override func setUp() {

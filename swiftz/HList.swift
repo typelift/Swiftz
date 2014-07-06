@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if TARGET_OS_MAC
 import swiftz_core
+#else
+import swiftz_core_ios
+#endif
 
 // A HList can be thought of like a tuple, but with list-like operations on the types.
 
