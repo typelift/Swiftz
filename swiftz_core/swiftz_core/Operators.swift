@@ -26,6 +26,16 @@ operator infix <^> {
   associativity left
 }
 
+// "imap" like
+operator infix <^^> {
+associativity left
+}
+
+// "contramap" like
+operator infix <!> {
+associativity left
+}
+
 // "ap" like
 operator infix <*> {
   associativity left
@@ -34,14 +44,7 @@ operator infix <*> {
 // "bind" like
 // in the standard library, >>=
 
-operator infix <^^> {
-  associativity left
-}
-
-operator infix <!> {
-  associativity left
-}
-
+// "extend" like
 operator infix =>> {
   associativity left
 }
