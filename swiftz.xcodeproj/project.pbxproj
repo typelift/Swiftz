@@ -136,6 +136,7 @@
 		112743DF196B02DE00F7C6E3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
 		11934311194A79C400E9DDDD /* IxStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxStore.swift; sourceTree = "<group>"; };
+		11B6073D196B047100AC13D6 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		11DA49FA194908F20024F104 /* IxState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxState.swift; sourceTree = "<group>"; };
 		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
@@ -354,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				112743DF196B02DE00F7C6E3 /* README.md */,
+				11B6073D196B047100AC13D6 /* LICENSE */,
 				59853A191967F9B000A3158C /* swiftz_core.framework */,
 				59F35AE2193D3A0A006F1341 /* swiftz */,
 				59F35AEF193D3A0A006F1341 /* swiftzTests */,
