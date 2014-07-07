@@ -144,6 +144,7 @@ Implementation
 
 - `Future<A>`, `MVar<A>` and `Chan<A>` concurrency abstractions
 - `JSON` types and encode / decode protocols
+- Lenses
 - `Semigroup<A>` and `Monoid<A>` with some instances
 - `Num` protocol
 - `Either<L, R>` and `Result<V>`
