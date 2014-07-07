@@ -62,7 +62,7 @@
 		59853A3A1967F9F100A3158C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
 		59853A3B1967F9F100A3158C /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117A19439C8300A0AF82 /* Set.swift */; };
 		59853A3C1967F9F100A3158C /* ImArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE119464F39007F3829 /* ImArray.swift */; };
-		59853A3D1967F9F100A3158C /* TypeEquality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591972281952E5A0008FBC51 /* TypeEquality.swift */; };
+		59853A3D1967F9F100A3158C /* (null) in Sources */ = {isa = PBXBuildFile; };
 		59853A3E1967F9F100A3158C /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5919722D1952F2BC008FBC51 /* Tuple.swift */; };
 		59853A3F1967F9F100A3158C /* HList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5919722A1952ED9B008FBC51 /* HList.swift */; };
 		59853A401967F9F100A3158C /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2DCB919434706002ACB3E /* TupleExt.swift */; };
@@ -133,6 +133,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		112743DF196B02DE00F7C6E3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
 		11934311194A79C400E9DDDD /* IxStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxStore.swift; sourceTree = "<group>"; };
 		11DA49FA194908F20024F104 /* IxState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxState.swift; sourceTree = "<group>"; };
@@ -352,6 +353,7 @@
 		59F35AD6193D3A09006F1341 = {
 			isa = PBXGroup;
 			children = (
+				112743DF196B02DE00F7C6E3 /* README.md */,
 				59853A191967F9B000A3158C /* swiftz_core.framework */,
 				59F35AE2193D3A0A006F1341 /* swiftz */,
 				59F35AEF193D3A0A006F1341 /* swiftzTests */,
@@ -618,7 +620,7 @@
 				59853A3A1967F9F100A3158C /* JSON.swift in Sources */,
 				59853A3B1967F9F100A3158C /* Set.swift in Sources */,
 				59853A3C1967F9F100A3158C /* ImArray.swift in Sources */,
-				59853A3D1967F9F100A3158C /* TypeEquality.swift in Sources */,
+				59853A3D1967F9F100A3158C /* (null) in Sources */,
 				59853A3E1967F9F100A3158C /* Tuple.swift in Sources */,
 				59853A3F1967F9F100A3158C /* HList.swift in Sources */,
 				59853A401967F9F100A3158C /* TupleExt.swift in Sources */,
@@ -988,6 +990,7 @@
 				59853A141967F99600A3158C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59853A181967F99600A3158C /* Build configuration list for PBXNativeTarget "swiftz_iosTests" */ = {
 			isa = XCConfigurationList;
@@ -996,6 +999,7 @@
 				59853A161967F99600A3158C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59F35ADA193D3A09006F1341 /* Build configuration list for PBXProject "swiftz" */ = {
 			isa = XCConfigurationList;
