@@ -88,10 +88,8 @@ struct ImArray<A> : Sequence {
     }
     
     
-    func sort(f:(A,A) -> Bool) -> ImArray<A> {
-        var newArr = Array(backing)
-        newArr.sort(f)
-        return ImArray(array: newArr)
+    func sorted(f:(A,A) -> Bool) -> ImArray<A> {
+        return ImArray(array: Array.sorted(backing)(f))
     }
     
     func generate() -> ImArrayGenerator<A>  {
@@ -248,12 +246,10 @@ func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
   return ImArray(array:re)
 }
 
-func sort<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
-    var tmpArray = Array(a.backing)
-    return ImArray(sort(&tmpArray))
+func sorted<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
+    return ImArray(array: sorted(a.backing))
 }
 
-func sort<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
-    var tmpArray = Array(a.backing)
-    return ImArray(sort(&tmpArray, pred))
+func sorted<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
+    return ImArray(array: sorted(a.backing, pred))
 }

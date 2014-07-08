@@ -61,8 +61,8 @@ class ExtTests: XCTestCase {
   }
   
   func testArrayExt() {
-    let xsO: Optional<Int>[] = [Optional.Some(1), .Some(2), .None]
-    let exO: Int[] = mapFlatten(xsO)
+    let xsO: [Optional<Int>] = [Optional.Some(1), .Some(2), .None]
+    let exO: [Int] = mapFlatten(xsO)
     XCTAssert(exO == [1, 2], "mapflatten option")
     
     let exJ = join([[1, 2], [3, 4]])

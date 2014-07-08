@@ -75,13 +75,13 @@ class ControlTests: XCTestCase {
     
     XCTAssert((Optional<Int -> Int>.Some({ $0 + 1 }) <*> .Some(1)) == 2, "array apply")
     
-    func fs(x: Int) -> Int[] {
+    func fs(x: Int) -> [Int] {
       return [x, x+1, x+2]
     }
     let rs = xs >>= fs
     XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5], "array bind")
     
-    XCTAssert((pure(1) as Int[]) == [1], "array pure")
+    XCTAssert((pure(1) as [Int]) == [1], "array pure")
   }
   
   func testLens() {
