@@ -15,8 +15,8 @@ operator infix ∪ {}
 struct Set<A: Hashable> : Sequence {
     let bucket:Dictionary<A, Bool> = Dictionary()
     
-    var array:A[] {
-    var arr = A[]()
+    var array:[A] {
+    var arr = [A]()
         for (key, _) in bucket {
             arr += key
         }
@@ -39,7 +39,7 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    init(array:A[]) {
+    init(array:[A]) {
         for obj in array {
             bucket[obj] = true
         }
@@ -81,7 +81,7 @@ struct Set<A: Hashable> : Sequence {
     }
     
     func intersect(set:Set<A>) -> Set<A> {
-        var array:A[] = Array()
+        var array:[A] = Array()
         for x in self {
             if let memb = set.member(x) {
                 array += memb
@@ -91,7 +91,7 @@ struct Set<A: Hashable> : Sequence {
     }
     
     func minus(set:Set<A>) -> Set<A> {
-        var array:A[] = Array()
+        var array:[A] = Array()
         for x in self {
             if !set.contains(x) {
                 array += x
@@ -127,7 +127,7 @@ struct Set<A: Hashable> : Sequence {
     }
     
     func map<B>(f:(A -> B)) -> Set<B> {
-        var array:B[] = Array()
+        var array:[B] = Array()
         for x in self {
             array += f(x)
         }

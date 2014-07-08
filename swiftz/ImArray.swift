@@ -10,9 +10,9 @@ import Foundation
 import swiftz_core
 
 struct ImArray<A> : Sequence {
-    let backing:A[] = Array()
+    let backing:[A] = Array()
     
-    var array:A[] {
+    var array:[A] {
     return Array(backing)
     }
     
@@ -38,7 +38,7 @@ struct ImArray<A> : Sequence {
         backing = Array(items)
     }
     
-    init(array:A[]) {
+    init(array:[A]) {
         backing = Array(array)
     }
     
@@ -52,7 +52,7 @@ struct ImArray<A> : Sequence {
         return ImArray(array: arr)
     }
     
-    func join(array:A[]) -> ImArray<A> {
+    func join(array:[A]) -> ImArray<A> {
         switch array {
         case []: return self
         case _: var newArr = Array(backing)
@@ -186,7 +186,7 @@ extension ImArray {
     }
     
     func intersperse(item:A) -> ImArray<A> {
-        func prependAll(item:A, array:A[]) -> A[] {
+        func prependAll(item:A, array:[A]) -> [A] {
             var arr = Array([item])
             for i in 0..(array.count - 1) {
                 arr += array[i]

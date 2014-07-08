@@ -11,7 +11,7 @@ protocol Semigroup {
   func op(x: M, y: M) -> M
 }
 
-func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: M[]) -> M {
+func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: [M]) -> M {
   return (t.reduce(h) { s.op($0, y: $1) })
 }
 

@@ -77,7 +77,7 @@ func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 extension List : ArrayLiteralConvertible {
   static func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> List<A> {
     // For some reason, everything simpler seems to crash the compiler
-    var xs : A[] = []
+    var xs : [A] = []
     var g = s.generate()
     while let x : A = g.next() {
       xs += x

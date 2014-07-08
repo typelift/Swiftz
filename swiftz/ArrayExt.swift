@@ -1,3 +1,4 @@
+
 //
 //  ArrayExt.swift
 //  swiftz
@@ -13,7 +14,7 @@ extension Array {
      }
 }
 
-func mapFlatten<A>(xs: A?[]) -> A[] {
+func mapFlatten<A>(xs: [A?]) -> [A] {
   var w = A[]()
   for c in xs {
     if let x = c {
@@ -25,7 +26,7 @@ func mapFlatten<A>(xs: A?[]) -> A[] {
   return w
 }
 
-func join<A>(xs: A[][]) -> A[] {
+func join<A>(xs: [[A]]) -> [A] {
   var w = A[]()
   for x in xs {
     for e in x {
@@ -35,7 +36,7 @@ func join<A>(xs: A[][]) -> A[] {
   return w
 }
 
-func indexArray<A>(xs: A[], i: Int) -> A? {
+func indexArray<A>(xs: [A], i: Int) -> A? {
   if i < xs.count && i >= 0 {
     return xs[i]
   } else {
