@@ -29,7 +29,7 @@ func swiftCheck<A: Arbitrary>(f: (A -> Void)) -> Void {
 extension Int: Arbitrary {
   static func arbitrary() -> [Int] {
     var xs = [Int.min, 0, Int.max]
-    xs.extend((-100..100))
+    xs.extend((-100..<100))
     return xs
   }
   
