@@ -13,26 +13,26 @@ import Foundation
 class Chan<A> {
   var stream: A[]
   
-  var mutex: CMutablePointer<pthread_mutex_t>
-  var cond: CMutablePointer<pthread_cond_t>
-  let matt: CConstPointer<pthread_mutexattr_t>
+  var mutex: UnsafePointer<pthread_mutex_t>
+  var cond: UnsafePointer<pthread_cond_t>
+  let matt: UnsafePointer<pthread_mutexattr_t>
   
   init() {
-    var mattr:CMutablePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
+    var mattr:UnsafePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
     cond = UnsafePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
-    matt = CConstPointer(nil, mattr.value)
+    matt = UnsafePointer(mattr.value)
     pthread_mutex_init(mutex, matt)
     pthread_cond_init(cond, nil)
     stream = []
   }
   
   deinit {
-    UnsafePointer(mutex).destroy()
-    UnsafePointer(cond).destroy()
-    UnsafePointer(matt).destroy()
+    mutex.destroy()
+    cond.destroy()
+    matt.destroy()
   }
   
   func write(a: A) {
