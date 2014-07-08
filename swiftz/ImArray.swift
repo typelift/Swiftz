@@ -249,9 +249,11 @@ func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
 }
 
 func sort<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
-    return ImArray(array: sort(a.backing.copy()))
+    var tmpArray = Array(a.backing)
+    return ImArray(sort(&tmpArray))
 }
 
 func sort<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
-    return ImArray(array: sort(a.backing.copy(), pred))
+    var tmpArray = Array(a.backing)
+    return ImArray(sort(&tmpArray, pred))
 }
