@@ -69,7 +69,7 @@ class ExtTests: XCTestCase {
     XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
     
     XCTAssert(indexArray([1], 0) == 1, "index array 0")
-    XCTAssert(indexArray(Int[](), 0) == nil, "index array empty")
+    XCTAssert(indexArray([Int](), 0) == nil, "index array empty")
   }
   
   func testStringExt() {
