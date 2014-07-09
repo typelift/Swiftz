@@ -760,6 +760,7 @@
 				598539F21967F95C00A3158C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		598539F61967F95C00A3158C /* Build configuration list for PBXNativeTarget "swiftz_core_iosTests" */ = {
 			isa = XCConfigurationList;
@@ -768,6 +769,7 @@
 				598539F41967F95C00A3158C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59BB97D6195EFAF2002C0FA1 /* Build configuration list for PBXProject "swiftz_core" */ = {
 			isa = XCConfigurationList;
