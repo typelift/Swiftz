@@ -14,19 +14,19 @@ import Foundation
 class MVar<A> {
   var value: Optional<(() -> A)>
   
-  var mutex: CMutablePointer<pthread_mutex_t>
-  var condPut: CMutablePointer<pthread_cond_t>
-  var condRead: CMutablePointer<pthread_cond_t>
-  let matt: CConstPointer<pthread_mutexattr_t>
+  var mutex: UnsafePointer<pthread_mutex_t>
+  var condPut: UnsafePointer<pthread_cond_t>
+  var condRead: UnsafePointer<pthread_cond_t>
+  let matt: UnsafePointer<pthread_mutexattr_t>
   
   init() {
-    var mattr:CMutablePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
+    var mattr:UnsafePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
     condPut = UnsafePointer.alloc(sizeof(pthread_cond_t))
     condRead = UnsafePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
-    matt = CConstPointer(nil, mattr.value)
+    matt = UnsafePointer(mattr.value)
     pthread_mutex_init(mutex, matt)
     pthread_cond_init(condPut, nil)
     pthread_cond_init(condRead, nil)
@@ -38,10 +38,10 @@ class MVar<A> {
   }
   
   deinit {
-    UnsafePointer(mutex).destroy()
-    UnsafePointer(condPut).destroy()
-    UnsafePointer(condRead).destroy()
-    UnsafePointer(matt).destroy()
+    mutex.destroy()
+    condPut.destroy()
+    condRead.destroy()
+    matt.destroy()
   }
   
   func put(x: A) {pthread_mutex_lock(mutex)

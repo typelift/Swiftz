@@ -21,11 +21,11 @@ class TestTests: XCTestCase {
   }
   
   func testTestingSwiftCheck() {
-    func prop_reverseLen(xs: Int[]) {
+    func prop_reverseLen(xs: [Int]) {
       XCTAssert(xs.reverse().count == xs.count)
     }
     
-    func prop_reverseReverse(xs: Int[]) {
+    func prop_reverseReverse(xs: [Int]) {
       XCTAssert(xs.reverse().reverse() == xs)
     }
     

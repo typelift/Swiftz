@@ -10,9 +10,9 @@ import Foundation
 import swiftz_core
 
 struct ImArray<A> : Sequence {
-    let backing:A[] = Array()
+    let backing:[A] = Array()
     
-    var array:A[] {
+    var array:[A] {
     return Array(backing)
     }
     
@@ -38,7 +38,7 @@ struct ImArray<A> : Sequence {
         backing = Array(items)
     }
     
-    init(array:A[]) {
+    init(array:[A]) {
         backing = Array(array)
     }
     
@@ -52,7 +52,7 @@ struct ImArray<A> : Sequence {
         return ImArray(array: arr)
     }
     
-    func join(array:A[]) -> ImArray<A> {
+    func join(array:[A]) -> ImArray<A> {
         switch array {
         case []: return self
         case _: var newArr = Array(backing)
@@ -88,15 +88,13 @@ struct ImArray<A> : Sequence {
     }
     
     
-    func sort(f:(A,A) -> Bool) -> ImArray<A> {
-        var newArr = Array(backing)
-        newArr.sort(f)
-        return ImArray(array: newArr)
+    func sorted(f:(A,A) -> Bool) -> ImArray<A> {
+        return ImArray(array: Array.sorted(backing)(f))
     }
     
     func generate() -> ImArrayGenerator<A>  {
         let items = Array(backing)
-        return ImArrayGenerator(items: items[0..items.count])
+        return ImArrayGenerator(items: items[0..<items.count])
     }
 }
 
@@ -104,7 +102,7 @@ struct ImArrayGenerator<A> : Generator {
     mutating func next() -> A?  {
         if items.isEmpty { return nil }
         let ret = items[0]
-        items = items[1..items.count]
+        items = items[1..<items.count]
         return ret
     }
     
@@ -122,7 +120,7 @@ extension ImArray {
         if self.isEmpty {
             return ImArray<B>(array: [])
         }
-        var arr = B[]()
+        var arr = [B]()
         arr += start
         var reduced = start
         for x in self {
@@ -180,15 +178,15 @@ extension ImArray {
     
     func splitAt(index:Int) -> (ImArray<A>, ImArray<A>) {
         switch index {
-        case 0..self.count: return (ImArray(array:self[0..index].array), ImArray(array:self[index..self.count].array))
+        case 0..<self.count: return (ImArray(array:self[0..<index].array), ImArray(array:self[index..<self.count].array))
         case _:return (ImArray<A>(), ImArray<A>())
         }
     }
     
     func intersperse(item:A) -> ImArray<A> {
-        func prependAll(item:A, array:A[]) -> A[] {
+        func prependAll(item:A, array:[A]) -> [A] {
             var arr = Array([item])
-            for i in 0..(array.count - 1) {
+            for i in 0..<(array.count - 1) {
                 arr += array[i]
                 arr += item
             }
@@ -201,7 +199,7 @@ extension ImArray {
             return self
         } else {
             var array = Array([self[0]])
-            array += prependAll(item, Array(self[1..self.count]))
+            array += prependAll(item, Array(self[1..<self.count]))
             return ImArray(array:array)
         }
         
@@ -231,7 +229,7 @@ func<^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
 }
 
 func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
-  var re = B[]()
+  var re = [B]()
   for g in f {
     for h in a {
       re.append(g(h))
@@ -241,17 +239,17 @@ func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
 }
 
 func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
-  var re = B[]()
+  var re = [B]()
   for x in a {
     re.extend(f(x))
   }
   return ImArray(array:re)
 }
 
-func sort<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
-    return ImArray(array: sort(a.backing.copy()))
+func sorted<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
+    return ImArray(array: sorted(a.backing))
 }
 
-func sort<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
-    return ImArray(array: sort(a.backing.copy(), pred))
+func sorted<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
+    return ImArray(array: sorted(a.backing, pred))
 }

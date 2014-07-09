@@ -34,7 +34,7 @@ class DataTests: XCTestCase {
     
     self.measureBlock() {
       var lst: List<Int> = List()
-      for x: Int in (0..26000) {
+      for x: Int in (0..<26000) {
         lst = List(x, lst)
       }
       XCTAssert(lst.length() == 26000)
@@ -153,7 +153,7 @@ class DataTests: XCTestCase {
   }
   
   func testDataMonoid() {
-    let xs: Int8[] = [1, 2, 0, 3, 4]
+    let xs: [Int8] = [1, 2, 0, 3, 4]
     XCTAssert(mconcat(Sum    <Int8, NInt8>(i: { return nint8 }), xs) == 10, "monoid sum works")
     XCTAssert(mconcat(Product<Int8, NInt8>(i: { return nint8 }), xs) == 0, "monoid product works")
   }
@@ -186,5 +186,5 @@ class DataTests: XCTestCase {
     XCTAssert(list.tail.value.head.value == "banana")
     XCTAssert(AList.length() == 2)
   }
-
+  
 }

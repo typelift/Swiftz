@@ -1,3 +1,4 @@
+
 //
 //  SwiftCheck.swift
 //  swiftz
@@ -12,9 +13,9 @@ import Foundation
 
 protocol Arbitrary {
   // TODO: should be a lazy generator
-  class func arbitrary() -> Self[]
+  class func arbitrary() -> [Self]
   // TODO: implement and use shrink()
-  func shrink() -> Self[]
+  func shrink() -> [Self]
 }
 
 func swiftCheck<A: Arbitrary>(f: (A -> Void)) -> Void {
@@ -26,35 +27,35 @@ func swiftCheck<A: Arbitrary>(f: (A -> Void)) -> Void {
 // instances
 
 extension Int: Arbitrary {
-  static func arbitrary() -> Int[] {
+  static func arbitrary() -> [Int] {
     var xs = [Int.min, 0, Int.max]
-    xs.extend((-100..100))
+    xs.extend((-100..<100))
     return xs
   }
   
-  func shrink() -> Int[] {
+  func shrink() -> [Int] {
     return []
   }
 }
 
 extension String: Arbitrary {
-  static func arbitrary() -> String[] {
+  static func arbitrary() -> [String] {
     // TODO: should have some emoji in here
     let xs = ["", "\n", "a"]
     return xs
   }
   
-  func shrink() -> String[] {
+  func shrink() -> [String] {
     return []
   }
 }
 
 extension Array: Arbitrary {
-  static func arbitrary() -> Element[][] {
+  static func arbitrary() -> [[Element]] {
     return []
   }
   
-  func shrink() -> Element[][] {
+  func shrink() -> [[Element]] {
     return []
   }
 }

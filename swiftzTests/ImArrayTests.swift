@@ -46,7 +46,7 @@ class ImArrayTests: XCTestCase {
     
     func testSort() {
         let withArray = ImArray(array: [0,5,1000,-45, 10,1])
-        let sorted = withArray.sort(<)
+        let sorted = withArray.sorted(<=)
         
         XCTAssert(sorted == ImArray(items: -45,0,1,5,10,1000), "Should be equal")
         XCTAssert(withArray == ImArray(array: [0,5,1000,-45, 10,1]), "Should be equal(immutablility test)")
@@ -93,27 +93,26 @@ class ImArrayTests: XCTestCase {
     }
   
     func testBuiltInArraySort() {
-        var a = [3,2,1]
-        var b = sort(a)
-        // XCTAssert(a == [3,2,1], "Should be unalterred") // rdar://?? Currently fails (Swift bug)
-        XCTAssert(a != [3,2,1], "Swift bug may be fixed. Update tests and workarounds")
-        var c = [3,2,1]
-        var d = sort(c.copy())
+        let a = [3,2,1]
+        let b = a.sorted(<=)
+        XCTAssert(a == [3,2,1], "Should be unalterred")
+        let c = [3,2,1]
+        let d = sorted(c)
         XCTAssert(c == [3,2,1], "Should be unalterred")
         XCTAssert(d == [1,2,3], "Should be sorted")
         XCTAssert(b == [1,2,3], "Should be sorted")
     }
     
     func testImArraySort() {
-        var a = ImArray(items: 3,2,1)
-        var b = sort(a)
+        let a = ImArray(items: 3,2,1)
+        let b = a.sorted(<=)
         XCTAssert(a == ImArray(items: 3,2,1), "Should be unalterred")
         XCTAssert(b == ImArray(items: 1,2,3), "Should be sorted")
     }
     
     func testImArraySortPred() {
-        var a = ImArray(items: 1,2,3)
-        var b = sort(a) { $0 > $1 }
+        let a = ImArray(items: 1,2,3)
+        let b = a.sorted { $0 > $1 }
         XCTAssert(a == ImArray(items: 1,2,3), "Should be unalterred")
         XCTAssert(b == ImArray(items: 3,2,1), "Should be sorted in reverse")
     }

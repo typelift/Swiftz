@@ -10,7 +10,7 @@ protocol Monoid: Semigroup {
   func mzero() -> M
 }
 
-func mconcat<M, S: Monoid where S.M == M>(s: S, t: M[]) -> M {
+func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
   return (t.reduce(s.mzero()) { s.op($0, y: $1) })
 }
 

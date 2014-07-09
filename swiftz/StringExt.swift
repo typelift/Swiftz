@@ -9,8 +9,8 @@
 import Foundation
 
 extension String {
-  func lines() -> String[] {
-    var xs: String[] = []
+  func lines() -> [String] {
+    var xs: [String] = []
     var line: String = ""
     // loop school
     for x in self {
@@ -27,12 +27,12 @@ extension String {
     return xs
   }
   
-  static func unlines(xs: String[]) -> String {
+  static func unlines(xs: [String]) -> String {
     return xs.reduce("", combine: { "\($0)\($1)\n" } )
   }
 
   // actually an isomorphism
-  static func lines() -> Lens<String, String, String[], String[]> {
+  static func lines() -> Lens<String, String, [String], [String]> {
      return Lens { str in IxStore(str.lines(), self.unlines) }
   }
 }

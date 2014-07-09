@@ -33,7 +33,7 @@ func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
 extension NonEmptyList : ArrayLiteralConvertible {
   static func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> NonEmptyList<A> {
     // what compiler stage does this run in...?...
-    var xs : A[] = []
+    var xs : [A] = []
     var g = s.generate()
     let h: A? = g.next()
     while let x : A = g.next() {
