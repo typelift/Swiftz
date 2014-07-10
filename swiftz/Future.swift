@@ -10,9 +10,7 @@ import Foundation
 import swiftz_core
 
 class Future<A> {
-  // FIXME: Closure indirection here to work around unimplemented Swift feature.
-  // If this is A?, then clang complains "error: unimplemented IR generation feature non-fixed class layout"
-  var value: Optional<Box<A>>
+  var value: A?
 
   // The resultQueue is used to read the result. It begins suspended
   // and is resumed once a result exists.
@@ -32,14 +30,14 @@ class Future<A> {
 
   func sig(x: A) {
     assert(!self.value, "Future cannot complete more than once")
-    self.value = Box(x)
+    self.value = x
     dispatch_resume(self.resultQueue)
   }
 
   func result() -> A {
     var result : A? = nil
     dispatch_sync(resultQueue, {
-      result = self.value!.value
+      result = self.value!
       })
     return result!
   }

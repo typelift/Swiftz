@@ -10,11 +10,10 @@ import Foundation
 import swiftz_core
 
 class Maybe<A: Any>: F<A> {
-	// Hack to get around IR codegen bug
-	var value: Box<A>?
+	var value: A?
 
 	init(_ v: A) {
-		value = Box(v)
+		value = v
 	}
 
 	init() {}
@@ -39,7 +38,7 @@ class Maybe<A: Any>: F<A> {
 	}
 
 	func fromJust() -> A {
-		return self.value!.value
+		return self.value!
 	}
 }
 
