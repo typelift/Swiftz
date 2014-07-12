@@ -19,6 +19,12 @@ func identity<A>(a: A) -> A {
 func flip<A, B, C>(f: ((A, B) -> C), b: B, a: A) -> C {
   return f(a, b)
 }
+func flip<A, B, C>(f: (A, B) -> C)(b: B, a: A) -> C {
+  return f(a, b)
+}
+func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
+  return f(a)(b)
+}
 
 // Function composition. Alt + 8
 func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
