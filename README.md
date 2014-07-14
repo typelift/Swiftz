@@ -11,7 +11,7 @@ Examples
 **Data abstractions:**
 
 ```swift
-let xs = [1, 2, 0, 3, 4]
+let xs: [Int8] = [1, 2, 0, 3, 4]
 
 // we can use the Min semigroup to find the minimal element in xs
 sconcat(Min(), 2, xs) // 0
@@ -121,6 +121,7 @@ Types with instances of these operators:
 - `Optional`
 - `Array` (non-determinism, cross product)
 - `Either` (right bias)
+- `Result`
 - `ImArray`
 - `Set` (except `<*>`)
 
