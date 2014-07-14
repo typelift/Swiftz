@@ -14,8 +14,10 @@
   }
   
   var value: T {
-    get {
-      return _value()
-    }
+    return _value()
+  }
+  
+  func map<U>(fn: T -> U) -> Box<U> {
+    return Box<U>(fn(value)) // TODO: file rdar, type inf fails without <U>
   }
 }

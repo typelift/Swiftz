@@ -56,11 +56,16 @@ class DataTests: XCTestCase {
   func testEither() {
     func divTwoEvenly(x: Int) -> Either<String, Int> {
       if x % 2 == 0 {
-        return .Left("\(x) was div by 2")
+        return Either.left("\(x) was div by 2")
       } else {
-        return .Right(x / 2)
+        return Either.right(x / 2)
       }
     }
+    
+    
+    // fold
+    XCTAssert(Either.left("foo").fold(0, identity) == 0)
+    XCTAssert(Either<String, Int>.right(10).fold(0, identity) == 10)
     
     // TODO: test <^>, <*> and pure
     
@@ -68,8 +73,8 @@ class DataTests: XCTestCase {
     let first: Either<String, Int> = divTwoEvenly(start)
     let prettyPrinted: Either<String, String> = { $0.description } <^> first
     let snd = first >>= divTwoEvenly
-    XCTAssert(prettyPrinted == .Right("8"))
-    XCTAssert(snd == .Left("8 was div by 2"))
+    XCTAssert(prettyPrinted == Either.right("8"))
+    XCTAssert(snd == Either.left("8 was div by 2"))
   }
   
   func testResult() {
@@ -77,23 +82,27 @@ class DataTests: XCTestCase {
     
     func divTwoEvenly(x: Int) -> Result<Int> {
       if x % 2 == 0 {
-        return .Error(divisionError)
+        return Result.error(divisionError)
       } else {
-        return .Value(x / 2)
+        return Result.value(x / 2)
       }
     }
+    
+    // fold
+    XCTAssert(Result.error(divisionError).fold(0, identity) == 0)
+    XCTAssert(Result.value(10).fold(0, identity) == 10)
     
     let start = 17
     let first: Result<Int> = divTwoEvenly(start)
     let prettyPrinted: Result<String> = { $0.description } <^> first
     let snd = first >>= divTwoEvenly
-    XCTAssert(prettyPrinted == .Value("8"))
+    XCTAssert(prettyPrinted == Result.value("8"))
     XCTAssert(snd == .Error(divisionError))
     
     let startResult: Result<Int> = pure(start)
-    XCTAssert(startResult == .Value(17))
+    XCTAssert(startResult == Result.value(17))
     let doubleResult: Result<Int -> Int> = pure({$0 * 2})
-    XCTAssert((doubleResult <*> startResult) == .Value(34), "test ap: (result, result)")
+    XCTAssert((doubleResult <*> startResult) == Result.value(34), "test ap: (result, result)")
     let noF: Result<Int -> Int> = .Error(divisionError)
     let noX: Result<Int> = snd
     XCTAssert((noF <*> startResult) == .Error(divisionError), "test ap: (error, result)")
@@ -102,7 +111,7 @@ class DataTests: XCTestCase {
 
     // special constructor
     XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
-    XCTAssert(Result(nil, 1) == .Value(1), "special Result cons value")
+    XCTAssert(Result(nil, 1) == Result.value(1), "special Result cons value")
   }
   
   func testEitherResult() {
@@ -110,12 +119,12 @@ class DataTests: XCTestCase {
     // - either -> result
     // - result -> either
     
-    let resultOne: Result<Int> = Result.Value(1)
+    let resultOne: Result<Int> = Result.value(1)
     let eitherOne: Either<NSError, Int> = resultOne.toEither()
     let resultAgain: Result<Int> = eitherOne.toResult(identity)
     XCTAssert(resultOne == resultAgain)
     
-    let typeinfworkplz = Result.Value(1).toEither().toResult(identity)
+    let typeinfworkplz = Result.Value(Box(1)).toEither().toResult(identity)
   }
   
   func testFunctor() {
