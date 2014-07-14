@@ -36,6 +36,10 @@ enum Result<V> {
     }
   }
   
+  func flatMap<S>(fn: V -> Result<S>) -> Result<S> {
+    return self >>= fn
+  }
+  
   static func error(e: NSError) -> Result<V> {
     return .Error(e)
   }

@@ -26,6 +26,10 @@ enum Either<L, R> {
     }
   }
   
+  func flatMap<S>(fn: R -> Either<L, S>) -> Either<L, S> {
+    return self >>= fn
+  }
+  
   static func left(l: L) -> Either<L, R> {
     return .Left(Box(l))
   }
