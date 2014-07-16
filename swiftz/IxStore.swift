@@ -67,15 +67,15 @@ func extract<I, A>(a: IxStore<I, I, A>) -> A {
      return a.set(a.pos)
 }
 
-func <^><O, I, A, B>(f: A -> B, a: IxStore<O, I, A>) -> IxStore<O, I, B> {
+@infix func <^><O, I, A, B>(f: A -> B, a: IxStore<O, I, A>) -> IxStore<O, I, B> {
      return IxStore(a.pos) { f(a.set($0)) }
 }
 
-func<^^><O, P, I, A>(f: O -> P, a: IxStore<O, I, A>) -> IxStore<P, I, A> {
+@infix func<^^><O, P, I, A>(f: O -> P, a: IxStore<O, I, A>) -> IxStore<P, I, A> {
      return IxStore(f(a.pos), a.set)
 }
 
-func <!><O, H, I, A>(f: H -> I, a: IxStore<O, I, A>) -> IxStore<O, H, A> {
+@infix func <!><O, H, I, A>(f: H -> I, a: IxStore<O, I, A>) -> IxStore<O, H, A> {
      return IxStore(a.pos) { a.set(f($0)) }
 }
 
@@ -83,7 +83,7 @@ func duplicate<O, J, I, A>(a: IxStore<O, I, A>) -> IxStore<O, J, IxStore<J, I, A
      return IxStore(a.pos) { IxStore($0, a.set) }
 }
 
-func =>><O, J, I, A, B>(a: IxStore<O, I, A>, f: IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
+@infix func =>><O, J, I, A, B>(a: IxStore<O, I, A>, f: IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
      return IxStore(a.pos) { f(IxStore($0, a.set)) }
 }
 

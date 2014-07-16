@@ -170,15 +170,15 @@ extension Set : ArrayLiteralConvertible {
     }
 }
 
-func ==<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
+@infix func ==<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
     return lhs.bucket == rhs.bucket
 }
 
-func !=<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
+@infix func !=<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
     return lhs.bucket != rhs.bucket
 }
 
-func +=<A>(set:Set<A>, item:A) -> Set<A> {
+@infix func +=<A>(set:Set<A>, item:A) -> Set<A> {
     if set.contains(item) {
         return set
     } else {
@@ -188,15 +188,15 @@ func +=<A>(set:Set<A>, item:A) -> Set<A> {
     }
 }
 
-func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+@infix func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.minus(rhs)
 }
 
-func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+@infix func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.intersect(rhs)
 }
 
-func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+@infix func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.union(rhs)
 }
 
@@ -206,17 +206,17 @@ func pure<A>(a:A) -> Set<A> {
   return Set(items: a)
 }
 
-func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+@infix func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
   return set.map(f)
 }
 
 // Can't do applicative on a Set currently
-//func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
+//@infix func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
 //
 //    return Set<B>()
 //}
 
-func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+@infix func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
   var se = [B]()
   for x in a {
     se.extend(f(x))

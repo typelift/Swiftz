@@ -26,7 +26,7 @@ func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
      return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
 }
 
-func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+@infix func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
   return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
 }
 

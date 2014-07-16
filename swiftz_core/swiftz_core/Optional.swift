@@ -14,7 +14,7 @@ func pure<A>(a: A) -> A? {
   return a
 }
 
-func <^><A, B>(f: A -> B, a: A?) -> B? {
+@infix func <^><A, B>(f: A -> B, a: A?) -> B? {
   if let x = a {
     return (f(x))
   } else {
@@ -22,7 +22,7 @@ func <^><A, B>(f: A -> B, a: A?) -> B? {
   }
 }
 
-func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
+@infix func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
   if f && a {
     return (f!(a!))
   } else {
@@ -32,7 +32,7 @@ func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
 
 // the "if the arg is Some, apply the function that returns an optional
 // value and if the arg is None, just return None" function.
-func >>=<A, B>(a: A?, f: A -> B?) -> B? {
+@infix func >>=<A, B>(a: A?, f: A -> B?) -> B? {
   if let x = a {
     return f(x)
   } else {

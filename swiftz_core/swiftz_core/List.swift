@@ -63,7 +63,7 @@ enum List<A> {
   }
 }
 
-func==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+@infix func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
   switch (lhs, rhs) {
   case (.Nil, .Nil):
     return true

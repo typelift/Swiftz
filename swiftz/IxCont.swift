@@ -45,23 +45,23 @@ func pure<R, A>(x: A) -> IxCont<R, R, A> {
   return IxCont { $0(x) }
 }
 
-func <^><R, O, A, B>(f: A -> B, a: IxCont<R, O, A>) -> IxCont<R, O, B> {
+@infix func <^><R, O, A, B>(f: A -> B, a: IxCont<R, O, A>) -> IxCont<R, O, B> {
   return IxCont { k in a.run { k(f($0)) } }
 }
 
-func <^^><R, S, O, A>(f: R -> S, a: IxCont<R, O, A>) -> IxCont<S, O, A> {
+@infix func <^^><R, S, O, A>(f: R -> S, a: IxCont<R, O, A>) -> IxCont<S, O, A> {
   return IxCont { f(a.run($0)) }
 }
 
-func <!><R, N, O, A>(f: N -> O, a: IxCont<R, O, A>) -> IxCont<R, N, A> {
+@infix func <!><R, N, O, A>(f: N -> O, a: IxCont<R, O, A>) -> IxCont<R, N, A> {
   return IxCont { k in a.run { f(k($0)) } }
 }
 
-func <*><R, I, O, A, B>(f: IxCont<R, I, A -> B>, a: IxCont<I, O, A>) -> IxCont<R, O, B> {
+@infix func <*><R, I, O, A, B>(f: IxCont<R, I, A -> B>, a: IxCont<I, O, A>) -> IxCont<R, O, B> {
   return IxCont { k in f.run { g in a.run { k(g($0)) } } }
 }
 
-func >>=<R, I, O, A, B>(a: IxCont<R, I, A>, f: A -> IxCont<I, O, B>) -> IxCont<R, O, B> {
+@infix func >>=<R, I, O, A, B>(a: IxCont<R, I, A>, f: A -> IxCont<I, O, B>) -> IxCont<R, O, B> {
   return IxCont { k in a.run { f($0).run(k) } }
 }
 
