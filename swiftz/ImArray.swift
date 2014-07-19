@@ -206,15 +206,15 @@ extension ImArray {
     }
 }
 
-func ==<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+@infix func ==<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return lhs.array == rhs.array
 }
 
-func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+@infix func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return !(lhs.array == rhs.array)
 }
 
-func +=<A>(lhs:ImArray<A>, rhs:A) -> ImArray<A> {
+@infix func +=<A>(lhs:ImArray<A>, rhs:A) -> ImArray<A> {
     return lhs.append(rhs)
 }
 
@@ -224,11 +224,11 @@ func pure<A>(a:A) -> ImArray<A> {
   return ImArray(item:a)
 }
 
-func<^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
+@infix func <^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
   return a.map(f)
 }
 
-func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
+@infix func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
   var re = [B]()
   for g in f {
     for h in a {
@@ -238,7 +238,7 @@ func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
   return ImArray(array:re)
 }
 
-func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
+@infix func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
   var re = [B]()
   for x in a {
     re.extend(f(x))

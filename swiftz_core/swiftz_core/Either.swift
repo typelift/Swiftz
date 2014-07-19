@@ -40,7 +40,7 @@ enum Either<L, R> {
 }
 
 // Equatable
-func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+@infix func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   switch (lhs, rhs) {
     case let (.Left(l), .Left(r)) where l.value == r.value: return true
     case let (.Right(l), .Right(r)) where l.value == r.value: return true
@@ -48,7 +48,7 @@ func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Boo
   }
 }
 
-func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+@infix func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   return !(lhs == rhs)
 }
 
@@ -58,14 +58,14 @@ func pure<L, R>(a: R) -> Either<L, R> {
   return .Right(Box(a))
 }
 
-func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
+@infix func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): return Either<L, RB>.Right(Box(f(r.value)))
   }
 }
 
-func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
+@infix func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): switch f {
@@ -75,7 +75,7 @@ func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
     }
 }
 
-func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
+@infix func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): return f(r.value)

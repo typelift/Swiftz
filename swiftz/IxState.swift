@@ -49,25 +49,25 @@ func pure<I, A>(x: A) -> IxState<I, I, A> {
      return IxState { (x, $0) }
 }
 
-func <^><I, O, A, B>(f: A -> B, a: IxState<I, O, A>) -> IxState<I, O, B> {
+@infix func <^><I, O, A, B>(f: A -> B, a: IxState<I, O, A>) -> IxState<I, O, B> {
      return IxState { s1 in
           let (x, s2) = a.run(s1)
           return (f(x), s2)
      }
 }
 
-func <!><H, I, O, A>(f: H -> I, a: IxState<I, O, A>) -> IxState<H, O, A> {
+@infix func <!><H, I, O, A>(f: H -> I, a: IxState<I, O, A>) -> IxState<H, O, A> {
      return IxState { a.run(f($0)) }
 }
 
-func <^^><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
+@infix func <^^><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
      return IxState { s1 in
           let (x, s2) = a.run(s1)
           return (x, f(s2))
      }
 }
 
-//func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
+//@infix func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
 //     return IxState { s1 in
 //          let (g, s2) = f.run(s1)
 //          let (x, s3) = a.run(s2)
@@ -75,7 +75,7 @@ func <^^><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
 //     }
 //}
 
-func >>=<I, J, O, A, B>(a: IxState<I, J, A>, f: A -> IxState<J, O, B>) -> IxState<I, O, B> {
+@infix func >>=<I, J, O, A, B>(a: IxState<I, J, A>, f: A -> IxState<J, O, B>) -> IxState<I, O, B> {
      return IxState { s1 in
           let (x, s2) = a.run(s1)
           return f(x).run(s2)

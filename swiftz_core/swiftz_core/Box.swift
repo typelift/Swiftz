@@ -21,3 +21,7 @@
     return Box<U>(fn(value)) // TODO: file rdar, type inf fails without <U>
   }
 }
+
+@infix func <^><T, U>(fn: T -> U, x: Box<T>) -> Box<U> {
+  return x.map(fn)
+}

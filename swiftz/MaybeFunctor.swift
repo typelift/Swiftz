@@ -48,7 +48,7 @@ extension Maybe: LogicValue {
 	}
 }
 
-func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+@infix func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
 	if !lhs && !rhs {
 		return true
 	}

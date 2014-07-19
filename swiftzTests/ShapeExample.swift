@@ -40,7 +40,7 @@ enum Shape : Dataable {
   }
 }
 
-func ==(lhs: Shape, rhs: Shape) -> Bool {
+@infix func ==(lhs: Shape, rhs: Shape) -> Bool {
   switch (lhs, rhs) {
     case (.Boat, .Boat): return true
     case let (.Plane(q), .Plane(w)) where w == q: return true
