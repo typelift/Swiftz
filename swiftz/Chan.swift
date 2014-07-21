@@ -10,20 +10,20 @@ import Foundation
 
 // An unbound FIFO channel.
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html
-class Chan<A> {
+public class Chan<A> {
   var stream: [A]
   
   var mutex: UnsafePointer<pthread_mutex_t>
   var cond: UnsafePointer<pthread_cond_t>
   let matt: UnsafePointer<pthread_mutexattr_t>
   
-  init() {
+  public init() {
     var mattr:UnsafePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
     cond = UnsafePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
-    matt = UnsafePointer(mattr.value)
+    matt = UnsafePointer(mattr)
     pthread_mutex_init(mutex, matt)
     pthread_cond_init(cond, nil)
     stream = []
@@ -35,14 +35,14 @@ class Chan<A> {
     matt.destroy()
   }
   
-  func write(a: A) {
+  public func write(a: A) {
     pthread_mutex_lock(mutex)
     stream.append(a)
     pthread_mutex_unlock(mutex)
     pthread_cond_signal(cond)
   }
   
-  func read() -> A {
+  public func read() -> A {
     pthread_mutex_lock(mutex)
     while (stream.isEmpty) {
       pthread_cond_wait(cond, mutex)
@@ -55,14 +55,14 @@ class Chan<A> {
   
 }
 
-operator infix <- {}
-@infix func <-<A>(chan: Chan<A>, value: A) -> Void
+public operator infix <- {}
+@infix public func <-<A>(chan: Chan<A>, value: A) -> Void
 {
     chan.write(value)
 }
 
-operator prefix <- {}
-@prefix func <-<A>(chan: Chan<A>) -> A
+public operator prefix <- {}
+@prefix public func <-<A>(chan: Chan<A>) -> A
 {
     return chan.read()
 }

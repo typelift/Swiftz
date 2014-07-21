@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Monad : Applicative {
+public protocol Monad : Applicative {
   typealias AFB = A -> F<B>
   func bind(fn: AFB) -> FB
 }

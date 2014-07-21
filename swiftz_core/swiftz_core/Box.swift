@@ -7,21 +7,22 @@
 //
 
 // An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
-@final class Box<T> {
+public class Box<T> {
   let _value : () -> T
-  init(_ value : T) {
+    
+  public init(_ value : T) {
     self._value = { value }
   }
   
-  var value: T {
+  public var value: T {
     return _value()
   }
   
-  func map<U>(fn: T -> U) -> Box<U> {
+  public func map<U>(fn: T -> U) -> Box<U> {
     return Box<U>(fn(value)) // TODO: file rdar, type inf fails without <U>
   }
 }
 
-@infix func <^><T, U>(fn: T -> U, x: Box<T>) -> Box<U> {
+@infix public func <^><T, U>(fn: T -> U, x: Box<T>) -> Box<U> {
   return x.map(fn)
 }

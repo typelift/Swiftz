@@ -7,7 +7,7 @@
 //
 
 extension Dictionary {
-    func map<U, V>(transform: Element -> (U, V)) -> Dictionary<U, V> {
+    public func map<U, V>(transform: Element -> (U, V)) -> Dictionary<U, V> {
         var d = Dictionary<U, V>(minimumCapacity: self.count)
         for (key, value) in self {
             switch transform(key, value) {
@@ -26,7 +26,7 @@ extension Dictionary {
 //      return d
 //    }
 
-    func filter(filter: Element -> Bool) -> Dictionary {
+    public func filter(filter: Element -> Bool) -> Dictionary {
         var f = Dictionary()
         for (k, v) in self {
             if filter(k, v) {
@@ -36,7 +36,7 @@ extension Dictionary {
         return f
     }
     
-    func reduce<A>(start:A, reduce:(key:KeyType, val:ValueType, start:A) -> A) -> A {
+    public func reduce<A>(start:A, reduce:(key:KeyType, val:ValueType, start:A) -> A) -> A {
         var reduced:A?
         for (k,v) in self {
             reduced = reduce(key:k, val:v, start:start)
@@ -50,7 +50,7 @@ extension Dictionary {
 }
 
 
-func mapValues<KeyType, ElementType, V>(dict: Dictionary<KeyType, ElementType>, transform: (KeyType, ElementType) -> V) -> Dictionary<KeyType, V> {
+public func mapValues<KeyType, ElementType, V>(dict: Dictionary<KeyType, ElementType>, transform: (KeyType, ElementType) -> V) -> Dictionary<KeyType, V> {
   var d = Dictionary<KeyType, V>(minimumCapacity: dict.count)
   for (key, value) in dict {
     d.updateValue(transform(key, value), forKey: key)

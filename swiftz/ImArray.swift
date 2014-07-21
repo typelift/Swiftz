@@ -9,11 +9,11 @@
 import Foundation
 import swiftz_core
 
-struct ImArray<A> : Sequence {
+public struct ImArray<A> : Sequence {
     let backing:[A] = Array()
     
     var array:[A] {
-    return Array(backing)
+        return Array(backing)
     }
     
     subscript(index:Int) -> A {
@@ -24,37 +24,40 @@ struct ImArray<A> : Sequence {
         return ImArray(array: Array(backing[subRange]))
     }
     
-    var count:Int {
-    return backing.count
+    public var count:Int {
+        return backing.count
     }
     
-    var isEmpty:Bool {
-    return backing.isEmpty
+    public var isEmpty:Bool {
+        return backing.isEmpty
     }
     
-    init() {}
+    public init() {}
     
-    init(items:A...) {
+    public init(items:A...) {
         backing = Array(items)
     }
     
-    init(array:[A]) {
+    public init(array:[A]) {
         backing = Array(array)
     }
     
-    init(item:A) {
+    public init(item:A) {
         backing = Array([item])
     }
     
-    func append(item:A) -> ImArray<A> {
+    public func append(item:A) -> ImArray<A> {
         var arr = Array(backing)
         arr += item
         return ImArray(array: arr)
     }
     
-    func join(array:[A]) -> ImArray<A> {
+    public func join(array:[A]) -> ImArray<A> {
+        if array.isEmpty {
+            return self
+        }
         switch array {
-        case []: return self
+//        case []: return self
         case _: var newArr = Array(backing)
         for x in array {
             newArr += x
@@ -63,7 +66,7 @@ struct ImArray<A> : Sequence {
         }
     }
     
-    func join(imArray:ImArray<A>) -> ImArray<A> {
+    public func join(imArray:ImArray<A>) -> ImArray<A> {
         if imArray.isEmpty {
             return self
         } else {
@@ -75,31 +78,31 @@ struct ImArray<A> : Sequence {
         }
     }
     
-    func filter(f:(A -> Bool)) -> ImArray<A> {
+    public func filter(f:(A -> Bool)) -> ImArray<A> {
         return ImArray(array: backing.filter(f))
     }
     
-    func map<B>(f:(A -> B)) -> ImArray<B> {
+    public func map<B>(f:(A -> B)) -> ImArray<B> {
         return ImArray<B>(array: backing.map(f))
     }
     
-    func reduce<U>(start:U, f:((U,A) -> U)) -> U {
+    public func reduce<U>(start:U, f:((U,A) -> U)) -> U {
         return backing.reduce(start, combine: f)
     }
     
     
-    func sorted(f:(A,A) -> Bool) -> ImArray<A> {
+    public func sorted(f:(A,A) -> Bool) -> ImArray<A> {
         return ImArray(array: Array.sorted(backing)(f))
     }
     
-    func generate() -> ImArrayGenerator<A>  {
+    public func generate() -> ImArrayGenerator<A>  {
         let items = Array(backing)
         return ImArrayGenerator(items: items[0..<items.count])
     }
 }
 
-struct ImArrayGenerator<A> : Generator {
-    mutating func next() -> A?  {
+public struct ImArrayGenerator<A> : Generator {
+    mutating public func next() -> A?  {
         if items.isEmpty { return nil }
         let ret = items[0]
         items = items[1..<items.count]
@@ -110,13 +113,13 @@ struct ImArrayGenerator<A> : Generator {
 }
 
 extension ImArray : ArrayLiteralConvertible {
-    static func convertFromArrayLiteral(elements: A...) -> ImArray<A> {
+    public static func convertFromArrayLiteral(elements: A...) -> ImArray<A> {
         return ImArray(array:elements)
     }
 }
 
 extension ImArray {
-    func scanl<B>(start:B, r:(B, A) -> B) -> ImArray<B> {
+    public func scanl<B>(start:B, r:(B, A) -> B) -> ImArray<B> {
         if self.isEmpty {
             return ImArray<B>(array: [])
         }
@@ -167,7 +170,7 @@ extension ImArray {
     //        return ImArray<D>(array:newArr)
     //    }
     
-    func find(f:(A -> Bool)) -> A? {
+    public func find(f:(A -> Bool)) -> A? {
         for x in self {
             if f(x) {
                 return .Some(x)
@@ -176,14 +179,14 @@ extension ImArray {
         return .None
     }
     
-    func splitAt(index:Int) -> (ImArray<A>, ImArray<A>) {
+    public func splitAt(index:Int) -> (ImArray<A>, ImArray<A>) {
         switch index {
         case 0..<self.count: return (ImArray(array:self[0..<index].array), ImArray(array:self[index..<self.count].array))
         case _:return (ImArray<A>(), ImArray<A>())
         }
     }
     
-    func intersperse(item:A) -> ImArray<A> {
+    public func intersperse(item:A) -> ImArray<A> {
         func prependAll(item:A, array:[A]) -> [A] {
             var arr = Array([item])
             for i in 0..<(array.count - 1) {
@@ -206,29 +209,29 @@ extension ImArray {
     }
 }
 
-@infix func ==<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+@infix public func ==<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return lhs.array == rhs.array
 }
 
-@infix func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
+@infix public func !=<A:Equatable>(lhs:ImArray<A>, rhs:ImArray<A>) -> Bool {
     return !(lhs.array == rhs.array)
 }
 
-@infix func +=<A>(lhs:ImArray<A>, rhs:A) -> ImArray<A> {
+@infix public func +=<A>(lhs:ImArray<A>, rhs:A) -> ImArray<A> {
     return lhs.append(rhs)
 }
 
 // ImArray 'functions'
 
-func pure<A>(a:A) -> ImArray<A> {
+public func pure<A>(a:A) -> ImArray<A> {
   return ImArray(item:a)
 }
 
-@infix func <^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
+@infix public func <^><A, B>(f:A -> B, a:ImArray<A>) -> ImArray<B> {
   return a.map(f)
 }
 
-@infix func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
+@infix public func <*><A, B>(f:ImArray<A -> B>, a:ImArray<A>) -> ImArray<B> {
   var re = [B]()
   for g in f {
     for h in a {
@@ -238,7 +241,7 @@ func pure<A>(a:A) -> ImArray<A> {
   return ImArray(array:re)
 }
 
-@infix func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
+@infix public func >>=<A, B>(a: ImArray<A>, f: A -> ImArray<B>) -> ImArray<B> {
   var re = [B]()
   for x in a {
     re.extend(f(x))
@@ -246,10 +249,10 @@ func pure<A>(a:A) -> ImArray<A> {
   return ImArray(array:re)
 }
 
-func sorted<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
+public func sorted<A:Comparable>(a:ImArray<A>) -> ImArray<A> {
     return ImArray(array: sorted(a.backing))
 }
 
-func sorted<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
+public func sorted<A>(a:ImArray<A>, pred: (A,A) -> Bool) -> ImArray<A> {
     return ImArray(array: sorted(a.backing, pred))
 }

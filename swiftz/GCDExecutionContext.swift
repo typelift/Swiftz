@@ -8,11 +8,11 @@
 
 import Foundation
 
-let gcdExecutionContext = GCDExecutionContext()
-let gcdDispatchQueueGlobal = dispatch_queue_create("swiftz.global", DISPATCH_QUEUE_CONCURRENT)
+public let gcdExecutionContext = GCDExecutionContext()
+public let gcdDispatchQueueGlobal = dispatch_queue_create("swiftz.global", DISPATCH_QUEUE_CONCURRENT)
 
-class GCDExecutionContext: ExecutionContext {
-  func submit<A>(x: Future<A>, work: () -> A) {
+public class GCDExecutionContext: ExecutionContext {
+  public func submit<A>(x: Future<A>, work: () -> A) {
     dispatch_async(gcdDispatchQueueGlobal, { x.sig(work()) })
   }
 }

@@ -9,29 +9,29 @@
 import Foundation
 import swiftz_core
 
-struct NonEmptyList<A> {
-  let head: Box<A>
-  let tail: List<A>
-  init(_ a: A, _ t: List<A>) {
+public struct NonEmptyList<A> {
+  public let head: Box<A>
+  public let tail: List<A>
+  public init(_ a: A, _ t: List<A>) {
     head = Box(a)
     tail = t
   }
 }
 
-func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
+public func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
      return Lens { nel in IxStore(nel.head.value) { NonEmptyList($0, nel.tail) } }
 }
 
-func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
+public func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
      return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
 }
 
-@infix func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+@infix public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
   return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
-  static func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> NonEmptyList<A> {
+  static public func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> NonEmptyList<A> {
     // what compiler stage does this run in...?...
     var xs : [A] = []
     var g = s.generate()
@@ -46,15 +46,15 @@ extension NonEmptyList : ArrayLiteralConvertible {
     return NonEmptyList(h!, l)
   }
   
-  static func convertFromArrayLiteral(elements: A...) -> NonEmptyList<A> {
+  static public func convertFromArrayLiteral(elements: A...) -> NonEmptyList<A> {
     return fromSeq(elements)
   }
 }
 
-class NonEmptyListGenerator<A> : Generator {
+public class NonEmptyListGenerator<A> : Generator {
   var head: Box<A?>
   var l: Box<List<A>?>
-  func next() -> A? {
+  public func next() -> A? {
     if let h = head.value {
       head = Box(nil)
       return h
@@ -64,28 +64,33 @@ class NonEmptyListGenerator<A> : Generator {
       return r
     }
   }
-  init(_ l : NonEmptyList<A>) {
+  public init(_ l : NonEmptyList<A>) {
     head = Box(l.head.value)
     self.l = Box(l.tail)
   }
 }
 
 extension NonEmptyList : Sequence {
-  func generate() -> NonEmptyListGenerator<A> {
+  public func generate() -> NonEmptyListGenerator<A> {
     return NonEmptyListGenerator(self)
   }
 }
 
 extension NonEmptyList : Printable {
-  var description : String {
+  public var description : String {
   var x = ", ".join(NonEmptyListF(l: self).fmap({ "\($0)" }))
     return "[\(x)]"
   }
 }
 
-struct NonEmptyListF<A, B> : Functor {
+public struct NonEmptyListF<A, B> : Functor {
   let l : NonEmptyList<A>
-  func fmap(fn : (A -> B)) -> NonEmptyList<B> {
+    
+    
+    public init(l: NonEmptyList<A>) {
+        self.l = l
+    }
+  public func fmap(fn : (A -> B)) -> NonEmptyList<B> {
     return NonEmptyList(fn(l.head.value), ListF(l: l.tail).fmap(fn))
   }
 }

@@ -8,13 +8,18 @@
 
 import Foundation
 
-protocol Dataable {
+public protocol Dataable {
   class func typeRep() -> Any.Type
   class func fromRep(r: Data) -> Self?
   func toRep() -> Data
 }
 
-struct Data {
-  let con: Int
-  let vals: [(String, Any)]
+public struct Data {
+  public let con: Int
+  public let vals: [(String, Any)]
+    
+    public init(con: Int, vals: [(String, Any)]) {
+        self.con = con
+        self.vals = vals
+    }
 }

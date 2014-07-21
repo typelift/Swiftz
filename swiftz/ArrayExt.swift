@@ -8,12 +8,12 @@
 
 // Array extensions
 extension Array {
-     func safeIndex(i: Int) -> T? {
+     public func safeIndex(i: Int) -> T? {
           return indexArray(self, i)
      }
 }
 
-func mapFlatten<A>(xs: [A?]) -> [A] {
+public func mapFlatten<A>(xs: [A?]) -> [A] {
   var w = [A]()
   for c in xs {
     if let x = c {
@@ -25,7 +25,7 @@ func mapFlatten<A>(xs: [A?]) -> [A] {
   return w
 }
 
-func join<A>(xs: [[A]]) -> [A] {
+public func join<A>(xs: [[A]]) -> [A] {
   var w = [A]()
   for x in xs {
     for e in x {
@@ -35,7 +35,7 @@ func join<A>(xs: [[A]]) -> [A] {
   return w
 }
 
-func indexArray<A>(xs: [A], i: Int) -> A? {
+public func indexArray<A>(xs: [A], i: Int) -> A? {
   if i < xs.count && i >= 0 {
     return xs[i]
   } else {

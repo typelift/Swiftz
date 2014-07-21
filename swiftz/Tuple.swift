@@ -10,6 +10,6 @@ import Foundation
 
 // A tuple you can use in type parameters
 struct Tuple2<A, B> {
-  let a: A
-  let b: B
+  public let a: A
+  public let b: B
 }

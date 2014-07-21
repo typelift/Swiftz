@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Applicative : Functor {
+public protocol Applicative : Functor {
   typealias FA = F<A>
   typealias FAB = F<A -> B>
   class func pure(a: A) -> FA

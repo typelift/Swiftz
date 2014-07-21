@@ -8,10 +8,13 @@
 
 import Foundation
 
-class F<A> {
+public class F<A> {
+    public init() {
+        
+    }
 }
 
-protocol Functor {
+public protocol Functor {
   typealias A
   typealias B
   typealias FB = F<B>
@@ -24,36 +27,36 @@ protocol Functor {
 //}
 
 // instance Functor Id
-class Id<A>: F<A> {
+public class Id<A>: F<A> {
   let a: () -> A
-  init(_ aa: A) {
+  public init(_ aa: A) {
     a = { aa }
   }
-  func runId() -> A {
+  public func runId() -> A {
     return a()
   }
 }
 
 extension Id: Functor {
-  typealias B = Any
-  func fmap(fn: (A -> B)) -> Id<B> {
+  public typealias B = Any
+  public func fmap(fn: (A -> B)) -> Id<B> {
     return (Id<B>(fn(self.runId())))
   }
 }
 
 // instance Functor (Const m)
-class Const<B, A>: F<A> {
+public class Const<B, A>: F<A> {
   let a: () -> B
-  init(_ aa: B) {
+  public init(_ aa: B) {
     a = { aa }
   }
-  func runConst() -> B {
+  public func runConst() -> B {
     return a()
   }
 }
 
 extension Const: Functor {
-  func fmap(fn: (A -> B)) -> Const<B, B> {
+  public func fmap(fn: (A -> B)) -> Const<B, B> {
     return (Const<B, B>(self.runConst()))
   }
 }

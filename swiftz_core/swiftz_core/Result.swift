@@ -10,11 +10,11 @@
 
 import Foundation
 
-enum Result<V> {
+public enum Result<V> {
   case Error(NSError)
   case Value(Box<V>)
   
-  init(_ e: NSError?, _ v: V) {
+  public init(_ e: NSError?, _ v: V) {
     if let ex = e {
       self = Result.Error(ex)
     } else {
@@ -22,35 +22,35 @@ enum Result<V> {
     }
   }
   
-  func toEither() -> Either<NSError, V> {
+  public func toEither() -> Either<NSError, V> {
     switch self {
       case let Error(e): return .Left(Box(e))
       case let Value(v): return Either.Right(Box(v.value))
     }
   }
   
-  func fold<B>(value: B, fn: V -> B) -> B {
+  public func fold<B>(value: B, fn: V -> B) -> B {
     switch self {
       case Error(_): return value
       case let Value(v): return fn(v.value)
     }
   }
   
-  func flatMap<S>(fn: V -> Result<S>) -> Result<S> {
+  public func flatMap<S>(fn: V -> Result<S>) -> Result<S> {
     return self >>= fn
   }
   
-  static func error(e: NSError) -> Result<V> {
+  public static func error(e: NSError) -> Result<V> {
     return .Error(e)
   }
   
-  static func value(v: V) -> Result<V> {
+  public static func value(v: V) -> Result<V> {
     return .Value(Box(v))
   }
 }
 
 // Equatable
-@infix func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+@infix public func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   switch (lhs, rhs) {
     case let (.Error(l), .Error(r)) where l == r: return true
     case let (.Value(l), .Value(r)) where l.value == r.value: return true
@@ -58,24 +58,24 @@ enum Result<V> {
   }
 }
 
-@infix func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+@infix public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   return !(lhs == rhs)
 }
 
 
 // 'functions'
-func pure<V>(a: V) -> Result<V> {
+public func pure<V>(a: V) -> Result<V> {
   return .Value(Box(a))
 }
 
-@infix func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
+@infix public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
   case let .Value(r): return Result.Value(Box(f(r.value)))
   }
 }
 
-@infix func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
+@infix public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
   switch (a, f) {
   case let (.Error(l), _): return .Error(l)
   case let (.Value(r), .Error(m)): return .Error(m)
@@ -83,7 +83,7 @@ func pure<V>(a: V) -> Result<V> {
   }
 }
 
-@infix func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
+@infix public func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
   case let .Value(r): return f(r.value)

@@ -9,46 +9,49 @@
 import Foundation
 import swiftz_core
 
-class Maybe<A: Any>: F<A> {
+public class Maybe<A: Any>: F<A> {
 	var value: A?
 
-	init(_ v: A) {
+	public init(_ v: A) {
 		value = v
+        super.init()
 	}
 
-	init() {}
+	public init() {
+        super.init()
+    }
 
-	class func just(t: A) -> Maybe<A> {
+	public class func just(t: A) -> Maybe<A> {
 		return Maybe(t)
 	}
 
-	class func none() -> Maybe {
+	public class func none() -> Maybe {
 		return Maybe()
 	}
 
-	func isJust() -> Bool {
+	public func isJust() -> Bool {
 		switch value {
 			case .Some(_): return true
 			case .None: return false
 		}
 	}
 
-	func isNone() -> Bool {
+	public func isNone() -> Bool {
 		return !isJust()
 	}
 
-	func fromJust() -> A {
+	public func fromJust() -> A {
 		return self.value!
 	}
 }
 
 extension Maybe: LogicValue {
-	func getLogicValue() -> Bool {
+	public func getLogicValue() -> Bool {
 		return isJust()
 	}
 }
 
-@infix func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+@infix public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
 	if !lhs && !rhs {
 		return true
 	}
@@ -60,10 +63,14 @@ extension Maybe: LogicValue {
 	return false
 }
 
-struct MaybeF<A, B>: Functor, Applicative {
+public struct MaybeF<A, B>: Functor, Applicative {
   // functor
-  let m: Maybe<A>
-  func fmap(fn: (A -> B)) -> Maybe<B> {
+  public let m: Maybe<A>
+    
+  public init(m: Maybe<A>) {
+    self.m = m
+  }
+  public func fmap(fn: (A -> B)) -> Maybe<B> {
     if m.isJust() {
       let b: B = fn(m.fromJust())
       return Maybe<B>.just(b)
@@ -73,11 +80,11 @@ struct MaybeF<A, B>: Functor, Applicative {
   }
   
   // applicative
-  static func pure(a: A) -> Maybe<A>  {
+  public static func pure(a: A) -> Maybe<A>  {
     return Maybe<A>.just(a)
   }
   
-  func ap(fn: Maybe<A -> B>) -> Maybe<B>  {
+  public func ap(fn: Maybe<A -> B>) -> Maybe<B>  {
     if fn.isJust() {
       let f: (A -> B) = fn.fromJust()
       return MaybeF(m: m).fmap(f)

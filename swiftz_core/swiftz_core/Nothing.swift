@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum Nothing {
+public enum Nothing {
   
 }
