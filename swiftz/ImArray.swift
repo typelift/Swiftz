@@ -56,13 +56,12 @@ public struct ImArray<A> : Sequence {
         if array.isEmpty {
             return self
         }
-        switch array {
-//        case []: return self
-        case _: var newArr = Array(backing)
-        for x in array {
-            newArr += x
-        }
-        return ImArray(array: newArr)
+        else {
+            var newArr = Array(backing)
+            for x in array {
+                newArr += x
+            }
+            return ImArray(array: newArr)
         }
     }
     

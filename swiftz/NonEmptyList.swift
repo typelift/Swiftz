@@ -86,10 +86,10 @@ extension NonEmptyList : Printable {
 public struct NonEmptyListF<A, B> : Functor {
   let l : NonEmptyList<A>
     
+  public init(l: NonEmptyList<A>) {
+    self.l = l
+  }
     
-    public init(l: NonEmptyList<A>) {
-        self.l = l
-    }
   public func fmap(fn : (A -> B)) -> NonEmptyList<B> {
     return NonEmptyList(fn(l.head.value), ListF(l: l.tail).fmap(fn))
   }
