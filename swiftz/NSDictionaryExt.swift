@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSDictionary {
-  func mapValuesToDictionary<K, V>(transform: (AnyObject, AnyObject) -> (K, V)) -> Dictionary<K, V> {
+  public func mapValuesToDictionary<K, V>(transform: (AnyObject, AnyObject) -> (K, V)) -> Dictionary<K, V> {
     var d = Dictionary<K, V>()
     for (key : AnyObject, value : AnyObject) in self {
       switch transform(key, value) {

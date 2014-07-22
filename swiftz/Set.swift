@@ -9,10 +9,10 @@
 import Foundation
 import swiftz_core
 
-operator infix ∩ {}
-operator infix ∪ {}
+public operator infix ∩ {}
+public operator infix ∪ {}
 
-struct Set<A: Hashable> : Sequence {
+public struct Set<A: Hashable> : Sequence {
     let bucket:Dictionary<A, Bool> = Dictionary()
     
     var array:[A] {
@@ -24,28 +24,27 @@ struct Set<A: Hashable> : Sequence {
         
     }
     
-    var count:Int {
+    public var count:Int {
         return bucket.count
-        
     }
 
-    init() {
+    public init() {
         // an empty set
     }
 
-    init(items:A...) {
+    public init(items:A...) {
         for obj in items {
             bucket[obj] = true
         }
     }
     
-    init(array:[A]) {
+    public init(array:[A]) {
         for obj in array {
             bucket[obj] = true
         }
     }
     
-  func any() -> A? {
+    public func any() -> A? {
       let ar = self.array
       if ar.isEmpty {
           return nil
@@ -55,7 +54,7 @@ struct Set<A: Hashable> : Sequence {
       }
     }
     
-    func contains(item:A) -> Bool {
+    public func contains(item:A) -> Bool {
         if let c = bucket[item] {
             return c
         } else {
@@ -63,7 +62,18 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    func member(item:A) -> A? {
+    public func containsAll(set:Set<A>) -> Bool {
+        var count = 0
+        for x in self {
+            if let memb = set.member(x) {
+                count++
+            }
+        }
+        
+        return self.count == count
+    }
+    
+    public func member(item:A) -> A? {
         if self.contains(item) {
             return .Some(item)
         } else {
@@ -71,7 +81,7 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    func interectsSet(set:Set<A>) -> Bool {
+    public func interectsSet(set:Set<A>) -> Bool {
         for x in set {
             if self.contains(x) {
                 return true
@@ -80,7 +90,7 @@ struct Set<A: Hashable> : Sequence {
         return false
     }
     
-    func intersect(set:Set<A>) -> Set<A> {
+    public func intersect(set:Set<A>) -> Set<A> {
         var array:[A] = Array()
         for x in self {
             if let memb = set.member(x) {
@@ -90,7 +100,7 @@ struct Set<A: Hashable> : Sequence {
         return Set(array:array)
     }
     
-    func minus(set:Set<A>) -> Set<A> {
+    public func minus(set:Set<A>) -> Set<A> {
         var array:[A] = Array()
         for x in self {
             if !set.contains(x) {
@@ -100,13 +110,13 @@ struct Set<A: Hashable> : Sequence {
         return Set(array:array)
     }
     
-    func union(set:Set<A>) -> Set<A> {
+    public func union(set:Set<A>) -> Set<A> {
         var current = self.array
         current += set.array
         return Set(array: current)
     }
     
-    func add(item:A) -> Set<A> {
+    public func add(item:A) -> Set<A> {
         if contains(item) {
             return self
         } else {
@@ -116,7 +126,7 @@ struct Set<A: Hashable> : Sequence {
         }
     }
     
-    func filter(f:(A -> Bool)) -> Set<A> {
+    public func filter(f:(A -> Bool)) -> Set<A> {
         var array = [A]()
         for x in self {
             if f(x) {
@@ -126,7 +136,7 @@ struct Set<A: Hashable> : Sequence {
         return Set(array: array)
     }
     
-    func map<B>(f:(A -> B)) -> Set<B> {
+    public func map<B>(f:(A -> B)) -> Set<B> {
         var array:[B] = Array()
         for x in self {
             array += f(x)
@@ -135,15 +145,15 @@ struct Set<A: Hashable> : Sequence {
         return Set<B>(array: array)
     }
     
-    func generate() -> SetGenerator<A>  {
+    public func generate() -> SetGenerator<A>  {
         let items = self.array
         return SetGenerator(items: items[0..<items.count])
     }
 }
 
 
-struct SetGenerator<A> : Generator {
-    mutating func next() -> A?  {
+public struct SetGenerator<A> : Generator {
+    mutating public func next() -> A?  {
         if items.isEmpty { return nil }
         let ret = items[0]
         items = items[1..<items.count]
@@ -155,27 +165,27 @@ struct SetGenerator<A> : Generator {
 }
 
 extension Set : Printable,DebugPrintable {
-    var description:String {
+    public var description: String {
         return "\(self.array)"
     }
     
-    var debugDescription:String {
+    public var debugDescription: String {
         return "\(self.array)"
     }
 }
 
 extension Set : ArrayLiteralConvertible {
-    static func convertFromArrayLiteral(elements: A...) -> Set<A> {
+    static public func convertFromArrayLiteral(elements: A...) -> Set<A> {
         return Set(array:elements)
     }
 }
 
-@infix func ==<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
-    return lhs.bucket == rhs.bucket
+@infix public func ==<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
+    return lhs.containsAll(rhs) && rhs.containsAll(lhs)
 }
 
-@infix func !=<A: Equatable, B: Equatable>(lhs:Set<A>, rhs:Set<B>) -> Bool {
-    return lhs.bucket != rhs.bucket
+@infix public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
+    return !(lhs == rhs)
 }
 
 @infix func +=<A>(set:Set<A>, item:A) -> Set<A> {

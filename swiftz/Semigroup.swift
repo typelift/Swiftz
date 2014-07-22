@@ -6,19 +6,23 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-protocol Semigroup {
+public protocol Semigroup {
   typealias M
   func op(x: M, y: M) -> M
 }
 
-func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: [M]) -> M {
+public func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: [M]) -> M {
   return (t.reduce(h) { s.op($0, y: $1) })
 }
 
-class Min<A: Comparable>: Semigroup {
-  typealias M = A
+public class Min<A: Comparable>: Semigroup {
+  public typealias M = A
+    
+    public init() {
+        
+    }
   
-  func op(x: M, y: M) -> M {
+  public func op(x: M, y: M) -> M {
     if x < y {
       return x
     } else {
@@ -27,10 +31,10 @@ class Min<A: Comparable>: Semigroup {
   }
 }
 
-class Max<A: Comparable>: Semigroup {
-  typealias M = A
+public class Max<A: Comparable>: Semigroup {
+  public typealias M = A
   
-  func op(x: M, y: M) -> M {
+  public func op(x: M, y: M) -> M {
     if x > y {
       return x
     } else {
@@ -39,18 +43,18 @@ class Max<A: Comparable>: Semigroup {
   }
 }
 
-class First<A: Comparable>: Semigroup {
-  typealias M = A
+public class First<A: Comparable>: Semigroup {
+  public typealias M = A
   
-  func op(x: M, y: M) -> M {
+  public func op(x: M, y: M) -> M {
     return x;
   }
 }
 
-class Last<A: Comparable>: Semigroup {
-  typealias M = A
+public class Last<A: Comparable>: Semigroup {
+  public typealias M = A
   
-  func op(x: M, y: M) -> M {
+  public func op(x: M, y: M) -> M {
     return y;
   }
 }

@@ -11,9 +11,9 @@ import swiftz
 
 // A party has a host, who is a user.
 // A lens example
-class Party {
+public class Party {
   let host: User
-  init(h: User) {
+  public init(h: User) {
     host = h
   }
   

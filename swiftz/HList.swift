@@ -11,7 +11,7 @@ import swiftz_core
 
 // A HList can be thought of like a tuple, but with list-like operations on the types.
 
-/* closed */ protocol HList {
+/* closed */ public protocol HList {
   typealias Head
   typealias Tail // : HList can't show Nothing is in HList, recursive defn.
   class func isNil() -> Bool
@@ -20,49 +20,49 @@ import swiftz_core
   class func length() -> Int
 }
 
-@final class HCons<H, T: HList> : HList {
-  typealias Head = H
-  typealias Tail = T
-  let head: Box<H>
-  let tail: Box<T>
-  init(h: H, t: T) {
-    head = Box(h)
-    tail = Box(t)
+public final class HCons<H, T: HList> : HList {
+  public typealias Head = H
+  public typealias Tail = T
+  public let head: Box<H>
+  public let tail: Box<T>
+  public init(h: H, t: T) {
+    head = Box<H>(h)
+    tail = Box<T>(t)
   }
   
-  class func isNil() -> Bool {
+  public class func isNil() -> Bool {
     return false
   }
-  class func makeNil() -> HCons<H, T> {
+  public class func makeNil() -> HCons<H, T> {
     abort() // impossible
   }
-  class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
+  public class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
     return HCons<H, T>(h: h, t: t)
   }
   
-  class func length() -> Int {
+  public class func length() -> Int {
     return (1 + Tail.length())
   }
 }
 
-@final class HNil : HList {
-  typealias Head = Nothing
-  typealias Tail = Nothing
+public final class HNil : HList {
+  public typealias Head = Nothing
+  public typealias Tail = Nothing
   
-  init() {}
-  class func isNil() -> Bool {
+  public init() {}
+  public class func isNil() -> Bool {
     return true
   }
   
-  class func makeNil() -> HNil {
+  public class func makeNil() -> HNil {
     return HNil()
   }
   
-  class func makeCons(h: Head, t: Tail) -> HNil {
+  public class func makeCons(h: Head, t: Tail) -> HNil {
     abort() // impossible
   }
   
-  class func length() -> Int {
+  public class func length() -> Int {
     return 0
   }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import swiftz_core
 
-class Future<A> {
+public class Future<A> {
   var value: A?
 
   // The resultQueue is used to read the result. It begins suspended
@@ -18,23 +18,23 @@ class Future<A> {
   let resultQueue = dispatch_queue_create("swift.future", DISPATCH_QUEUE_CONCURRENT)
 
   let execCtx: ExecutionContext // for map
-  init(exec: ExecutionContext) {
+  public init(exec: ExecutionContext) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
   }
-  init(exec: ExecutionContext, _ a: () -> A) {
+  public init(exec: ExecutionContext, _ a: () -> A) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
     exec.submit(self, work: a)
   }
 
-  func sig(x: A) {
+  public func sig(x: A) {
     assert(!self.value, "Future cannot complete more than once")
     self.value = x
     dispatch_resume(self.resultQueue)
   }
 
-  func result() -> A {
+  public func result() -> A {
     var result : A? = nil
     dispatch_sync(resultQueue, {
       result = self.value!
@@ -42,11 +42,11 @@ class Future<A> {
     return result!
   }
 
-  func map<B>(f: A -> B) -> Future<B> {
+  public func map<B>(f: A -> B) -> Future<B> {
     return Future<B>(exec: execCtx, { f(self.result()) })
   }
 
-  func flatMap<B>(f: A -> Future<B>) -> Future<B> {
+  public func flatMap<B>(f: A -> Future<B>) -> Future<B> {
     return Future<B>(exec: execCtx, { f(self.result()).result() })
   }
 }

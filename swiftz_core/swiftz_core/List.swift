@@ -8,18 +8,19 @@
 
 import Foundation
 
-enum List<A> {
+public enum List<A> {
   case Nil
   case Cons(A, Box<List<A>>)
   
-  init() {
+  public init() {
     self = .Nil
   }
-  init(_ head : A, _ tail : List<A>) {
+    
+  public init(_ head : A, _ tail : List<A>) {
     self = .Cons(head, Box(tail))
   }
   
-  func head() -> A? {
+  public func head() -> A? {
     switch self {
     case .Nil:
       return nil
@@ -28,7 +29,7 @@ enum List<A> {
     }
   }
   
-  func tail() -> List<A>? {
+  public func tail() -> List<A>? {
     switch self {
     case .Nil:
       return nil
@@ -37,14 +38,14 @@ enum List<A> {
     }
   }
   
-  func length() -> Int {
+  public func length() -> Int {
     switch self {
     case .Nil: return 0
     case let .Cons(_, xs): return 1 + xs.value.length()
     }
   }
   
-  func find(pred: A -> Bool) -> A? {
+  public func find(pred: A -> Bool) -> A? {
     for x in self {
       if pred(x) {
         return x
@@ -52,7 +53,7 @@ enum List<A> {
     }
     return nil
   }
-  func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
+  public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
     func pred(t: (K, V)) -> Bool {
       return t.0 == key
     }
@@ -63,7 +64,7 @@ enum List<A> {
   }
 }
 
-@infix func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+@infix public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
   switch (lhs, rhs) {
   case (.Nil, .Nil):
     return true
@@ -75,7 +76,7 @@ enum List<A> {
 }
 
 extension List : ArrayLiteralConvertible {
-  static func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> List<A> {
+  static public func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> List<A> {
     // For some reason, everything simpler seems to crash the compiler
     var xs : [A] = []
     var g = s.generate()
@@ -89,40 +90,46 @@ extension List : ArrayLiteralConvertible {
     return l
   }
   
-  static func convertFromArrayLiteral(elements: A...) -> List<A> {
+  public static func convertFromArrayLiteral(elements: A...) -> List<A> {
     return fromSeq(elements)
   }
 }
 
-class ListGenerator<A> : Generator {
+
+public class ListGenerator<A> : Generator {
   var l : Box<List<A>?>
-  func next() -> A? {
+  public func next() -> A? {
     var r = l.value?.head()
     l = Box(self.l.value?.tail())
     return r
   }
-  init(_ l : List<A>) {
+  public init(_ l : List<A>) {
     self.l = Box(l)
   }
 }
 
 extension List : Sequence {
-  func generate() -> ListGenerator<A> {
+  public func generate() -> ListGenerator<A> {
     return ListGenerator(self)
   }
 }
 
 extension List : Printable {
-  var description : String {
+  public var description : String {
   var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
     return "[\(x)]"
   }
 }
 
-struct ListF<A, B> : Functor {
-  let l : List<A>
+public struct ListF<A, B> : Functor {
+  public let l : List<A>
+    
+  public init(l: List<A>) {
+    self.l = l
+  }
+    
   // is recursion ok here?
-  func fmap(fn : (A -> B)) -> List<B> {
+  public func fmap(fn : (A -> B)) -> List<B> {
     switch l {
     case .Nil:
       return List()
