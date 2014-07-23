@@ -57,11 +57,16 @@ public enum JSValue: Printable {
   }
   
   // TODO: should this be optional?
-  public static func decode(s: NSData) -> JSValue {
+  public static func decode(s: NSData) -> JSValue? {
     var e: NSError?
     let opts: NSJSONReadingOptions = nil
-    let r: AnyObject = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
-    return make(r as NSObject)
+    let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
+
+    if let json: AnyObject = r {
+      return make(json as NSObject)
+    } else {
+      return .None
+    }
   }
   
   public var description: String {

@@ -169,9 +169,10 @@ class DataTests: XCTestCase {
 
   func testDataJSON() {
     let js: NSData = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-    let lhs: JSValue = JSValue.decode(js)
+    let lhs: JSValue? = JSValue.decode(js)
     let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
-    XCTAssert(lhs == rhs)
+    XCTAssertTrue(lhs)
+    XCTAssert(lhs! == rhs)
     XCTAssert(rhs.encode() == js)
     
     // user example
@@ -186,6 +187,12 @@ class DataTests: XCTestCase {
     if notUser {
       XCTFail("expected none")
     }
+  }
+
+  func testInvalidDataJSON() {
+    let js: NSData = "[1,foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+    let json: JSValue? = JSValue.decode(js)
+    XCTAssertFalse(json)
   }
   
   func testHList() {
