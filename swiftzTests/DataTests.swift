@@ -196,4 +196,23 @@ class DataTests: XCTestCase {
     XCTAssert(AList.length() == 2)
   }
   
+    func testJSONLensGetter() {
+        let userjs: NSData = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
+            .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        let json = JSValue.decode(userjs)
+        let lens = JSValue.key("attrs") • JSValue.key("one") • JSValue._String()
+        let str = lens.get(json)
+        XCTAssert(str != nil, "Should not be nil")
+        XCTAssert(str! == "1", "Should be 1")
+    }
+    
+    func testJSONSetter() {
+        let userjs: NSData = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
+            .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        let json = JSValue.decode(userjs)
+        let lens = JSValue.key("attrs") • JSValue.key("one") • JSValue._String()
+        let newJson = lens.set(json, "2")
+        XCTAssert(newJson! != json, "Should not be equal")
+        XCTAssert(lens.get(newJson)! == "2", "Should be 1")
+    }
 }
