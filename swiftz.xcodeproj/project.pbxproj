@@ -98,6 +98,8 @@
 		DB76117D19439CB000A0AF82 /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117C19439CB000A0AF82 /* SetTests.swift */; };
 		DBA02FE219464F39007F3829 /* ImArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE119464F39007F3829 /* ImArray.swift */; };
 		DBA02FE419464F75007F3829 /* ImArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE319464F75007F3829 /* ImArrayTests.swift */; };
+		DBC2154E197F2CB100775A0A /* JSONLens.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3A124197F21B7000199D8 /* JSONLens.swift */; };
+		DBD3A125197F21B7000199D8 /* JSONLens.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3A124197F21B7000199D8 /* JSONLens.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +191,7 @@
 		DB76117C19439CB000A0AF82 /* SetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetTests.swift; sourceTree = "<group>"; };
 		DBA02FE119464F39007F3829 /* ImArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArray.swift; sourceTree = "<group>"; };
 		DBA02FE319464F75007F3829 /* ImArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArrayTests.swift; sourceTree = "<group>"; };
+		DBD3A124197F21B7000199D8 /* JSONLens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONLens.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +243,7 @@
 				DBA02FE119464F39007F3829 /* ImArray.swift */,
 				5919722D1952F2BC008FBC51 /* Tuple.swift */,
 				5919722A1952ED9B008FBC51 /* HList.swift */,
+				DBD3A124197F21B7000199D8 /* JSONLens.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -630,6 +634,7 @@
 				59853A441967F9F100A3158C /* DictionaryExt.swift in Sources */,
 				59853A451967F9F100A3158C /* NSDictionaryExt.swift in Sources */,
 				59853A461967F9F100A3158C /* NSArrayExt.swift in Sources */,
+				DBC2154E197F2CB100775A0A /* JSONLens.swift in Sources */,
 				59853A471967F9F100A3158C /* SYB.swift in Sources */,
 				59853A481967F9F100A3158C /* SwiftCheck.swift in Sources */,
 				59853A491967F9F100A3158C /* Parser.swift in Sources */,
@@ -687,6 +692,7 @@
 				59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */,
 				597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */,
 				59B2DCBA19434706002ACB3E /* TupleExt.swift in Sources */,
+				DBD3A125197F21B7000199D8 /* JSONLens.swift in Sources */,
 				595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */,
 				590FCB391943E2EB008E5D94 /* Parser.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
