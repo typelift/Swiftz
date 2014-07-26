@@ -12,7 +12,7 @@ extension Array {
         return indexArray(self, i)
     }
     
-    public func join(array:[T]) -> Array<T> {
+    public func join(array:[T]) -> [T] {
         if array.isEmpty {
             return self
         }
@@ -23,7 +23,7 @@ extension Array {
         }
     }
     
-    public func scanl<B>(start:B, r:(B, T) -> B) -> Array<B> {
+    public func scanl<B>(start:B, r:(B, T) -> B) -> [B] {
         if self.isEmpty {
             return []
         }
@@ -34,7 +34,7 @@ extension Array {
             reduced = r(reduced, x)
             arr += reduced
         }
-        return Array<B>(arr)
+        return [B](arr)
     }
     
     public func find(f:(T -> Bool)) -> T? {
@@ -46,16 +46,16 @@ extension Array {
         return .None
     }
     
-    public func splitAt(index:Int) -> (Array<T>, Array<T>) {
+    public func splitAt(index:Int) -> ([T], [T]) {
         switch index {
-        case 0..<self.count: return (Array(self[0..<index]), Array(self[index..<self.count]))
-        case _:return (Array<T>(), Array<T>())
+        case 0..<self.count: return ([](self[0..<index]), [](self[index..<self.count]))
+        case _:return ([T](), [T]())
         }
     }
     
-    public func intersperse(item:T) -> Array<T> {
+    public func intersperse(item:T) -> [T] {
         func prependAll(item:T, array:[T]) -> [T] {
-            var arr = Array([item])
+            var arr = []([item])
             for i in 0..<(array.count - 1) {
                 arr += array[i]
                 arr += item
@@ -68,47 +68,47 @@ extension Array {
         } else if self.count == 1 {
             return self
         } else {
-            var array = Array([self[0]])
-            array += prependAll(item, Array(self[1..<self.count]))
-            return Array(array)
+            var array = []([self[0]])
+            array += prependAll(item, [](self[1..<self.count]))
+            return [](array)
         }
     }
     
     //tuples can not be compared with '==' so I will hold off on this for now. rdar://17219478
-    //    func zip<B>(scd:ImArray<B>) -> ImArray<(A,B)> {
+    //    func zip<B>(scd:Im[B]) -> Array<(A,B)> {
     //        var size = min(self.count, scd.count)
     //        var newArr = (A,B)[]()
     //        for x in 0..size {
     //            newArr += (self[x], scd[x])
     //        }
-    //        return ImArray<(A,B)>(array:newArr)
+    //        return Array<(A,B)>(newArr)
     //    }
     //
-    //    func zip3<B,C>(scd:ImArray<B>, thrd:ImArray<C>) -> ImArray<(A,B,C)> {
+    //    func zip3<B,C>(scd:Im[B], thrd:Array<C>) -> Array<(A,B,C)> {
     //        var size = min(self.count, scd.count, thrd.count)
     //        var newArr = (A,B,C)[]()
     //        for x in 0..size {
     //            newArr += (self[x], scd[x], thrd[x])
     //        }
-    //        return ImArray<(A,B,C)>(array:newArr)
+    //        return Array<(A,B,C)>(newArr)
     //    }
     //
-    //    func zipWith<B,C>(scd:B[], f:((A, B) -> C)) -> ImArray<C> {
+    //    func zipWith<B,C>(scd:B[], f:((A, B) -> C)) -> Array<C> {
     //        var size = min(self.count, scd.count)
     //        var newArr = C[]()
     //        for x in 0..size {
     //            newArr += f(self[x], scd[x])
     //        }
-    //        return ImArray<C>(array:newArr)
+    //        return Array<C>(newArr)
     //    }
     //
-    //    func zipWith3<B,C,D>(scd:B[], thrd:C[], f:((A, B, C) -> D)) -> ImArray<D> {
+    //    func zipWith3<B,C,D>(scd:B[], thrd:C[], f:((A, B, C) -> D)) -> Array<D> {
     //        var size = min(self.count, scd.count, thrd.count)
     //        var newArr = D[]()
     //        for x in 0..size {
     //            newArr += f(self[x], scd[x], thrd[x])
     //        }
-    //        return ImArray<D>(array:newArr)
+    //        return Array  <D>(newArr)
     //    }
 }
 
