@@ -61,7 +61,6 @@
 		59853A391967F9F100A3158C /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913C193DDC060067F2BE /* Monoid.swift */; };
 		59853A3A1967F9F100A3158C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
 		59853A3B1967F9F100A3158C /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117A19439C8300A0AF82 /* Set.swift */; };
-		59853A3C1967F9F100A3158C /* ImArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE119464F39007F3829 /* ImArray.swift */; };
 		59853A3E1967F9F100A3158C /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5919722D1952F2BC008FBC51 /* Tuple.swift */; };
 		59853A3F1967F9F100A3158C /* HList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5919722A1952ED9B008FBC51 /* HList.swift */; };
 		59853A401967F9F100A3158C /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2DCB919434706002ACB3E /* TupleExt.swift */; };
@@ -96,7 +95,6 @@
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
 		DB76117B19439C8300A0AF82 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117A19439C8300A0AF82 /* Set.swift */; };
 		DB76117D19439CB000A0AF82 /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76117C19439CB000A0AF82 /* SetTests.swift */; };
-		DBA02FE219464F39007F3829 /* ImArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE119464F39007F3829 /* ImArray.swift */; };
 		DBA02FE419464F75007F3829 /* ImArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA02FE319464F75007F3829 /* ImArrayTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -187,7 +185,6 @@
 		59F35AF1193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB76117A19439C8300A0AF82 /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		DB76117C19439CB000A0AF82 /* SetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetTests.swift; sourceTree = "<group>"; };
-		DBA02FE119464F39007F3829 /* ImArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArray.swift; sourceTree = "<group>"; };
 		DBA02FE319464F75007F3829 /* ImArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImArrayTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -237,7 +234,6 @@
 				593C913C193DDC060067F2BE /* Monoid.swift */,
 				5951313B19406DA600AB490C /* JSON.swift */,
 				DB76117A19439C8300A0AF82 /* Set.swift */,
-				DBA02FE119464F39007F3829 /* ImArray.swift */,
 				5919722D1952F2BC008FBC51 /* Tuple.swift */,
 				5919722A1952ED9B008FBC51 /* HList.swift */,
 			);
@@ -620,7 +616,6 @@
 				59853A391967F9F100A3158C /* Monoid.swift in Sources */,
 				59853A3A1967F9F100A3158C /* JSON.swift in Sources */,
 				59853A3B1967F9F100A3158C /* Set.swift in Sources */,
-				59853A3C1967F9F100A3158C /* ImArray.swift in Sources */,
 				59853A3E1967F9F100A3158C /* Tuple.swift in Sources */,
 				59853A3F1967F9F100A3158C /* HList.swift in Sources */,
 				59853A401967F9F100A3158C /* TupleExt.swift in Sources */,
@@ -680,7 +675,6 @@
 				11934313194A7ECD00E9DDDD /* Lens.swift in Sources */,
 				591451111942B41300809E7E /* ExecutionContext.swift in Sources */,
 				11934312194A79C400E9DDDD /* IxStore.swift in Sources */,
-				DBA02FE219464F39007F3829 /* ImArray.swift in Sources */,
 				DB76117B19439C8300A0AF82 /* Set.swift in Sources */,
 				5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */,
 				59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */,
