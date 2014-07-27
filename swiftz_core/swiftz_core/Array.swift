@@ -18,11 +18,7 @@ public func pure<A>(a: A) -> [A] {
 
 // Note! This is not map! Map mutates the array, this copies it.
 @infix public func <^><A, B>(f: A -> B, a: [A]) -> [B] {
-  var xs = [B]()
-  for x in a {
-    xs.append(f(x))
-  }
-  return xs
+  return a.map(f)
 }
 
 @infix public func <*><A, B>(f: [(A -> B)], a: [A]) -> [B] {
