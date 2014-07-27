@@ -129,12 +129,12 @@ public struct ListF<A, B> : Functor {
   }
     
   // is recursion ok here?
-  public func fmap(fn : (A -> B)) -> List<B> {
+  public func fmap(f : (A -> B)) -> List<B> {
     switch l {
     case .Nil:
       return List()
     case let .Cons(head, tail):
-      return List(fn(head), ListF(l: tail.value).fmap(fn))
+      return List(f(head), ListF(l: tail.value).fmap(f))
     }
   }
 }

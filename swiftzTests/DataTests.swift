@@ -163,8 +163,8 @@ class DataTests: XCTestCase {
   
   func testDataMonoid() {
     let xs: [Int8] = [1, 2, 0, 3, 4]
-    XCTAssert(mconcat(Sum    <Int8, NInt8>(i: { return nint8 }), xs) == 10, "monoid sum works")
-    XCTAssert(mconcat(Product<Int8, NInt8>(i: { return nint8 }), xs) == 0, "monoid product works")
+    XCTAssert(mconcat(Sum    <Int8, NInt8>(i: nint8), xs) == 10, "monoid sum works")
+    XCTAssert(mconcat(Product<Int8, NInt8>(i: nint8), xs) == 0, "monoid product works")
   }
 
   func testDataJSON() {

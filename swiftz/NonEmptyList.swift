@@ -90,7 +90,7 @@ public struct NonEmptyListF<A, B> : Functor {
     self.l = l
   }
     
-  public func fmap(fn : (A -> B)) -> NonEmptyList<B> {
-    return NonEmptyList(fn(l.head.value), ListF(l: l.tail).fmap(fn))
+  public func fmap(f : (A -> B)) -> NonEmptyList<B> {
+    return NonEmptyList(f(l.head.value), ListF(l: l.tail).fmap(f))
   }
 }

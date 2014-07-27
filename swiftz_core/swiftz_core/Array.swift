@@ -16,7 +16,6 @@ public func pure<A>(a: A) -> [A] {
   return v
 }
 
-// Note! This is not map! Map mutates the array, this copies it.
 @infix public func <^><A, B>(f: A -> B, a: [A]) -> [B] {
   return a.map(f)
 }

@@ -70,9 +70,9 @@ public struct MaybeF<A, B>: Functor, Applicative {
   public init(m: Maybe<A>) {
     self.m = m
   }
-  public func fmap(fn: (A -> B)) -> Maybe<B> {
+  public func fmap(f: (A -> B)) -> Maybe<B> {
     if m.isJust() {
-      let b: B = fn(m.fromJust())
+      let b: B = f(m.fromJust())
       return Maybe<B>.just(b)
     } else {
       return Maybe<B>.none()
@@ -84,10 +84,10 @@ public struct MaybeF<A, B>: Functor, Applicative {
     return Maybe<A>.just(a)
   }
   
-  public func ap(fn: Maybe<A -> B>) -> Maybe<B>  {
-    if fn.isJust() {
-      let f: (A -> B) = fn.fromJust()
-      return MaybeF(m: m).fmap(f)
+  public func ap(f: Maybe<A -> B>) -> Maybe<B>  {
+    if f.isJust() {
+      let fn: (A -> B) = f.fromJust()
+      return MaybeF(m: m).fmap(fn)
     } else {
       return Maybe<B>.none()
     }
