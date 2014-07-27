@@ -23,16 +23,19 @@ public protocol Bifunctor {
   typealias PAB = P<A, B>
   typealias PBC = P<B, C>
   typealias PBD = P<B, D>
-
+  
   func bimap(f: (A -> B), g: (C -> D)) -> PBD
 }
-//
-//func leftMap<A, B, C, PAB : Bifunctor, R : Bifunctor>(f : (A -> B), x: PAB) -> R {
+
+// TODO: Collapse Bifunctor instances so [left/right]Map typecheck
+//public func leftMap<A, B, C, PAC : Bifunctor, PBC : Bifunctor where PAC.A == A, PAC.B == B, PAC.C == C, PAC.D == C, PBC.A == A, PBC.B == B, PBC.C == C, PBC.D == C, PBC == PAC.PBD>
+//  (x: PAC, f : (A -> B)) -> PBC {
 //  return x.bimap(f, g: identity)
 //}
 //
-//func rightMap<A, B, C, PAB : Bifunctor, PAC : Bifunctor>(f : (A -> B), x: PAB) -> PAC {
-//  return x.bimap(identity, g: f)
+//public func rightMap<A, B, C, D, PAC : Bifunctor, PAD : Bifunctor where PAC.A == A, PAC.B == A, PAC.C == C, PAC.D == D, PAD.A == A, PAD.B == A, PAD.C == C, PAD.D == D, PAD == PAC.PBD>
+//  (x: PAC, g : (C -> D)) -> PAD {
+//  return x.bimap(identity, g: g)
 //}
 
 public struct ConstBF<A, B, C, D>: Bifunctor {
