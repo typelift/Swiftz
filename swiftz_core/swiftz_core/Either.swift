@@ -37,6 +37,13 @@ public enum Either<L, R> {
   public static func right(r: R) -> Either<L, R> {
     return .Right(Box(r))
   }
+
+  public func either<A>(onL: L -> A, onR: R -> A) -> A {
+    switch self {
+        case let Left(e): return onL(e.value)
+        case let Right(e): return onR(e.value)
+    }
+  }
 }
 
 // Equatable
