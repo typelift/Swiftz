@@ -24,38 +24,38 @@ public protocol Bifunctor {
   typealias PBC = P<B, C>
   typealias PBD = P<B, D>
 
-  func bimap(f: (A -> B), g: (C -> D), x: PAC) -> PBD
+  func bimap(f: (A -> B), g: (C -> D)) -> PBD
 }
-
+//
 //func leftMap<A, B, C, PAB : Bifunctor, R : Bifunctor>(f : (A -> B), x: PAB) -> R {
-//  return x.bimap(f, g: identity, x: x)
+//  return x.bimap(f, g: identity)
 //}
 //
 //func rightMap<A, B, C, PAB : Bifunctor, PAC : Bifunctor>(f : (A -> B), x: PAB) -> PAC {
-//  return x.bimap(identity, g: f, x: x)
+//  return x.bimap(identity, g: f)
 //}
 
 public struct ConstBF<A, B, C, D>: Bifunctor {
-  public let c: Const<A, B>
+  public let c: Const<A, C>
   
-  public init(m: Const<A, B>) {
-    self.c = m
+  public init(c: Const<A, C>) {
+    self.c = c
   }
   
-  public func bimap(f: (A -> B), g: (C -> D), x: Const<A, C>) -> Const<B, D> {
-    return Const(f(x.runConst()))
+  public func bimap(f: (A -> B), g: (C -> D)) -> Const<B, D> {
+    return Const(f(c.runConst()))
   }
 }
 
 public struct EitherBF<A, B, C, D>: Bifunctor {
-  public let e: Either<A, B>
+  public let e: Either<A, C>
   
-  public init(m: Either<A, B>) {
-    self.e = m
+  public init(e: Either<A, C>) {
+    self.e = e
   }
   
-  public func bimap(f: (A -> B), g: (C -> D), x: Either<A, C>) -> Either<B, D> {
-    switch x {
+  public func bimap(f: (A -> B), g: (C -> D)) -> Either<B, D> {
+    switch e {
       case .Left(let bx): return Either.Left(Box<B>(f(bx.value)))
       case .Right(let bx): return Either.Right(Box<D>(g(bx.value)))
     }
@@ -63,13 +63,13 @@ public struct EitherBF<A, B, C, D>: Bifunctor {
 }
 
 public struct TupleBF<A, B, C, D>: Bifunctor {
-  public let e: (A, B)
+  public let t: (A, C)
   
-  public init(m: (A, B)) {
-    self.e = m
+  public init(t: (A, C)) {
+    self.t = t
   }
   
-  public func bimap(f: (A -> B), g: (C -> D), x: (A, C)) -> (B, D) {
-    return (f(x.0), g(x.1))
+  public func bimap(f: (A -> B), g: (C -> D)) -> (B, D) {
+    return (f(t.0), g(t.1))
   }
 }
