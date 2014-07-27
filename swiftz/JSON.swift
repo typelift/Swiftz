@@ -133,7 +133,7 @@ public protocol JSONDecode {
 
 public protocol JSONEncode {
   typealias J
-  func toJSON(x: J) -> JSValue
+  class func toJSON(x: J) -> JSValue
 }
 
 public protocol JSON: JSONDecode, JSONEncode {
@@ -142,7 +142,6 @@ public protocol JSON: JSONDecode, JSONEncode {
 
 // instances
 
-public let jdouble = JDouble()
 public class JDouble: JSON {
   public typealias J = Double
   
@@ -153,12 +152,11 @@ public class JDouble: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSNumber(xs)
   }
 }
 
-public let jint = JInt()
 public class JInt: JSON {
   public typealias J = Int
   
@@ -169,12 +167,11 @@ public class JInt: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSNumber(Double(xs))
   }
 }
 
-public let jnumber = JNumber()
 public class JNumber: JSON {
   public typealias J = NSNumber
   
@@ -185,12 +182,11 @@ public class JNumber: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSNumber(Double(xs))
   }
 }
 
-public let jbool = JBool()
 public class JBool: JSON {
   public typealias J = Bool
   
@@ -203,12 +199,11 @@ public class JBool: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSNumber(Double(xs))
   }
 }
 
-public let jstring = JString()
 public class JString: JSON {
   public typealias J = String
   
@@ -219,7 +214,7 @@ public class JString: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSString(xs)
   }
 }
@@ -236,57 +231,100 @@ public class JNull: JSON {
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSNull()
   }
 }
 
 
-public class JArray<A, B: JSON where B.J == A>: JSON {
+// container types should be split
+/* final */ public class JArrayFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
   public typealias J = [A]
-  let inst: () -> B
-  public init(i: () -> B) {
-    inst = i
-  }
   
   public class func fromJSON(x: JSValue) -> J? {
     switch x {
-      case let .JSArray(xs):
-        let r = xs.map({ B.fromJSON($0) })
-        let rp = mapFlatten(r)
-        if r.count == rp.count {
-          return rp
-        } else {
-          return nil
-        }
-      default: return Optional.None
+    case let .JSArray(xs):
+      let r = xs.map({ B.fromJSON($0) })
+      let rp = mapFlatten(r)
+      if r.count == rp.count {
+        return rp
+      } else {
+        return nil
+      }
+    default: return Optional.None
     }
-  }
-  
-  public func toJSON(xs: J) -> JSValue {
-    return JSValue.JSArray(xs.map { self.inst().toJSON($0) } )
   }
 }
 
-public class JDictionary<A, B: JSON where B.J == A>: JSON {
-  public typealias J = Dictionary<String, A>
-  let inst: () -> B
-  public init(i: () -> B) {
-    inst = i
+/* final */ public class JArrayTo<A, B: JSONEncode where B.J == A>: JSONEncode {
+  public typealias J = [A]
+  
+  public class func toJSON(xs: J) -> JSValue {
+    return JSValue.JSArray(xs.map { B.toJSON($0) } )
   }
+}
+
+/* final */ public class JArray<A, B: JSON where B.J == A>: JSON {
+  public typealias J = [A]
   
   public class func fromJSON(x: JSValue) -> J? {
     switch x {
-      case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
-        return (k, B.fromJSON(x)!)
+    case let .JSArray(xs):
+      let r = xs.map({ B.fromJSON($0) })
+      let rp = mapFlatten(r)
+      if r.count == rp.count {
+        return rp
+      } else {
+        return nil
       }
     default: return Optional.None
     }
   }
   
-  public func toJSON(xs: J) -> JSValue {
+  public class func toJSON(xs: J) -> JSValue {
+    return JSValue.JSArray(xs.map { B.toJSON($0) } )
+  }
+}
+
+
+/* final */ public class JDictionaryFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
+  public typealias J = Dictionary<String, A>
+  
+  public class func fromJSON(x: JSValue) -> J? {
+    switch x {
+    case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
+      return (k, B.fromJSON(x)!)
+      }
+    default: return Optional.None
+    }
+  }
+}
+
+/* final */ public class JDictionaryTo<A, B: JSONEncode where B.J == A>: JSONEncode {
+  public typealias J = Dictionary<String, A>
+
+  public class func toJSON(xs: J) -> JSValue {
     return JSValue.JSObject(xs.map { (k: String, x: A) -> (String, JSValue) in
-      return (k, self.inst().toJSON(x))
+      return (k, B.toJSON(x))
+      } )
+  }
+}
+
+/* final */ public class JDictionary<A, B: JSON where B.J == A>: JSON {
+  public typealias J = Dictionary<String, A>
+  
+  public class func fromJSON(x: JSValue) -> J? {
+    switch x {
+    case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
+      return (k, B.fromJSON(x)!)
+      }
+    default: return Optional.None
+    }
+  }
+  
+  public class func toJSON(xs: J) -> JSValue {
+    return JSValue.JSObject(xs.map { (k: String, x: A) -> (String, JSValue) in
+      return (k, B.toJSON(x))
       } )
   }
 }
