@@ -40,7 +40,6 @@
 		59C7F31B195F097200530114 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31A195F097200530114 /* Box.swift */; };
 		59C7F31D195F09ED00530114 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31C195F09ED00530114 /* List.swift */; };
 		8487947019832A90002DA439 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
-		8487947119832A90002DA439 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
