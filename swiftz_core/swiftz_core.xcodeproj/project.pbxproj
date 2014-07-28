@@ -39,6 +39,8 @@
 		59BB9815195F0603002C0FA1 /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9814195F0603002C0FA1 /* Comonad.swift */; };
 		59C7F31B195F097200530114 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31A195F097200530114 /* Box.swift */; };
 		59C7F31D195F09ED00530114 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31C195F09ED00530114 /* List.swift */; };
+		8487947019832A90002DA439 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
+		8487947119832A90002DA439 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +100,7 @@
 		59BB9814195F0603002C0FA1 /* Comonad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comonad.swift; sourceTree = "<group>"; };
 		59C7F31A195F097200530114 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		59C7F31C195F09ED00530114 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		8487946F19832A90002DA439 /* Bifunctor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bifunctor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				59BB980E195F05EE002C0FA1 /* Functor.swift */,
+				8487946F19832A90002DA439 /* Bifunctor.swift */,
 				59BB9810195F05F6002C0FA1 /* Applicative.swift */,
 				59BB9812195F05FD002C0FA1 /* Monad.swift */,
 				59BB9814195F0603002C0FA1 /* Comonad.swift */,
@@ -438,6 +442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8487947119832A90002DA439 /* Bifunctor.swift in Sources */,
 				59853A4A1967FA4800A3158C /* Functions.swift in Sources */,
 				59853A4B1967FA4800A3158C /* Operators.swift in Sources */,
 				59853A4C1967FA4800A3158C /* Nothing.swift in Sources */,
@@ -466,6 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8487947019832A90002DA439 /* Bifunctor.swift in Sources */,
 				59BB9805195EFE41002C0FA1 /* Array.swift in Sources */,
 				59380E2719615657007B9568 /* Result.swift in Sources */,
 				59BB9815195F0603002C0FA1 /* Comonad.swift in Sources */,
