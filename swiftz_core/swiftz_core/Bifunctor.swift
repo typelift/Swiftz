@@ -41,7 +41,7 @@ public protocol Bifunctor {
 public struct ConstBF<A, B, C, D>: Bifunctor {
   public let c: Const<A, C>
   
-  public init(c: Const<A, C>) {
+  public init(_ c: Const<A, C>) {
     self.c = c
   }
   
@@ -53,7 +53,7 @@ public struct ConstBF<A, B, C, D>: Bifunctor {
 public struct EitherBF<A, B, C, D>: Bifunctor {
   public let e: Either<A, C>
   
-  public init(e: Either<A, C>) {
+  public init(_ e: Either<A, C>) {
     self.e = e
   }
   
@@ -68,7 +68,7 @@ public struct EitherBF<A, B, C, D>: Bifunctor {
 public struct TupleBF<A, B, C, D>: Bifunctor {
   public let t: (A, C)
   
-  public init(t: (A, C)) {
+  public init(_ t: (A, C)) {
     self.t = t
   }
   

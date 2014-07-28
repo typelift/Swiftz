@@ -78,11 +78,11 @@ class DataTests: XCTestCase {
   
   func testEitherBifunctor() {
     let x : Either<String, Int> = Either.right(2)
-    let y = EitherBF(e: x).bimap(identity, { $0 * 2 })
+    let y = EitherBF(x).bimap(identity, { $0 * 2 })
     XCTAssert(y == Either.right(4))
     
     let a : Either<String, Int> = Either.left("Error!")
-    let b = EitherBF(e: a).bimap(identity, { $0 * 2 })
+    let b = EitherBF(a).bimap(identity, { $0 * 2 })
     XCTAssert(b == a);
   }
   
@@ -155,35 +155,35 @@ class DataTests: XCTestCase {
   
   func testConstBifunctor() {
     let x : Const<String, String> = Const("Hello!")
-    let y = ConstBF(c: x).bimap({ "Why, " + $0 }, g: identity)
+    let y = ConstBF(x).bimap({ "Why, " + $0 }, g: identity)
     XCTAssert(x.runConst() != y.runConst())
   }
   
   func testTupleBifunctor() {
     let t : (Int, String) = (20, "Bottles of beer on the wall.")
-    let y = TupleBF(t: t).bimap({ $0 - 1 }, identity)
+    let y = TupleBF(t).bimap({ $0 - 1 }, identity)
     XCTAssert(y.0 != t.0)
     XCTAssert(y.1 == t.1)
   }
   
   func testMaybeFunctor() {
     let x = Maybe.just(2)
-    let y = MaybeF(m: x).fmap({ $0 * 2 })
+    let y = MaybeF(x).fmap({ $0 * 2 })
     XCTAssert(y == Maybe.just(4))
     
     let a = Maybe<Int>.none()
-    let b = MaybeF(m: a).fmap({ $0 * 2 })
+    let b = MaybeF(a).fmap({ $0 * 2 })
     XCTAssert(b == a);
   }
   
   func testMaybeApplicative() {
     let x = MaybeF<Int, Int>.pure(2)
     let fn = Maybe.just({ $0 * 2 })
-    let y = MaybeF(m: x).ap(fn)
+    let y = MaybeF(x).ap(fn)
     XCTAssert(y == Maybe.just(4))
     
     let fno = Maybe<Int -> String>.none()
-    let b = MaybeF<Int, String>(m: x).ap(fno)
+    let b = MaybeF<Int, String>(x).ap(fno)
     XCTAssert(b == Maybe.none());
   }
   
