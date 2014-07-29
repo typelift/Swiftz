@@ -19,7 +19,7 @@ class DataTests: XCTestCase {
   override func tearDown() {
     super.tearDown()
   }
-
+  
   func testNum() {
     // TODO: test num
   }
@@ -62,7 +62,6 @@ class DataTests: XCTestCase {
       }
     }
     
-    
     // fold
     XCTAssert(Either.left("foo").fold(0, identity) == 0)
     XCTAssert(Either<String, Int>.right(10).fold(0, identity) == 10)
@@ -75,6 +74,16 @@ class DataTests: XCTestCase {
     let snd = first >>= divTwoEvenly
     XCTAssert(prettyPrinted == Either.right("8"))
     XCTAssert(snd == Either.left("8 was div by 2"))
+  }
+  
+  func testEitherBifunctor() {
+    let x : Either<String, Int> = Either.right(2)
+    let y = EitherBF(x).bimap(identity, { $0 * 2 })
+    XCTAssert(y == Either.right(4))
+    
+    let a : Either<String, Int> = Either.left("Error!")
+    let b = EitherBF(a).bimap(identity, { $0 * 2 })
+    XCTAssert(b == a);
   }
   
   func testResult() {
@@ -108,7 +117,7 @@ class DataTests: XCTestCase {
     XCTAssert((noF <*> startResult) == .Error(divisionError), "test ap: (error, result)")
     XCTAssert((doubleResult <*> noX) == .Error(divisionError), "test ap: (result, error)")
     XCTAssert((noF <*> noX) == .Error(divisionError), "test ap: (error, error)")
-
+    
     // special constructor
     XCTAssert(Result(divisionError, 1) == .Error(divisionError), "special Result cons error")
     XCTAssert(Result(nil, 1) == Result.value(1), "special Result cons value")
@@ -135,24 +144,46 @@ class DataTests: XCTestCase {
     //TODO: test applicative in general?
   }
   
+  func testConst() {
+    let s = "Goodbye!"
+    let x : Const<String, String> = Const(s)
+    XCTAssert(x.runConst() == s)
+    
+    let b : Const<String, String> = x.fmap({ "I don't know why you say " + $0 })
+    XCTAssert(b.runConst() == s)
+  }
+  
+  func testConstBifunctor() {
+    let x : Const<String, String> = Const("Hello!")
+    let y = ConstBF(x).bimap({ "Why, " + $0 }, g: identity)
+    XCTAssert(x.runConst() != y.runConst())
+  }
+  
+  func testTupleBifunctor() {
+    let t : (Int, String) = (20, "Bottles of beer on the wall.")
+    let y = TupleBF(t).bimap({ $0 - 1 }, identity)
+    XCTAssert(y.0 != t.0)
+    XCTAssert(y.1 == t.1)
+  }
+  
   func testMaybeFunctor() {
     let x = Maybe.just(2)
-    let y = MaybeF(m: x).fmap({ $0 * 2 })
+    let y = MaybeF(x).fmap({ $0 * 2 })
     XCTAssert(y == Maybe.just(4))
     
     let a = Maybe<Int>.none()
-    let b = MaybeF(m: a).fmap({ $0 * 2 })
+    let b = MaybeF(a).fmap({ $0 * 2 })
     XCTAssert(b == a);
   }
   
   func testMaybeApplicative() {
     let x = MaybeF<Int, Int>.pure(2)
     let fn = Maybe.just({ $0 * 2 })
-    let y = MaybeF(m: x).ap(fn)
+    let y = MaybeF(x).ap(fn)
     XCTAssert(y == Maybe.just(4))
     
     let fno = Maybe<Int -> String>.none()
-    let b = MaybeF<Int, String>(m: x).ap(fno)
+    let b = MaybeF<Int, String>(x).ap(fno)
     XCTAssert(b == Maybe.none());
   }
   
@@ -166,7 +197,7 @@ class DataTests: XCTestCase {
     XCTAssert(mconcat(Sum    <Int8, NInt8>(i: nint8), xs) == 10, "monoid sum works")
     XCTAssert(mconcat(Product<Int8, NInt8>(i: nint8), xs) == 0, "monoid product works")
   }
-
+  
   func testDataJSON() {
     let js: NSData = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let lhs: JSValue? = JSValue.decode(js)
@@ -188,7 +219,7 @@ class DataTests: XCTestCase {
       XCTFail("expected none")
     }
   }
-
+  
   func testInvalidDataJSON() {
     let js: NSData = "[1,foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let json: JSValue? = JSValue.decode(js)

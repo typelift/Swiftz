@@ -35,7 +35,7 @@ public class Future<A> {
     exec.submit(self, work: a)
   }
 
-  internal func sig(x: A) {
+  public func sig(x: A) {
     assert(!self.value, "Future cannot complete more than once")
     self.value = x
     dispatch_resume(self.resultQueue)
