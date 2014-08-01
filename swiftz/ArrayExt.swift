@@ -22,95 +22,97 @@ extension Array {
             return newArr
         }
     }
-    
-    public func scanl<B>(start:B, r:(B, T) -> B) -> [B] {
-        if self.isEmpty {
-            return []
-        }
-        var arr = [B]()
-        arr += start
-        var reduced = start
-        for x in self {
-            reduced = r(reduced, x)
-            arr += reduced
-        }
-        return [B](arr)
-    }
-    
-    public func find(f:(T -> Bool)) -> T? {
-        for x in self {
-            if f(x) {
-                return .Some(x)
-            }
-        }
-        return .None
-    }
-    
-    public func splitAt(index:Int) -> ([T], [T]) {
-        switch index {
-        case 0..<self.count: return ([](self[0..<index]), [](self[index..<self.count]))
-        case _:return ([T](), [T]())
-        }
-    }
-    
-    public func intersperse(item:T) -> [T] {
-        func prependAll(item:T, array:[T]) -> [T] {
-            var arr = []([item])
-            for i in 0..<(array.count - 1) {
-                arr += array[i]
-                arr += item
-            }
-            arr += array[array.count - 1]
-            return arr
-        }
-        if self.isEmpty {
-            return self
-        } else if self.count == 1 {
-            return self
-        } else {
-            var array = []([self[0]])
-            array += prependAll(item, [](self[1..<self.count]))
-            return [](array)
-        }
-    }
-    
-    //tuples can not be compared with '==' so I will hold off on this for now. rdar://17219478
-    //    func zip<B>(scd:Im[B]) -> Array<(A,B)> {
-    //        var size = min(self.count, scd.count)
-    //        var newArr = (A,B)[]()
-    //        for x in 0..size {
-    //            newArr += (self[x], scd[x])
-    //        }
-    //        return Array<(A,B)>(newArr)
-    //    }
-    //
-    //    func zip3<B,C>(scd:Im[B], thrd:Array<C>) -> Array<(A,B,C)> {
-    //        var size = min(self.count, scd.count, thrd.count)
-    //        var newArr = (A,B,C)[]()
-    //        for x in 0..size {
-    //            newArr += (self[x], scd[x], thrd[x])
-    //        }
-    //        return Array<(A,B,C)>(newArr)
-    //    }
-    //
-    //    func zipWith<B,C>(scd:B[], f:((A, B) -> C)) -> Array<C> {
-    //        var size = min(self.count, scd.count)
-    //        var newArr = C[]()
-    //        for x in 0..size {
-    //            newArr += f(self[x], scd[x])
-    //        }
-    //        return Array<C>(newArr)
-    //    }
-    //
-    //    func zipWith3<B,C,D>(scd:B[], thrd:C[], f:((A, B, C) -> D)) -> Array<D> {
-    //        var size = min(self.count, scd.count, thrd.count)
-    //        var newArr = D[]()
-    //        for x in 0..size {
-    //            newArr += f(self[x], scd[x], thrd[x])
-    //        }
-    //        return Array  <D>(newArr)
-    //    }
 }
+
+public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
+    if list.isEmpty {
+        return []
+    }
+    var arr = [B]()
+    arr += start
+    var reduced = start
+    for x in list {
+        reduced = r(reduced, x)
+        arr += reduced
+    }
+    return Array(arr)
+}
+
+public func find<T>(list:[T], f:(T -> Bool)) -> T? {
+    for x in list {
+        if f(x) {
+            return .Some(x)
+        }
+    }
+    return .None
+}
+
+
+public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
+    switch index {
+    case 0..<list.count: return (Array(list[0..<index]), Array(list[index..<list.count]))
+    case _:return ([T](), [T]())
+    }
+}
+
+public func intersperse<T>(item:T, list:[T]) -> [T] {
+    func prependAll(item:T, array:[T]) -> [T] {
+        var arr = Array([item])
+        for i in 0..<(array.count - 1) {
+            arr += array[i]
+            arr += item
+        }
+        arr += array[array.count - 1]
+        return arr
+    }
+    if list.isEmpty {
+        return list
+    } else if list.count == 1 {
+        return list
+    } else {
+        var array = Array([list[0]])
+        array += prependAll(item, Array(list[1..<list.count]))
+        return Array(array)
+    }
+}
+
+//tuples can not be compared with '==' so I will hold off on this for now. rdar://17219478
+//public func zip<A,B>(fst:[A], scd:[B]) -> Array<(A,B)> {
+//    var size = min(fst.count, scd.count)
+//    var newArr = Array<(A,B)>()
+//    for x in 0..<size {
+//        newArr += (fst[x], scd[x])
+//    }
+//    return newArr
+//}
+//
+//public func zip3<A,B,C>(fst:[A], scd:[B], thrd:[C]) -> Array<(A,B,C)> {
+//    var size = min(fst.count, scd.count, thrd.count)
+//    var newArr = Array<(A,B,C)>()
+//    for x in 0..<size {
+//        newArr += (fst[x], scd[x], thrd[x])
+//    }
+//    return newArr
+//}
+//
+//public func zipWith<A,B,C>(fst:[A], scd:[B], f:((A, B) -> C)) -> Array<C> {
+//    var size = min(fst.count, scd.count)
+//    var newArr = [C]()
+//    for x in 0..<size {
+//        newArr += f(fst[x], scd[x])
+//    }
+//    return newArr
+//}
+//
+//public func zipWith3<A,B,C,D>(fst:[A], scd:[B], thrd:[C], f:((A, B, C) -> D)) -> Array<D> {
+//    var size = min(fst.count, scd.count, thrd.count)
+//    var newArr = [D]()
+//    for x in 0..<size {
+//        newArr += f(fst[x], scd[x], thrd[x])
+//    }
+//    return newArr
+//}
+
 
 public func mapFlatten<A>(xs: [A?]) -> [A] {
     var w = [A]()

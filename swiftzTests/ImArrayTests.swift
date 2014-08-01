@@ -21,44 +21,43 @@ class ImArrayTests: XCTestCase {
     }
     
     
-//    func testScanl() {
-//        let withArray = Array( [1,2,3,4])
-//        let scanned = withArray.scanl(0, r:+)
-//        
-//        XCTAssert(scanned == Array([0,1,3,6,10]), "Should be equal")
-//        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
-//    }
-//    
-//    func testIntersperse() {
-//        let withArray = Array([1,2,3,4])
-//        let inter = withArray.intersperse(1)
-//        
-//        XCTAssert(inter == Array([1,1,2,1,3,1,4]), "Should be equal")
-//        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
-//        
-//        let single = Array([1])
-//        XCTAssert(single.intersperse(1) == Array([1]), "Should be equal")
-//    }
-//    
-//    func testFind() {
-//        let withArray = Array([1,2,3,4])
-//        let f = {$0 == 4}
-//        if let found = withArray.find(f) {
-//            XCTAssert(found == 4, "Should be found")
-//        }
-//        
-//        XCTAssert(withArray.find{$0 == 1000000} == nil, "Should be nil(none)")
-//    }
-//    
-//    func testSplitAt() {
-//        let withArray = Array([1,2,3,4])
-//        
-//        let tuple = withArray.splitAt(2)
-//        
-//        XCTAssert(tuple.0 == Array([1,2]) && tuple.1 == Array([3,4]), "Should be equal")
-//        
-//        XCTAssert(withArray.splitAt(0).0 == Array() && withArray.splitAt(0).1 == Array([1,2,3,4]), "Should be equal")
-//        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
-//    }
-//    
+    func testScanl() {
+        let withArray = Array([1,2,3,4])
+        let scanned = scanl(0, withArray, +)
+        
+        XCTAssert(scanned == Array([0,1,3,6,10]), "Should be equal")
+        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
+    }
+    
+    func testIntersperse() {
+        let withArray = Array([1,2,3,4])
+        let inter = intersperse(1, withArray)
+        
+        XCTAssert(inter == Array([1,1,2,1,3,1,4]), "Should be equal")
+        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
+        
+        let single = Array([1])
+        XCTAssert(intersperse(1, single) == Array([1]), "Should be equal")
+    }
+    
+    func testFind() {
+        let withArray = Array([1,2,3,4])
+        let f = {$0 == 4}
+        if let found = find(withArray, f) {
+            XCTAssert(found == 4, "Should be found")
+        }
+        
+        XCTAssert(find(withArray){$0 == 1000000} == nil, "Should be nil(none)")
+    }
+    
+    func testSplitAt() {
+        let withArray = Array([1,2,3,4])
+        
+        let tuple = splitAt(2,withArray)
+        
+        XCTAssert(tuple.0 == Array([1,2]) && tuple.1 == Array([3,4]), "Should be equal")
+        
+        XCTAssert(splitAt(0,withArray).0 == Array() && splitAt(0, withArray).1 == Array([1,2,3,4]), "Should be equal")
+        XCTAssert(withArray == Array([1,2,3,4]), "Should be equal(immutablility test)")
+    }
 }
