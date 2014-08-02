@@ -46,7 +46,7 @@ public struct ConstBF<A, B, C, D>: Bifunctor {
   }
   
   public func bimap(f: (A -> B), g: (C -> D)) -> Const<B, D> {
-    return Const(f(c.runConst()))
+    return Const(f(c.runConst))
   }
 }
 
