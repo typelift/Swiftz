@@ -147,16 +147,16 @@ class DataTests: XCTestCase {
   func testConst() {
     let s = "Goodbye!"
     let x : Const<String, String> = Const(s)
-    XCTAssert(x.runConst() == s)
+    XCTAssert(x.runConst == s)
     
     let b : Const<String, String> = x.fmap({ "I don't know why you say " + $0 })
-    XCTAssert(b.runConst() == s)
+    XCTAssert(b.runConst == s)
   }
   
   func testConstBifunctor() {
     let x : Const<String, String> = Const("Hello!")
     let y = ConstBF(x).bimap({ "Why, " + $0 }, g: identity)
-    XCTAssert(x.runConst() != y.runConst())
+    XCTAssert(x.runConst != y.runConst)
   }
   
   func testTupleBifunctor() {
