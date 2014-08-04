@@ -82,6 +82,10 @@ public func duplicate<O, J, I, A>(a: IxMultiStore<O, I, A>) -> IxMultiStore<O, J
   return IxMultiStore(a.pos, a.set =>> { g in { f(IxMultiStore($0, g)) } })
 }
 
+public func lower<I, A>(a: IxMultiStore<I, I, A>) -> ArrayZipper<A> {
+  return { $0(a.pos) } <^> a.set
+}
+
 public func seek<O, P, I, A>(a: IxMultiStore<O, I, A>)(x: P) -> IxMultiStore<P, I, A> {
   return IxMultiStore(x, a.set)
 }
