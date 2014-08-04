@@ -20,6 +20,10 @@ public enum List<A> {
     self = .Cons(head, Box(tail))
   }
   
+  static public func cons(h: A) -> List<A> -> List<A> {
+    return { t in List(h, t) }
+  }
+  
   public func head() -> A? {
     switch self {
     case .Nil:
@@ -43,6 +47,18 @@ public enum List<A> {
     case .Nil: return 0
     case let .Cons(_, xs): return 1 + xs.value.length()
     }
+  }
+  
+  public func foldl<B>(f: B -> A -> B, initial: B) -> B {
+    var xs = initial
+    for x in self {
+      xs = f(xs)(x)
+    }
+    return xs
+  }
+  
+  public func reverse() -> List<A> {
+    return self.foldl(flip(List.cons), initial: List())
   }
   
   public func find(pred: A -> Bool) -> A? {
@@ -129,12 +145,12 @@ public struct ListF<A, B> : Functor {
   }
     
   // is recursion ok here?
-  public func fmap(fn : (A -> B)) -> List<B> {
+  public func fmap(f : (A -> B)) -> List<B> {
     switch l {
     case .Nil:
       return List()
     case let .Cons(head, tail):
-      return List(fn(head), ListF(l: tail.value).fmap(fn))
+      return List(f(head), ListF(l: tail.value).fmap(f))
     }
   }
 }

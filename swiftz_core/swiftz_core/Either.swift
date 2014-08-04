@@ -19,15 +19,15 @@ public enum Either<L, R> {
     }
   }
   
-  public func fold<B>(value: B, fn: R -> B) -> B {
+  public func fold<B>(value: B, f: R -> B) -> B {
     switch self {
       case Left(_): return value
-      case let Right(v): return fn(v.value)
+      case let Right(v): return f(v.value)
     }
   }
   
-  public func flatMap<S>(fn: R -> Either<L, S>) -> Either<L, S> {
-    return self >>= fn
+  public func flatMap<S>(f: R -> Either<L, S>) -> Either<L, S> {
+    return self >>= f
   }
   
   public static func left(l: L) -> Either<L, R> {

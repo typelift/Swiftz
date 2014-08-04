@@ -36,7 +36,7 @@ public struct IxState<I, O, A> {
           return f <^^> self
      }
 
-//     func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
+//     public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
 //          return f <*> self
 //     }
 

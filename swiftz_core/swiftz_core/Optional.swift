@@ -39,3 +39,8 @@ public func pure<A>(a: A) -> A? {
     return .None
   }
 }
+
+// liftM2 :: Monad m => (a -> b -> r) -> m a -> m b -> m r
+public func liftM2<A, B, R>(f: A -> B -> R) -> A? -> B? -> R? {
+  return { a in { b in a >>= { ap in b >>= f(ap) }}}
+}

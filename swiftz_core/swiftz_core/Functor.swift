@@ -18,7 +18,7 @@ public protocol Functor {
   typealias A
   typealias B
   typealias FB = F<B>
-  func fmap(fn: (A -> B)) -> FB
+  func fmap(f: (A -> B)) -> FB
 }
 
 // TODO: instance Functor ((->) r)
@@ -39,8 +39,8 @@ public class Id<A>: F<A> {
 
 extension Id: Functor {
   public typealias B = Any
-  public func fmap(fn: (A -> B)) -> Id<B> {
-    return (Id<B>(fn(self.runId)))
+  public func fmap(f: (A -> B)) -> Id<B> {
+    return (Id<B>(f(self.runId())))
   }
 }
 
@@ -56,7 +56,7 @@ public class Const<B, A>: F<A> {
 }
 
 extension Const: Functor {
-  public func fmap(fn: (A -> B)) -> Const<B, B> {
-    return (Const<B, B>(self.runConst))
+  public func fmap(f: (A -> B)) -> Const<B, B> {
+    return (Const<B, B>(self.runConst()))
   }
 }
