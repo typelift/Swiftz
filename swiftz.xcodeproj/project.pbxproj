@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1143A189197F4F0900561B55 /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A188197F4F0900561B55 /* Prism.swift */; };
-		1143A18A197F4F0900561B55 /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A188197F4F0900561B55 /* Prism.swift */; };
 		1143A18C197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
-		1143A18D197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
 		118EAA9119479877008250F3 /* IxCont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118EAA9019479877008250F3 /* IxCont.swift */; };
 		11934312194A79C400E9DDDD /* IxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11934311194A79C400E9DDDD /* IxStore.swift */; };
 		11934313194A7ECD00E9DDDD /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };

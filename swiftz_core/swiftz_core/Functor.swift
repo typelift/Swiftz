@@ -40,7 +40,7 @@ public class Id<A>: F<A> {
 extension Id: Functor {
   public typealias B = Any
   public func fmap(f: (A -> B)) -> Id<B> {
-    return (Id<B>(f(self.runId())))
+    return (Id<B>(f(self.runId)))
   }
 }
 
@@ -57,6 +57,6 @@ public class Const<B, A>: F<A> {
 
 extension Const: Functor {
   public func fmap(f: (A -> B)) -> Const<B, B> {
-    return (Const<B, B>(self.runConst()))
+    return (Const<B, B>(self.runConst))
   }
 }
