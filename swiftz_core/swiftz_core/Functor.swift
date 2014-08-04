@@ -28,35 +28,35 @@ public protocol Functor {
 
 // instance Functor Id
 public class Id<A>: F<A> {
-  let a: () -> A
+  private let a: () -> A
   public init(_ aa: A) {
     a = { aa }
   }
-  public func runId() -> A {
+  public var runId: A {
     return a()
   }
 }
 
 extension Id: Functor {
   public typealias B = Any
-  public func fmap(f: (A -> B)) -> Id<B> {
-    return (Id<B>(f(self.runId())))
+  public func fmap(fn: (A -> B)) -> Id<B> {
+    return (Id<B>(fn(self.runId)))
   }
 }
 
 // instance Functor (Const m)
 public class Const<B, A>: F<A> {
-  let a: () -> B
+  private let a: () -> B
   public init(_ aa: B) {
     a = { aa }
   }
-  public func runConst() -> B {
+  public var runConst: B {
     return a()
   }
 }
 
 extension Const: Functor {
-  public func fmap(f: (A -> B)) -> Const<B, B> {
-    return (Const<B, B>(self.runConst()))
+  public func fmap(fn: (A -> B)) -> Const<B, B> {
+    return (Const<B, B>(self.runConst))
   }
 }

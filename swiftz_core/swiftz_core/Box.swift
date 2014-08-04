@@ -8,7 +8,7 @@
 
 // An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
 public final class Box<T> {
-  let _value : () -> T
+  private let _value : () -> T
     
   public init(_ value : T) {
     self._value = { value }
