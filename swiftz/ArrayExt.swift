@@ -8,13 +8,37 @@
 
 // Array extensions
 extension Array {
-     public func safeIndex(i: Int) -> T? {
-          return indexArray(self, i)
-     }
+  public func safeIndex(i: Int) -> T? {
+    return indexArray(self, i)
+  }
+
+  public func mapWithIndex<U>(f: (Int, T) -> U) -> [U] {
+    var res = [U]()
+    res.reserveCapacity(count)
+    for i in 0 ..< count {
+      res.append(f(i, self[i]))
+    }
+    return res
+  }
+
+  public func foldRight<U>(z: U, _ f: (T, U) -> U) -> U {
+    var res = z
+    for x in self {
+      res = f(x, res)
+    }
+    return res
+  }
 }
 
 public func mapFlatten<A>(xs: [A?]) -> [A] {
   var w = [A]()
+  w.reserveCapacity(xs.foldRight(0) { c, n in
+    if c {
+      return n + 1
+    } else {
+      return n
+    }
+  })
   for c in xs {
     if let x = c {
       w.append(x)
@@ -27,6 +51,7 @@ public func mapFlatten<A>(xs: [A?]) -> [A] {
 
 public func join<A>(xs: [[A]]) -> [A] {
   var w = [A]()
+  w.reserveCapacity(xs.map { $0.count }.foldRight(0, +))
   for x in xs {
     for e in x {
       w.append(e)

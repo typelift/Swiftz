@@ -11,6 +11,10 @@
 		1143A18A197F4F0900561B55 /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A188197F4F0900561B55 /* Prism.swift */; };
 		1143A18C197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
 		1143A18D197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
+		1168A5BE198F74A6005AD7F3 /* ArrayZipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */; };
+		1168A5BF198F74A6005AD7F3 /* ArrayZipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */; };
+		1168A5C01990104A005AD7F3 /* IxMultiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1168A5BA198F735E005AD7F3 /* IxMultiStore.swift */; };
+		1168A5C11990104B005AD7F3 /* IxMultiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1168A5BA198F735E005AD7F3 /* IxMultiStore.swift */; };
 		118EAA9119479877008250F3 /* IxCont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118EAA9019479877008250F3 /* IxCont.swift */; };
 		11934312194A79C400E9DDDD /* IxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11934311194A79C400E9DDDD /* IxStore.swift */; };
 		11934313194A7ECD00E9DDDD /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };
@@ -139,6 +143,8 @@
 		112743DF196B02DE00F7C6E3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1143A188197F4F0900561B55 /* Prism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prism.swift; sourceTree = "<group>"; };
 		1143A18B197F4F5700561B55 /* Iso.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Iso.swift; sourceTree = "<group>"; };
+		1168A5BA198F735E005AD7F3 /* IxMultiStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxMultiStore.swift; sourceTree = "<group>"; };
+		1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayZipper.swift; sourceTree = "<group>"; };
 		118EAA9019479877008250F3 /* IxCont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxCont.swift; sourceTree = "<group>"; };
 		11934311194A79C400E9DDDD /* IxStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IxStore.swift; sourceTree = "<group>"; };
 		11B6073D196B047100AC13D6 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -236,6 +242,7 @@
 		590BE976193DA939003DAC87 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */,
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
 				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
 				595E3C391950537C00916AF4 /* MaybeFunctor.swift */,
@@ -257,6 +264,7 @@
 				118EAA9019479877008250F3 /* IxCont.swift */,
 				11DA49FA194908F20024F104 /* IxState.swift */,
 				11934311194A79C400E9DDDD /* IxStore.swift */,
+				1168A5BA198F735E005AD7F3 /* IxMultiStore.swift */,
 				592A122819435308003BF787 /* Lens.swift */,
 				1143A18B197F4F5700561B55 /* Iso.swift */,
 				1143A188197F4F0900561B55 /* Prism.swift */,
@@ -628,6 +636,7 @@
 				59853A391967F9F100A3158C /* Monoid.swift in Sources */,
 				1143A18D197F4F5700561B55 /* Iso.swift in Sources */,
 				59853A3A1967F9F100A3158C /* JSON.swift in Sources */,
+				1168A5BF198F74A6005AD7F3 /* ArrayZipper.swift in Sources */,
 				59853A3B1967F9F100A3158C /* Set.swift in Sources */,
 				59853A3C1967F9F100A3158C /* ImArray.swift in Sources */,
 				59853A3E1967F9F100A3158C /* Tuple.swift in Sources */,
@@ -640,6 +649,7 @@
 				1143A18A197F4F0900561B55 /* Prism.swift in Sources */,
 				59853A451967F9F100A3158C /* NSDictionaryExt.swift in Sources */,
 				59853A461967F9F100A3158C /* NSArrayExt.swift in Sources */,
+				1168A5C11990104B005AD7F3 /* IxMultiStore.swift in Sources */,
 				59853A471967F9F100A3158C /* SYB.swift in Sources */,
 				59853A481967F9F100A3158C /* SwiftCheck.swift in Sources */,
 				59853A491967F9F100A3158C /* Parser.swift in Sources */,
@@ -687,6 +697,7 @@
 				5919722B1952ED9B008FBC51 /* HList.swift in Sources */,
 				1143A18C197F4F5700561B55 /* Iso.swift in Sources */,
 				593C913F193DDC610067F2BE /* Semigroup.swift in Sources */,
+				1168A5BE198F74A6005AD7F3 /* ArrayZipper.swift in Sources */,
 				59BF7D931943347800EAFFAA /* SYB.swift in Sources */,
 				11934313194A7ECD00E9DDDD /* Lens.swift in Sources */,
 				591451111942B41300809E7E /* ExecutionContext.swift in Sources */,
@@ -699,6 +710,7 @@
 				1143A189197F4F0900561B55 /* Prism.swift in Sources */,
 				597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */,
 				59B2DCBA19434706002ACB3E /* TupleExt.swift in Sources */,
+				1168A5C01990104A005AD7F3 /* IxMultiStore.swift in Sources */,
 				595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */,
 				590FCB391943E2EB008E5D94 /* Parser.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
