@@ -32,7 +32,7 @@ public class MVar<A> {
     pthread_cond_init(condRead, nil)
   }
   
-  public convenience init(a: () -> A) {
+  public convenience init(a: @auto_closure () -> A) {
     self.init()
     value = a
   }
@@ -44,7 +44,8 @@ public class MVar<A> {
     matt.destroy()
   }
   
-  public func put(x: A) {pthread_mutex_lock(mutex)
+  public func put(x: A) {
+    pthread_mutex_lock(mutex)
     while (value) {
       pthread_cond_wait(condRead, mutex)
     }

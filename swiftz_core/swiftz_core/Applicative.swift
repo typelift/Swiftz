@@ -12,5 +12,5 @@ public protocol Applicative : Functor {
   typealias FA = F<A>
   typealias FAB = F<A -> B>
   class func pure(a: A) -> FA
-  func ap(fn: FAB) -> FB
+  func ap(f: FAB) -> FB
 }

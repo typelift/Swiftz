@@ -10,5 +10,5 @@ import Foundation
 
 public protocol Monad : Applicative {
   typealias AFB = A -> F<B>
-  func bind(fn: AFB) -> FB
+  func bind(f: AFB) -> FB
 }

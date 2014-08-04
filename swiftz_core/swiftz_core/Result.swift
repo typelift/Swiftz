@@ -29,15 +29,15 @@ public enum Result<V> {
     }
   }
   
-  public func fold<B>(value: B, fn: V -> B) -> B {
+  public func fold<B>(value: B, f: V -> B) -> B {
     switch self {
       case Error(_): return value
-      case let Value(v): return fn(v.value)
+      case let Value(v): return f(v.value)
     }
   }
   
-  public func flatMap<S>(fn: V -> Result<S>) -> Result<S> {
-    return self >>= fn
+  public func flatMap<S>(f: V -> Result<S>) -> Result<S> {
+    return self >>= f
   }
   
   public static func error(e: NSError) -> Result<V> {
