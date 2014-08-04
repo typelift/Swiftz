@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1129F6401990185500DCB516 /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A188197F4F0900561B55 /* Prism.swift */; };
 		1143A189197F4F0900561B55 /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A188197F4F0900561B55 /* Prism.swift */; };
 		1143A18C197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
 		1143A18D197F4F5700561B55 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143A18B197F4F5700561B55 /* Iso.swift */; };
@@ -645,9 +646,9 @@
 				59853A421967F9F100A3158C /* StringExt.swift in Sources */,
 				59853A431967F9F100A3158C /* OptionalExt.swift in Sources */,
 				59853A441967F9F100A3158C /* DictionaryExt.swift in Sources */,
-				1143A18A197F4F0900561B55 /* Prism.swift in Sources */,
 				59853A451967F9F100A3158C /* NSDictionaryExt.swift in Sources */,
 				59853A461967F9F100A3158C /* NSArrayExt.swift in Sources */,
+				1129F6401990185500DCB516 /* Prism.swift in Sources */,
 				1168A5C11990104B005AD7F3 /* IxMultiStore.swift in Sources */,
 				59853A471967F9F100A3158C /* SYB.swift in Sources */,
 				59853A481967F9F100A3158C /* SwiftCheck.swift in Sources */,
