@@ -36,7 +36,7 @@ public struct IxState<I, O, A> {
     return f <^^> self
   }
 
-//  func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
+//  public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
 //    return f <*> self
 //  }
 
@@ -67,7 +67,7 @@ public func pure<I, A>(x: A) -> IxState<I, I, A> {
   }
 }
 
-//@infix func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
+//@infix public func <*><I, J, O, A, B>(f: IxState<I, J, A -> B>, a: IxState<J, O, A>) -> IxState<I, O, B> {
 //  return IxState { s1 in
 //    let (g, s2) = f.run(s1)
 //    let (x, s3) = a.run(s2)
