@@ -35,7 +35,7 @@ public func identity<S, T>() -> Iso<S, T, S, T> {
   return Iso(get: identity, inject: identity)
 }
 
-@infix public func •<S, T, I, J, A, B>(i1: Iso<S, T, I, J>, i2: Iso<I, J, A, B>) -> Iso<S, T, A, B> {
+public func •<S, T, I, J, A, B>(i1: Iso<S, T, I, J>, i2: Iso<I, J, A, B>) -> Iso<S, T, A, B> {
   return Iso(get: i2.get • i1.get, inject: i1.inject • i2.inject)
 }
 

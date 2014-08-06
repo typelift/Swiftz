@@ -29,11 +29,11 @@ public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
         return []
     }
     var arr = [B]()
-    arr += start
+    arr.append(start)
     var reduced = start
     for x in list {
         reduced = r(reduced, x)
-        arr += reduced
+        arr.append(reduced)
     }
     return Array(arr)
 }
@@ -59,10 +59,10 @@ public func intersperse<T>(item:T, list:[T]) -> [T] {
     func prependAll(item:T, array:[T]) -> [T] {
         var arr = Array([item])
         for i in 0..<(array.count - 1) {
-            arr += array[i]
-            arr += item
+            arr.append(array[i])
+            arr.append(item)
         }
-        arr += array[array.count - 1]
+        arr.append(array[array.count - 1])
         return arr
     }
     if list.isEmpty {

@@ -26,18 +26,18 @@ public func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>
      return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
 }
 
-@infix public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+ public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
   return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
-  static public func fromSeq<S : Sequence where S.GeneratorType.Element == A>(s : S) -> NonEmptyList<A> {
+  static public func fromSeq<S : SequenceType where S.Generator.Element == A>(s : S) -> NonEmptyList<A> {
     // what compiler stage does this run in...?...
     var xs : [A] = []
     var g = s.generate()
     let h: A? = g.next()
     while let x : A = g.next() {
-      xs += x
+      xs.append(x)
     }
     var l = List<A>()
     for x in xs.reverse() {
@@ -51,7 +51,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
   }
 }
 
-public class NonEmptyListGenerator<A> : Generator {
+public class NonEmptyListGenerator<A> : GeneratorType {
   var head: Box<A?>
   var l: Box<List<A>?>
   public func next() -> A? {
@@ -70,7 +70,7 @@ public class NonEmptyListGenerator<A> : Generator {
   }
 }
 
-extension NonEmptyList : Sequence {
+extension NonEmptyList : SequenceType {
   public func generate() -> NonEmptyListGenerator<A> {
     return NonEmptyListGenerator(self)
   }

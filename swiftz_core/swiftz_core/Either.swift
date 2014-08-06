@@ -47,7 +47,7 @@ public enum Either<L, R> {
 }
 
 // Equatable
-@infix public func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+ public func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   switch (lhs, rhs) {
     case let (.Left(l), .Left(r)) where l.value == r.value: return true
     case let (.Right(l), .Right(r)) where l.value == r.value: return true
@@ -55,7 +55,7 @@ public enum Either<L, R> {
   }
 }
 
-@infix public func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+ public func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
   return !(lhs == rhs)
 }
 
@@ -65,14 +65,14 @@ public func pure<L, R>(a: R) -> Either<L, R> {
   return .Right(Box(a))
 }
 
-@infix public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
+ public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): return Either<L, RB>.Right(Box(f(r.value)))
   }
 }
 
-@infix public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
+ public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): switch f {
@@ -82,7 +82,7 @@ public func pure<L, R>(a: R) -> Either<L, R> {
     }
 }
 
-@infix public func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
+ public func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
   switch a {
     case let .Left(l): return .Left(l)
     case let .Right(r): return f(r.value)

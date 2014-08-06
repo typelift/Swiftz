@@ -29,14 +29,14 @@ public class Future<A> {
     exec.submit(self, work: a)
   }
   
-  public init(exec: ExecutionContext, _ a: @auto_closure () -> A) {
+  public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
     exec.submit(self, work: a)
   }
 
   internal func sig(x: A) {
-    assert(!self.value, "Future cannot complete more than once")
+    assert(self.value == nil, "Future cannot complete more than once")
     self.value = x
     dispatch_resume(self.resultQueue)
   }
