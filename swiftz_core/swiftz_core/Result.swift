@@ -50,7 +50,7 @@ public enum Result<V> {
 }
 
 // Equatable
-@infix public func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+ public func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   switch (lhs, rhs) {
     case let (.Error(l), .Error(r)) where l == r: return true
     case let (.Value(l), .Value(r)) where l.value == r.value: return true
@@ -58,7 +58,7 @@ public enum Result<V> {
   }
 }
 
-@infix public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+ public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
   return !(lhs == rhs)
 }
 
@@ -68,14 +68,14 @@ public func pure<V>(a: V) -> Result<V> {
   return .Value(Box(a))
 }
 
-@infix public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
+ public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
   case let .Value(r): return Result.Value(Box(f(r.value)))
   }
 }
 
-@infix public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
+ public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
   switch (a, f) {
   case let (.Error(l), _): return .Error(l)
   case let (.Value(r), .Error(m)): return .Error(m)
@@ -83,7 +83,7 @@ public func pure<V>(a: V) -> Result<V> {
   }
 }
 
-@infix public func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
+ public func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
   case let .Value(r): return f(r.value)

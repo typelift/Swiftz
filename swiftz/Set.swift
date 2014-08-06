@@ -9,16 +9,16 @@
 import Foundation
 import swiftz_core
 
-public operator infix ∩ {}
-public operator infix ∪ {}
+infix operator ∩ {}
+infix operator ∪ {}
 
-public struct Set<A: Hashable> : Sequence {
+public struct Set<A: Hashable> : SequenceType {
     let bucket:Dictionary<A, Bool> = Dictionary()
     
     var array:[A] {
     var arr = [A]()
         for (key, _) in bucket {
-            arr += key
+            arr.append(key)
         }
         return arr
         
@@ -94,7 +94,7 @@ public struct Set<A: Hashable> : Sequence {
         var array:[A] = Array()
         for x in self {
             if let memb = set.member(x) {
-                array += memb
+                array.append(memb)
             }
         }
         return Set(array:array)
@@ -104,7 +104,7 @@ public struct Set<A: Hashable> : Sequence {
         var array:[A] = Array()
         for x in self {
             if !set.contains(x) {
-                array += x
+                array.append(x)
             }
         }
         return Set(array:array)
@@ -121,7 +121,7 @@ public struct Set<A: Hashable> : Sequence {
             return self
         } else {
             var arr = array
-            arr += item
+            arr.append(item)
             return Set(array:arr)
         }
     }
@@ -130,7 +130,7 @@ public struct Set<A: Hashable> : Sequence {
         var array = [A]()
         for x in self {
             if f(x) {
-                array += x
+                array.append(x)
             }
         }
         return Set(array: array)
@@ -139,7 +139,7 @@ public struct Set<A: Hashable> : Sequence {
     public func map<B>(f:(A -> B)) -> Set<B> {
         var array:[B] = Array()
         for x in self {
-            array += f(x)
+            array.append(f(x))
         }
         
         return Set<B>(array: array)
@@ -152,7 +152,7 @@ public struct Set<A: Hashable> : Sequence {
 }
 
 
-public struct SetGenerator<A> : Generator {
+public struct SetGenerator<A> : GeneratorType {
     mutating public func next() -> A?  {
         if items.isEmpty { return nil }
         let ret = items[0]
@@ -180,33 +180,33 @@ extension Set : ArrayLiteralConvertible {
     }
 }
 
-@infix public func ==<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
+ public func ==<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
     return lhs.containsAll(rhs) && rhs.containsAll(lhs)
 }
 
-@infix public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
+ public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
     return !(lhs == rhs)
 }
 
-@infix func +=<A>(set:Set<A>, item:A) -> Set<A> {
+ func +=<A>(set:Set<A>, item:A) -> Set<A> {
     if set.contains(item) {
         return set
     } else {
         var arr = set.array
-        arr += item
+        arr.append(item)
         return Set(array:arr)
     }
 }
 
-@infix func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+ func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.minus(rhs)
 }
 
-@infix func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+ func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.intersect(rhs)
 }
 
-@infix func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
+ func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
     return lhs.union(rhs)
 }
 
@@ -216,17 +216,17 @@ func pure<A>(a:A) -> Set<A> {
   return Set(items: a)
 }
 
-@infix func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+ func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
   return set.map(f)
 }
 
 // Can't do applicative on a Set currently
-//@infix func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
+// func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
 //
 //    return Set<B>()
 //}
 
-@infix func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+ func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
   var se = [B]()
   for x in a {
     se.extend(f(x))

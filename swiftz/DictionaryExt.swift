@@ -36,7 +36,7 @@ extension Dictionary {
         return f
     }
     
-    public func reduce<A>(start:A, reduce:(key:KeyType, val:ValueType, start:A) -> A) -> A {
+    public func reduce<A>(start:A, reduce:(key:Key, val:Value, start:A) -> A) -> A {
         var reduced:A?
         for (k,v) in self {
             reduced = reduce(key:k, val:v, start:start)

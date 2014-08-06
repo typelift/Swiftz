@@ -37,12 +37,12 @@ public enum JSValue: Printable {
       case let xs as NSArray: return .JSArray(xs.mapToArray { self.make($0 as NSObject) })
       case let xs as NSDictionary:
         return JSValue.JSObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
-            return (String(k as NSString), self.make(v as NSObject))
+            return (String(format: k as NSString), self.make(v as NSObject))
         })
       case let xs as NSNumber:
         // TODO: number or bool?...
         return .JSNumber(Double(xs.doubleValue))
-      case let xs as NSString: return .JSString(String(xs))
+      case let xs as NSString: return .JSString(String(format: xs))
       case let xs as NSNull: return .JSNull()
       default: // TODO: what is swift's assert?
         perror("impossible"); abort()

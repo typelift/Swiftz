@@ -202,7 +202,7 @@ class DataTests: XCTestCase {
     let js: NSData = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let lhs: JSValue? = JSValue.decode(js)
     let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
-    XCTAssertTrue(lhs)
+    XCTAssertTrue(lhs != nil)
     XCTAssert(lhs! == rhs)
     XCTAssert(rhs.encode() == js)
     
@@ -215,7 +215,7 @@ class DataTests: XCTestCase {
     // not a user, missing age
     let notuserjs: NSData = "{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let notUser: User? = JSValue.decode(notuserjs) >>= User.fromJSON
-    if notUser {
+    if (notUser != nil) {
       XCTFail("expected none")
     }
   }
@@ -223,7 +223,7 @@ class DataTests: XCTestCase {
   func testInvalidDataJSON() {
     let js: NSData = "[1,foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
     let json: JSValue? = JSValue.decode(js)
-    XCTAssertFalse(json)
+    XCTAssertFalse(json != nil)
   }
   
   func testHList() {
