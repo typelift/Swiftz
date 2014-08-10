@@ -38,6 +38,7 @@ public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
     return Array(arr)
 }
 
+
 public func find<T>(list:[T], f:(T -> Bool)) -> T? {
     for x in list {
         if f(x) {
@@ -46,6 +47,7 @@ public func find<T>(list:[T], f:(T -> Bool)) -> T? {
     }
     return .None
 }
+
 
 
 public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
@@ -144,3 +146,81 @@ public func indexArray<A>(xs: [A], i: Int) -> A? {
     }
 }
 
+public func and(list:[Bool]) -> Bool {
+    return list.reduce(true) {$0 && $1}
+}
+public func or(list:[Bool]) -> Bool {
+    return list.reduce(false) {$0 || $1}
+}
+
+public func any<A>(list:[A], f:(A -> Bool)) -> Bool {
+    return or(list.map(f))
+}
+
+public func all<A>(list:[A], f:(A -> Bool)) -> Bool {
+    return and(list.map(f))
+}
+
+public func concat<A>(list:[[A]]) -> [A] {
+    return list.reduce([]) {
+        (start, l) -> [A] in
+        return start.join(l)
+    }
+}
+
+public func concatMap<A,B>(list:[A], f:A -> [B]) -> [B] {
+    return list.reduce([]) {
+        (start, l) -> [B] in
+        return start.join(f(l))
+    }
+}
+
+public func intercalate<A>(list:[A], nested:[[A]]) -> [A] {
+    return concat(intersperse(list, nested))
+}
+
+public func span<A>(list:[A], p: (A -> Bool)) -> ([A], [A]) {
+    switch list.count {
+    case 0: return (list, list)
+    case 1...list.count where p(list.first!):
+        let first = list.first!
+        let (ys,zs) = span(Array(list[1..<list.count]), p)
+        let f = [first].join(ys)
+        return (f,zs)
+    default:  return ([], list)
+    }
+}
+
+public func groupBy<A>(list:[A], p:(A -> A -> Bool)) -> [[A]] {
+    switch list.count {
+    case 0: return []
+    case 1...list.count:
+        let first = list.first!
+        let (ys,zs) = span(Array(list[1..<list.count]), p(first))
+        let x = [[first].join(ys)]
+        return x.join(groupBy(zs, p))
+    default: return []
+    }
+}
+
+public func group<A:Equatable>(list:[A]) -> [[A]] {
+    return groupBy(list, {a in {b in a == b}})
+}
+
+public func dropWhile<A>(list:[A], p:A -> Bool) -> [A] {
+    switch list.count {
+    case 0: return list
+    case 1...list.count where p(list.first!):
+        return dropWhile(Array(list[1..<list.count]), p)
+    default: return list
+    }
+}
+
+public func takeWhile<A>(list:[A], p:A -> Bool) -> [A] {
+    switch list.count {
+    case 0: return list
+    case 1...list.count where p(list.first!):
+        return [list.first!].join(takeWhile(Array(list[1..<list.count]), p))
+    default: return []
+    }
+}
