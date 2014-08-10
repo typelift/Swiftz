@@ -163,17 +163,15 @@ public func all<A>(list:[A], f:(A -> Bool)) -> Bool {
 
 public func concat<A>(list:[[A]]) -> [A] {
     return list.reduce([]) {
-        (var start, l) -> [A] in
-        start += l
-        return start
+        (start, l) -> [A] in
+        return start.join(l)
     }
 }
 
 public func concatMap<A,B>(list:[A], f:A -> [B]) -> [B] {
     return list.reduce([]) {
-        (var start, l) -> [B] in
-        start += f(l)
-        return start
+        (start, l) -> [B] in
+        return start.join(f(l))
     }
 }
 
@@ -187,8 +185,7 @@ public func span<A>(list:[A], p: (A -> Bool)) -> ([A], [A]) {
     case 1...list.count where p(list.first!):
         let first = list.first!
         let (ys,zs) = span(Array(list[1..<list.count]), p)
-        var f = [first]
-        f += ys
+        let f = [first].join(ys)
         return (f,zs)
     default:  return ([], list)
     }
@@ -200,11 +197,8 @@ public func groupBy<A>(list:[A], p:(A -> A -> Bool)) -> [[A]] {
     case 1...list.count:
         let first = list.first!
         let (ys,zs) = span(Array(list[1..<list.count]), p(first))
-        var x = [first]
-        x += ys
-        var nested = [x]
-        nested += groupBy(zs, p)
-        return nested
+        let x = [[first].join(ys)]
+        return x.join(groupBy(zs, p))
     default: return []
     }
 }
@@ -226,9 +220,7 @@ public func takeWhile<A>(list:[A], p:A -> Bool) -> [A] {
     switch list.count {
     case 0: return list
     case 1...list.count where p(list.first!):
-        var f = [list.first!]
-        f += takeWhile(Array(list[1..<list.count]), p)
-        return f
+        return [list.first!].join(takeWhile(Array(list[1..<list.count]), p))
     default: return []
     }
 }
