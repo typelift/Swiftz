@@ -38,6 +38,18 @@ public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
     return Array(arr)
 }
 
+
+public func find<T>(list:[T], f:(T -> Bool)) -> T? {
+    for x in list {
+        if f(x) {
+            return .Some(x)
+        }
+    }
+    return .None
+}
+
+
+
 public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
     switch index {
     case 0..<list.count: return (Array(list[0..<index]), Array(list[index..<list.count]))

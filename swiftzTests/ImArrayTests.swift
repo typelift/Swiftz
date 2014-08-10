@@ -40,6 +40,13 @@ class ImArrayTests: XCTestCase {
         XCTAssert(intersperse(1, single) == [1], "Should be equal")
     }
     
+    func testFind() {
+        let withArray = [1,2,3,4]
+        if let found = find(withArray, {$0 == 4}) {
+            XCTAssert(found == 4, "Should be found")
+        }
+    }
+    
     func testSplitAt() {
         let withArray = [1,2,3,4]
         
