@@ -10,63 +10,63 @@ import Foundation
 import swiftz_core
 
 public class Maybe<A: Any>: F<A> {
-	var value: A?
+  var value: A?
 
-	public init(_ v: A) {
-		value = v
-        super.init()
-	}
+  public init(_ v: A) {
+    value = v
+    super.init()
+  }
 
-	public override init() {
-        super.init()
+  public override init() {
+    super.init()
+  }
+
+  public class func just(t: A) -> Maybe<A> {
+    return Maybe(t)
+  }
+
+  public class func none() -> Maybe {
+    return Maybe()
+  }
+
+  public func isJust() -> Bool {
+    switch value {
+    case .Some(_): return true
+    case .None: return false
     }
+  }
 
-	public class func just(t: A) -> Maybe<A> {
-		return Maybe(t)
-	}
+  public func isNone() -> Bool {
+    return !isJust()
+  }
 
-	public class func none() -> Maybe {
-		return Maybe()
-	}
-
-	public func isJust() -> Bool {
-		switch value {
-			case .Some(_): return true
-			case .None: return false
-		}
-	}
-
-	public func isNone() -> Bool {
-		return !isJust()
-	}
-
-	public func fromJust() -> A {
-		return self.value!
-	}
+  public func fromJust() -> A {
+    return self.value!
+  }
 }
 
 extension Maybe: BooleanType {
-    public var boolValue:Bool {
-		return isJust()
-	}
+  public var boolValue:Bool {
+    return isJust()
+  }
 }
 
 public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
-	if !(lhs == nil) && !(rhs == nil) {
-		return true
-	}
+  if !(lhs == nil) && !(rhs == nil) {
+    return true
+  }
 
-	if lhs && rhs {
-		return lhs.fromJust() == rhs.fromJust()
-	}
+  if lhs && rhs {
+    return lhs.fromJust() == rhs.fromJust()
+  }
 
-	return false
+  return false
 }
 
 public struct MaybeF<A, B>: Functor, Applicative {
   // functor
   public let m: Maybe<A>
-    
+
   public init(_ m: Maybe<A>) {
     self.m = m
   }
@@ -78,7 +78,7 @@ public struct MaybeF<A, B>: Functor, Applicative {
       return Maybe<B>.none()
     }
   }
-  
+
   // applicative
   public static func pure(a: A) -> Maybe<A>  {
     return Maybe<A>.just(a)

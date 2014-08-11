@@ -14,11 +14,11 @@ import swiftz_core
 enum Shape : Dataable {
   case Boat
   case Plane(wingspan: Int)
-  
+
   static func typeRep() -> Any.Type {
     return reflect(self).valueType
   }
-  
+
   static func fromRep(r: Data) -> Shape? {
     switch (r.con, r.vals) {
     case let (0, xs):
@@ -31,19 +31,19 @@ enum Shape : Dataable {
       return .None
     }
   }
-  
+
   func toRep() -> Data {
     switch self {
-      case .Boat: return Data(con: 0, vals: [])
-      case let .Plane(w): return Data(con: 1, vals: [("wingspan", w)])
+    case .Boat: return Data(con: 0, vals: [])
+    case let .Plane(w): return Data(con: 1, vals: [("wingspan", w)])
     }
   }
 }
 
 func ==(lhs: Shape, rhs: Shape) -> Bool {
   switch (lhs, rhs) {
-    case (.Boat, .Boat): return true
-    case let (.Plane(q), .Plane(w)) where w == q: return true
-    default: return false
+  case (.Boat, .Boat): return true
+  case let (.Plane(q), .Plane(w)) where w == q: return true
+  default: return false
   }
 }

@@ -36,9 +36,9 @@ public struct IxState<I, O, A> {
     return f <^^> self
   }
 
-//  public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
-//    return f <*> self
-//  }
+  //  public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
+  //    return f <*> self
+  //  }
 
   public func flatMap<E, B>(f: A -> IxState<O, E, B>) -> IxState<I, E, B> {
     return self >>= f

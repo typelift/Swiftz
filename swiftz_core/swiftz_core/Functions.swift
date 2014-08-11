@@ -14,21 +14,21 @@ import Foundation
 ///
 /// This can be used to prove to the typechecker that a given type A is
 /// equivalent to a given type B.
-/// 
+///
 /// For example, the following global function is normally impossible to bring
 /// into the `Signal<T>` class:
-/// 
+///
 ///     func merge<U>(signal: Signal<Signal<U>>) -> Signal<U>
-/// 
+///
 /// However, you can work around this restriction using an instance method with
 /// an “evidence” parameter:
-/// 
+///
 ///     func merge<U>(evidence: Signal<T> -> Signal<Signal<U>>) -> Signal<U>
-/// 
+///
 /// Which would then be invoked with the identity function, like this:
-/// 
+///
 ///     signal.merge(identity)
-/// 
+///
 /// This will verify that `signal`, which is nominally `Signal<T>`, is logically
 /// equivalent to `Signal<Signal<U>>`. If that's not actually the case, a type
 /// error will result.
@@ -48,14 +48,14 @@ public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
 }
 
 // Function composition. Alt + 8
- public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
+public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
   return { (a: A) -> C in
     return f(g(a))
   }
 }
 
 // Thrush
- public func |><A, B>(a: A, f: A -> B) -> B {
+public func |><A, B>(a: A, f: A -> B) -> B {
   return f(a)
 }
 
@@ -69,28 +69,28 @@ public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
 // functions as a monad and profunctor
 
 // •
- public func <^><I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
+public func <^><I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
   return { x in
     f(k(x))
   }
 }
 
 // flip(•)
- public func <!><I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
+public func <!><I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
   return { x in
     k(f(x))
   }
 }
 
 // the S combinator
- public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
+public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
   return { x in
     f(x)(k(x))
   }
 }
 
 // the S' combinator
- public func >>=<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
+public func >>=<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
   return { x in
     f(k(x))(x)
   }

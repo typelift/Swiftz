@@ -18,19 +18,19 @@ public class User: JSONDecode {
   let age: Int
   let tweets: [String]
   let attrs: Dictionary<String, String>
-  
+
   public init(_ n: String, _ a: Int, _ t: [String], _ r: Dictionary<String, String>) {
     name = n
     age = a
     tweets = t
     attrs = r
   }
-  
+
   // JSON
   public class func create(x: String) -> (Int) -> (([String]) -> ((Dictionary<String, String>) -> User)) {
     return { (y: Int) in { (z: [String]) in { User(x, y, z, $0) } } }
   }
-  
+
   public class func fromJSON(x: JSValue) -> User? {
     var n: String?
     var a: Int?
@@ -48,10 +48,10 @@ public class User: JSONDecode {
       return .None
     }
   }
-  
+
   // lens example
   public class func luserName() -> Lens<User, User, String, String> {
-     return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
+    return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
   }
 }
 
