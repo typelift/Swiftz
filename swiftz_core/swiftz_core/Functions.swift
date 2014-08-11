@@ -48,14 +48,14 @@ public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
 }
 
 // Function composition. Alt + 8
-@infix public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
+ public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
   return { (a: A) -> C in
     return f(g(a))
   }
 }
 
 // Thrush
-@infix public func |><A, B>(a: A, f: A -> B) -> B {
+ public func |><A, B>(a: A, f: A -> B) -> B {
   return f(a)
 }
 
@@ -69,28 +69,28 @@ public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
 // functions as a monad and profunctor
 
 // •
-@infix public func <^><I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
+ public func <^><I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
   return { x in
     f(k(x))
   }
 }
 
 // flip(•)
-@infix public func <!><I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
+ public func <!><I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
   return { x in
     k(f(x))
   }
 }
 
 // the S combinator
-@infix public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
+ public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
   return { x in
     f(x)(k(x))
   }
 }
 
 // the S' combinator
-@infix public func >>=<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
+ public func >>=<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
   return { x in
     f(k(x))(x)
   }

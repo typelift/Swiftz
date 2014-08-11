@@ -62,15 +62,15 @@ public func extract<I, A>(a: IxMultiStore<I, I, A>) -> A {
   return extract(a.set)(a.pos)
 }
 
-@infix public func <^><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {
+public func <^><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {
   return IxMultiStore(a.pos, { g in { f(g($0)) } } <^> a.set)
 }
 
-@infix public func<^^><O, P, I, A>(f: O -> P, a: IxMultiStore<O, I, A>) -> IxMultiStore<P, I, A> {
+public func<^^><O, P, I, A>(f: O -> P, a: IxMultiStore<O, I, A>) -> IxMultiStore<P, I, A> {
   return IxMultiStore(f(a.pos), a.set)
 }
 
-@infix public func <!><O, H, I, A>(f: H -> I, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, H, A> {
+public func <!><O, H, I, A>(f: H -> I, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, H, A> {
   return IxMultiStore(a.pos, { $0 • f } <^> a.set)
 }
 
@@ -78,7 +78,7 @@ public func duplicate<O, J, I, A>(a: IxMultiStore<O, I, A>) -> IxMultiStore<O, J
   return IxMultiStore(a.pos, a.set =>> { g in { IxMultiStore($0, g) } })
 }
 
-@infix public func =>><O, J, I, A, B>(a: IxMultiStore<O, I, A>, f: IxMultiStore<J, I, A> -> B) -> IxMultiStore<O, J, B> {
+public func =>><O, J, I, A, B>(a: IxMultiStore<O, I, A>, f: IxMultiStore<J, I, A> -> B) -> IxMultiStore<O, J, B> {
   return IxMultiStore(a.pos, a.set =>> { g in { f(IxMultiStore($0, g)) } })
 }
 

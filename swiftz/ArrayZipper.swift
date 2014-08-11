@@ -53,7 +53,7 @@ public func extract<A>(xz: ArrayZipper<A>) -> A {
   return xz.values[xz.position]
 }
 
-@infix public func <^><A, B>(f: A -> B, xz: ArrayZipper<A>) -> ArrayZipper<B> {
+public func <^><A, B>(f: A -> B, xz: ArrayZipper<A>) -> ArrayZipper<B> {
   return ArrayZipper(f <^> xz.values, xz.position)
 }
 
@@ -61,6 +61,6 @@ public func duplicate<A>(xz: ArrayZipper<A>) -> ArrayZipper<ArrayZipper<A>> {
   return ArrayZipper((0 ..< xz.values.count).map { ArrayZipper(xz.values, $0) }, xz.position)
 }
 
-@infix public func =>><A, B>(xz: ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
+public func =>><A, B>(xz: ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
   return ArrayZipper((0 ..< xz.values.count).map { f(ArrayZipper(xz.values, $0)) }, xz.position)
 }

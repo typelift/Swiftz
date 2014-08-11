@@ -17,7 +17,7 @@ public class Maybe<A: Any>: F<A> {
         super.init()
 	}
 
-	public init() {
+	public override init() {
         super.init()
     }
 
@@ -45,14 +45,14 @@ public class Maybe<A: Any>: F<A> {
 	}
 }
 
-extension Maybe: LogicValue {
-	public func getLogicValue() -> Bool {
+extension Maybe: BooleanType {
+    public var boolValue:Bool {
 		return isJust()
 	}
 }
 
-@infix public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
-	if !lhs && !rhs {
+public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+	if !(lhs == nil) && !(rhs == nil) {
 		return true
 	}
 
