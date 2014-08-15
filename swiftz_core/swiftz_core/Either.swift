@@ -93,7 +93,7 @@ public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
 }
 
 /// Applicative Functor `apply`. Given an Either<L, RA -> RB> and an Either<L,RA>,
-/// returns and Either<L,RB>. If the `f` or `a' param is a Left, simply returns a Left with the
+/// returns an Either<L,RB>. If the `f` or `a' param is a Left, simply returns a Left with the
 /// same value. Otherwise the function taken from Right(f) is applied to the value from Right(a)
 /// And a Right is returned.
 public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {

@@ -89,7 +89,7 @@ public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
 }
 
 /// Applicative Functor `apply`. Given an Result<VA -> VB> and an Result<VA>,
-/// returns and Result<VB>. If the `f` or `a' param is an Error, simply returns an Error with the
+/// returns a Result<VB>. If the `f` or `a' param is an Error, simply returns an Error with the
 /// same value. Otherwise the function taken from Value(f) is applied to the value from Value(a)
 /// And a Value is returned.
 public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
