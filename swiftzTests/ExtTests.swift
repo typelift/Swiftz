@@ -65,7 +65,7 @@ class ExtTests: XCTestCase {
     let exO: [Int] = mapFlatten(xsO)
     XCTAssert(exO == [1, 2], "mapflatten option")
     
-    let exJ = join([[1, 2], [3, 4]])
+    let exJ = concat([[1, 2], [3, 4]])
     XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
     
     XCTAssert(indexArray([1], 0) == 1, "index array 0")

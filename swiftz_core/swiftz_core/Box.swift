@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
+/// An immutable box, necessary for recursive datatypes (such as List) to avoid compiler crashes
 public final class Box<T> {
     private let _value : () -> T
     

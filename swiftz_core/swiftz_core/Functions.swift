@@ -36,25 +36,34 @@ public func identity<A>(a: A) -> A {
   return a;
 }
 
-// Fip a function's arguments
+/// Flip a function's arguments
 public func flip<A, B, C>(f: ((A, B) -> C), b: B, a: A) -> C {
   return f(a, b)
 }
+
+/// Flip a function's arguments and return a function that takes
+/// the arguments in flipped order.
 public func flip<A, B, C>(f: (A, B) -> C)(b: B, a: A) -> C {
   return f(a, b)
 }
+
+/// Flip a function's arguments and return a curried function that takes
+/// the arguments in flipped order.
 public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
   return f(a)(b)
 }
 
-// Function composition. Alt + 8
+/// Function composition. Alt + 8
+/// Given two functions, `f` and `g` returns a function that takes an `A` and returns a `C`.
+/// f and g are applied like so: f(g(a))
  public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
   return { (a: A) -> C in
     return f(g(a))
   }
 }
 
-// Thrush
+/// Thrush function. Given an A, and a function A -> B, applies the function to A and returns the result
+/// can make code more readable
  public func |><A, B>(a: A, f: A -> B) -> B {
   return f(a)
 }
