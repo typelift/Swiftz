@@ -13,21 +13,20 @@ import Foundation
 public enum List<A> {
   case Nil
   case Cons(A, Box<List<A>>)
-  
+
   public init() {
     self = .Nil
   }
-    
+
   public init(_ head : A, _ tail : List<A>) {
     self = .Cons(head, Box(tail))
   }
-  
-    /// Appends and element onto the front of a list.
+  /// Appends and element onto the front of a list.
   static public func cons(h: A) -> List<A> -> List<A> {
     return { t in List(h, t) }
   }
   
-    /// Returns the first element in the list, or None, if the list is empty.
+  /// Returns the first element in the list, or None, if the list is empty.
   public func head() -> A? {
     switch self {
     case .Nil:
@@ -36,8 +35,8 @@ public enum List<A> {
       return head
     }
   }
-  
-    /// Returns the tail of the list, or None if the list is Empty.
+
+  /// Returns the tail of the list, or None if the list is Empty.
   public func tail() -> List<A>? {
     switch self {
     case .Nil:
@@ -46,16 +45,16 @@ public enum List<A> {
       return tail.value
     }
   }
-  
-    /// Returns the length of the list.
+
+  /// Returns the length of the list.
   public func length() -> Int {
     switch self {
     case .Nil: return 0
     case let .Cons(_, xs): return 1 + xs.value.length()
     }
   }
-  
-    /// Equivalent to the `reduce` function on normal arrays.
+
+  /// Equivalent to the `reduce` function on normal arrays.
   public func foldl<B>(f: B -> A -> B, initial: B) -> B {
     var xs = initial
     for x in self {
@@ -64,13 +63,13 @@ public enum List<A> {
     return xs
   }
   
-    /// Reverse the list
+  /// Reverse the list
   public func reverse() -> List<A> {
     return self.foldl(flip(List.cons), initial: List())
   }
   
-    /// Given a predicate, searches the list until it find the first match, and returns that,
-    /// or None if no match was found.
+  /// Given a predicate, searches the list until it find the first match, and returns that,
+  /// or None if no match was found.
   public func find(pred: A -> Bool) -> A? {
     for x in self {
       if pred(x) {
@@ -80,8 +79,8 @@ public enum List<A> {
     return nil
   }
   
-    /// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
-    /// and a key and returns the value for the given key, if there is one, or None otherwise.
+  /// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
+  /// and a key and returns the value for the given key, if there is one, or None otherwise.
   public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
     func pred(t: (K, V)) -> Bool {
       return t.0 == key
@@ -118,7 +117,7 @@ extension List : ArrayLiteralConvertible {
     }
     return l
   }
-  
+
   public static func convertFromArrayLiteral(elements: A...) -> List<A> {
     return fromSeq(elements)
   }
@@ -145,8 +144,8 @@ extension List : SequenceType {
 
 extension List : Printable {
   public var description : String {
-  var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
-    return "[\(x)]"
+    var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
+      return "[\(x)]"
   }
 }
 
@@ -154,11 +153,11 @@ extension List : Printable {
 /// This is necessary since we don't yet have higher kinded types.
 public struct ListF<A, B> : Functor {
   public let l : List<A>
-    
+
   public init(l: List<A>) {
     self.l = l
   }
-    
+
   // is recursion ok here?
   public func fmap(f : (A -> B)) -> List<B> {
     switch l {

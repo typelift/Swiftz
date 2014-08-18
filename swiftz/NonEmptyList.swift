@@ -19,14 +19,14 @@ public struct NonEmptyList<A> {
 }
 
 public func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
-     return Lens { nel in IxStore(nel.head.value) { NonEmptyList($0, nel.tail) } }
+  return Lens { nel in IxStore(nel.head.value) { NonEmptyList($0, nel.tail) } }
 }
 
 public func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
-     return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
+  return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
 }
 
- public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
   return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
 }
 
@@ -45,7 +45,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
     }
     return NonEmptyList(h!, l)
   }
-  
+
   static public func convertFromArrayLiteral(elements: A...) -> NonEmptyList<A> {
     return fromSeq(elements)
   }
@@ -78,18 +78,18 @@ extension NonEmptyList : SequenceType {
 
 extension NonEmptyList : Printable {
   public var description : String {
-  var x = ", ".join(NonEmptyListF(l: self).fmap({ "\($0)" }))
-    return "[\(x)]"
+    var x = ", ".join(NonEmptyListF(l: self).fmap({ "\($0)" }))
+      return "[\(x)]"
   }
 }
 
 public struct NonEmptyListF<A, B> : Functor {
   let l : NonEmptyList<A>
-    
+
   public init(l: NonEmptyList<A>) {
     self.l = l
   }
-    
+
   public func fmap(f : (A -> B)) -> NonEmptyList<B> {
     return NonEmptyList(f(l.head.value), ListF(l: l.tail).fmap(f))
   }

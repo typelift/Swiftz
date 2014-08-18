@@ -9,9 +9,9 @@
 import Foundation
 
 public class F<A> {
-    public init() {
-        
-    }
+  public init() {
+
+  }
 }
 
 public protocol Functor {

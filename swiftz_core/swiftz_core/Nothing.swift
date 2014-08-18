@@ -9,5 +9,5 @@
 import Foundation
 /// An enum that represents Nothing
 public enum Nothing {
-  
+
 }

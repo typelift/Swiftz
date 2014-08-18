@@ -29,7 +29,7 @@ public final class HCons<H, T: HList> : HList {
     head = Box<H>(h)
     tail = Box<T>(t)
   }
-  
+
   public class func isNil() -> Bool {
     return false
   }
@@ -39,7 +39,7 @@ public final class HCons<H, T: HList> : HList {
   public class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
     return HCons<H, T>(h: h, t: t)
   }
-  
+
   public class func length() -> Int {
     return (1 + Tail.length())
   }
@@ -48,20 +48,20 @@ public final class HCons<H, T: HList> : HList {
 public final class HNil : HList {
   public typealias Head = Nothing
   public typealias Tail = Nothing
-  
+
   public init() {}
   public class func isNil() -> Bool {
     return true
   }
-  
+
   public class func makeNil() -> HNil {
     return HNil()
   }
-  
+
   public class func makeCons(h: Head, t: Tail) -> HNil {
     abort() // impossible
   }
-  
+
   public class func length() -> Int {
     return 0
   }

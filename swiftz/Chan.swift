@@ -12,11 +12,11 @@ import Foundation
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html
 public class Chan<A> {
   var stream: [A]
-  
+
   var mutex: UnsafeMutablePointer<pthread_mutex_t>
   var cond: UnsafeMutablePointer<pthread_cond_t>
   let matt: UnsafeMutablePointer<pthread_mutexattr_t>
-  
+
   public init() {
     var mattr:UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
@@ -28,20 +28,20 @@ public class Chan<A> {
     pthread_cond_init(cond, nil)
     stream = []
   }
-  
+
   deinit {
     mutex.destroy()
     cond.destroy()
     matt.destroy()
   }
-  
+
   public func write(a: A) {
     pthread_mutex_lock(mutex)
     stream.append(a)
     pthread_mutex_unlock(mutex)
     pthread_cond_signal(cond)
   }
-  
+
   public func read() -> A {
     pthread_mutex_lock(mutex)
     while (stream.isEmpty) {
@@ -52,17 +52,17 @@ public class Chan<A> {
     pthread_mutex_unlock(mutex)
     return v
   }
-  
+
 }
 
 infix operator  <- {}
- public func <-<A>(chan: Chan<A>, value: A) -> Void
+public func <-<A>(chan: Chan<A>, value: A) -> Void
 {
-    chan.write(value)
+  chan.write(value)
 }
 
 prefix operator <- {}
 public prefix func <-<A>(chan: Chan<A>) -> A
 {
-    return chan.read()
+  return chan.read()
 }

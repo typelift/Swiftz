@@ -22,13 +22,13 @@ public class Future<A> {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
   }
-  
+
   public init(exec: ExecutionContext, _ a: () -> A) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
     exec.submit(self, work: a)
   }
-  
+
   public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
@@ -45,7 +45,7 @@ public class Future<A> {
     var result : A? = nil
     dispatch_sync(resultQueue, {
       result = self.value!
-      })
+    })
     return result!
   }
 
