@@ -82,12 +82,8 @@ public enum List<A> {
   /// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
   /// and a key and returns the value for the given key, if there is one, or None otherwise.
   public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
-    func pred(t: (K, V)) -> Bool {
-      return t.0 == key
-    }
-    func val(t: (K, V)) -> V {
-      return t.1
-    }
+    let pred: (K, V) -> Bool = { (k, _) in k == key }
+    let val: (K, V) -> V = { (_, v) in v }
     return (({ val(ev($0)) }) <^> self.find({ pred(ev($0)) }))
   }
 }
