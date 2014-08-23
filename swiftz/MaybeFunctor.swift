@@ -52,7 +52,7 @@ extension Maybe: BooleanType {
 }
 
 public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
-  if !(lhs == nil) && !(rhs == nil) {
+  if lhs.isNone() && rhs.isNone() {
     return true
   }
 
