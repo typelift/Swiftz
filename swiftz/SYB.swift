@@ -17,9 +17,9 @@ public protocol Dataable {
 public struct Data {
   public let con: Int
   public let vals: [(String, Any)]
-    
-    public init(con: Int, vals: [(String, Any)]) {
-        self.con = con
-        self.vals = vals
-    }
+
+  public init(con: Int, vals: [(String, Any)]) {
+    self.con = con
+    self.vals = vals
+  }
 }

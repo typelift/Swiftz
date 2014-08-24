@@ -9,42 +9,42 @@
 import Foundation
 
 // Operators
-public operator infix • {
-  associativity right
+infix operator • {
+associativity right
 }
 
-public operator infix |> {
-  associativity left
+infix operator |> {
+associativity left
 }
 
-//operator infix <| {
+//operator  <| {
 //  associativity right
 //}
 
 // "fmap" like
-public operator infix <^> {
-  associativity left
+infix operator  <^> {
+associativity left
 }
 
 // "imap" like
-public operator infix <^^> {
+infix operator  <^^> {
 associativity left
 }
 
 // "contramap" like
-public operator infix <!> {
+infix operator  <!> {
 associativity left
 }
 
 // "ap" like
-public operator infix <*> {
-  associativity left
+infix operator  <*> {
+associativity left
 }
 
 // "bind" like
 // in the standard library, >>=
 
 // "extend" like
-public operator infix =>> {
-  associativity left
+infix operator  =>> {
+associativity left
 }

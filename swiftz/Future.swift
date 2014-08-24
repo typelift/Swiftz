@@ -22,14 +22,21 @@ public class Future<A> {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
   }
+
   public init(exec: ExecutionContext, _ a: () -> A) {
     dispatch_suspend(self.resultQueue)
     execCtx = exec
     exec.submit(self, work: a)
   }
 
-  public func sig(x: A) {
-    assert(!self.value, "Future cannot complete more than once")
+  public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
+    dispatch_suspend(self.resultQueue)
+    execCtx = exec
+    exec.submit(self, work: a)
+  }
+
+  internal func sig(x: A) {
+    assert(self.value == nil, "Future cannot complete more than once")
     self.value = x
     dispatch_resume(self.resultQueue)
   }
@@ -38,7 +45,7 @@ public class Future<A> {
     var result : A? = nil
     dispatch_sync(resultQueue, {
       result = self.value!
-      })
+    })
     return result!
   }
 

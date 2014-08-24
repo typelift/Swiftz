@@ -13,49 +13,51 @@ import Foundation
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-MVar.html
 public class MVar<A> {
   var value: Optional<(() -> A)>
-  
-  var mutex: UnsafePointer<pthread_mutex_t>
-  var condPut: UnsafePointer<pthread_cond_t>
-  var condRead: UnsafePointer<pthread_cond_t>
-  let matt: UnsafePointer<pthread_mutexattr_t>
-  
+
+  var mutex: UnsafeMutablePointer<pthread_mutex_t>
+  var condPut: UnsafeMutablePointer<pthread_cond_t>
+  var condRead: UnsafeMutablePointer<pthread_cond_t>
+  let matt: UnsafeMutablePointer<pthread_mutexattr_t>
+
   public init() {
-    var mattr:UnsafePointer<pthread_mutexattr_t> = UnsafePointer.alloc(sizeof(pthread_mutexattr_t))
-    mutex = UnsafePointer.alloc(sizeof(pthread_mutex_t))
-    condPut = UnsafePointer.alloc(sizeof(pthread_cond_t))
-    condRead = UnsafePointer.alloc(sizeof(pthread_cond_t))
+
+    var mattr:UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
+    mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
+    condPut = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
+    condRead = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
     pthread_mutexattr_init(mattr)
     pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
-    matt = UnsafePointer(mattr)
+    matt = UnsafeMutablePointer(mattr)
     pthread_mutex_init(mutex, matt)
     pthread_cond_init(condPut, nil)
     pthread_cond_init(condRead, nil)
   }
-  
-  public convenience init(a: () -> A) {
+
+  public convenience init(a: @autoclosure () -> A) {
     self.init()
     value = a
   }
-  
+
   deinit {
     mutex.destroy()
     condPut.destroy()
     condRead.destroy()
     matt.destroy()
   }
-  
-  public func put(x: A) {pthread_mutex_lock(mutex)
-    while (value) {
+
+  public func put(x: A) {
+    pthread_mutex_lock(mutex)
+    while (value != nil) {
       pthread_cond_wait(condRead, mutex)
     }
     self.value = { x }
     pthread_mutex_unlock(mutex)
     pthread_cond_signal(condPut)
   }
-  
+
   public func take() -> A {
     pthread_mutex_lock(mutex)
-    while !(value) {
+    while (value) == nil {
       pthread_cond_wait(condPut, mutex)
     }
     let cp = value!()
@@ -64,12 +66,12 @@ public class MVar<A> {
     pthread_cond_signal(condRead)
     return cp
   }
-  
+
   // this isn't very useful! it is just a snapshot at this point in time.
   // you could check it is empty, then put, and it could block.
   // it is mostly for debugging and testing.
   public func isEmpty() -> Bool {
-    return !value.getLogicValue()
+    return (value == nil)
   }
 
 }

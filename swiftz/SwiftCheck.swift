@@ -32,7 +32,7 @@ extension Int: Arbitrary {
     xs.extend((-100..<100))
     return xs
   }
-  
+
   public func shrink() -> [Int] {
     return []
   }
@@ -44,7 +44,7 @@ extension String: Arbitrary {
     let xs = ["", "\n", "a"]
     return xs
   }
-  
+
   public func shrink() -> [String] {
     return []
   }
@@ -54,7 +54,7 @@ extension Array: Arbitrary {
   public static func arbitrary() -> [[Element]] {
     return []
   }
-  
+
   public func shrink() -> [[Element]] {
     return []
   }

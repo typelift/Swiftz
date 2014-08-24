@@ -16,16 +16,16 @@ public class Party {
   public init(h: User) {
     host = h
   }
-  
-	class func lpartyHost() -> Lens<Party, Party, User, User> {
-		let getter = { (party: Party) -> User in
-			party.host
-		}
 
-		let setter = { (party: Party, host: User) -> Party in
-			Party(h: host)
-		}
+  class func lpartyHost() -> Lens<Party, Party, User, User> {
+    let getter = { (party: Party) -> User in
+      party.host
+    }
 
-		return Lens(get: getter, set: setter)
-	}
+    let setter = { (party: Party, host: User) -> Party in
+      Party(h: host)
+    }
+
+    return Lens(get: getter, set: setter)
+  }
 }

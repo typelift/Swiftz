@@ -11,7 +11,7 @@ import Foundation
 extension NSArray {
   public func mapToArray<U>(transform: AnyObject -> (U)) -> [U] {
     var xs: [U] = Array()
-    self.enumerateObjectsUsingBlock({ (v: AnyObject?, _: Int, _: UnsafePointer<ObjCBool>) in
+    self.enumerateObjectsUsingBlock({ (v: AnyObject?, _: Int, _: UnsafeMutablePointer<ObjCBool>) in
       xs.append(transform(v! as AnyObject))
     })
     return xs

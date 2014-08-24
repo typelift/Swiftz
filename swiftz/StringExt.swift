@@ -18,7 +18,7 @@ extension String {
         xs.append(line)
         line = ""
       } else {
-        line += x
+        line.append(x)
       }
     }
     if line != "" {
@@ -26,13 +26,12 @@ extension String {
     }
     return xs
   }
-  
+
   public static func unlines(xs: [String]) -> String {
     return xs.reduce("", combine: { "\($0)\($1)\n" } )
   }
 
-  // actually an isomorphism
-  public static func lines() -> Lens<String, String, [String], [String]> {
-     return Lens { str in IxStore(str.lines(), self.unlines) }
+  public static func lines() -> Iso<String, String, [String], [String]> {
+    return Iso(get: { $0.lines() }, inject: unlines)
   }
 }

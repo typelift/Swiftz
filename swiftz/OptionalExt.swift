@@ -14,16 +14,16 @@ extension Optional {
 
   public func maybe<B>(z : B, f : T -> B) -> B {
     switch self {
-      case .None: return z
-      case let .Some(x): return f(x)
+    case .None: return z
+    case let .Some(x): return f(x)
     }
   }
-  
+
   // scala's getOrElse
   public func getOrElse(x: T) -> T {
     switch self {
-      case .None: return x
-      case let .Some(x): return x
+    case .None: return x
+    case let .Some(x): return x
     }
   }
 }
