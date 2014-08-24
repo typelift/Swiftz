@@ -13,7 +13,7 @@ public class ArrayZipper<A>: ArrayLiteralConvertible {
   public let values: [A]
   public let position: Int
 
-  public init(_ values: [A] = [], _ position: Int = 0) {
+  public required init(_ values: [A] = [], _ position: Int = 0) {
     if position < 0 {
       self.position = 0
     } else if position >= values.count {
@@ -24,8 +24,8 @@ public class ArrayZipper<A>: ArrayLiteralConvertible {
     self.values = values
   }
 
-  public class func convertFromArrayLiteral(elements: A...) -> ArrayZipper<A> {
-    return ArrayZipper(elements, 0)
+  public class func convertFromArrayLiteral(elements: A...) -> Self {
+    return self(elements, 0)
   }
 
   public func map<B>(f: A -> B) -> ArrayZipper<B> {

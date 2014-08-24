@@ -18,7 +18,7 @@ extension String {
         xs.append(line)
         line = ""
       } else {
-        line += x
+        line.append(x)
       }
     }
     if line != "" {
