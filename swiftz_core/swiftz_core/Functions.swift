@@ -99,7 +99,7 @@ public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
 }
 
 // the S' combinator
-public func >>=<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
+public func >>-<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
   return { x in
     f(k(x))(x)
   }

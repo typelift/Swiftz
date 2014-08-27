@@ -41,10 +41,12 @@ infix operator  <*> {
 associativity left
 }
 
-// "bind" like
-// in the standard library, >>=
-
 // "extend" like
-infix operator  =>> {
+infix operator  ->> {
+associativity left
+}
+
+/// Monadic bind operator, because >>= is already in the standard lib.
+infix operator >>- {
 associativity left
 }

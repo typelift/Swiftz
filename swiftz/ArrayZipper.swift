@@ -37,7 +37,7 @@ public class ArrayZipper<A>: ArrayLiteralConvertible {
   }
 
   public func extend<B>(f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
-    return self =>> f
+    return self ->> f
   }
 
   public func move(n: Int = 1) -> ArrayZipper<A> {
@@ -61,6 +61,6 @@ public func duplicate<A>(xz: ArrayZipper<A>) -> ArrayZipper<ArrayZipper<A>> {
   return ArrayZipper((0 ..< xz.values.count).map { ArrayZipper(xz.values, $0) }, xz.position)
 }
 
-public func =>><A, B>(xz: ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
+public func ->><A, B>(xz: ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
   return ArrayZipper((0 ..< xz.values.count).map { f(ArrayZipper(xz.values, $0)) }, xz.position)
 }

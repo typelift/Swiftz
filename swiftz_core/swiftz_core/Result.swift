@@ -41,11 +41,11 @@ public enum Result<V> {
     }
   }
   
-  /// Named function for `>>=`. If the Result is Error, simply returns
+  /// Named function for `>>-`. If the Result is Error, simply returns
   /// a New Error with the value of the receiver. If Value, applies the function `f`
   /// and returns the result.
   public func flatMap<S>(f: V -> Result<S>) -> Result<S> {
-    return self >>= f
+    return self >>- f
   }
 
   /// Creates an Error with the given value.
@@ -102,7 +102,7 @@ public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
 /// Monadic `bind`. Given an Result<VA>, and a function from VA -> Result<VB>,
 /// applies the function `f` if `a` is Value, otherwise the function is ignored and an Error
 /// with the Error value from `a` is returned.
-public func >>=<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
+public func >>-<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
   switch a {
   case let .Error(l): return .Error(l)
   case let .Value(r): return f(r.value)

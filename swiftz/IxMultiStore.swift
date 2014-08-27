@@ -38,7 +38,7 @@ public struct IxMultiStore<O, I, A> {
   }
 
   public func extend<E, B>(f: IxMultiStore<E, I, A> -> B) -> IxMultiStore<O, E, B> {
-    return self =>> f
+    return self ->> f
   }
 
   public func put(x: I) -> ArrayZipper<A> {
@@ -75,11 +75,11 @@ public func <!><O, H, I, A>(f: H -> I, a: IxMultiStore<O, I, A>) -> IxMultiStore
 }
 
 public func duplicate<O, J, I, A>(a: IxMultiStore<O, I, A>) -> IxMultiStore<O, J, IxMultiStore<J, I, A>> {
-  return IxMultiStore(a.pos, a.set =>> { g in { IxMultiStore($0, g) } })
+  return IxMultiStore(a.pos, a.set ->> { g in { IxMultiStore($0, g) } })
 }
 
-public func =>><O, J, I, A, B>(a: IxMultiStore<O, I, A>, f: IxMultiStore<J, I, A> -> B) -> IxMultiStore<O, J, B> {
-  return IxMultiStore(a.pos, a.set =>> { g in { f(IxMultiStore($0, g)) } })
+public func ->><O, J, I, A, B>(a: IxMultiStore<O, I, A>, f: IxMultiStore<J, I, A> -> B) -> IxMultiStore<O, J, B> {
+  return IxMultiStore(a.pos, a.set ->> { g in { f(IxMultiStore($0, g)) } })
 }
 
 public func lower<I, A>(a: IxMultiStore<I, I, A>) -> ArrayZipper<A> {

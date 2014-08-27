@@ -59,22 +59,23 @@ class ConcurrentTests: XCTestCase {
 
   func testPerformanceExample() {
     // concurrent pi
-
-    func term(ch: Chan<CDouble>, k: CDouble) -> Void {
-      ch <- (4 * pow(-1, k) / (2 * k + 1))
+    let term:(Chan<CDouble>, CDouble) -> Void = {(ch: Chan<CDouble>, k: CDouble) -> Void in
+        ch <- (4 * pow(-1, k) / (2 * k + 1))
     }
 
-    func pi(n: Int) -> CDouble {
-      let ch = Chan<CDouble>()
-      for k in (0..<n) {
-        Future<Void>(exec: gcdExecutionContext, { return term(ch, CDouble(k)) })
-      }
-      var f = 0.0
-      for k in (0..<n) {
-        f = f + ch.read()
-      }
-      return f
+    let pi:Int -> CDouble = {
+        (n:Int) -> CDouble in
+        let ch = Chan<CDouble>()
+        for k in (0..<n) {
+            Future<Void>(exec: gcdExecutionContext, { return term(ch, CDouble(k)) })
+        }
+        var f = 0.0
+        for k in (0..<n) {
+            f = f + ch.read()
+        }
+        return f
     }
+
 
     self.measureBlock() {
       pi(200)

@@ -39,7 +39,7 @@ public func <*><A, B>(f: (A -> B)?, a: A?) -> B? {
 /// Monadic `bind`. Given an Optional<A>, and a function from A -> Optional<B>,
 /// applies the function `f` if `a` is Some, otherwise the function is ignored and None
 /// is returned.
-public func >>=<A, B>(a: A?, f: A -> B?) -> B? {
+public func >>-<A, B>(a: A?, f: A -> B?) -> B? {
   if let x = a {
     return f(x)
   } else {
@@ -55,5 +55,5 @@ public func >>=<A, B>(a: A?, f: A -> B?) -> B? {
 
 ///This gives a bad access error in the playground as of Beta 5
 //public func liftM2<A, B, R>(f: A -> B -> R) -> A? -> B? -> R? {
-//    return { a in { b in a >>= { ap in b >>= f(ap) }}}
+//    return { a in { b in a >>- { ap in b >>- f(ap) }}}
 //}

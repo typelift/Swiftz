@@ -226,7 +226,7 @@ func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
 //    return Set<B>()
 //}
 
-func >>=<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+func >>-<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
   var se = [B]()
   for x in a {
     se.extend(f(x))
