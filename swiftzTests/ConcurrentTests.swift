@@ -8,6 +8,7 @@
 
 import XCTest
 import swiftz
+import swiftz_core
 
 class ConcurrentTests: XCTestCase {
 
@@ -60,14 +61,16 @@ class ConcurrentTests: XCTestCase {
   func testPerformanceExample() {
     // concurrent pi
 
-    func term(ch: Chan<CDouble>, k: CDouble) -> Void {
-      ch <- (4 * pow(-1, k) / (2 * k + 1))
+    let term : Chan<CDouble> -> CDouble -> Void = { (let ch: Chan<CDouble>) in
+      return { (let k: CDouble) in
+          ch <- (4 * pow(-1, k) / (2 * k + 1))
+      }
     }
 
-    func pi(n: Int) -> CDouble {
+    let pi : Int -> CDouble = { (let n: Int) in
       let ch = Chan<CDouble>()
       for k in (0..<n) {
-        Future<Void>(exec: gcdExecutionContext, { return term(ch, CDouble(k)) })
+        Future<Void>(exec: gcdExecutionContext, { return term(ch)(CDouble(k)) })
       }
       var f = 0.0
       for k in (0..<n) {

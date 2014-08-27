@@ -9,13 +9,19 @@
 import Foundation
 import swiftz_core
 
+// The IO Monad is a means of representing a computation which, when performed, interacts with
+// the outside world (i.e. performs effects) to arrive at some result of type a.
 public struct IO<A> {
 	let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
 
-	func unsafePerformIO() -> A  {
+  // The infamous "back door" to the IO Monad.  Forces strict evaluation
+  // of the IO action and returns a result.
+	public func unsafePerformIO() -> A  {
 		return self.apply(rw: realWorld).1
 	}
 
+  // Leave this here for now.  Swiftc does not like emitting a Monad
+  // extension for this.
 	public func bind<B>(f: A -> IO<B>) -> IO<B> {
 		return IO<B>({ (let rw) in
 			let (nw, a) = self.apply(rw: rw)
@@ -65,14 +71,13 @@ public func >><A, B>(x : IO<A>, y : IO<B>) -> IO<B> {
 	})
 }
 
-public func <-<A, B>(inout lhs : A, rhs : IO<A>) {
+public func <-<A>(inout lhs : A, rhs : IO<A>) {
 	lhs = rhs.unsafePerformIO()
 }
 
 public func join<A>(rs: IO<IO<A>>) -> IO<A> {
 	return rs.unsafePerformIO()
 }
-
 
 /// Herein lies the real world.  It is incredibly magic and sacred and not to be touched.  Those who
 /// do rarely come out alive...
