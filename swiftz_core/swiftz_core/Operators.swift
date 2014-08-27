@@ -42,7 +42,7 @@ associativity left
 }
 
 // "extend" like
-infix operator  =>> {
+infix operator  ->> {
 associativity left
 }
 

@@ -39,7 +39,7 @@ public struct IxStore<O, I, A> {
   }
 
   public func extend<E, B>(f: IxStore<E, I, A> -> B) -> IxStore<O, E, B> {
-    return self =>> f
+    return self ->> f
   }
 
   public func put(x: I) -> A {
@@ -83,7 +83,7 @@ public func duplicate<O, J, I, A>(a: IxStore<O, I, A>) -> IxStore<O, J, IxStore<
   return IxStore(a.pos) { IxStore($0, a.set) }
 }
 
-public func =>><O, J, I, A, B>(a: IxStore<O, I, A>, f: IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
+public func ->><O, J, I, A, B>(a: IxStore<O, I, A>, f: IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
   return IxStore(a.pos) { f(IxStore($0, a.set)) }
 }
 
