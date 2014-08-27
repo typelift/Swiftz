@@ -39,9 +39,9 @@ func decodeWeb(str: String) -> Result<User> {
   return Result(e, user)
 }
 
-// We can compose these two functions with the `>>=` function.
+// We can compose these two functions with the `>>-` function.
 
-let getUser: Result<User> = getWeb() >>= decodeWeb
+let getUser: Result<User> = getWeb() >>- decodeWeb
 
 switch (getUser) {
   case let .Error(e): println("NSError: \(e)")
@@ -68,7 +68,7 @@ XCTAssert(rhs.encode() == js)
 let userjs: NSData = ("{\"name\": \"max\", \"age\": 10, \"tweets\":
                        [\"hello\"], \"attrs\": {\"one\": \"1\"}}")
   .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-let user: User? = JSValue.decode(userjs) >>= User.fromJSON
+let user: User? = JSValue.decode(userjs) >>- User.fromJSON
 XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
 ```
 
@@ -113,7 +113,7 @@ Operator | Name      | Type
 `<^^>`   | imap      | `<^><I, J, A>(f: I -> J, f: F<I, A>) -> F<J, A>`
 `<!>`    | contramap | `<^><I, J, A>(f: J -> I, f: F<I, A>) -> F<J, A>`
 `<*>`    | apply     | `<*><A, B>(f: F<A -> B>, a: F<A>) -> F<B>`
-`>>=`    | bind      | `>>=<A, B>(a: F<A>, f: A -> F<B>) -> F<B>`
+`>>-`    | bind      | `>>-<A, B>(a: F<A>, f: A -> F<B>) -> F<B>`
 `=>>`    | extend    | `=>><A, B>(a: F<A>, f: F<A> -> B) -> F<B>`
 
 Types with instances of these operators:

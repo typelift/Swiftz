@@ -33,7 +33,7 @@ public struct IxCont<R, O, A> {
   }
 
   public func flatMap<E, B>(f: A -> IxCont<O, E, B>) -> IxCont<R, E, B> {
-    return self >>= f
+    return self >>- f
   }
 }
 
@@ -61,7 +61,7 @@ public func <*><R, I, O, A, B>(f: IxCont<R, I, A -> B>, a: IxCont<I, O, A>) -> I
   return IxCont { k in f.run { g in a.run { k(g($0)) } } }
 }
 
-public func >>=<R, I, O, A, B>(a: IxCont<R, I, A>, f: A -> IxCont<I, O, B>) -> IxCont<R, O, B> {
+public func >>-<R, I, O, A, B>(a: IxCont<R, I, A>, f: A -> IxCont<I, O, B>) -> IxCont<R, O, B> {
   return IxCont { k in a.run { f($0).run(k) } }
 }
 

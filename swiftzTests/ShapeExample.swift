@@ -13,7 +13,7 @@ import swiftz_core
 // shape example for SYB
 enum Shape : Dataable {
   case Boat
-  case Plane(wingspan: Int)
+  case Plane(Int)
 
   static func typeRep() -> Any.Type {
     return reflect(self).valueType
@@ -25,8 +25,8 @@ enum Shape : Dataable {
       return Boat
     case let (1, xs):
       let x1 = indexArray(xs, 0)
-      let x2 = x1 >>= { $1 as? Int }
-      return { Plane(wingspan: $0) } <^> x2
+      let x2 = x1 >>- { $1 as? Int }
+      return { Plane($0) } <^> x2
     default:
       return .None
     }

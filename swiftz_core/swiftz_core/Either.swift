@@ -37,11 +37,11 @@ public enum Either<L, R> {
     }
   }
 
-  /// Named function for `>>=`. If the Either is Left, simply returns
+  /// Named function for `>>-`. If the Either is Left, simply returns
   /// a New Left with the value of the receiver. If Right, applies the function `f`
   /// and returns the result.
   public func flatMap<S>(f: R -> Either<L, S>) -> Either<L, S> {
-    return self >>= f
+    return self >>- f
   }
 
   /// Creates a Left with the given value.
@@ -109,7 +109,7 @@ public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L
 /// Monadic `bind`. Given an Either<L,RA>, and a function from RA -> Either<L,RB>,
 /// applies the function `f` if `a` is Right, otherwise the function is ignored and a Left 
 /// with the Left value from `a` is returned.
-public func >>=<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
+public func >>-<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
   switch a {
   case let .Left(l): return .Left(l)
   case let .Right(r): return f(r.value)

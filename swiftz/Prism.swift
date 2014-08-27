@@ -24,7 +24,7 @@ public class Prism<S, T, A, B> {
 }
 
 public func •<S, T, I, J, A, B>(p1: Prism<S, T, I, J>, p2: Prism<I, J, A, B>) -> Prism<S, T, A, B> {
-  return Prism(tryGet: { p1.tryGet($0) >>= p2.tryGet }, inject: p1.inject • p2.inject)
+  return Prism(tryGet: { p1.tryGet($0) >>- p2.tryGet }, inject: p1.inject • p2.inject)
 }
 
 public func comp<S, T, I, J, A, B>(p1: Prism<S, T, I, J>)(p2: Prism<I, J, A, B>) -> Prism<S, T, A, B> {
