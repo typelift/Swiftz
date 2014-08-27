@@ -50,3 +50,7 @@ associativity left
 infix operator >>- {
 associativity left
 }
+
+// strict evaluation and binding from a monadic expression
+infix operator  <- {}
+prefix operator <- {}

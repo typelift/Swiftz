@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 // An unbound FIFO channel.
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html
@@ -55,13 +56,12 @@ public class Chan<A> {
 
 }
 
-infix operator  <- {}
+
 public func <-<A>(chan: Chan<A>, value: A) -> Void
 {
   chan.write(value)
 }
 
-prefix operator <- {}
 public prefix func <-<A>(chan: Chan<A>) -> A
 {
   return chan.read()
