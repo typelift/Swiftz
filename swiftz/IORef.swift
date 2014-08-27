@@ -28,7 +28,7 @@ public struct IORef<A> {
   // Modifies the reference and returns the updated result.
   // Equivalent to 'writeIORef >> readIORef'
   mutating func modifyIORef<B>(vfn : (A -> A)) -> IO<A> {
-    return stToIO(value.modifySTRef(vfn)) >>= { (_) in
+    return stToIO(value.modifySTRef(vfn)) >>- { (_) in
       return self.readIORef()
     }
   }

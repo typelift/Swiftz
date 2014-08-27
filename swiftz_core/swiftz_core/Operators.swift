@@ -46,7 +46,7 @@ infix operator  ->> {
 associativity left
 }
 
-/// Monadic bind operator, because >>= is already in the standard lib.
+/// Monadic bind operator, because >>- is already in the standard lib.
 infix operator >>- {
 associativity left
 }

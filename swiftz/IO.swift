@@ -61,7 +61,7 @@ extension IO : Applicative {
 	}
 }
 
-public func >>=<A, B>(x : IO<A>, f : A -> IO<B>) -> IO<B> {
+public func >>-<A, B>(x : IO<A>, f : A -> IO<B>) -> IO<B> {
 	return x.bind(f)
 }
 

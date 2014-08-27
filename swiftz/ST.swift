@@ -56,7 +56,7 @@ extension ST : Functor {
 	}
 }
 
-public func >>=<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
+public func >>-<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
 	return x.bind(f)
 }
 
