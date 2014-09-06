@@ -110,20 +110,24 @@ Operator | Name      | Type
 -------- | --------- | ------------------------------------------
 `pure`   | pure      | `pure<A>(a: A) -> F<A>`
 `<^>`    | fmap      | `<^><A, B>(f: A -> B, a: F<A>) -> F<B>`
-`<^^>`   | imap      | `<^><I, J, A>(f: I -> J, f: F<I, A>) -> F<J, A>`
-`<!>`    | contramap | `<^><I, J, A>(f: J -> I, f: F<I, A>) -> F<J, A>`
+`<^^>`   | imap      | `<^^><I, J, A>(f: I -> J, f: F<I, A>) -> F<J, A>`
+`<!>`    | contramap | `<!><I, J, A>(f: J -> I, f: F<I, A>) -> F<J, A>`
 `<*>`    | apply     | `<*><A, B>(f: F<A -> B>, a: F<A>) -> F<B>`
 `>>-`    | bind      | `>>-<A, B>(a: F<A>, f: A -> F<B>) -> F<B>`
 `->>`    | extend    | `->><A, B>(a: F<A>, f: F<A> -> B) -> F<B>`
+`<-`     | extract   | `<-<A>(m : F<A>) -> A`
 
 Types with instances of these operators:
 
 - `Optional`
 - `Array` (non-determinism, cross product)
+- `ArrayZipper`
 - `Either` (right bias)
 - `Result`
 - `ImArray`
 - `Set` (except `<*>`)
+- `IO`
+- `ST`
 
 *Note: these functions are not in any protocol. They are in global scope.*
 

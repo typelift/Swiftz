@@ -56,6 +56,7 @@ public class Chan<A> {
 
 }
 
+prefix operator <- {}
 
 public func <-<A>(chan: Chan<A>, value: A) -> Void
 {
