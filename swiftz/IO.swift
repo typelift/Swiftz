@@ -29,7 +29,7 @@ public struct IO<A> {
 		})
 	}
 
-	public func map<B>(f : A -> B) -> IO<B> {
+	public func map<B>(f: A -> B) -> IO<B> {
 		return IO<B>({ (let rw) in
 			let (nw, a) = self.apply(rw: rw)
 			return (nw, f(a))
@@ -40,7 +40,7 @@ public struct IO<A> {
 
 extension IO : Functor {
 	typealias B = Any
-	public func fmap<B>(f: (A -> B)) -> IO<B> {
+	public func fmap<B>(f: A -> B) -> IO<B> {
 		return self.map(f)
 	}
 }
@@ -61,17 +61,25 @@ extension IO : Applicative {
 	}
 }
 
-public func >>-<A, B>(x : IO<A>, f : A -> IO<B>) -> IO<B> {
+public func <*><A, B>(mf: IO<A -> B>, m: IO<A>) -> IO<B> {
+  return m.ap(mf)
+}
+
+public func <^><A, B>(io: IO<A>, f: A -> B) -> IO<B> {
+		return io.fmap(f)
+}
+
+public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x : IO<A>, y : IO<B>) -> IO<B> {
+public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
 	return x.bind({ (_) in
 		return y
 	})
 }
 
-public func <-<A>(inout lhs : A, rhs : IO<A>) {
+public func <-<A>(inout lhs: A, rhs: IO<A>) {
 	lhs = rhs.unsafePerformIO()
 }
 

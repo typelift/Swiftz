@@ -36,10 +36,7 @@ public struct ST<S, A> {
 	}
 
 	public func ap(fn: ST<S, A -> B>) -> ST<S, B> {
-		return ST<S, B>(apply: { (let s) in
-			let (nw, f) = fn.apply(s: s)
-			return (nw, f(self.runST()))
-		})
+    return self <*> fn
 	}
 
 	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
@@ -48,12 +45,23 @@ public struct ST<S, A> {
 }
 
 extension ST : Functor {
-	public func fmap<B>(f: (A -> B)) -> ST<S, B> {
+	public func fmap<B>(f: A -> B) -> ST<S, B> {
 		return ST<S, B>(apply: { (let s) in
 			let (nw, x) = self.apply(s: s)
 			return (nw, f(x))
 		})
 	}
+}
+
+public func <*><S, A, B>(st: ST<S, A>, stfn: ST<S, A -> B>) -> ST<S, B> {
+		return ST<S, B>(apply: { (let s) in
+      let (nw, f) = stfn.apply(s: s)
+      return (nw, f(st.runST()))
+    })
+}
+
+public func <^><S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
+  return st.fmap(f)
 }
 
 public func >>-<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {

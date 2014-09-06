@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 // A mutable reference in the IO monad.  Mutations are not atomic.  Any
 // serious threading should use MVars instead.
@@ -14,12 +15,12 @@ public struct IORef<A> {
   var value : STRef<RealWorld, A>
   
   // Reads the value from an IO ref and bundles it in the IO monad.
-  func readIORef() -> IO<A> {
+  public func readIORef() -> IO<A> {
     return stToIO(value.readSTRef())
   }
   
   // Writes a new value into the reference.
-  mutating func writeIORef(v: A) -> IO<()> {
+  public mutating func writeIORef(v: A) -> IO<()> {
     return stToIO(value.writeSTRef(v).fmap { (_) in
       return ()
     })
@@ -27,10 +28,8 @@ public struct IORef<A> {
   
   // Modifies the reference and returns the updated result.
   // Equivalent to 'writeIORef >> readIORef'
-  mutating func modifyIORef<B>(vfn : (A -> A)) -> IO<A> {
-    return stToIO(value.modifySTRef(vfn)) >>- { (_) in
-      return self.readIORef()
-    }
+  public mutating func modifyIORef<B>(vfn : (A -> A)) -> IO<A> {
+    return stToIO(value.modifySTRef(vfn)) >> self.readIORef()
   }
 }
 

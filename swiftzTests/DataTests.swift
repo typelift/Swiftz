@@ -236,5 +236,20 @@ class DataTests: XCTestCase {
     XCTAssert(list.tail.value.head.value == "banana")
     XCTAssert(AList.length() == 2)
   }
+  
+  func testIORef() {
+    typealias StringState = IO<IORef<String>>
+    var str = ""
+    var io : ()
+
+    let ref : IO<IORef<String>> = newIORef("a")
+    
+    io <- (ref >>- { (r : IORef<String>) -> IO<()> in
+      str <- r.readIORef()
+      return IO.pure(())
+    })
+    
+    XCTAssertTrue(str == "a", "")
+  }
 
 }
