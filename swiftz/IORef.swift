@@ -36,7 +36,7 @@ public struct IORef<A> {
 // Creates a new IORef
 public func newIORef<A>(v: A) -> IO<IORef<A>> {
   return stRefToIO(STRef<RealWorld, A>(v)).bind({ (let vari) in
-    return IO<IORef<A>>.pure(IORef(value: vari))
+    return IO.pure(IORef(value: vari))
   })
 }
 
