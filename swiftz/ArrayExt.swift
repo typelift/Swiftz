@@ -39,14 +39,22 @@ extension Array {
     }
     return res
   }
+}
 
-  public func foldRight<U>(z: U, _ f: (T, U) -> U) -> U {
-    var res = z
-    for x in self {
-      res = f(x, res)
-    }
-    return res
+public func foldr<T, U>(ar: [T], z: U, f: (T, U) -> U) -> U {
+  var res = z
+  for x in ar {
+    res = f(x, res)
   }
+  return res
+}
+
+public func foldl<T, U>(ar: [T], z: U, f: (T, U) -> U) -> U {
+  var res = z
+  for x in ar.reverse() {
+    res = f(x, res)
+  }
+  return res
 }
 
 ///scanl is similar to reduce, but returns a list of successive reduced values from the left:
@@ -168,7 +176,7 @@ public func intersperse<T>(item:T, list:[T]) -> [T] {
 ///discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs: [A?]) -> [A] {
   var w = [A]()
-  w.reserveCapacity(xs.foldRight(0) { c, n in
+  w.reserveCapacity(foldr(xs, 0) { c, n in
     if c != nil {
       return n + 1
     } else {

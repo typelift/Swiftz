@@ -90,7 +90,7 @@ class DataTests: XCTestCase {
   }
 
   func testResult() {
-    let divisionError = NSError.errorWithDomain("DivisionDomain", code: 1, userInfo: nil)
+    let divisionError = NSError(domain: "DivisionDomain", code: 1, userInfo: nil)
 
     func divTwoEvenly(x: Int) -> Result<Int> {
       if x % 2 == 0 {
@@ -235,6 +235,21 @@ class DataTests: XCTestCase {
     XCTAssert(list.head.value == 10)
     XCTAssert(list.tail.value.head.value == "banana")
     XCTAssert(AList.length() == 2)
+  }
+  
+  func testIORef() {
+    typealias StringState = IO<IORef<String>>
+    var str = ""
+    var io : ()
+
+    let ref : IO<IORef<String>> = newIORef("a")
+    
+    io <- (ref >>- { (r : IORef<String>) -> IO<()> in
+      str <- r.readIORef()
+      return IO.pure(())
+    })
+    
+    XCTAssertTrue(str == "a", "")
   }
 
 }

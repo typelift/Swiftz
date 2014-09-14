@@ -25,7 +25,7 @@ public enum JSValue: Printable {
       })
     case let JSNumber(n): return NSNumber(double: n)
     case let JSString(s): return NSString(string: s)
-    case let JSBool(b): return NSNumber.numberWithBool(b)
+    case let JSBool(b): return NSNumber(bool: b)
     case let JSNull(): return NSNull()
     }
   }
