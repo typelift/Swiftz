@@ -22,7 +22,6 @@
 		590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CB193F5DBA0036614F /* OptionalExt.swift */; };
 		590522CE193F61210036614F /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590522CD193F61210036614F /* Chan.swift */; };
 		5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908C1B7194076810024A36C /* DictionaryExt.swift */; };
-		590FCB391943E2EB008E5D94 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FCB381943E2EB008E5D94 /* Parser.swift */; };
 		590FCB3B1943EA91008E5D94 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FCB3A1943EA91008E5D94 /* StringExt.swift */; };
 		5914510F1942B40300809E7E /* MVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5914510E1942B40300809E7E /* MVar.swift */; };
 		591451111942B41300809E7E /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591451101942B41300809E7E /* ExecutionContext.swift */; };
@@ -79,8 +78,6 @@
 		59853A451967F9F100A3158C /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
 		59853A461967F9F100A3158C /* NSArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931F2E919407DC600B0526A /* NSArrayExt.swift */; };
 		59853A471967F9F100A3158C /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D921943347800EAFFAA /* SYB.swift */; };
-		59853A481967F9F100A3158C /* SwiftCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */; };
-		59853A491967F9F100A3158C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FCB381943E2EB008E5D94 /* Parser.swift */; };
 		59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B26544193F365A007AA82B /* GCDExecutionContext.swift */; };
 		59B2DCBA19434706002ACB3E /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2DCB919434706002ACB3E /* TupleExt.swift */; };
 		59B39E3E1943094F00F4B222 /* Curry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B39E3D1943094F00F4B222 /* Curry.swift */; };
@@ -646,8 +643,6 @@
 				1129F6401990185500DCB516 /* Prism.swift in Sources */,
 				1168A5C11990104B005AD7F3 /* IxMultiStore.swift in Sources */,
 				59853A471967F9F100A3158C /* SYB.swift in Sources */,
-				59853A481967F9F100A3158C /* SwiftCheck.swift in Sources */,
-				59853A491967F9F100A3158C /* Parser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,7 +701,6 @@
 				59B2DCBA19434706002ACB3E /* TupleExt.swift in Sources */,
 				1168A5C01990104A005AD7F3 /* IxMultiStore.swift in Sources */,
 				595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */,
-				590FCB391943E2EB008E5D94 /* Parser.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
