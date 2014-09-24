@@ -8,7 +8,11 @@
 
 import XCTest
 import swiftz
-import swiftz_core
+#if os(OSX)
+import Basis
+#else
+import MobileBasis
+#endif
 
 class ControlTests: XCTestCase {
 
@@ -58,8 +62,8 @@ class ControlTests: XCTestCase {
   func testBaseOptional() {
     let x = Optional<Int>.Some(0)
     let y = Optional<Int>.None
-    XCTAssert(({ $0 + 1 } <^> x) == 1, "optional map some")
-    XCTAssert(({ $0 + 1 } <^> y) == .None, "optional map none")
+    XCTAssert(({ $0 + 1 } <%> x) == 1, "optional map some")
+    XCTAssert(({ $0 + 1 } <%> y) == .None, "optional map none")
 
     XCTAssert((Optional<Int -> Int>.Some({ $0 + 1 }) <*> .Some(1)) == 2, "apply some")
 
@@ -71,7 +75,7 @@ class ControlTests: XCTestCase {
   func testBaseArray() {
     let xs = [1, 2, 3]
     let y = Optional<Int>.None
-    let incedXs = ({ $0 + 1 } <^> xs)
+    let incedXs = ({ $0 + 1 } <%> xs)
     XCTAssert(incedXs == [2, 3, 4], "array fmap")
     XCTAssert(xs == [1, 2, 3], "fmap isn't destructive")
 

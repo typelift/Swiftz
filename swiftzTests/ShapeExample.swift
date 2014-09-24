@@ -8,7 +8,11 @@
 
 import Foundation
 import swiftz
-import swiftz_core
+#if os(OSX)
+import Basis
+#else
+import MobileBasis
+#endif
 
 // shape example for SYB
 enum Shape : Dataable {
@@ -26,7 +30,7 @@ enum Shape : Dataable {
     case let (1, xs):
       let x1 = indexArray(xs, 0)
       let x2 = x1 >>- { $1 as? Int }
-      return { Plane($0) } <^> x2
+      return { Plane($0) } <%> x2
     default:
       return .None
     }

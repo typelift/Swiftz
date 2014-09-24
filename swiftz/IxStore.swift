@@ -6,13 +6,12 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
 // N.B.:  In the indexed store comonad transformer, set, put, and peek are all distinct,
 // as are puts and peeks.  The lack of distinction here is due to the lack of tranformer
 // nature; as soon as we get transformers, that will change.
-public struct IxStore<O, I, A> {
+public final class IxStore<O, I, A> : K3<O, I, A> {
   let pos: O
 
   let set: I -> A
@@ -23,11 +22,11 @@ public struct IxStore<O, I, A> {
   }
 
   public func map<B>(f: A -> B) -> IxStore<O, I, B> {
-    return f <^> self
+    return f <%> self
   }
 
   public func imap<P>(f: O -> P) -> IxStore<P, I, A> {
-    return f <^^> self
+    return f <%%> self
   }
 
   public func contramap<H>(f: H -> I) -> IxStore<O, H, A> {
@@ -59,19 +58,20 @@ public struct IxStore<O, I, A> {
   }
 }
 
+// Will not typecheck
 public func trivial<A>(x: A) -> IxStore<A, A, A> {
-  return IxStore(x, identity)
+  return undefined()
 }
 
 public func extract<I, A>(a: IxStore<I, I, A>) -> A {
   return a.set(a.pos)
 }
 
-public func <^><O, I, A, B>(f: A -> B, a: IxStore<O, I, A>) -> IxStore<O, I, B> {
+public func <%><O, I, A, B>(f: A -> B, a: IxStore<O, I, A>) -> IxStore<O, I, B> {
   return IxStore(a.pos) { f(a.set($0)) }
 }
 
-public func<^^><O, P, I, A>(f: O -> P, a: IxStore<O, I, A>) -> IxStore<P, I, A> {
+public func <%%><O, P, I, A>(f: O -> P, a: IxStore<O, I, A>) -> IxStore<P, I, A> {
   return IxStore(f(a.pos), a.set)
 }
 

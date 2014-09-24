@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
 infix operator ∩ {}
 infix operator ∪ {}
@@ -216,7 +215,7 @@ func pure<A>(a:A) -> Set<A> {
   return Set(items: a)
 }
 
-func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+func <%><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
   return set.map(f)
 }
 

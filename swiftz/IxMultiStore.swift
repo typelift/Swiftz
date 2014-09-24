@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
 // N.B.:  This is the "inlining" of the indexed store comonad transformer
 // applied to the array zipper comonad
-public struct IxMultiStore<O, I, A> {
+public final class IxMultiStore<O, I, A> : K3<O, I, A> {
   let pos: O
 
   let set: ArrayZipper<I -> A>
@@ -22,11 +21,11 @@ public struct IxMultiStore<O, I, A> {
   }
 
   public func map<B>(f: A -> B) -> IxMultiStore<O, I, B> {
-    return f <^> self
+    return f <%> self
   }
 
   public func imap<P>(f: O -> P) -> IxMultiStore<P, I, A> {
-    return f <^^> self
+    return f <%%> self
   }
 
   public func contramap<H>(f: H -> I) -> IxMultiStore<O, H, A> {
@@ -42,7 +41,7 @@ public struct IxMultiStore<O, I, A> {
   }
 
   public func put(x: I) -> ArrayZipper<A> {
-    return { $0(x) } <^> set
+    return { $0(x) } <%> set
   }
 
   public func puts(f: O -> I) -> ArrayZipper<A> {
@@ -62,16 +61,16 @@ public func extract<I, A>(a: IxMultiStore<I, I, A>) -> A {
   return extract(a.set)(a.pos)
 }
 
-public func <^><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {
-  return IxMultiStore(a.pos, { g in { f(g($0)) } } <^> a.set)
+public func <%><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {
+  return IxMultiStore(a.pos, { g in { f(g($0)) } } <%> a.set)
 }
 
-public func<^^><O, P, I, A>(f: O -> P, a: IxMultiStore<O, I, A>) -> IxMultiStore<P, I, A> {
+public func<%%><O, P, I, A>(f: O -> P, a: IxMultiStore<O, I, A>) -> IxMultiStore<P, I, A> {
   return IxMultiStore(f(a.pos), a.set)
 }
 
 public func <!><O, H, I, A>(f: H -> I, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, H, A> {
-  return IxMultiStore(a.pos, { $0 • f } <^> a.set)
+  return IxMultiStore(a.pos, { $0 • f } <%> a.set)
 }
 
 public func duplicate<O, J, I, A>(a: IxMultiStore<O, I, A>) -> IxMultiStore<O, J, IxMultiStore<J, I, A>> {
@@ -83,7 +82,7 @@ public func ->><O, J, I, A, B>(a: IxMultiStore<O, I, A>, f: IxMultiStore<J, I, A
 }
 
 public func lower<I, A>(a: IxMultiStore<I, I, A>) -> ArrayZipper<A> {
-  return { $0(a.pos) } <^> a.set
+  return { $0(a.pos) } <%> a.set
 }
 
 public func seek<O, P, I, A>(a: IxMultiStore<O, I, A>)(x: P) -> IxMultiStore<P, I, A> {

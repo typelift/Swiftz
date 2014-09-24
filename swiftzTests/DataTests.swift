@@ -8,7 +8,11 @@
 
 import XCTest
 import swiftz
-import swiftz_core
+#if os(OSX)
+import Basis
+#else
+import MobileBasis
+#endif
 
 class DataTests: XCTestCase {
 
@@ -69,11 +73,11 @@ class DataTests: XCTestCase {
     XCTAssert(Either.left("foo").fold(0, identity) == 0)
     XCTAssert(Either<String, Int>.right(10).fold(0, identity) == 10)
 
-    // TODO: test <^>, <*> and pure
+    // TODO: test <%>, <*> and pure
 
     let start = 17
     let first: Either<String, Int> = divTwoEvenly(start)
-    let prettyPrinted: Either<String, String> = { $0.description } <^> first
+    let prettyPrinted: Either<String, String> = { $0.description } <%> first
     let snd = first >>- divTwoEvenly
     XCTAssert(prettyPrinted == Either.right("8"))
     XCTAssert(snd == Either.left("8 was div by 2"))
@@ -106,7 +110,7 @@ class DataTests: XCTestCase {
 
     let start = 17
     let first: Result<Int> = divTwoEvenly(start)
-    let prettyPrinted: Result<String> = { $0.description } <^> first
+    let prettyPrinted: Result<String> = { $0.description } <%> first
     let snd = first >>- divTwoEvenly
     XCTAssert(prettyPrinted == Result.value("8"))
     XCTAssert(snd == .Error(divisionError))

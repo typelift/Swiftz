@@ -6,14 +6,13 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
 // A HList can be thought of like a tuple, but with list-like operations on the types.
 
 /* closed */ public protocol HList {
   typealias Head
-  typealias Tail // : HList can't show Nothing is in HList, recursive defn.
+  typealias Tail // : HList can't show Bottom is in HList, recursive defn.
   class func isNil() -> Bool
   class func makeNil() -> Self
   class func makeCons(h: Head, t: Tail) -> Self
@@ -46,8 +45,8 @@ public final class HCons<H, T: HList> : HList {
 }
 
 public final class HNil : HList {
-  public typealias Head = Nothing
-  public typealias Tail = Nothing
+  public typealias Head = Bottom
+  public typealias Tail = Bottom
 
   public init() {}
   public class func isNil() -> Bool {

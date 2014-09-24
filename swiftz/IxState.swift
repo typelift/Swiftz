@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
+
 
 public struct IxState<I, O, A> {
   let run: I -> (A, O)
@@ -25,7 +25,7 @@ public struct IxState<I, O, A> {
   }
 
   public func map<B>(f: A -> B) -> IxState<I, O, B> {
-    return f <^> self
+    return f <%> self
   }
 
   public func contramap<H>(f: H -> I) -> IxState<H, O, A> {
@@ -33,7 +33,7 @@ public struct IxState<I, O, A> {
   }
 
   public func imap<P>(f: O -> P) -> IxState<I, P, A> {
-    return f <^^> self
+    return f <%%> self
   }
 
   //  public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
@@ -49,7 +49,7 @@ public func pure<I, A>(x: A) -> IxState<I, I, A> {
   return IxState { (x, $0) }
 }
 
-public func <^><I, O, A, B>(f: A -> B, a: IxState<I, O, A>) -> IxState<I, O, B> {
+public func <%><I, O, A, B>(f: A -> B, a: IxState<I, O, A>) -> IxState<I, O, B> {
   return IxState { s1 in
     let (x, s2) = a.run(s1)
     return (f(x), s2)
@@ -60,7 +60,7 @@ public func <!><H, I, O, A>(f: H -> I, a: IxState<I, O, A>) -> IxState<H, O, A> 
   return IxState { a.run(f($0)) }
 }
 
-public func <^^><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
+public func <%%><I, O, P, A>(f: O -> P, a: IxState<I, O, A>) -> IxState<I, P, A> {
   return IxState { s1 in
     let (x, s2) = a.run(s1)
     return (x, f(s2))

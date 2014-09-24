@@ -8,7 +8,11 @@
 
 import XCTest
 import swiftz
-import swiftz_core
+#if os(OSX)
+import Basis
+#else
+import MobileBasis
+#endif
 
 class TestTests: XCTestCase {
 

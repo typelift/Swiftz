@@ -8,7 +8,11 @@
 
 import Foundation
 import swiftz
-import swiftz_core
+#if os(OSX)
+import Basis
+#else
+import MobileBasis
+#endif
 
 // A user example
 // an example of why we need SYB, Generics or macros
@@ -43,7 +47,7 @@ public class User: JSONDecode {
       t = d["tweets"] >>- JArray<String, JString>.fromJSON
       r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
       // alternatively, if n && a && t... { return User(n!, a!, ...
-      return (User.create <^> n <*> a <*> t <*> r)
+      return (User.create <%> n <*> a <*> t <*> r)
     default:
       return .None
     }
