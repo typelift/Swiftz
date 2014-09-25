@@ -7,12 +7,12 @@
 //
 
 import Foundation
-import swiftz
 #if os(OSX)
-import Basis
+import swiftz
 #else
-import MobileBasis
+import swiftz_ios
 #endif
+import Basis
 
 // A user example
 // an example of why we need SYB, Generics or macros
@@ -36,21 +36,22 @@ public class User: JSONDecode {
   }
 
   public class func fromJSON(x: JSValue) -> User? {
-    var n: String?
-    var a: Int?
-    var t: [String]?
-    var r: Dictionary<String, String>?
-    switch x {
-    case let .JSObject(d):
-      n = d["name"]   >>- JString.fromJSON
-      a = d["age"]    >>- JInt.fromJSON
-      t = d["tweets"] >>- JArray<String, JString>.fromJSON
-      r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
-      // alternatively, if n && a && t... { return User(n!, a!, ...
-      return (User.create <%> n <*> a <*> t <*> r)
-    default:
-      return .None
-    }
+//    var n: String?
+//    var a: Int?
+//    var t: [String]?
+//    var r: Dictionary<String, String>?
+//    switch x {
+//    case let .JSObject(d):
+//      n = d["name"]   >>- JString.fromJSON
+//      a = d["age"]    >>- JInt.fromJSON
+//      t = d["tweets"] >>- JArray<String, JString>.fromJSON
+//      r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
+//      // alternatively, if n && a && t... { return User(n!, a!, ...
+//      return (User.create <%> n <*> a <*> t <*> r)
+//    default:
+//      return .None
+//    }
+	return nil
   }
 
   // lens example

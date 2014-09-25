@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import swiftz
 #if os(OSX)
-import Basis
+import swiftz
 #else
-import MobileBasis
+import swiftz_ios
 #endif
-
+import Basis
 // shape example for SYB
 enum Shape : Dataable {
   case Boat
@@ -28,7 +27,7 @@ enum Shape : Dataable {
     case let (0, xs):
       return Boat
     case let (1, xs):
-      let x1 = indexArray(xs, 0)
+      let x1 = xs[0]
       let x2 = x1 >>- { $1 as? Int }
       return { Plane($0) } <%> x2
     default:

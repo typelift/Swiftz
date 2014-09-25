@@ -8,8 +8,10 @@
 
 import Basis
 
-public final class Sum<N : Num> : Monoid {
+public final class Sum<N : Num> : K1<A>, Monoid {
 	public typealias M = N.N
+
+	public init() { }
 
 	public class func mempty() -> M {
 		return N.zero()
@@ -20,8 +22,10 @@ public final class Sum<N : Num> : Monoid {
 	}
 }
 
-public final class Product<N : Num> : Monoid {
+public final class Product<N : Num> : K1<A>, Monoid {
 	typealias M = N.N
+
+	public init() { }
 
 	public class func mempty() -> M {
 		return N.succ(N.zero())

@@ -7,7 +7,11 @@
 //
 
 import XCTest
+#if os(OSX)
 import swiftz
+#else
+import swiftz_ios
+#endif
 
 class TextTests: XCTestCase {
 
