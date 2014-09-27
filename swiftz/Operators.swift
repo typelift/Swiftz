@@ -16,11 +16,6 @@ infix operator  <!> {
 associativity left
 }
 
-// "ap" like
-infix operator  <*> {
-associativity left
-}
-
 // "extend" like
 infix operator  ->> {
 associativity left

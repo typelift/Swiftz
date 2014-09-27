@@ -7,11 +7,7 @@
 //
 
 import Foundation
-#if os(OSX)
 import swiftz
-#else
-import swiftz_ios
-#endif
 
 // A party has a host, who is a user.
 // A lens example

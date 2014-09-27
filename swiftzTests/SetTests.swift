@@ -7,11 +7,7 @@
 //
 
 import XCTest
-#if os(OSX)
 import swiftz
-#else
-import swiftz_ios
-#endif
 class SetTests: XCTestCase {
 
   override func setUp() {

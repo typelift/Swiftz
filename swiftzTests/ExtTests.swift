@@ -7,11 +7,7 @@
 //
 
 import XCTest
-#if os(OSX)
 import swiftz
-#else
-import swiftz_ios
-#endif
 import Basis
 
 class ExtTests: XCTestCase {
