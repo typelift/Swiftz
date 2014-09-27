@@ -30,9 +30,8 @@ public final class Iso<S, T, A, B> : K4<S, T, A, B> {
 	}
 }
 
-// Will not typecheck
 public func identity<S, T>() -> Iso<S, T, S, T> {
-	return undefined()
+  return Iso(get: id, inject: id)
 }
 
 public func •<S, T, I, J, A, B>(i1: Iso<S, T, I, J>, i2: Iso<I, J, A, B>) -> Iso<S, T, A, B> {

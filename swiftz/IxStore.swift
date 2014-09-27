@@ -60,7 +60,7 @@ public final class IxStore<O, I, A> : K3<O, I, A> {
 
 // Will not typecheck
 public func trivial<A>(x: A) -> IxStore<A, A, A> {
-  return undefined()
+  return IxStore(x, id)
 }
 
 public func extract<I, A>(a: IxStore<I, I, A>) -> A {

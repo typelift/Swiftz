@@ -38,7 +38,7 @@ public final class IxCont<R, O, A> : K3<R, O, A> {
 
 // Will not typecheck
 public func run<R, O>(a: IxCont<R, O, O>) -> R {
-  return undefined()
+	return a.run(id)
 }
 
 public func pure<R, A>(x: A) -> IxCont<R, R, A> {
