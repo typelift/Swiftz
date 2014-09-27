@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
-public class ArrayZipper<A>: ArrayLiteralConvertible {
+public final class ArrayZipper<A>: ArrayLiteralConvertible {
   public let values: [A]
   public let position: Int
 
@@ -29,7 +28,7 @@ public class ArrayZipper<A>: ArrayLiteralConvertible {
   }
 
   public func map<B>(f: A -> B) -> ArrayZipper<B> {
-    return f <^> self
+    return f <%> self
   }
 
   public func dup() -> ArrayZipper<ArrayZipper<A>> {
@@ -53,8 +52,8 @@ public func extract<A>(xz: ArrayZipper<A>) -> A {
   return xz.values[xz.position]
 }
 
-public func <^><A, B>(f: A -> B, xz: ArrayZipper<A>) -> ArrayZipper<B> {
-  return ArrayZipper(f <^> xz.values, xz.position)
+public func <%><A, B>(f: A -> B, xz: ArrayZipper<A>) -> ArrayZipper<B> {
+  return ArrayZipper(f <%> xz.values, xz.position)
 }
 
 public func duplicate<A>(xz: ArrayZipper<A>) -> ArrayZipper<ArrayZipper<A>> {

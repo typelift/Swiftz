@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 extension String {
   public func lines() -> [String] {
     var xs: [String] = []

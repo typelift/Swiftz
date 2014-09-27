@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
-public struct IxCont<R, O, A> {
+public final class IxCont<R, O, A> : K3<R, O, A> {
   let run: (A -> O) -> R
 
   public init(_ run: (A -> O) -> R) {
@@ -17,11 +16,11 @@ public struct IxCont<R, O, A> {
   }
 
   public func map<B>(f: A -> B) -> IxCont<R, O, B> {
-    return f <^> self
+    return f <%> self
   }
 
   public func imap<S>(f: R -> S) -> IxCont<S, O, A> {
-    return f <^^> self
+    return f <%%> self
   }
 
   public func contramap<N>(f: N -> O) -> IxCont<R, N, A> {
@@ -37,19 +36,20 @@ public struct IxCont<R, O, A> {
   }
 }
 
+// Will not typecheck
 public func run<R, O>(a: IxCont<R, O, O>) -> R {
-  return a.run(identity)
+	return a.run(id)
 }
 
 public func pure<R, A>(x: A) -> IxCont<R, R, A> {
   return IxCont { $0(x) }
 }
 
-public func <^><R, O, A, B>(f: A -> B, a: IxCont<R, O, A>) -> IxCont<R, O, B> {
+public func <%><R, O, A, B>(f: A -> B, a: IxCont<R, O, A>) -> IxCont<R, O, B> {
   return IxCont { k in a.run { k(f($0)) } }
 }
 
-public func <^^><R, S, O, A>(f: R -> S, a: IxCont<R, O, A>) -> IxCont<S, O, A> {
+public func <%%><R, S, O, A>(f: R -> S, a: IxCont<R, O, A>) -> IxCont<S, O, A> {
   return IxCont { f(a.run($0)) }
 }
 

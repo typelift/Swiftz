@@ -1,0 +1,3 @@
+[submodule "External/Basis"]
+	path = External/Basis
+	url = https://github.com/typelift/Basis.git

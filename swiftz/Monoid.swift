@@ -6,38 +6,34 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-public protocol Monoid: Semigroup {
-  func mzero() -> M
-}
+import Basis
 
-public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
-  return (t.reduce(s.mzero()) { s.op($0, y: $1) })
-}
+public final class Sum<N : Num> : K1<N>, Monoid {
+  public typealias M = N.N
 
-public class Sum<A, N: Num where N.N == A>: Monoid {
-  public typealias M = A
-  let n: () -> N // work around for rdar://17109323
+  public override init() { }
 
-  // explicit instance passing
-  public init(i: @autoclosure () -> N) {
-    n = i
+  public class func mempty() -> M {
+    return N.zero()
   }
 
-  public func mzero() -> M { return n().zero() }
-  public func op(x: M, y: M) -> M {
-    return n().add(x, y: y);
+  public class func mappend(x: M) -> M -> M {
+    return { y in N.add(x, y: y) }
   }
 }
 
-public class Product<A, N: Num where N.N == A>: Monoid {
-  public typealias M = A
-  let n: () -> N
-  public init(i: @autoclosure () -> N) {
-    n = i
+public final class Product<N : Num> : K1<N>, Monoid {
+  typealias M = N.N
+
+  public override init() { }
+
+  public class func mempty() -> M {
+    return N.succ(N.zero())
   }
-  public func mzero() -> M { return n().succ(n().zero()) }
-  public func op(x: M, y: M) -> M {
-    return n().multiply(x, y: y);
+
+  public class func mappend(x: M) -> M -> M {
+    return { y in N.multiply(x, y: y) }
   }
 }
+
 

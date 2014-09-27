@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-import swiftz_core
+import Basis
 
-public class Prism<S, T, A, B> {
+public final class Prism<S, T, A, B> : K4<S, T, A, B> {
   public let tryGet: S -> A?
   public let inject: B -> T
 
@@ -19,7 +18,7 @@ public class Prism<S, T, A, B> {
   }
 
   public func tryModify(s: S, _ f: A -> B) -> T? {
-    return { self.inject(f($0)) } <^> tryGet(s)
+    return { self.inject(f($0)) } <%> tryGet(s)
   }
 }
 
