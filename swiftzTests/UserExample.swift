@@ -37,15 +37,15 @@ public class User: JSONDecode {
     var t: [String]?
     var r: Dictionary<String, String>?
     switch x {
-		case let .JSObject(d):
-		  n = (d["name"]   >>- JString.fromJSON)
-		  a = (d["age"]    >>- JInt.fromJSON)
-		  t = (d["tweets"] >>- JArray<String, JString>.fromJSON)
-		  r = (d["attrs"]  >>- JDictionary<String, JString>.fromJSON)
-		  // alternatively, if n && a && t... { return User(n!, a!, ...
-		  return User.create <%> n <*> a <*> t <*> r
-		default:
-		  return .None
+    case let .JSObject(d):
+      n = (d["name"]   >>- JString.fromJSON)
+      a = (d["age"]    >>- JInt.fromJSON)
+      t = (d["tweets"] >>- JArray<String, JString>.fromJSON)
+      r = (d["attrs"]  >>- JDictionary<String, JString>.fromJSON)
+      // alternatively, if n && a && t... { return User(n!, a!, ...
+      return User.create <%> n <*> a <*> t <*> r
+    default:
+      return .None
     }
   }
 
