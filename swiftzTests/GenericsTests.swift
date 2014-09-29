@@ -26,22 +26,22 @@ class GenericsTests: XCTestCase {
 
     // not sure why you would use SYB at the moment...
     // without some kind of extendable generic dispatch, it isn't very useful.
-    let gJSON:Data -> JSValue = {(d: Data) -> JSValue in
-        var r = Dictionary<String, JSValue>()
+    let gJSON:Data -> JSONValue = {(d: Data) -> JSONValue in
+        var r = Dictionary<String, JSONValue>()
         for (n, vs) in d.vals {
             switch vs {
-            case let x as Int: r[n] = JSValue.JSNumber(Double(x))
-            case let x as String: r[n] = JSValue.JSString(x)
-            case let x as Bool: r[n] = JSValue.JSBool(x)
-            case let x as Double: r[n] = JSValue.JSNumber(x)
-            default: r[n] = JSValue.JSNull()
+            case let x as Int: r[n] = JSONValue.JSONNumber(Double(x))
+            case let x as String: r[n] = JSONValue.JSONString(x)
+            case let x as Bool: r[n] = JSONValue.JSONBool(x)
+            case let x as Double: r[n] = JSONValue.JSONNumber(x)
+            default: r[n] = JSONValue.JSONNull()
             }
         }
-        return .JSObject(r)
+        return .JSONObject(r)
     }
     
       
 
-    XCTAssert(gJSON(b.toRep()) == .JSObject(["wingspan" : .JSNumber(2)]))
+    XCTAssert(gJSON(b.toRep()) == .JSONObject(["wingspan" : .JSONNumber(2)]))
   }
 }
