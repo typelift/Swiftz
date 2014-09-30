@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 infix operator ∩ {}
 infix operator ∪ {}

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 public class ArrayZipper<A>: ArrayLiteralConvertible {
   public let values: [A]
