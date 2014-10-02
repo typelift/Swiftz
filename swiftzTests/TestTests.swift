@@ -29,8 +29,8 @@ class TestTests: XCTestCase {
       XCTAssert(xs.reverse().reverse() == xs)
     }
 
-    swiftCheck(prop_reverseLen)
-    swiftCheck(prop_reverseReverse)
+//    swiftCheck(prop_reverseLen)
+//    swiftCheck(prop_reverseReverse)
 
     // test guards work (they don't)
     func prop_linesUnlines(xs: String) {
