@@ -20,12 +20,12 @@ public enum JSONValue: Printable {
   public func values() -> NSObject {
     switch self {
     case let JSONArray(xs): return NSArray(array: xs.map { $0.values() })
-    case let JSONObject(xs): return NSDictionary(dictionary: xs.map { (k: String, v: JSONValue) -> (String, AnyObject) in
+    case let JSONObject(xs): return NSDictionary(dictionary: map(dict: xs)({ (k: String, v: JSONValue) -> (String, AnyObject) in
       return (NSString(string: k), v.values())
-      })
+      }))
     case let JSONNumber(n): return NSNumber(double: n)
     case let JSONString(s): return NSString(string: s)
-    case let JSONBool(b): return NSNumber.numberWithBool(b)
+    case let JSONBool(b): return NSNumber(bool: b)
     case let JSONNull(): return NSNull()
     }
   }
@@ -292,9 +292,9 @@ public class JNull: JSON {
 
   public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSONObject(xs): return xs.map { (k: String, x: JSONValue) -> (String, A) in
+    case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
       return (k, B.fromJSON(x)!)
-      }
+      })
     default: return Optional.None
     }
   }
@@ -304,9 +304,9 @@ public class JNull: JSON {
   public typealias J = Dictionary<String, A>
 
   public class func toJSON(xs: J) -> JSONValue {
-    return JSONValue.JSONObject(xs.map { (k: String, x: A) -> (String, JSONValue) in
+    return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
       return (k, B.toJSON(x))
-      } )
+      }))
   }
 }
 
@@ -315,16 +315,16 @@ public class JNull: JSON {
 
   public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSONObject(xs): return xs.map { (k: String, x: JSONValue) -> (String, A) in
+    case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
       return (k, B.fromJSON(x)!)
-      }
+      })
     default: return Optional.None
     }
   }
 
   public class func toJSON(xs: J) -> JSONValue {
-    return JSONValue.JSONObject(xs.map { (k: String, x: A) -> (String, JSONValue) in
+    return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
       return (k, B.toJSON(x))
-      } )
+      }))
   }
 }
