@@ -25,7 +25,7 @@ class SetTests: XCTestCase {
     let set = Set(array:[1,2,3,4,4,4,5,5,5])
     XCTAssert(set.count == 5, "Should be 5 items")
 
-    let newSet = Set(items: 1,2,3,4,4,4,5,5,5)
+    let newSet = Set(arrayLiteral: 1,2,3,4,4,4,5,5,5)
     XCTAssert(set.count == 5, "Should be 5 items")
   }
 
@@ -59,10 +59,10 @@ class SetTests: XCTestCase {
 
   func testUnion() {
     let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
-    let otherSet = Set(items: 6,7,8,9,10,10,1000,5600)
+    let otherSet = Set(arrayLiteral: 6,7,8,9,10,10,1000,5600)
 
     let newSet = set.union(otherSet)
-    XCTAssert(newSet == Set(items: 1000, 5600, 6,7,8,9,10,1,2,3,4,5), "Should be equal")
+    XCTAssert(newSet == Set(arrayLiteral: 1000, 5600, 6,7,8,9,10,1,2,3,4,5), "Should be equal")
 
   }
 
@@ -74,7 +74,7 @@ class SetTests: XCTestCase {
 
   func testIntersectsSet() {
     let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
-    XCTAssert(set.interectsSet(Set(items: 9,0,5)), "Should be true")
+    XCTAssert(set.interectsSet(Set(arrayLiteral: 9,0,5)), "Should be true")
   }
 
   func testMember() {
@@ -88,15 +88,15 @@ class SetTests: XCTestCase {
 
   func testMinus() {
     let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
-    let minus = set.minus(Set(items: 8,9,0,3,5))
+    let minus = set.minus(Set(arrayLiteral: 8,9,0,3,5))
 
-    XCTAssert(minus == Set(items: 1,2,4), "Should be equal")
+    XCTAssert(minus == Set(arrayLiteral: 1,2,4), "Should be equal")
   }
 
   func testIntersect() {
     let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
-    let intersection = set.intersect(Set(items: 8,9,0,3,5))
+    let intersection = set.intersect(Set(arrayLiteral: 8,9,0,3,5))
 
-    XCTAssert(intersection == Set(items: 3,5), "Should be equal")
+    XCTAssert(intersection == Set(arrayLiteral: 3,5), "Should be equal")
   }
 }

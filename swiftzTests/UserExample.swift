@@ -31,13 +31,13 @@ public class User: JSONDecode {
     return { (y: Int) in { (z: [String]) in { User(x, y, z, $0) } } }
   }
 
-  public class func fromJSON(x: JSValue) -> User? {
+  public class func fromJSON(x: JSONValue) -> User? {
     var n: String?
     var a: Int?
     var t: [String]?
     var r: Dictionary<String, String>?
     switch x {
-    case let .JSObject(d):
+    case let .JSONObject(d):
       n = d["name"]   >>- JString.fromJSON
       a = d["age"]    >>- JInt.fromJSON
       t = d["tweets"] >>- JArray<String, JString>.fromJSON

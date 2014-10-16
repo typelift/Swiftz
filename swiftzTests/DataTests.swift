@@ -90,7 +90,7 @@ class DataTests: XCTestCase {
   }
 
   func testResult() {
-    let divisionError = NSError.errorWithDomain("DivisionDomain", code: 1, userInfo: nil)
+    let divisionError = NSError(domain: "DivisionDomain", code: 1, userInfo: nil)
 
     func divTwoEvenly(x: Int) -> Result<Int> {
       if x % 2 == 0 {
@@ -203,8 +203,8 @@ class DataTests: XCTestCase {
 
   func testDataJSON() {
     let js: NSData? = "[1,\"foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-    let lhs: JSValue? = js >>- JSValue.decode
-    let rhs: JSValue = .JSArray([.JSNumber(1), .JSString("foo")])
+    let lhs: JSONValue? = js >>- JSONValue.decode
+    let rhs: JSONValue = .JSONArray([.JSONNumber(1), .JSONString("foo")])
     XCTAssertTrue(lhs != nil)
     XCTAssert(lhs! == rhs)
     XCTAssert(rhs.encode() == js)
@@ -212,12 +212,12 @@ class DataTests: XCTestCase {
     // user example
     let userjs: NSData? = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
       .dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-    let user: User? = userjs >>- JSValue.decode >>- User.fromJSON
+    let user: User? = userjs >>- JSONValue.decode >>- User.fromJSON
     XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
 
     // not a user, missing age
     let notuserjs: NSData? = "{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-    let notUser: User? = notuserjs >>- JSValue.decode >>- User.fromJSON
+    let notUser: User? = notuserjs >>- JSONValue.decode >>- User.fromJSON
     if (notUser != nil) {
       XCTFail("expected none")
     }
@@ -225,7 +225,7 @@ class DataTests: XCTestCase {
 
   func testInvalidDataJSON() {
     let js: NSData? = "[1,foo\"]".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-    let json: JSValue? = js >>- JSValue.decode
+    let json: JSONValue? = js >>- JSONValue.decode
     XCTAssertFalse(json != nil)
   }
 

@@ -8,42 +8,42 @@
 
 import Foundation
 
-public enum JSValue: Printable {
-  case JSArray([JSValue])
-  case JSObject(Dictionary<String, JSValue>)
-  case JSNumber(Double)
-  case JSString(String)
-  case JSBool(Bool)
-  case JSNull()
+public enum JSONValue: Printable {
+  case JSONArray([JSONValue])
+  case JSONObject(Dictionary<String, JSONValue>)
+  case JSONNumber(Double)
+  case JSONString(String)
+  case JSONBool(Bool)
+  case JSONNull()
 
   // private
   public func values() -> NSObject {
     switch self {
-    case let JSArray(xs): return NSArray(array: xs.map { $0.values() })
-    case let JSObject(xs): return NSDictionary(dictionary: xs.map { (k: String, v: JSValue) -> (String, AnyObject) in
+    case let JSONArray(xs): return NSArray(array: xs.map { $0.values() })
+    case let JSONObject(xs): return NSDictionary(dictionary: map(dict: xs)({ (k: String, v: JSONValue) -> (String, AnyObject) in
       return (NSString(string: k), v.values())
-      })
-    case let JSNumber(n): return NSNumber(double: n)
-    case let JSString(s): return NSString(string: s)
-    case let JSBool(b): return NSNumber.numberWithBool(b)
-    case let JSNull(): return NSNull()
+      }))
+    case let JSONNumber(n): return NSNumber(double: n)
+    case let JSONString(s): return NSString(string: s)
+    case let JSONBool(b): return NSNumber(bool: b)
+    case let JSONNull(): return NSNull()
     }
   }
 
   // private
   // we know this is safe because of the NSJSONSerialization docs
-  public static func make(a: NSObject) -> JSValue {
+  public static func make(a: NSObject) -> JSONValue {
     switch a {
-    case let xs as NSArray: return .JSArray(xs.mapToArray { self.make($0 as NSObject) })
+    case let xs as NSArray: return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
     case let xs as NSDictionary:
-      return JSValue.JSObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
+      return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
         return (String(format: k as NSString), self.make(v as NSObject))
         })
     case let xs as NSNumber:
       // TODO: number or bool?...
-      return .JSNumber(Double(xs.doubleValue))
-    case let xs as NSString: return .JSString(String(format: xs))
-    case let xs as NSNull: return .JSNull()
+      return .JSONNumber(Double(xs.doubleValue))
+    case let xs as NSString: return .JSONString(String(format: xs))
+    case let xs as NSNull: return .JSONNull()
     default: // TODO: what is swift's assert?
       perror("impossible"); abort()
     }
@@ -57,7 +57,7 @@ public enum JSValue: Printable {
   }
 
   // TODO: should this be optional?
-  public static func decode(s: NSData) -> JSValue? {
+  public static func decode(s: NSData) -> JSONValue? {
     var e: NSError?
     let opts: NSJSONReadingOptions = nil
     let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
@@ -72,12 +72,12 @@ public enum JSValue: Printable {
   public var description: String {
     get {
       switch self {
-      case .JSNull(): return "JSNull()"
-      case let .JSBool(b): return "JSBool(\(b))"
-      case let .JSString(s): return "JSString(\(s))"
-      case let .JSNumber(n): return "JSNumber(\(n))"
-      case let .JSObject(o): return "JSObject(\(o))"
-      case let .JSArray(a): return "JSArray(\(a))"
+      case .JSONNull(): return "JSONNull()"
+      case let .JSONBool(b): return "JSONBool(\(b))"
+      case let .JSONString(s): return "JSONString(\(s))"
+      case let .JSONNumber(n): return "JSONNumber(\(n))"
+      case let .JSONObject(o): return "JSONObject(\(o))"
+      case let .JSONArray(a): return "JSONArray(\(a))"
 
       }
     }
@@ -87,22 +87,22 @@ public enum JSValue: Printable {
 
 // you'll have more fun if you match tuples
 // Equatable
-public func ==(lhs: JSValue, rhs: JSValue) -> Bool {
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
   switch (lhs, rhs) {
-  case (.JSNull(), .JSNull()): return true
-  case let (.JSBool(l), .JSBool(r)) where l == r: return true
-  case let (.JSString(l), .JSString(r)) where l == r: return true
-  case let (.JSNumber(l), .JSNumber(r)) where l == r: return true
-  case let (.JSObject(l), .JSObject(r))
-    where equal(l, r, { (v1: (String, JSValue), v2: (String, JSValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
+  case (.JSONNull(), .JSONNull()): return true
+  case let (.JSONBool(l), .JSONBool(r)) where l == r: return true
+  case let (.JSONString(l), .JSONString(r)) where l == r: return true
+  case let (.JSONNumber(l), .JSONNumber(r)) where l == r: return true
+  case let (.JSONObject(l), .JSONObject(r))
+    where equal(l, r, { (v1: (String, JSONValue), v2: (String, JSONValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
     return true
-  case let (.JSArray(l), .JSArray(r)) where equal(l, r, { $0 == $1 }):
+  case let (.JSONArray(l), .JSONArray(r)) where equal(l, r, { $0 == $1 }):
     return true
   default: return false
   }
 }
 
-public func !=(lhs: JSValue, rhs: JSValue) -> Bool {
+public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
   return !(lhs == rhs)
 }
 
@@ -128,12 +128,12 @@ public func !=(lhs: JSValue, rhs: JSValue) -> Bool {
 
 public protocol JSONDecode {
   typealias J
-  class func fromJSON(x: JSValue) -> J?
+  class func fromJSON(x: JSONValue) -> J?
 }
 
 public protocol JSONEncode {
   typealias J
-  class func toJSON(x: J) -> JSValue
+  class func toJSON(x: J) -> JSONValue
 }
 
 public protocol JSON: JSONDecode, JSONEncode {
@@ -145,77 +145,77 @@ public protocol JSON: JSONDecode, JSONEncode {
 public class JDouble: JSON {
   public typealias J = Double
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSNumber(n): return n
+    case let .JSONNumber(n): return n
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSNumber(xs)
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONNumber(xs)
   }
 }
 
 public class JInt: JSON {
   public typealias J = Int
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSNumber(n): return Int(n)
+    case let .JSONNumber(n): return Int(n)
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSNumber(Double(xs))
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONNumber(Double(xs))
   }
 }
 
 public class JNumber: JSON {
   public typealias J = NSNumber
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSNumber(n): return NSNumber(double: n)
+    case let .JSONNumber(n): return NSNumber(double: n)
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSNumber(Double(xs))
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONNumber(Double(xs))
   }
 }
 
 public class JBool: JSON {
   public typealias J = Bool
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSBool(n): return n
-    case .JSNumber(0): return false
-    case .JSNumber(1): return true
+    case let .JSONBool(n): return n
+    case .JSONNumber(0): return false
+    case .JSONNumber(1): return true
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSNumber(Double(xs))
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONNumber(Double(xs))
   }
 }
 
 public class JString: JSON {
   public typealias J = String
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSString(n): return n
+    case let .JSONString(n): return n
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSString(xs)
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONString(xs)
   }
 }
 
@@ -224,15 +224,15 @@ public let jnull = JNull()
 public class JNull: JSON {
   public typealias J = ()
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case .JSNull(): return ()
+    case .JSONNull(): return ()
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSNull()
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONNull()
   }
 }
 
@@ -241,9 +241,9 @@ public class JNull: JSON {
 /* final */ public class JArrayFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
   public typealias J = [A]
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSArray(xs):
+    case let .JSONArray(xs):
       let r = xs.map({ B.fromJSON($0) })
       let rp = mapFlatten(r)
       if r.count == rp.count {
@@ -259,17 +259,17 @@ public class JNull: JSON {
 /* final */ public class JArrayTo<A, B: JSONEncode where B.J == A>: JSONEncode {
   public typealias J = [A]
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSArray(xs.map { B.toJSON($0) } )
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
   }
 }
 
 /* final */ public class JArray<A, B: JSON where B.J == A>: JSON {
   public typealias J = [A]
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSArray(xs):
+    case let .JSONArray(xs):
       let r = xs.map({ B.fromJSON($0) })
       let rp = mapFlatten(r)
       if r.count == rp.count {
@@ -281,8 +281,8 @@ public class JNull: JSON {
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSArray(xs.map { B.toJSON($0) } )
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
   }
 }
 
@@ -290,11 +290,11 @@ public class JNull: JSON {
 /* final */ public class JDictionaryFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
   public typealias J = Dictionary<String, A>
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
+    case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
       return (k, B.fromJSON(x)!)
-      }
+      })
     default: return Optional.None
     }
   }
@@ -303,28 +303,28 @@ public class JNull: JSON {
 /* final */ public class JDictionaryTo<A, B: JSONEncode where B.J == A>: JSONEncode {
   public typealias J = Dictionary<String, A>
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSObject(xs.map { (k: String, x: A) -> (String, JSValue) in
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
       return (k, B.toJSON(x))
-      } )
+      }))
   }
 }
 
 /* final */ public class JDictionary<A, B: JSON where B.J == A>: JSON {
   public typealias J = Dictionary<String, A>
 
-  public class func fromJSON(x: JSValue) -> J? {
+  public class func fromJSON(x: JSONValue) -> J? {
     switch x {
-    case let .JSObject(xs): return xs.map { (k: String, x: JSValue) -> (String, A) in
+    case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
       return (k, B.fromJSON(x)!)
-      }
+      })
     default: return Optional.None
     }
   }
 
-  public class func toJSON(xs: J) -> JSValue {
-    return JSValue.JSObject(xs.map { (k: String, x: A) -> (String, JSValue) in
+  public class func toJSON(xs: J) -> JSONValue {
+    return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
       return (k, B.toJSON(x))
-      } )
+      }))
   }
 }
