@@ -9,7 +9,9 @@
 import Foundation
 import swiftz_core
 
-public class ArrayZipper<A>: ArrayLiteralConvertible {
+public final class ArrayZipper<A>: ArrayLiteralConvertible {
+  typealias Element = A
+
   public let values: [A]
   public let position: Int
 
@@ -24,8 +26,8 @@ public class ArrayZipper<A>: ArrayLiteralConvertible {
     self.values = values
   }
 
-  public class func convertFromArrayLiteral(elements: A...) -> Self {
-    return self(elements, 0)
+  public convenience init(arrayLiteral elements: Element...) {
+    self.init(elements, 0)
   }
 
   public func map<B>(f: A -> B) -> ArrayZipper<B> {
