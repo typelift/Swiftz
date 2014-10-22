@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol Comonad : Functor {
-  typealias FAB = F<A> -> B
+  typealias FAB = K1<A> -> B
   func extract() -> A
-  func extend(fab: FAB) -> F<B>
+  func extend(fab: FAB) -> K1<B>
 }

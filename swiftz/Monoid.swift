@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import swiftz_core
+
 public protocol Monoid: Semigroup {
   func mzero() -> M
 }
@@ -14,7 +16,7 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
   return (t.reduce(s.mzero()) { s.op($0, y: $1) })
 }
 
-public class Sum<A, N: Num where N.N == A>: Monoid {
+public final class Sum<A, N: Num where N.N == A>: K2<A, N>, Monoid {
   public typealias M = A
   let n: () -> N // work around for rdar://17109323
 
@@ -29,7 +31,7 @@ public class Sum<A, N: Num where N.N == A>: Monoid {
   }
 }
 
-public class Product<A, N: Num where N.N == A>: Monoid {
+public final class Product<A, N: Num where N.N == A>: K2<A, N>, Monoid {
   public typealias M = A
   let n: () -> N
   public init(i: @autoclosure () -> N) {

@@ -146,7 +146,6 @@
 		590522CB193F5DBA0036614F /* OptionalExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExt.swift; sourceTree = "<group>"; };
 		590522CD193F61210036614F /* Chan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
 		5908C1B7194076810024A36C /* DictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExt.swift; sourceTree = "<group>"; };
-		590FCB381943E2EB008E5D94 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		590FCB3A1943EA91008E5D94 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		5914510E1942B40300809E7E /* MVar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVar.swift; sourceTree = "<group>"; };
 		591451101942B41300809E7E /* ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContext.swift; sourceTree = "<group>"; };
@@ -263,14 +262,6 @@
 			name = Control;
 			sourceTree = "<group>";
 		};
-		590FCB371943E2DB008E5D94 /* Text */ = {
-			isa = PBXGroup;
-			children = (
-				590FCB381943E2EB008E5D94 /* Parser.swift */,
-			);
-			name = Text;
-			sourceTree = "<group>";
-		};
 		593E7387193F16A60071B91D /* Concurrent */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,13 +326,6 @@
 			name = Generics;
 			sourceTree = "<group>";
 		};
-		59BF7D9419433EBE00EAFFAA /* Testing */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Testing;
-			sourceTree = "<group>";
-		};
 		59BF7D9719433F8200EAFFAA /* Ext */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,8 +375,6 @@
 				590BE976193DA939003DAC87 /* Data */,
 				59BF7D9719433F8200EAFFAA /* Ext */,
 				59BF7D911943346900EAFFAA /* Generics */,
-				59BF7D9419433EBE00EAFFAA /* Testing */,
-				590FCB371943E2DB008E5D94 /* Text */,
 				59F35AE3193D3A0A006F1341 /* Supporting Files */,
 			);
 			path = swiftz;

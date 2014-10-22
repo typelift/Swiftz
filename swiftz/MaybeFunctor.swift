@@ -9,7 +9,7 @@
 import Foundation
 import swiftz_core
 
-public class Maybe<A: Any>: F<A> {
+public final class Maybe<A>: K1<A> {
   var value: A?
 
   public init(_ v: A) {

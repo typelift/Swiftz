@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import swiftz_core
 
 // Reading an MVar that is empty will block until it has something in it.
 // Putting into an MVar will block if it has something in it, until someone reads from it.
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-MVar.html
-public class MVar<A> {
+public final class MVar<A> : K1<A> {
   var value: Optional<(() -> A)>
 
   var mutex: UnsafeMutablePointer<pthread_mutex_t>
@@ -19,7 +20,7 @@ public class MVar<A> {
   var condRead: UnsafeMutablePointer<pthread_cond_t>
   let matt: UnsafeMutablePointer<pthread_mutexattr_t>
 
-  public init() {
+  public override init() {
 
     var mattr:UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import swiftz_core
 
 public enum JSONValue: Printable {
   case JSONArray([JSONValue])
@@ -142,7 +143,7 @@ public protocol JSON: JSONDecode, JSONEncode {
 
 // instances
 
-public class JDouble: JSON {
+public final class JDouble: K0, JSON {
   public typealias J = Double
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -157,7 +158,7 @@ public class JDouble: JSON {
   }
 }
 
-public class JInt: JSON {
+public final class JInt: K0, JSON {
   public typealias J = Int
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -172,7 +173,7 @@ public class JInt: JSON {
   }
 }
 
-public class JNumber: JSON {
+public final class JNumber: K0, JSON {
   public typealias J = NSNumber
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -187,7 +188,7 @@ public class JNumber: JSON {
   }
 }
 
-public class JBool: JSON {
+public final class JBool: K0, JSON {
   public typealias J = Bool
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -204,7 +205,7 @@ public class JBool: JSON {
   }
 }
 
-public class JString: JSON {
+public final class JString: K0, JSON {
   public typealias J = String
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -221,7 +222,7 @@ public class JString: JSON {
 
 // or unit...
 public let jnull = JNull()
-public class JNull: JSON {
+public final class JNull: K0, JSON {
   public typealias J = ()
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -238,7 +239,7 @@ public class JNull: JSON {
 
 
 // container types should be split
-/* final */ public class JArrayFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
+/* final */ public class JArrayFrom<A, B: JSONDecode where B.J == A>: K2<A, B>, JSONDecode {
   public typealias J = [A]
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -256,7 +257,7 @@ public class JNull: JSON {
   }
 }
 
-/* final */ public class JArrayTo<A, B: JSONEncode where B.J == A>: JSONEncode {
+/* final */ public class JArrayTo<A, B: JSONEncode where B.J == A>: K2<A, B>, JSONEncode {
   public typealias J = [A]
 
   public class func toJSON(xs: J) -> JSONValue {
@@ -264,7 +265,7 @@ public class JNull: JSON {
   }
 }
 
-/* final */ public class JArray<A, B: JSON where B.J == A>: JSON {
+/* final */ public class JArray<A, B: JSON where B.J == A>: K2<A, B>, JSON {
   public typealias J = [A]
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -287,7 +288,7 @@ public class JNull: JSON {
 }
 
 
-/* final */ public class JDictionaryFrom<A, B: JSONDecode where B.J == A>: JSONDecode {
+/* final */ public class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K2<A, B>, JSONDecode {
   public typealias J = Dictionary<String, A>
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -300,7 +301,7 @@ public class JNull: JSON {
   }
 }
 
-/* final */ public class JDictionaryTo<A, B: JSONEncode where B.J == A>: JSONEncode {
+/* final */ public class JDictionaryTo<A, B: JSONEncode where B.J == A>: K2<A, B>, JSONEncode {
   public typealias J = Dictionary<String, A>
 
   public class func toJSON(xs: J) -> JSONValue {
@@ -310,7 +311,7 @@ public class JNull: JSON {
   }
 }
 
-/* final */ public class JDictionary<A, B: JSON where B.J == A>: JSON {
+/* final */ public class JDictionary<A, B: JSON where B.J == A>: K2<A, B>, JSON {
   public typealias J = Dictionary<String, A>
 
   public class func fromJSON(x: JSONValue) -> J? {

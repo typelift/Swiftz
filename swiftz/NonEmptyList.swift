@@ -48,7 +48,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
   }
 }
 
-public class NonEmptyListGenerator<A> : GeneratorType {
+public final class NonEmptyListGenerator<A> : K1<A>, GeneratorType {
   var head: Box<A?>
   var l: Box<List<A>?>
   public func next() -> A? {

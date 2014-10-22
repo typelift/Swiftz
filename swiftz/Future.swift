@@ -9,7 +9,7 @@
 import Foundation
 import swiftz_core
 
-public class Future<A> {
+public final class Future<A> : K1<A> {
   var value: A?
 
   // The resultQueue is used to read the result. It begins suspended
@@ -24,14 +24,16 @@ public class Future<A> {
   }
 
   public init(exec: ExecutionContext, _ a: () -> A) {
-    dispatch_suspend(self.resultQueue)
     execCtx = exec
+    super.init()
+    dispatch_suspend(self.resultQueue)
     exec.submit(self, work: a)
   }
 
   public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
-    dispatch_suspend(self.resultQueue)
     execCtx = exec
+    super.init()
+    dispatch_suspend(self.resultQueue)
     exec.submit(self, work: a)
   }
 
