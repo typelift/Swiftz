@@ -91,7 +91,6 @@
 		59B9E7DA194597FD00F5B3E1 /* TextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7D9194597FD00F5B3E1 /* TextTests.swift */; };
 		59B9E7DC1945983100F5B3E1 /* ExtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7DB1945983100F5B3E1 /* ExtTests.swift */; };
 		59BF7D931943347800EAFFAA /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D921943347800EAFFAA /* SYB.swift */; };
-		59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */; };
 		59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C50C3C193DEB8100FE8C86 /* Num.swift */; };
 		59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -206,7 +205,6 @@
 		59B9E7D9194597FD00F5B3E1 /* TextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextTests.swift; sourceTree = "<group>"; };
 		59B9E7DB1945983100F5B3E1 /* ExtTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtTests.swift; sourceTree = "<group>"; };
 		59BF7D921943347800EAFFAA /* SYB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYB.swift; sourceTree = "<group>"; };
-		59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftCheck.swift; sourceTree = "<group>"; };
 		59C50C3C193DEB8100FE8C86 /* Num.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Num.swift; sourceTree = "<group>"; };
 		59DB16241940895D00E656F9 /* NSDictionaryExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDictionaryExt.swift; sourceTree = "<group>"; };
 		59F35AE0193D3A0A006F1341 /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -385,7 +383,6 @@
 		59BF7D9419433EBE00EAFFAA /* Testing */ = {
 			isa = PBXGroup;
 			children = (
-				59BF7D9519433ECB00EAFFAA /* SwiftCheck.swift */,
 			);
 			name = Testing;
 			sourceTree = "<group>";
@@ -581,7 +578,7 @@
 		59F35AD7193D3A09006F1341 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Maxwell Swadling";
 				TargetAttributes = {
 					598539FF1967F99500A3158C = {
@@ -748,7 +745,6 @@
 				C98204FE19DB0F2F00B00FE1 /* Operators.swift in Sources */,
 				590FCB3B1943EA91008E5D94 /* StringExt.swift in Sources */,
 				59B26545193F365A007AA82B /* GCDExecutionContext.swift in Sources */,
-				59BF7D9619433ECB00EAFFAA /* SwiftCheck.swift in Sources */,
 				C98204F019DB0F2F00B00FE1 /* Comonad.swift in Sources */,
 				59B39E3E1943094F00F4B222 /* Curry.swift in Sources */,
 				5919722B1952ED9B008FBC51 /* HList.swift in Sources */,
@@ -940,7 +936,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				METAL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";

@@ -6,24 +6,25 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// warning: flatMap can not be linked. rdar://17149404
-extension Optional {
-  public func flatMap<B>(f: (T -> Optional<B>)) -> Optional<B> {
-    return self.maybe(.None, f)
-  }
+public func flatMap<A, B>(m : Optional<A>) -> (A -> Optional<B>) -> Optional<B> {
+	return { f in maybe(m)(.None)(f) }
+}
 
-  public func maybe<B>(z : B, f : T -> B) -> B {
-    switch self {
-    case .None: return z
-    case let .Some(x): return f(x)
-    }
-  }
+public func maybe<A, B>(m : Optional<A>) -> B -> (A -> B) -> B {
+	return { z in { f in
+		switch m {
+		case .None: return z
+		case let .Some(x): return f(x)
+		}
+	} }
+}
 
-  // scala's getOrElse
-  public func getOrElse(x: T) -> T {
-    switch self {
-    case .None: return x
-    case let .Some(x): return x
-    }
-  }
+// scala's getOrElse
+public func getOrElse<T>(m : Optional<T>) -> T -> T {
+	return { def in
+		switch m {
+		case .None: return def
+		case let .Some(x): return x
+		}
+	}
 }

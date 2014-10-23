@@ -90,7 +90,7 @@ class DataTests: XCTestCase {
   }
 
   func testResult() {
-    let divisionError = NSError.errorWithDomain("DivisionDomain", code: 1, userInfo: nil)
+    let divisionError = NSError(domain: "DivisionDomain", code: 1, userInfo: nil)
 
     func divTwoEvenly(x: Int) -> Result<Int> {
       if x % 2 == 0 {

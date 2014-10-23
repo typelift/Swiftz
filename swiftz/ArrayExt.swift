@@ -8,45 +8,45 @@
 
 // Array extensions
 extension Array {
-    
-  ///Array subscripting is bad and you should feel bad for using it.
-  ///This is a safe alternative that eleminates out of bounds errors
-  ///and returns an Optional instead.
-  public func safeIndex(i: Int) -> T? {
-    return indexArray(self, i)
-  }
-    
 
-    
-  ///Appends an array onto the end of the receiving array.
-  ///Does not mutate the receiving array.
-  public func join(array:[T]) -> [T] {
-    if array.isEmpty {
-      return self
-    }
-    else {
-      var newArr = Array(self)
-      newArr.extend(array)
-      return newArr
-    }
-  }
+}
 
-  public func mapWithIndex<U>(f: (Int, T) -> U) -> [U] {
-    var res = [U]()
-    res.reserveCapacity(count)
-    for i in 0 ..< count {
-      res.append(f(i, self[i]))
-    }
-    return res
-  }
 
-  public func foldRight<U>(z: U, _ f: (T, U) -> U) -> U {
-    var res = z
-    for x in self {
-      res = f(x, res)
-    }
-    return res
+///Array subscripting is bad and you should feel bad for using it.
+///This is a safe alternative that eleminates out of bounds errors
+///and returns an Optional instead.
+public func safeIndex<T>(array: Array<T>)(i: Int) -> T? {
+  return indexArray(array, i)
+}
+
+///Appends an array onto the end of the receiving array.
+///Does not mutate the receiving array.
+public func concat<T>(#lhs: [T])(#rhs: [T]) -> [T] {
+  if rhs.isEmpty {
+    return lhs
   }
+  else {
+    var newArr = Array(lhs)
+    newArr.extend(rhs)
+    return newArr
+  }
+}
+
+public func mapWithIndex<T, U>(array: Array<T>)(f: (Int, T) -> U) -> [U] {
+  var res = [U]()
+  res.reserveCapacity(array.count)
+  for i in 0 ..< array.count {
+    res.append(f(i, array[i]))
+  }
+  return res
+}
+
+public func foldRight<T, U>(array: Array<T>)(z: U, f: (T, U) -> U) -> U {
+  var res = z
+  for x in array {
+    res = f(x, res)
+  }
+  return res
 }
 
 ///scanl is similar to reduce, but returns a list of successive reduced values from the left:
@@ -168,7 +168,7 @@ public func intersperse<T>(item:T, list:[T]) -> [T] {
 ///discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs: [A?]) -> [A] {
   var w = [A]()
-  w.reserveCapacity(xs.foldRight(0) { c, n in
+  w.reserveCapacity(foldRight(xs)(z: 0) { c, n in
     if c != nil {
       return n + 1
     } else {
@@ -226,7 +226,7 @@ public func all<A>(list: [A], f: (A -> Bool)) -> Bool {
 public func concat<A>(list: [[A]]) -> [A] {
   return list.reduce([]) {
     (start, l) -> [A] in
-    return start.join(l)
+    return concat(lhs: start)(rhs: l)
   }
 }
 
@@ -234,7 +234,7 @@ public func concat<A>(list: [[A]]) -> [A] {
 public func concatMap<A,B>(list: [A], f: A -> [B]) -> [B] {
   return list.reduce([]) {
     (start, l) -> [B] in
-    return start.join(f(l))
+    return concat(lhs: start)(rhs: f(l))
   }
 }
 
@@ -263,7 +263,7 @@ public func span<A>(list: [A], p: (A -> Bool)) -> ([A], [A]) {
   case 1...list.count where p(list.first!):
     let first = list.first!
     let (ys,zs) = span(Array(list[1..<list.count]), p)
-    let f = [first].join(ys)
+    let f = concat(lhs: [first])(rhs: ys)
     return (f,zs)
   default:  return ([], list)
   }
@@ -277,8 +277,8 @@ public func groupBy<A>(list:[ A], p: (A -> A -> Bool)) -> [[A]] {
   case 1...list.count:
     let first = list.first!
     let (ys,zs) = span(Array(list[1..<list.count]), p(first))
-    let x = [[first].join(ys)]
-    return x.join(groupBy(zs, p))
+    let x = [concat(lhs: [first])(rhs: ys)]
+    return concat(lhs: x)(rhs: groupBy(zs, p))
   default: return []
   }
 }
@@ -319,7 +319,7 @@ public func takeWhile<A>(list: [A], p: A -> Bool) -> [A] {
   switch list.count {
   case 0: return list
   case 1...list.count where p(list.first!):
-    return [list.first!].join(takeWhile(Array(list[1..<list.count]), p))
+    return concat(lhs: [list.first!])(rhs: takeWhile(Array(list[1..<list.count]), p))
   default: return []
   }
 }

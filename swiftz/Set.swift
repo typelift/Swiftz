@@ -32,12 +32,6 @@ public struct Set<A: Hashable> : SequenceType {
     // an empty set
   }
 
-  public init(items:A...) {
-    for obj in items {
-      bucket[obj] = true
-    }
-  }
-
   public init(array:[A]) {
     for obj in array {
       bucket[obj] = true
@@ -175,8 +169,9 @@ extension Set : Printable,DebugPrintable {
 }
 
 extension Set : ArrayLiteralConvertible {
-  static public func convertFromArrayLiteral(elements: A...) -> Set<A> {
-    return Set(array:elements)
+  typealias Element = A
+  public init(arrayLiteral elements:A...) {
+    self.init(array: elements)
   }
 }
 
@@ -213,7 +208,7 @@ func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
 // Set 'functions'
 
 func pure<A>(a:A) -> Set<A> {
-  return Set(items: a)
+  return Set(arrayLiteral: a)
 }
 
 func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
