@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import swiftz_core
 
 public class Maybe<A: Any>: F<A> {
   var value: A?

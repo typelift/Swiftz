@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import swiftz_core
 
 public class Iso<S, T, A, B> {
   public let get: S -> A

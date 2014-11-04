@@ -8,7 +8,7 @@
 
 import XCTest
 import swiftz
-
+import swiftz_core
 
 class ControlTests: XCTestCase {
 

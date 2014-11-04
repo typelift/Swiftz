@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import swiftz_core
 
 // A HList can be thought of like a tuple, but with list-like operations on the types.
 
@@ -46,8 +46,8 @@ public final class HCons<H, T: HList> : HList {
 }
 
 public final class HNil : HList {
-  public typealias Head = Void
-  public typealias Tail = Void
+  public typealias Head = Nothing
+  public typealias Tail = Nothing
 
   public init() {}
   public class func isNil() -> Bool {
