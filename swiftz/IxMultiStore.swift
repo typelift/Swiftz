@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import swiftz_core
 
 // N.B.:  This is the "inlining" of the indexed store comonad transformer
 // applied to the array zipper comonad

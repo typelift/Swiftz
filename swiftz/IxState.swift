@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import swiftz_core
 
 public struct IxState<I, O, A> {
   let run: I -> (A, O)

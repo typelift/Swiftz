@@ -8,7 +8,7 @@
 
 import Foundation
 import swiftz
-
+import swiftz_core
 
 // shape example for SYB
 enum Shape : Dataable {
