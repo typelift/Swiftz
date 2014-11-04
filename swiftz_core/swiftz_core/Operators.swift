@@ -13,6 +13,11 @@ infix operator • {
 associativity right
 }
 
+infix operator § {
+associativity right
+precedence 0
+}
+
 infix operator |> {
 associativity left
 }
