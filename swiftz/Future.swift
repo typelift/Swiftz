@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import swiftz_core
 
 public class Future<A> {
   var value: A?

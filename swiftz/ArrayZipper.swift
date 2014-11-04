@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 public final class ArrayZipper<A>: ArrayLiteralConvertible {
   typealias Element = A

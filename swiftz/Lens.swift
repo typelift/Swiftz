@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 public class Lens<S, T, A, B> {
   public let run: S -> IxStore<A, B, T>
