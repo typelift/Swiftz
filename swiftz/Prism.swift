@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 public class Prism<S, T, A, B> {
   public let tryGet: S -> A?

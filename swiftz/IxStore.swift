@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import swiftz_core
+
 
 // N.B.:  In the indexed store comonad transformer, set, put, and peek are all distinct,
 // as are puts and peeks.  The lack of distinction here is due to the lack of tranformer
