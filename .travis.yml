@@ -2,5 +2,5 @@ language: objective-c
 osx_image: xcode61
 
 script:
-- xctool -project swiftz.xcodeproj -scheme swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build
-- xctool -project swiftz.xcodeproj -scheme swiftz_ios -sdk iphonesimulator8.1 ONLY_ACTIVE_ARCH=NO clean build
+- xctool -project swiftz.xcodeproj -scheme swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
+- xctool -project swiftz.xcodeproj -scheme swiftz_ios -sdk iphonesimulator8.1 ONLY_ACTIVE_ARCH=NO clean build test
