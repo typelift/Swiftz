@@ -139,6 +139,7 @@ extension Int64 : Bounded {
   }
 }
 
+#if os(OSX)
 extension Float : Bounded {
   public static func minBound() -> Float {
     return FLT_MIN
@@ -158,6 +159,7 @@ extension Double : Bounded {
     return DBL_MAX
   }
 }
+#endif
 
 /// float.h does not export Float80's limits, nor does the Swift STL.
 /// rdar://18404510
