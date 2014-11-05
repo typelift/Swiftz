@@ -68,6 +68,11 @@ public func §<A, B>(f: A -> B, a: A) -> B {
   return f(a)
 }
 
+/// Function application. Synonym for `§`: `f <| a == f § a`.
+public func <|<A, B>(f: A -> B, a: A) -> B {
+  return f(a)
+}
+
 /// Thrush function. Given an A, and a function A -> B, applies the function to A and returns the result
 /// can make code more readable
 public func |><A, B>(a: A, f: A -> B) -> B {
