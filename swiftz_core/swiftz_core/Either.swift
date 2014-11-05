@@ -38,16 +38,6 @@ public enum Either<L, R> {
     return self >>- f
   }
 
-  /// Get the left value if there is one, otherwise return nil.
-  public func getLeft() -> L? {
-    return either({ l in l }, { _ in nil })
-  }
-
-  /// Get the right value if there is one, otherwise return nil.
-  public func getRight() -> R? {
-    return either({ _ in nil }, { r in r })
-  }
-
   /// Creates a Left with the given value.
   public static func left(l: L) -> Either<L, R> {
     return .Left(Box(l))

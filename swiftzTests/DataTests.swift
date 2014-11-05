@@ -69,14 +69,6 @@ class DataTests: XCTestCase {
     XCTAssert(Either.left("foo").either({ l in l+"!" }, { r in r+1 }) == "foo!")
     XCTAssert(Either.right(1).either({ l in l+"!" }, { r in r+1 }) == 2)
     
-    // getLeft/Right
-    let leftFoo = Either<String, Int>.left("foo")
-    let rightOne = Either<String, Int>.right(1)
-    XCTAssert(getOrElse(leftFoo.getLeft())("!") == "foo")
-    XCTAssert(getOrElse(leftFoo.getRight())("!") == "!")
-    XCTAssert(getOrElse(rightOne.getRight())(0) == 1)
-    XCTAssert(getOrElse(rightOne.getLeft())(0) == 0)
-
     // fold
     XCTAssert(Either.left("foo").fold(0, identity) == 0)
     XCTAssert(Either<String, Int>.right(10).fold(0, identity) == 10)
