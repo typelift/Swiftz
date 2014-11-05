@@ -20,10 +20,7 @@ public enum Either<L, R> {
   /// Converts a Either to a Result, which is a more specialized type that
   /// contains an NSError or a value.
   public func toResult(ev: L -> NSError) -> Result<R> {
-    switch self {
-    case let Left(e): return Result.Error(ev(e.value))
-    case let Right(v): return .Value(Box(v.value))
-    }
+    return either({ e in Result.Error(ev(e)) }, { v in .Value(Box(v)) });
   }
 
     
@@ -31,10 +28,7 @@ public enum Either<L, R> {
   /// and if the Either is Left, returns the value, otherwise maps the function over
   /// the value in Right and returns that value.
   public func fold<B>(value: B, f: R -> B) -> B {
-    switch self {
-    case Left(_): return value
-    case let Right(v): return f(v.value)
-    }
+    return either({ _ in value }, { r in f(r) });
   }
 
   /// Named function for `>>-`. If the Either is Left, simply returns
