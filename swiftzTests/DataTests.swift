@@ -162,7 +162,7 @@ class DataTests: XCTestCase {
 
   func testConstBifunctor() {
     let x : Const<String, String> = Const("Hello!")
-    let y = ConstBF(x).bimap({ "Why, " + $0 }, g: identity)
+    let y : Const<String, String>  = x.bimap({ "Why, " + $0 }, g: identity)
     XCTAssert(x.runConst != y.runConst)
   }
 

@@ -40,18 +40,37 @@ extension Id: Functor {
 }
 
 // instance Functor (Const m)
-public final class Const<B, A>: K1<A> {
-  private let a: () -> B
-  public init(_ aa: B) {
+public final class Const<A, B>: K2<A, B> {
+  private let a: () -> A
+  public init(_ aa: A) {
     a = { aa }
   }
-  public var runConst: B {
+  public var runConst: A {
     return a()
   }
 }
 
+// TODO: File rdar; This has to be in this file or we get linker errors.
+extension Const : Bifunctor {
+  typealias B = Any
+  typealias C = B
+  typealias D = Any
+
+  typealias PAC = Const<A, C>
+  typealias PAD = Const<A, D>
+  typealias PBC = Const<B, C>
+  typealias PBD = Const<B, D>
+
+  public func bimap<B, C, D>(f: (A -> B), g: (C -> D)) -> Const<B, D> {
+    return Const<B, D>(f(self.runConst))
+  }
+}
+
+
 extension Const: Functor {
-  public func fmap(f: (A -> B)) -> Const<B, B> {
-    return (Const<B, B>(self.runConst))
+  typealias FB = Const<A, B>
+
+  public func fmap<B>(f: (A -> B)) -> Const<A, B> {
+    return Const<A, B>(self.runConst)
   }
 }
