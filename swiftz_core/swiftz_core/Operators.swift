@@ -13,13 +13,20 @@ infix operator • {
 associativity right
 }
 
-infix operator |> {
-associativity left
+infix operator § {
+associativity right
+precedence 0
 }
 
-//operator  <| {
-//  associativity right
-//}
+infix operator |> {
+associativity left
+precedence 0
+}
+
+infix operator <| {
+associativity right
+precedence 0
+}
 
 // "fmap" like
 infix operator  <^> {
