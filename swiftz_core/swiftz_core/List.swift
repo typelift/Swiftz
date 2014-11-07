@@ -12,7 +12,7 @@ import Foundation
 /// This is not currently possible with a bit of misdirection, hence the Box class.
 public enum List<A> {
   case Nil
-  case Cons(A, Box<List<A>>)
+  case Cons(@autoclosure() -> A, Box<List<A>>)
 
   public init() {
     self = .Nil
@@ -32,7 +32,7 @@ public enum List<A> {
     case .Nil:
       return .None
     case let .Cons(head, _):
-      return head
+      return head()
     }
   }
 
@@ -88,20 +88,20 @@ public enum List<A> {
   }
 }
 
-public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
-  switch (lhs, rhs) {
-  case (.Nil, .Nil):
-    return true
-  case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
-    return lHead == rHead && lTail.value == rTail.value
-  default:
-    return false
+  public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+    switch (lhs, rhs) {
+    case (.Nil, .Nil):
+      return true
+    case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
+      return lHead() == rHead() && lTail.value == rTail.value
+    default:
+      return false
   }
 }
 
 extension List : ArrayLiteralConvertible {
   typealias Element = A
-
+  
   public init(arrayLiteral s: Element...) {
     var xs : [A] = []
     var g = s.generate()
@@ -115,7 +115,6 @@ extension List : ArrayLiteralConvertible {
     self = l
   }
 }
-
 
 public class ListGenerator<A> : GeneratorType {
   var l : Box<List<A>?>
@@ -157,7 +156,7 @@ public struct ListF<A, B> : Functor {
     case .Nil:
       return List()
     case let .Cons(head, tail):
-      return List(f(head), ListF(l: tail.value).fmap(f))
+      return List(f(head()), ListF(l: tail.value).fmap(f))
     }
   }
 }
