@@ -16,7 +16,7 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
   return (t.reduce(s.mzero()) { s.op($0, y: $1) })
 }
 
-public final class Sum<A, N: Num where N.N == A>: K2<A, N>, Monoid {
+public final class Sum<A, N: Num where N.N == A>: K1<N>, Monoid {
   public typealias M = A
   let n: () -> N // work around for rdar://17109323
 
@@ -31,7 +31,7 @@ public final class Sum<A, N: Num where N.N == A>: K2<A, N>, Monoid {
   }
 }
 
-public final class Product<A, N: Num where N.N == A>: K2<A, N>, Monoid {
+public final class Product<A, N: Num where N.N == A>: K1<N>, Monoid {
   public typealias M = A
   let n: () -> N
   public init(i: @autoclosure () -> N) {

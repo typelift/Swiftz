@@ -239,7 +239,7 @@ public final class JNull: K0, JSON {
 
 
 // container types should be split
-/* final */ public class JArrayFrom<A, B: JSONDecode where B.J == A>: K2<A, B>, JSONDecode {
+public final class JArrayFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecode {
   public typealias J = [A]
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -257,7 +257,7 @@ public final class JNull: K0, JSON {
   }
 }
 
-/* final */ public class JArrayTo<A, B: JSONEncode where B.J == A>: K2<A, B>, JSONEncode {
+public final class JArrayTo<A, B: JSONEncode where B.J == A>: K1<B>, JSONEncode {
   public typealias J = [A]
 
   public class func toJSON(xs: J) -> JSONValue {
@@ -265,7 +265,7 @@ public final class JNull: K0, JSON {
   }
 }
 
-/* final */ public class JArray<A, B: JSON where B.J == A>: K2<A, B>, JSON {
+public final class JArray<A, B: JSON where B.J == A>: K1<B>, JSON {
   public typealias J = [A]
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -288,7 +288,7 @@ public final class JNull: K0, JSON {
 }
 
 
-/* final */ public class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K2<A, B>, JSONDecode {
+public final class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecode {
   public typealias J = Dictionary<String, A>
 
   public class func fromJSON(x: JSONValue) -> J? {
@@ -301,7 +301,7 @@ public final class JNull: K0, JSON {
   }
 }
 
-/* final */ public class JDictionaryTo<A, B: JSONEncode where B.J == A>: K2<A, B>, JSONEncode {
+public final class JDictionaryTo<A, B: JSONEncode where B.J == A>: K1<B>, JSONEncode {
   public typealias J = Dictionary<String, A>
 
   public class func toJSON(xs: J) -> JSONValue {
@@ -311,7 +311,7 @@ public final class JNull: K0, JSON {
   }
 }
 
-/* final */ public class JDictionary<A, B: JSON where B.J == A>: K2<A, B>, JSON {
+public final class JDictionary<A, B: JSON where B.J == A>: K1<B>, JSON {
   public typealias J = Dictionary<String, A>
 
   public class func fromJSON(x: JSONValue) -> J? {
