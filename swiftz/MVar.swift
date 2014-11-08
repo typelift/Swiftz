@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import Darwin
 import swiftz_core
+
 
 // Reading an MVar that is empty will block until it has something in it.
 // Putting into an MVar will block if it has something in it, until someone reads from it.

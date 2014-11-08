@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 public protocol Applicative : Functor {
   typealias FA = K1<A>
   typealias FAB = K1<A -> B>

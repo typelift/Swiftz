@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
 import swiftz_core
 
 public final class Lens<S, T, A, B> : K4<S, T, A, B> {

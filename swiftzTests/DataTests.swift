@@ -23,38 +23,35 @@ class DataTests: XCTestCase {
   func testNum() {
     // TODO: test num
   }
-
-    /// Commented out test never complete, and cause Xcode to hang in
-    /// testing forever as of Beta 6.
     
-//  func testList() {
-//    let xs: List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
-//    let one: (Int, String) = xs.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
-//    XCTAssert(one.0 == 1 && one.1 == "one")
-//
-//    let re: String? = xs.lookup(identity, key: 1)
-//    XCTAssert(re! == "one")
-//
-//    self.measureBlock() {
-//      var lst: List<Int> = List()
-//      for x: Int in (0..<26000) {
-//        lst = List(x, lst)
-//      }
-//      XCTAssert(lst.length() == 26000)
-//    }
-//  }
+  func testList() {
+    let xs: List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
+    let one: (Int, String) = xs.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
+    XCTAssert(one.0 == 1 && one.1 == "one")
 
-//  func testListFunctor() {
-//    let x : List<Int> = [1, 2, 3]
-//    let y = ListF(l: x).fmap({ Double($0 * 2) })
-//    XCTAssert(y == [2.0, 4.0, 6.0])
-//  }
+    let re: String? = xs.lookup(identity, key: 1)
+    XCTAssert(re! == "one")
 
-//  func testNonEmptyListFunctor() {
-//    let x : NonEmptyList<Int> = [1, 2, 3]
-//    let y = NonEmptyListF(l: x).fmap({ Double($0 * 2) })
-//    XCTAssert(y == [2.0, 4.0, 6.0])
-//  }
+    self.measureBlock() {
+      var lst: List<Int> = List()
+      for x: Int in (0..<26000) {
+        lst = List(x, lst)
+      }
+      XCTAssert(lst.length() == 26000)
+    }
+  }
+
+  func testListFunctor() {
+    let x : List<Int> = [1, 2, 3]
+    let y = ListF(l: x).fmap({ Double($0 * 2) })
+    XCTAssert(y == [2.0, 4.0, 6.0])
+  }
+
+  func testNonEmptyListFunctor() {
+    let x : NonEmptyList<Int> = [1, 2, 3]
+    let y = NonEmptyListF(l: x).fmap({ Double($0 * 2) })
+    XCTAssert(y == [2.0, 4.0, 6.0])
+  }
 
   func testEither() {
     func divTwoEvenly(x: Int) -> Either<String, Int> {

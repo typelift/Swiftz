@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 public func curry<A, B, C>(f: (A, B) -> C, a: A, b: B) -> C {
   return f((a, b))
 }

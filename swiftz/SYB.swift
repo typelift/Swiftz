@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 public protocol Dataable {
   class func typeRep() -> Any.Type
   class func fromRep(r: Data) -> Self?

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import Darwin
 import swiftz_core
 
 // An unbound FIFO channel.

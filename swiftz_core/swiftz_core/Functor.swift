@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-import Foundation
-
-
 public protocol Functor {
   typealias A
   typealias B
