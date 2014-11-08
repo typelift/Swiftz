@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 public protocol Comonad : Functor {
   typealias FAB = F<A> -> B
   func extract() -> A

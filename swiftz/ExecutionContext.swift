@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 // Implement this protocol to be an execution context.
 // for example, a lightweight threading runtime...
 public protocol ExecutionContext {

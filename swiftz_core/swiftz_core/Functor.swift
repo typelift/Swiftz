@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-import Foundation
-
 public class F<A> {
   public init() {
 

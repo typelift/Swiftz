@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
 import swiftz_core
 
 // N.B.:  In the indexed store comonad transformer, set, put, and peek are all distinct,
