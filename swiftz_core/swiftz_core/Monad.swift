@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 public protocol Monad : Applicative {
   typealias AFB = A -> F<B>
   func bind(f: AFB) -> FB
