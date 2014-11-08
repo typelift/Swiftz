@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
 import swiftz
 
 // A party has a host, who is a user.

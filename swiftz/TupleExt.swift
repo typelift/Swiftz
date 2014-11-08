@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 // the standard library has _.1, _.2 functions
 // these functions are more useful when "doing fp" (point-free-ish forms)
 public func fst<A, B>(ab: (A, B)) -> A {

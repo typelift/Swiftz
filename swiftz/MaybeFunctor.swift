@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-import Foundation
 import swiftz_core
 
 public class Maybe<A: Any>: F<A> {

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import Darwin
 
 // An unbound FIFO channel.
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html

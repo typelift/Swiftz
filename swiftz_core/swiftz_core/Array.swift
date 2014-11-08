@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 /// Applicative `pure` function, lifts a value into an Array.
 public func pure<A>(a: A) -> [A] {
   return [a]
