@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import class Foundation.NSArray
+import Foundation
 
 extension NSArray {
   public func mapToArray<U>(transform: AnyObject -> (U)) -> [U] {
