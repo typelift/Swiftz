@@ -49,8 +49,8 @@ public func flip<A, B, C>(f: (A, B) -> C)(b: B, a: A) -> C {
 
 /// Flip a function's arguments and return a curried function that takes
 /// the arguments in flipped order.
-public func flip<A, B, C>(f: A -> B -> C)(b: B)(a: A) -> C {
-  return f(a)(b)
+public func flip<A, B, C>(f: A -> B -> C) -> B -> A -> C {
+  return { b in { a in f(a)(b) } }
 }
 
 /// Function composition. Alt + 8
