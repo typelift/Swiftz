@@ -47,7 +47,7 @@ class ControlTests: XCTestCase {
     // flip
     XCTAssert(flip({ $0 / $1 }, 1, 0) == 0, "flip")
     XCTAssert(flip({ $0 / $1 })(b: 1, a: 0) == 0, "flip")
-    XCTAssert(flip({ x in { x / $0 } })(b: 1)(a: 0) == 0, "flip")
+    XCTAssert(flip({ x in { x / $0 } })(1)(0) == 0, "flip")
 
     // function composition
     let composed2 = {(num:Int) in String(num) + String(1)} • {$0 + 1} • {$0 + 1} • {$0 + 1}
