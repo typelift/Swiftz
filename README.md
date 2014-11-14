@@ -5,7 +5,42 @@ Swiftz
 
 Swiftz is a Swift library for functional programming.
 
-It defines purely functional data structures and functions.
+It defines purely functional data structure, functions, and extensions that augment the Swift standard library.
+
+Setup
+-----
+
+Swiftz comes in two distinct flavors: Core and Full.  Swiftz_Core is
+a smaller and simpler way to introduce pure functional datatypes into any
+codebase.  It also provides a few of the more popular typeclasses and conformances
+for Swiftz types.  It can be included one of two ways:
+
+**Framework**
+
+- Drag `swiftz_core.xcodeproj` into your project tree as a subproject
+- Under your project's Build Phases, expand Target Dependencies
+- Click the + and add swiftz_core
+- Expand the Link Binary With Libraries phase
+- Click the + and add swiftz_core
+- Click the + at the top left corner to add a Copy Files build phase
+- Set the directory to `Frameworks`
+- Click the + and add swiftz_core
+
+**Standalone**
+
+- Copy the swift files under `swiftz/swiftz_core/swiftz_core` into your
+  project.
+
+Using the full Swiftz framework works in much the same way:
+
+- Drag `swiftz.xcodeproj` into your project tree as a subproject
+- Under your project's Build Phases, expand Target Dependencies 
+- Click the + and add swiftz
+- Expand the Link Binary With Libraries phase
+- Click the + and add swiftz
+- Click the + at the top left corner to add a Copy Files build phase
+- Set the directory to `Frameworks`
+- Click the + and add swiftz *and* swiftz_core
 
 Examples
 --------
@@ -108,49 +143,20 @@ for data abstractions from the standard library.
 Operators
 ---------
 
+Swiftz introduces the following operators at global scope
+
 Operator | Name      | Type
 -------- | --------- | ------------------------------------------
-`pure`   | pure      | `pure<A>(a: A) -> F<A>`
-`<^>`    | fmap      | `<^><A, B>(f: A -> B, a: F<A>) -> F<B>`
-`<^^>`   | imap      | `<^^><I, J, A>(f: I -> J, f: F<I, A>) -> F<J, A>`
-`<!>`    | contramap | `<^><I, J, A>(f: J -> I, f: F<I, A>) -> F<J, A>`
-`<*>`    | apply     | `<*><A, B>(f: F<A -> B>, a: F<A>) -> F<B>`
-`>>-`    | bind      | `>>-<A, B>(a: F<A>, f: A -> F<B>) -> F<B>`
-`->>`    | extend    | `->><A, B>(a: F<A>, f: F<A> -> B) -> F<B>`
+`•`      | compose   | `•<A, B, C>(f: B -> C, g: A -> B) -> A -> C`
+`<|`     | apply     | `<|<A, B>(A -> B, A) -> B`
+`|>`     | thrush    | `|><A, B>(A, A -> B) -> B`
+`<-`     | extract   | `<-<A>(M<A>, A) -> Void`
+`∪`      | union     | `∪<A>(Set<A>, Set<A>) -> Set<A>`
+`∩`      | intersect | `∩<A>(Set<A>, Set<A>) -> Set<A>`
+`<^>`    | fmap      | `<^><A, B>(A -> B, a: F<A>) -> F<B>`
+`<^^>`   | imap      | `<^^><I, J, A>(I -> J, F<I, A>) -> F<J, A>`
+`<!>`    | contramap | `<^><I, J, A>(J -> I, F<I, A>) -> F<J, A>`
+`<*>`    | apply     | `<*><A, B>(F<A -> B>, F<A>) -> F<B>`
+`>>-`    | bind      | `>>-<A, B>(F<A>, A -> F<B>) -> F<B>`
+`->>`    | extend    | `->><A, B>(F<A>, F<A> -> B) -> F<B>`
 
-Types with instances of these operators:
-
-- `Optional`
-- `Array` (non-determinism, cross product)
-- `Either` (right bias)
-- `Result`
-- `ImArray`
-- `Set` (except `<*>`)
-
-*Note: these functions are not in any protocol. They are in global scope.*
-
-Adding Swiftz to a Project
---------------------------
-
-1. Build the `.framework`
-2. Copy it to your project
-3. Add a build phase to copy frameworks, and add that swiftz to the list
-4. Add `--deep` to "Other Code Signing Flags"
-5. Check `Versions/A/Frameworks/` doesn't contain the Swift runtime (it will
-    be duplicated with the App's copy of the runtime, causing a 4mb increase
-    in file size)
-
-Implementation
---------------
-
-**Implemented:**
-
-- `Future<A>`, `MVar<A>` and `Chan<A>` concurrency abstractions
-- `JSON` types and encode / decode protocols
-- Lenses
-- `Semigroup<A>` and `Monoid<A>` with some instances
-- `Num` protocol
-- `Either<L, R>` and `Result<V>`
-- `maybe` for `Optional<A>`,
-- `Dictionary` and `Array` extensions
-- Immutable `Set<A: Hashable>` and `ImArray<A>`
