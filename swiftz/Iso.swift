@@ -8,7 +8,7 @@
 
 import swiftz_core
 
-public class Iso<S, T, A, B> {
+public final class Iso<S, T, A, B> : K4<S, T, A, B> {
   public let get: S -> A
   public let inject: B -> T
 

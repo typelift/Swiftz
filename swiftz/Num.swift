@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import swiftz_core
+
 // Num 'typeclass'
 
 public protocol Num {
@@ -17,7 +19,7 @@ public protocol Num {
 }
 
 public let nint8 = NInt8()
-public class NInt8: Num {
+public final class NInt8: K0, Num {
   public typealias N = Int8
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -26,7 +28,7 @@ public class NInt8: Num {
 }
 
 public let nint16 = NInt16()
-public class NInt16: Num {
+public final class NInt16: K0, Num {
   public typealias N = Int16
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -35,7 +37,7 @@ public class NInt16: Num {
 }
 
 public let nint32 = NInt32()
-public class NInt32: Num {
+public final class NInt32: K0, Num {
   public typealias N = Int32
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -44,7 +46,7 @@ public class NInt32: Num {
 }
 
 public let nint64 = NInt64()
-public class NInt64: Num {
+public final class NInt64: K0, Num {
   public typealias N = Int64
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -53,7 +55,7 @@ public class NInt64: Num {
 }
 
 public let nuint8 = NUInt8()
-public class NUInt8: Num {
+public final class NUInt8: K0, Num {
   public typealias N = UInt8
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -62,7 +64,7 @@ public class NUInt8: Num {
 }
 
 public let nuint16 = NUInt16()
-public class NUInt16: Num {
+public final class NUInt16: K0, Num {
   public typealias N = UInt16
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -71,7 +73,7 @@ public class NUInt16: Num {
 }
 
 public let nuint32 = NUInt32()
-public class NUInt32: Num {
+public final class NUInt32: K0, Num {
   public typealias N = UInt32
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
@@ -80,7 +82,7 @@ public class NUInt32: Num {
 }
 
 public let nuint64 = NUInt64()
-public class NUInt64: Num {
+public final class NUInt64: K0, Num {
   public typealias N = UInt64
   public func zero() -> N { return 0 }
   public func succ(n: N) -> N { return n + 1 }
