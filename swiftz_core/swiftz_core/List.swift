@@ -114,15 +114,15 @@ extension List : ArrayLiteralConvertible {
   }
 }
 
-public class ListGenerator<A> : GeneratorType {
-  var l : Box<List<A>?>
+public final class ListGenerator<A> : GeneratorType {
+  var l : List<A>?
   public func next() -> A? {
-    var r = l.value?.head()
-    l = Box(self.l.value?.tail())
+    var r = l?.head()
+    l = self.l?.tail()
     return r
   }
   public init(_ l : List<A>) {
-    self.l = Box(l)
+    self.l = l
   }
 }
 

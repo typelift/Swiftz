@@ -48,21 +48,21 @@ extension NonEmptyList : ArrayLiteralConvertible {
 }
 
 public final class NonEmptyListGenerator<A> : K1<A>, GeneratorType {
-  var head: Box<A?>
-  var l: Box<List<A>?>
+  var head: A?
+  var l: List<A>?
   public func next() -> A? {
-    if let h = head.value {
-      head = Box(nil)
+    if let h = head {
+      head = nil
       return h
     } else {
-      var r = l.value?.head()
-      l = Box(self.l.value?.tail())
+      var r = l?.head()
+      l = self.l?.tail()
       return r
     }
   }
   public init(_ l : NonEmptyList<A>) {
-    head = Box(l.head.value)
-    self.l = Box(l.tail)
+    head = l.head.value
+    self.l = l.tail
   }
 }
 
