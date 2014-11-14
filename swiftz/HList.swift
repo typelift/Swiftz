@@ -23,11 +23,11 @@ import swiftz_core
 public final class HCons<H, T: HList> : HList {
   public typealias Head = H
   public typealias Tail = T
-  public let head: Box<H>
-  public let tail: Box<T>
+  public let head: H
+  public let tail: T
   public init(h: H, t: T) {
-    head = Box<H>(h)
-    tail = Box<T>(t)
+    head = h
+    tail = t
   }
 
   public class func isNil() -> Bool {

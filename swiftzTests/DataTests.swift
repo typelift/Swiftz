@@ -233,8 +233,8 @@ class DataTests: XCTestCase {
   func testHList() {
     typealias AList = HCons<Int, HCons<String, HNil>>
     let list: AList = HCons(h: 10, t: HCons(h: "banana", t: HNil()))
-    XCTAssert(list.head.value == 10)
-    XCTAssert(list.tail.value.head.value == "banana")
+    XCTAssert(list.head == 10)
+    XCTAssert(list.tail.head == "banana")
     XCTAssert(AList.length() == 2)
   }
 
