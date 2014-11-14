@@ -7,17 +7,17 @@
 //
 
 public protocol Dataable {
-  class func typeRep() -> Any.Type
-  class func fromRep(r: Data) -> Self?
-  func toRep() -> Data
+	class func typeRep() -> Any.Type
+	class func fromRep(r: Data) -> Self?
+	func toRep() -> Data
 }
 
 public struct Data {
-  public let con: Int
-  public let vals: [(String, Any)]
+	public let con: Int
+	public let vals: [(String, Any)]
 
-  public init(con: Int, vals: [(String, Any)]) {
-    self.con = con
-    self.vals = vals
-  }
+	public init(con: Int, vals: [(String, Any)]) {
+		self.con = con
+		self.vals = vals
+	}
 }

@@ -27,27 +27,27 @@ precedence 0
 }
 
 // "fmap" like
-infix operator  <^> {
+infix operator	<^> {
 associativity left
 }
 
 // "imap" like
-infix operator  <^^> {
+infix operator	<^^> {
 associativity left
 }
 
 // "contramap" like
-infix operator  <!> {
+infix operator	<!> {
 associativity left
 }
 
 // "ap" like
-infix operator  <*> {
+infix operator	<*> {
 associativity left
 }
 
 // "extend" like
-infix operator  ->> {
+infix operator	->> {
 associativity left
 }
 
