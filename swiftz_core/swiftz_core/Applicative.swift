@@ -7,8 +7,8 @@
 //
 
 public protocol Applicative : Functor {
-  typealias FA = F<A>
-  typealias FAB = F<A -> B>
+  typealias FA = K1<A>
+  typealias FAB = K1<A -> B>
   class func pure(a: A) -> FA
   func ap(f: FAB) -> FB
 }

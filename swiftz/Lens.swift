@@ -8,7 +8,7 @@
 
 import swiftz_core
 
-public class Lens<S, T, A, B> {
+public final class Lens<S, T, A, B> : K4<S, T, A, B> {
   public let run: S -> IxStore<A, B, T>
 
   public init(_ run: S -> IxStore<A, B, T>) {

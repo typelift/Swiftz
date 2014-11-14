@@ -6,11 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// Array extensions
-extension Array {
-
-}
-
+// MARK: Array extensions
 
 ///Array subscripting is bad and you should feel bad for using it.
 ///This is a safe alternative that eleminates out of bounds errors

@@ -7,17 +7,20 @@
 //
 
 import Darwin
+import swiftz_core
 
 // An unbound FIFO channel.
 // http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html
-public class Chan<A> {
+public final class Chan<A> : K1<A> {
   var stream: [A]
 
-  var mutex: UnsafeMutablePointer<pthread_mutex_t>
-  var cond: UnsafeMutablePointer<pthread_cond_t>
-  let matt: UnsafeMutablePointer<pthread_mutexattr_t>
+  var mutex: UnsafeMutablePointer<pthread_mutex_t> = nil
+  var cond: UnsafeMutablePointer<pthread_cond_t> = nil
+  let matt: UnsafeMutablePointer<pthread_mutexattr_t> = nil
 
-  public init() {
+  public override init() {
+    self.stream = []
+    super.init()
     var mattr:UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
     mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
     cond = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
