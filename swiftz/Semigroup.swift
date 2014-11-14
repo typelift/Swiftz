@@ -15,7 +15,7 @@ public func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: [M]) -> M {
   return (t.reduce(h) { s.op($0, y: $1) })
 }
 
-public class Min<A: Comparable>: Semigroup {
+public final class Min<A: Comparable>: Semigroup {
   public typealias M = A
 
   public init() {
@@ -31,7 +31,7 @@ public class Min<A: Comparable>: Semigroup {
   }
 }
 
-public class Max<A: Comparable>: Semigroup {
+public final class Max<A: Comparable>: Semigroup {
   public typealias M = A
 
   public func op(x: M, y: M) -> M {
@@ -43,7 +43,7 @@ public class Max<A: Comparable>: Semigroup {
   }
 }
 
-public class First<A: Comparable>: Semigroup {
+public final class First<A: Comparable>: Semigroup {
   public typealias M = A
 
   public func op(x: M, y: M) -> M {
@@ -51,7 +51,7 @@ public class First<A: Comparable>: Semigroup {
   }
 }
 
-public class Last<A: Comparable>: Semigroup {
+public final class Last<A: Comparable>: Semigroup {
   public typealias M = A
 
   public func op(x: M, y: M) -> M {
