@@ -114,7 +114,7 @@ extension List : ArrayLiteralConvertible {
   }
 }
 
-public class ListGenerator<A> : GeneratorType {
+public final class ListGenerator<A> : GeneratorType {
   var l : List<A>?
   public func next() -> A? {
     var r = l?.head()
