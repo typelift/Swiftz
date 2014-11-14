@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import class Foundation.NSError
 
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.

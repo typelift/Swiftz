@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import class Foundation.NSError
 
 /// The Either type represents values with two possibilities: a value of type Either<A, B> is either Left<A> or Right<B>.
 ///
