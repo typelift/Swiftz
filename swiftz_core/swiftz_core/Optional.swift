@@ -8,7 +8,7 @@
 
 /// Applicative `pure` function, lifts a value into an Optional.
 public func pure<A>(a: A) -> A? {
-		return .Some(a)
+	return .Some(a)
 }
 
 /// Functor `fmap`. If the Optional is None, ignores the function and returns None.

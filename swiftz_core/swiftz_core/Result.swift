@@ -25,8 +25,8 @@ public enum Result<V> {
 	/// Converts a Result to a more general Either type.
 	public func toEither() -> Either<NSError, V> {
 		switch self {
-		case let Error(e): return .Left(Box(e))
-		case let Value(v): return Either.Right(Box(v.value))
+			case let Error(e): return .Left(Box(e))
+			case let Value(v): return Either.Right(Box(v.value))
 		}
 	}
 
@@ -35,8 +35,8 @@ public enum Result<V> {
 	/// the value in Value and returns that value.
 	public func fold<B>(value: B, f: V -> B) -> B {
 		switch self {
-		case Error(_): return value
-		case let Value(v): return f(v.value)
+			case Error(_): return value
+			case let Value(v): return f(v.value)
 		}
 	}
 	
@@ -73,7 +73,7 @@ public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 
 /// Applicative `pure` function, lifts a value into a Value.
 public func pure<V>(a: V) -> Result<V> {
-		return .Value(Box(a))
+	return .Value(Box(a))
 }
 
 /// Functor `fmap`. If the Result is Error, ignores the function and returns the Error.
@@ -81,8 +81,8 @@ public func pure<V>(a: V) -> Result<V> {
 /// in a new Value.
 public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
 	switch a {
-	case let .Error(l): return .Error(l)
-	case let .Value(r): return Result.Value(Box(f(r.value)))
+		case let .Error(l): return .Error(l)
+		case let .Value(r): return Result.Value(Box(f(r.value)))
 	}
 }
 
@@ -92,9 +92,9 @@ public func <^><VA, VB>(f: VA -> VB, a: Result<VA>) -> Result<VB> {
 /// And a Value is returned.
 public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
 	switch (a, f) {
-	case let (.Error(l), _): return .Error(l)
-	case let (.Value(r), .Error(m)): return .Error(m)
-	case let (.Value(r), .Value(g)): return Result<VB>.Value(Box(g.value(r.value)))
+		case let (.Error(l), _): return .Error(l)
+		case let (.Value(r), .Error(m)): return .Error(m)
+		case let (.Value(r), .Value(g)): return Result<VB>.Value(Box(g.value(r.value)))
 	}
 }
 
@@ -103,7 +103,7 @@ public func <*><VA, VB>(f: Result<VA -> VB>, a: Result<VA>) -> Result<VB> {
 /// with the Error value from `a` is returned.
 public func >>-<VA, VB>(a: Result<VA>, f: VA -> Result<VB>) -> Result<VB> {
 	switch a {
-	case let .Error(l): return .Error(l)
-	case let .Value(r): return f(r.value)
+		case let .Error(l): return .Error(l)
+		case let .Value(r): return f(r.value)
 	}
 }

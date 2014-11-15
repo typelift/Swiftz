@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// Bounded types are types that have definable upper and lower limits.	 For types like Int and
+/// Bounded types are types that have definable upper and lower limits.  For types like Int and
 /// Float, their limits are the minimum and maximum possible values representable in their bit-
-/// width.	While the definition of a "limit" is flexible, generally custom types that wish to
+/// width.  While the definition of a "limit" is flexible, generally custom types that wish to
 /// appear bounded must come with some kind of supremum or infimum.
 public protocol Bounded {
 	class func minBound() -> Self

@@ -37,8 +37,8 @@ public struct EitherBF<A, B, C, D>: Bifunctor {
 
 	public func bimap(f: (A -> B), g: (C -> D)) -> Either<B, D> {
 		switch e {
-		case .Left(let bx): return Either.Left(Box<B>(f(bx.value)))
-		case .Right(let bx): return Either.Right(Box<D>(g(bx.value)))
+			case .Left(let bx): return Either.Left(Box<B>(f(bx.value)))
+			case .Right(let bx): return Either.Right(Box<D>(g(bx.value)))
 		}
 	}
 }

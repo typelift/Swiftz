@@ -73,17 +73,15 @@ public enum JSONValue: Printable {
 	public var description: String {
 		get {
 			switch self {
-			case .JSONNull(): return "JSONNull()"
-			case let .JSONBool(b): return "JSONBool(\(b))"
-			case let .JSONString(s): return "JSONString(\(s))"
-			case let .JSONNumber(n): return "JSONNumber(\(n))"
-			case let .JSONObject(o): return "JSONObject(\(o))"
-			case let .JSONArray(a): return "JSONArray(\(a))"
-
+				case .JSONNull(): return "JSONNull()"
+				case let .JSONBool(b): return "JSONBool(\(b))"
+				case let .JSONString(s): return "JSONString(\(s))"
+				case let .JSONNumber(n): return "JSONNumber(\(n))"
+				case let .JSONObject(o): return "JSONObject(\(o))"
+				case let .JSONArray(a): return "JSONArray(\(a))"
 			}
 		}
 	}
-
 }
 
 // you'll have more fun if you match tuples
@@ -148,8 +146,8 @@ public final class JDouble: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONNumber(n): return n
-		default: return Optional.None
+			case let .JSONNumber(n): return n
+			default: return Optional.None
 		}
 	}
 
@@ -163,8 +161,8 @@ public final class JInt: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONNumber(n): return Int(n)
-		default: return Optional.None
+			case let .JSONNumber(n): return Int(n)
+			default: return Optional.None
 		}
 	}
 
@@ -178,8 +176,8 @@ public final class JNumber: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONNumber(n): return NSNumber(double: n)
-		default: return Optional.None
+			case let .JSONNumber(n): return NSNumber(double: n)
+			default: return Optional.None
 		}
 	}
 
@@ -193,10 +191,10 @@ public final class JBool: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONBool(n): return n
-		case .JSONNumber(0): return false
-		case .JSONNumber(1): return true
-		default: return Optional.None
+			case let .JSONBool(n): return n
+			case .JSONNumber(0): return false
+			case .JSONNumber(1): return true
+			default: return Optional.None
 		}
 	}
 
@@ -210,8 +208,8 @@ public final class JString: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONString(n): return n
-		default: return Optional.None
+			case let .JSONString(n): return n
+			default: return Optional.None
 		}
 	}
 
@@ -227,8 +225,8 @@ public final class JNull: K0, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case .JSONNull(): return ()
-		default: return Optional.None
+			case .JSONNull(): return ()
+			default: return Optional.None
 		}
 	}
 
@@ -244,15 +242,15 @@ public final class JArrayFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecod
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONArray(xs):
-			let r = xs.map({ B.fromJSON($0) })
-			let rp = mapFlatten(r)
-			if r.count == rp.count {
-				return rp
-			} else {
-				return nil
-			}
-		default: return Optional.None
+			case let .JSONArray(xs):
+				let r = xs.map({ B.fromJSON($0) })
+				let rp = mapFlatten(r)
+				if r.count == rp.count {
+					return rp
+				} else {
+					return nil
+				}
+			default: return Optional.None
 		}
 	}
 }
@@ -270,15 +268,15 @@ public final class JArray<A, B: JSON where B.J == A>: K1<B>, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONArray(xs):
-			let r = xs.map({ B.fromJSON($0) })
-			let rp = mapFlatten(r)
-			if r.count == rp.count {
-				return rp
-			} else {
-				return nil
-			}
-		default: return Optional.None
+			case let .JSONArray(xs):
+				let r = xs.map({ B.fromJSON($0) })
+				let rp = mapFlatten(r)
+				if r.count == rp.count {
+					return rp
+				} else {
+					return nil
+				}
+			default: return Optional.None
 		}
 	}
 
@@ -293,10 +291,10 @@ public final class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSON
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
-			return (k, B.fromJSON(x)!)
-			})
-		default: return Optional.None
+			case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+				return (k, B.fromJSON(x)!)
+				})
+			default: return Optional.None
 		}
 	}
 }
@@ -307,7 +305,7 @@ public final class JDictionaryTo<A, B: JSONEncode where B.J == A>: K1<B>, JSONEn
 	public class func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
 			return (k, B.toJSON(x))
-			}))
+		}))
 	}
 }
 
@@ -316,16 +314,16 @@ public final class JDictionary<A, B: JSON where B.J == A>: K1<B>, JSON {
 
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
-			return (k, B.fromJSON(x)!)
-			})
-		default: return Optional.None
+			case let .JSONObject(xs): return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+				return (k, B.fromJSON(x)!)
+				})
+			default: return Optional.None
 		}
 	}
 
 	public class func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
 			return (k, B.toJSON(x))
-			}))
+		}))
 	}
 }

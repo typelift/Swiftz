@@ -75,7 +75,7 @@ extension NonEmptyList : SequenceType {
 extension NonEmptyList : Printable {
 	public var description : String {
 		var x = ", ".join(NonEmptyListF(l: self).fmap({ "\($0)" }))
-			return "[\(x)]"
+		return "[\(x)]"
 	}
 }
 

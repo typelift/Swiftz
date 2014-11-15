@@ -139,7 +139,7 @@ public struct Set<A: Hashable> : SequenceType {
 		return Set<B>(array: array)
 	}
 
-	public func generate() -> SetGenerator<A>	 {
+	public func generate() -> SetGenerator<A> {
 		let items = self.array
 		return SetGenerator(items: items[0..<items.count])
 	}
@@ -217,8 +217,7 @@ func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
 
 // Can't do applicative on a Set currently
 // func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
-//
-//  	return Set<B>()
+//	return Set<B>()
 //}
 
 func >>-<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {

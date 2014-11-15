@@ -93,8 +93,8 @@ public func find<T>(list:[T], f:(T -> Bool)) -> T? {
 ///splitAt(-1, [1,2,3]) == ([],[1,2,3])
 public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
 	switch index {
-	case 0..<list.count: return (Array(list[0..<index]), Array(list[index..<list.count]))
-	case _:return ([T](), [T]())
+		case 0..<list.count: return (Array(list[0..<index]), Array(list[index..<list.count]))
+		case _:return ([T](), [T]())
 	}
 }
 
@@ -170,7 +170,7 @@ public func mapFlatten<A>(xs: [A?]) -> [A] {
 		} else {
 			return n
 		}
-		})
+	})
 	for c in xs {
 		if let x = c {
 			w.append(x)
@@ -220,16 +220,14 @@ public func all<A>(list: [A], f: (A -> Bool)) -> Bool {
 
 ///Concatenate a list of lists.
 public func concat<A>(list: [[A]]) -> [A] {
-	return list.reduce([]) {
-		(start, l) -> [A] in
+	return list.reduce([]) { (start, l) -> [A] in
 		return concat(lhs: start)(rhs: l)
 	}
 }
 
 ///Map a function over a list and concatenate the results.
 public func concatMap<A,B>(list: [A], f: A -> [B]) -> [B] {
-	return list.reduce([]) {
-		(start, l) -> [B] in
+	return list.reduce([]) { (start, l) -> [B] in
 		return concat(lhs: start)(rhs: f(l))
 	}
 }
@@ -255,13 +253,13 @@ public func intercalate<A>(list: [A], nested:[[A]]) -> [A] {
 ///span(list,p) is equivalent to (takeWhile(list,p), dropWhile(list,p))
 public func span<A>(list: [A], p: (A -> Bool)) -> ([A], [A]) {
 	switch list.count {
-	case 0: return (list, list)
-	case 1...list.count where p(list.first!):
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p)
-		let f = concat(lhs: [first])(rhs: ys)
-		return (f,zs)
-	default:	return ([], list)
+		case 0: return (list, list)
+		case 1...list.count where p(list.first!):
+			let first = list.first!
+			let (ys,zs) = span(Array(list[1..<list.count]), p)
+			let f = concat(lhs: [first])(rhs: ys)
+			return (f,zs)
+		default: return ([], list)
 	}
 }
 
@@ -269,13 +267,13 @@ public func span<A>(list: [A], p: (A -> Bool)) -> ([A], [A]) {
 ///own predicate function.
 public func groupBy<A>(list:[ A], p: (A -> A -> Bool)) -> [[A]] {
 	switch list.count {
-	case 0: return []
-	case 1...list.count:
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p(first))
-		let x = [concat(lhs: [first])(rhs: ys)]
-		return concat(lhs: x)(rhs: groupBy(zs, p))
-	default: return []
+		case 0: return []
+		case 1...list.count:
+			let first = list.first!
+			let (ys,zs) = span(Array(list[1..<list.count]), p(first))
+			let x = [concat(lhs: [first])(rhs: ys)]
+			return concat(lhs: x)(rhs: groupBy(zs, p))
+		default: return []
 	}
 }
 
@@ -297,10 +295,10 @@ public func group<A:Equatable>(list: [A]) -> [[A]] {
 ///dropWhile([1,2,3]){$0 < 0} == [1,2,3]
 public func dropWhile<A>(list: [A], p: A -> Bool) -> [A] {
 	switch list.count {
-	case 0: return list
-	case 1...list.count where p(list.first!):
-		return dropWhile(Array(list[1..<list.count]), p)
-	default: return list
+		case 0: return list
+		case 1...list.count where p(list.first!):
+			return dropWhile(Array(list[1..<list.count]), p)
+		default: return list
 	}
 }
 
@@ -313,9 +311,9 @@ public func dropWhile<A>(list: [A], p: A -> Bool) -> [A] {
 ///takeWhile([1,2,3]){$0 < 0} == []
 public func takeWhile<A>(list: [A], p: A -> Bool) -> [A] {
 	switch list.count {
-	case 0: return list
-	case 1...list.count where p(list.first!):
-		return concat(lhs: [list.first!])(rhs: takeWhile(Array(list[1..<list.count]), p))
-	default: return []
+		case 0: return list
+		case 1...list.count where p(list.first!):
+			return concat(lhs: [list.first!])(rhs: takeWhile(Array(list[1..<list.count]), p))
+		default: return []
 	}
 }

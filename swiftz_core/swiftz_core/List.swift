@@ -27,28 +27,28 @@ public enum List<A> {
 	/// Returns the first element in the list, or None, if the list is empty.
 	public func head() -> A? {
 		switch self {
-		case .Nil:
-			return .None
-		case let .Cons(head, _):
-			return head()
+			case .Nil:
+				return .None
+			case let .Cons(head, _):
+				return head()
 		}
 	}
 
 	/// Returns the tail of the list, or None if the list is Empty.
 	public func tail() -> List<A>? {
 		switch self {
-		case .Nil:
-			return .None
-		case let .Cons(_, tail):
-			return tail.value
+			case .Nil:
+				return .None
+			case let .Cons(_, tail):
+				return tail.value
 		}
 	}
 
 	/// Returns the length of the list.
 	public func length() -> Int {
 		switch self {
-		case .Nil: return 0
-		case let .Cons(_, xs): return 1 + xs.value.length()
+			case .Nil: return 0
+			case let .Cons(_, xs): return 1 + xs.value.length()
 		}
 	}
 
@@ -86,8 +86,8 @@ public enum List<A> {
 	}
 }
 
-	public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
-		switch (lhs, rhs) {
+public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+	switch (lhs, rhs) {
 		case (.Nil, .Nil):
 			return true
 		case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
@@ -151,10 +151,10 @@ public struct ListF<A, B> : Functor {
 	// is recursion ok here?
 	public func fmap(f : (A -> B)) -> List<B> {
 		switch l {
-		case .Nil:
-			return List()
-		case let .Cons(head, tail):
-			return List(f(head()), ListF(l: tail.value).fmap(f))
+			case .Nil:
+				return List()
+			case let .Cons(head, tail):
+				return List(f(head()), ListF(l: tail.value).fmap(f))
 		}
 	}
 }
