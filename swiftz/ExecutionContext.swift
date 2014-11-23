@@ -9,5 +9,5 @@
 // Implement this protocol to be an execution context.
 // for example, a lightweight threading runtime...
 public protocol ExecutionContext {
-  func submit<A>(x: Future<A>, work: () -> A)
+	func submit<A>(x: Future<A>, work: () -> A)
 }
