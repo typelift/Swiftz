@@ -15,7 +15,7 @@ public protocol Bifunctor {
 	typealias PAD = K2<A, D>
 	typealias PBC = K2<B, C>
 	typealias PBD = K2<B, D>
-
+	
 	func bimap(f: (A -> B), g: (C -> D)) -> PBD
 }
 
@@ -30,26 +30,28 @@ public protocol Bifunctor {
 
 public struct EitherBF<A, B, C, D>: Bifunctor {
 	public let e: Either<A, C>
-
+	
 	public init(_ e: Either<A, C>) {
 		self.e = e
 	}
-
+	
 	public func bimap(f: (A -> B), g: (C -> D)) -> Either<B, D> {
 		switch e {
-			case .Left(let bx): return Either.Left(Box<B>(f(bx.value)))
-			case .Right(let bx): return Either.Right(Box<D>(g(bx.value)))
+		case .Left(let bx): 
+			return Either.Left(Box<B>(f(bx.value)))
+		case .Right(let bx): 
+			return Either.Right(Box<D>(g(bx.value)))
 		}
 	}
 }
 
 public struct TupleBF<A, B, C, D>: Bifunctor {
 	public let t: (A, C)
-
+	
 	public init(_ t: (A, C)) {
 		self.t = t
 	}
-
+	
 	public func bimap(f: (A -> B), g: (C -> D)) -> (B, D) {
 		return (f(t.0), g(t.1))
 	}

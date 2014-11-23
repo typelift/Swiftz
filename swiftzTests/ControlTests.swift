@@ -32,12 +32,12 @@ class ControlTests: XCTestCase {
 			case let (l, r): 
 				return (l + r)
 			}
-			}, x, y) == 3, "curry")
+		}, x, y) == 3, "curry")
 		XCTAssert(uncurry({ (a: Int) -> Int -> Int in
 			return ({ (b: Int) -> Int in
 				return (a + b)
 			})
-			}, (x, y)) == 3, "uncurry")
+		}, (x, y)) == 3, "uncurry")
 		
 		// thrush
 		XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")

@@ -237,8 +237,10 @@ public final class JString: K0, JSON {
 	
 	public class func fromJSON(x: JSONValue) -> J? {
 		switch x {
-		case let .JSONString(n): return n
-		default: return Optional.None
+		case let .JSONString(n): 
+			return n
+		default: 
+			return Optional.None
 		}
 	}
 	

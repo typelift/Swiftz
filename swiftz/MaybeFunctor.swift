@@ -30,10 +30,10 @@ public final class Maybe<A>: K1<A> {
 
 	public func isJust() -> Bool {
 		switch value {
-			case .Some(_): 
-				return true
-			case .None: 
-				return false
+		case .Some(_): 
+			return true
+		case .None: 
+			return false
 		}
 	}
 

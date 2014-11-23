@@ -16,33 +16,33 @@ import class Foundation.NSError
 public enum Either<L, R> {
 	case Left(Box<L>)
 	case Right(Box<R>)
-		
+	
 	/// Converts a Either to a Result, which is a more specialized type that
 	/// contains an NSError or a value.
 	public func toResult(ev: L -> NSError) -> Result<R> {
 		return either({ e in Result.Error(ev(e)) }, { v in .Value(Box(v)) });
 	}
-
-		
+	
+	
 	/// Much like the ?? operator for Optional types, takes a value and a function,
 	/// and if the Either is Left, returns the value, otherwise maps the function over
 	/// the value in Right and returns that value.
 	public func fold<B>(value: B, f: R -> B) -> B {
 		return either({ _ in value }, { r in f(r) });
 	}
-
+	
 	/// Named function for `>>-`. If the Either is Left, simply returns
 	/// a New Left with the value of the receiver. If Right, applies the function `f`
 	/// and returns the result.
 	public func flatMap<S>(f: R -> Either<L, S>) -> Either<L, S> {
 		return self >>- f
 	}
-
+	
 	/// Creates a Left with the given value.
 	public static func left(l: L) -> Either<L, R> {
 		return .Left(Box(l))
 	}
-
+	
 	/// Creates a Right with the given value.
 	public static func right(r: R) -> Either<L, R> {
 		return .Right(Box(r))
@@ -52,8 +52,10 @@ public enum Either<L, R> {
 	/// if it is Right(b), apply the second function to b.
 	public func either<A>(onL: L -> A, onR: R -> A) -> A {
 		switch self {
-			case let Left(e): return onL(e.value)
-			case let Right(e): return onR(e.value)
+		case let Left(e): 
+			return onL(e.value)
+		case let Right(e): 
+			return onR(e.value)
 		}
 	}
 }
@@ -61,9 +63,12 @@ public enum Either<L, R> {
 // Equatable
 public func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
 	switch (lhs, rhs) {
-		case let (.Left(l), .Left(r)) where l.value == r.value: return true
-		case let (.Right(l), .Right(r)) where l.value == r.value: return true
-		default: return false
+	case let (.Left(l), .Left(r)) where l.value == r.value: 
+		return true
+	case let (.Right(l), .Right(r)) where l.value == r.value: 
+		return true
+	default: 
+		return false
 	}
 }
 
@@ -81,8 +86,10 @@ public func pure<L, R>(a: R) -> Either<L, R> {
 /// in a new Right.
 public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
 	switch a {
-		case let .Left(l): return .Left(l)
-		case let .Right(r): return Either<L, RB>.Right(Box(f(r.value)))
+	case let .Left(l): 
+		return .Left(l)
+	case let .Right(r): 
+		return Either<L, RB>.Right(Box(f(r.value)))
 	}
 }
 
@@ -91,13 +98,13 @@ public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
 /// same value. Otherwise the function taken from Right(f) is applied to the value from Right(a)
 /// And a Right is returned.
 public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
-	switch a {
-		case let .Left(l): return .Left(l)
-		case let .Right(r):
-			switch f {
-				case let .Left(m): return .Left(m)
-				case let .Right(g): return Either<L, RB>.Right(Box(g.value(r.value)))
-			}
+	switch (a, f) {
+	case let (.Left(l), _): 
+		return .Left(l)
+	case let (.Right(r), .Left(m)):
+		return .Left(m)
+	case let (.Right(r), .Right(g)):
+		return Either<L, RB>.Right(Box(g.value(r.value)))
 	}
 }
 
@@ -106,7 +113,9 @@ public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L
 /// with the Left value from `a` is returned.
 public func >>-<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
 	switch a {
-		case let .Left(l): return .Left(l)
-		case let .Right(r): return f(r.value)
+	case let .Left(l): 
+		return .Left(l)
+	case let .Right(r): 
+		return f(r.value)
 	}
 }
