@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import swiftz_core
+
 /// A recursive List, with the same basic usage as Array.
 /// This is not currently possible with a bit of misdirection, hence the Box class.
 public enum List<A> {
