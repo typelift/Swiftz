@@ -7,7 +7,7 @@
 //
 
 public protocol Comonad : Functor {
-  typealias FAB = K1<A> -> B
-  func extract() -> A
-  func extend(fab: FAB) -> K1<B>
+	typealias FAB = K1<A> -> B
+	func extract() -> A
+	func extend(fab: FAB) -> K1<B>
 }
