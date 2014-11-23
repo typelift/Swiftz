@@ -58,13 +58,11 @@ public final class Chan<A> : K1<A> {
 
 }
 
-infix operator <- {}
 public func <-<A>(chan: Chan<A>, value: A) -> Void
 {
 	chan.write(value)
 }
 
-prefix operator <- {}
 public prefix func <-<A>(chan: Chan<A>) -> A
 {
 	return chan.read()
