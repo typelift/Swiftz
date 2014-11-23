@@ -11,7 +11,8 @@ public func map<K, V, T, U>(#dict : Dictionary<K, V>) -> ((K, V) -> (T, U)) -> D
 		var d = Dictionary<T, U>(minimumCapacity: dict.count)
 		for (key, value) in dict {
 			switch transform(key, value) {
-			case let (k, v): d.updateValue(v, forKey: k)
+			case let (k, v): 
+				d.updateValue(v, forKey: k)
 			}
 		}
 		return d
@@ -37,8 +38,10 @@ public func reduce<K, V, A>(#dict : Dictionary<K, V>) -> A -> ((key:K, val:V, st
 			reduced = reduce(key:k, val:v, start:start)
 		}
 		switch reduced {
-		case let .Some(a): return a
-		case .None: return start
+		case let .Some(a): 
+			return a
+		case .None: 
+			return start
 		}
 	} }
 }

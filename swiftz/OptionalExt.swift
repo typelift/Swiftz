@@ -13,8 +13,10 @@ public func flatMap<A, B>(m : Optional<A>) -> (A -> Optional<B>) -> Optional<B> 
 public func maybe<A, B>(m : Optional<A>) -> B -> (A -> B) -> B {
 	return { z in { f in
 		switch m {
-		case .None: return z
-		case let .Some(x): return f(x)
+			case .None: 
+				return z
+			case let .Some(x): 
+				return f(x)
 		}
 	} }
 }
@@ -23,8 +25,10 @@ public func maybe<A, B>(m : Optional<A>) -> B -> (A -> B) -> B {
 public func getOrElse<T>(m : Optional<T>) -> T -> T {
 	return { def in
 		switch m {
-		case .None: return def
-		case let .Some(x): return x
+			case .None: 
+				return def
+			case let .Some(x): 
+				return x
 		}
 	}
 }

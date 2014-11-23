@@ -13,7 +13,8 @@ extension NSDictionary {
 		var d = Dictionary<K, V>()
 		for (key : AnyObject, value : AnyObject) in self {
 			switch transform(key, value) {
-				case let (k, v): d.updateValue(v, forKey: k)
+				case let (k, v): 
+					d.updateValue(v, forKey: k)
 			}
 		}
 		return d
