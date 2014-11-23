@@ -87,7 +87,7 @@ class ImArrayTests: XCTestCase {
 	func testConcatMap() {
 		let array = [1,2,3,4,5,6,7,8,9]
 		
-		XCTAssert(concatMap(array) {a in [a + 1]} == [2,3,4,5,6,7,8,9,10], "Should be equal")
+		XCTAssert(concatMap(array) { a in [a + 1] } == [2,3,4,5,6,7,8,9,10], "Should be equal")
 	}
 	
 	
@@ -100,7 +100,7 @@ class ImArrayTests: XCTestCase {
 	func testSpan() {
 		let withArray = [1,2,3,4,1,2,3,4]
 		
-		let tuple = span(withArray, {a in {b in b < a}}(3))
+		let tuple = span(withArray, { a in 3 < a })
 		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4,1,2,3,4], "Should be equal")
 	}
 	
