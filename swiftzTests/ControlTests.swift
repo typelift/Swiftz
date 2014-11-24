@@ -27,23 +27,18 @@ class ControlTests: XCTestCase {
 		XCTAssert(identity(x) == x, "identity")
 		
 		// curry
-		XCTAssert(curry({ (ab: (Int, Int)) -> Int in 
-			switch ab {
-			case let (l, r): 
-				return (l + r)
-			}
-		}, x, y) == 3, "curry")
+		XCTAssert(curry(+, x, y) == 3, "curry")
 		XCTAssert(uncurry({ (a: Int) -> Int -> Int in
-			return ({ (b: Int) -> Int in
+			return ({ b in
 				return (a + b)
 			})
 		}, (x, y)) == 3, "uncurry")
 		
 		// thrush
-		XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")
-		//    XCTAssert((x <| {(a: Int) -> String in return a.description}) == 1, "unsafe tap")
+		XCTAssert((x |> { a in return a.description }) == "1", "thrush")
+		XCTAssert(({ a in return a.description } <| x) == "1", "tap")
 		
-		let x2 = 1 |> ({$0.advancedBy($0)}) |> ({$0.advancedBy($0)}) |> ({$0 * $0})
+		let x2 = 1 |> { $0.advancedBy($0) } |> { $0.advancedBy($0) } |> { $0 * $0 }
 		XCTAssertTrue(x2 == 16, "Should equal 16")
 		
 		// flip
@@ -52,7 +47,8 @@ class ControlTests: XCTestCase {
 		XCTAssert(flip({ $0/ })(1)(0) == 0, "flip")
 		
 		// function composition
-		let composed2 = {(num:Int) in String(num) + String(1)} • {$0 + 1} • {$0 + 1} • {$0 + 1}
+		let addThree = +1 • +1 • +1
+		let composed2 : Int -> String = { num in String(num) + String(1) } • addThree
 		XCTAssert(composed2(0) == "31", "Should be 31")
 	}
 	
@@ -62,10 +58,10 @@ class ControlTests: XCTestCase {
 		let y = Optional<Int>.None
 		XCTAssert((+1 <^> x) == 1, "optional map some")
 		XCTAssert((+1 <^> y) == .None, "optional map none")
+				
+		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "apply some")
 		
-		XCTAssert((Optional.Some(+1) <*> .Some(1)) == 2, "apply some")
-		
-		XCTAssert((x >>- { Optional.Some($0 + 1) }) == .Some(1), "bind some")
+		XCTAssert((x >>- { .Some($0 + 1) }) == .Some(1), "bind some")
 		
 		XCTAssert(pure(1) == .Some(1), "pure some")
 	}
@@ -77,7 +73,7 @@ class ControlTests: XCTestCase {
 		XCTAssert(incedXs == [2, 3, 4], "array fmap")
 		XCTAssert(xs == [1, 2, 3], "fmap isn't destructive")
 		
-		XCTAssert((Optional.Some(+1) <*> .Some(1)) == 2, "array apply")
+		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "array apply")
 		
 		func fs(x: Int) -> [Int] {
 			return [x, x+1, x+2]

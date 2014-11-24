@@ -11,15 +11,6 @@ import swiftz
 import swiftz_core
 
 class DataTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testNum() {
 		// TODO: test num
 	}

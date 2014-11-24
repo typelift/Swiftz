@@ -9,18 +9,6 @@
 import XCTest
 import swiftz
 class SetTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
-	}
-	
-	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-		super.tearDown()
-	}
-	
-	
 	func testInit() {
 		let set = Set(array:[1,2,3,4,4,4,5,5,5])
 		XCTAssert(set.count == 5, "Should be 5 items")
