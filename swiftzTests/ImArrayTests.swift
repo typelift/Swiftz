@@ -100,7 +100,7 @@ class ImArrayTests: XCTestCase {
 	func testSpan() {
 		let withArray = [1,2,3,4,1,2,3,4]
 		
-		let tuple = span(withArray, { a in 3 < a })
+		let tuple = span(withArray, { a in a < 3 })
 		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4,1,2,3,4], "Should be equal")
 	}
 	
