@@ -7,6 +7,7 @@
 //
 
 import class Foundation.NSError
+import swiftz_core
 
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.
@@ -63,6 +64,13 @@ public enum Result<V> {
 }
 
 /// MARK: Function Constructors
+
+/// Infix 1-ary from
+public func !!<A, B>(fn : (A, NSErrorPointer) -> B, a : A) -> Result<B> {
+	var err : NSError? = nil
+	let b = fn(a, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(b))
+}
 
 /// Takes a 1-ary function that can potentially raise an error and constructs a Result depending on
 /// whether the error pointer has been set.

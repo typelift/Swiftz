@@ -138,6 +138,9 @@ class DataTests: XCTestCase {
 		let e = NSError(domain: "TestErrorDomain", code: -1, userInfo: nil)
 		XCTAssertTrue(from(throwableFunction)(-1) == Result.error(e), "")
 		XCTAssertTrue(from(throwableFunction)(1) == Result.value("1"), "")
+		
+		XCTAssertTrue((throwableFunction !! -1) == Result.error(e), "")
+		XCTAssertTrue((throwableFunction !! 1) == Result.value("1"), "")
 	}
 	
 	func testEitherResult() {
