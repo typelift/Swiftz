@@ -20,14 +20,12 @@ class ControlTests: XCTestCase {
 		// curry
 		XCTAssert(curry(+, x, y) == 3, "curry")
 		XCTAssert(uncurry({ (a: Int) -> Int -> Int in
-			return ({ b in
-				return (a + b)
-			})
+			return { b in (a + b) }
 		}, (x, y)) == 3, "uncurry")
 		
 		// thrush
-		XCTAssert((x |> { a in return a.description }) == "1", "thrush")
-		XCTAssert(({ a in return a.description } <| x) == "1", "tap")
+		XCTAssert((x |> { a in a.description }) == "1", "thrush")
+		XCTAssert(({ a in a.description } <| x) == "1", "tap")
 		
 		let x2 = 1 |> { $0.advancedBy($0) } |> { $0.advancedBy($0) } |> { $0 * $0 }
 		XCTAssertTrue(x2 == 16, "Should equal 16")
@@ -52,7 +50,7 @@ class ControlTests: XCTestCase {
 				
 		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "apply some")
 		
-		XCTAssert((x >>- { .Some($0 + 1) }) == .Some(1), "bind some")
+		XCTAssert((x >>- (pure • (+1))) == Optional<Int>.Some(1), "bind some")
 		
 		XCTAssert(pure(1) == .Some(1), "pure some")
 	}
@@ -72,7 +70,7 @@ class ControlTests: XCTestCase {
 		let rs = xs >>- fs
 		XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5], "array bind")
 		
-		XCTAssert((pure(1) as [Int]) == [1], "array pure")
+		XCTAssert(pure(1) == [1], "array pure")
 	}
 	
 	func testLens() {
