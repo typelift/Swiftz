@@ -62,7 +62,60 @@ public enum Result<V> {
 	}
 }
 
-// Equatable
+/// MARK: Function Constructors
+
+/// Takes a 1-ary function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A, B>(fn : (A, NSErrorPointer) -> B) -> A -> Result<B> {
+	return { a in 
+		var err : NSError? = nil
+		let b = fn(a, &err)
+		return (err != nil) ? .Error(err!) : .Value(Box(b))
+	}
+}
+
+/// Takes a 2-ary function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A, B, C>(fn : (A, B, NSErrorPointer) -> C) -> A -> B -> Result<C> {
+	return { a in { b in
+		var err : NSError? = nil
+		let c = fn(a, b, &err)
+		return (err != nil) ? .Error(err!) : .Value(Box(c))
+	} }
+}
+
+/// Takes a 3-ary function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A, B, C, D>(fn : (A, B, C, NSErrorPointer) -> D) -> A -> B -> C -> Result<D> {
+	return { a in { b in { c in
+		var err : NSError? = nil
+		let d = fn(a, b, c, &err)
+		return (err != nil) ? .Error(err!) : .Value(Box(d))
+	} } }
+}
+
+/// Takes a 4-ary function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A, B, C, D, E>(fn : (A, B, C, D, NSErrorPointer) -> E) -> A -> B -> C -> D -> Result<E> {
+	return { a in { b in { c in { d in
+		var err : NSError? = nil
+		let e = fn(a, b, c, d, &err)
+		return (err != nil) ? .Error(err!) : .Value(Box(e))
+	} } } }
+}
+
+/// Takes a 5-ary function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A, B, C, D, E, F>(fn : (A, B, C, D, E, NSErrorPointer) -> F) -> A -> B -> C -> D -> E -> Result<F> {
+	return { a in { b in { c in { d in { e in
+		var err : NSError? = nil
+		let f = fn(a, b, c, d, e, &err)
+		return (err != nil) ? .Error(err!) : .Value(Box(f))
+	} } } } }
+}
+
+/// MARK: Equatable
+
 public func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	switch (lhs, rhs) {
 	case let (.Error(l), .Error(r)) where l == r: 
@@ -77,6 +130,8 @@ public func ==<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	return !(lhs == rhs)
 }
+
+/// MARK: Functor, Applicative, Monad
 
 /// Applicative `pure` function, lifts a value into a Value.
 public func pure<V>(a: V) -> Result<V> {

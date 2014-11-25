@@ -127,6 +127,19 @@ class DataTests: XCTestCase {
 		XCTAssert(Result(nil, 1) == Result.value(1), "special Result cons value")
 	}
 	
+	func testResultFrom() {
+		func throwableFunction(x : Int, e : NSErrorPointer) -> String {
+			if x <= 0 {
+				e.memory = NSError(domain: "TestErrorDomain", code: -1, userInfo: nil)
+			}
+			return "\(x)"
+		}
+		
+		let e = NSError(domain: "TestErrorDomain", code: -1, userInfo: nil)
+		XCTAssertTrue(from(throwableFunction)(-1) == Result.error(e), "")
+		XCTAssertTrue(from(throwableFunction)(1) == Result.value("1"), "")
+	}
+	
 	func testEitherResult() {
 		// tests:
 		// - either -> result
