@@ -879,127 +879,63 @@ public postfix func +<T : Strideable>(lhs: T) -> T.Stride -> T {
 
 postfix operator - {}
 
-public prefix func ~(rhs: Int64) -> Int64 -> Int64 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: Int64) -> Int64 -> Int64 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: UInt8) -> UInt8 -> UInt8 {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: UInt8) -> UInt8 -> UInt8 {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: Int8) -> Int8 -> Int8 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: Int8) -> Int8 -> Int8 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: UInt32) -> UInt32 -> UInt32 {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: UInt32) -> UInt32 -> UInt32 {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: UInt16) -> UInt16 -> UInt16 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: UInt16) -> UInt16 -> UInt16 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~<T : _IntegerArithmeticType>(rhs: T) -> T -> T {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: Double) -> Double -> Double {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: Double) -> Double -> Double {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: Float) -> Float -> Float {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: Float) -> Float -> Float {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: Int) -> Int -> Int {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: Int) -> Int -> Int {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: Int16) -> Int16 -> Int16 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: Int16) -> Int16 -> Int16 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: Int32) -> Int32 -> Int32 {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: Int32) -> Int32 -> Int32 {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~(rhs: UInt64) -> UInt64 -> UInt64 {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -(lhs: UInt64) -> UInt64 -> UInt64 {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~(rhs: UInt) -> UInt -> UInt {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -(lhs: UInt) -> UInt -> UInt {
 	return { rhs in lhs - rhs }
 }
 
-public prefix func ~<T>(rhs: Int) -> UnsafePointer<T> -> UnsafePointer<T> {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -<T>(lhs: UnsafePointer<T>) -> Int -> UnsafePointer<T> {
-	return { rhs in lhs - rhs }
-}
-
-public prefix func ~<T>(lhs: UnsafePointer<T>) -> Int -> UnsafePointer<T> {
 	return { rhs in lhs - rhs }
 }
 
@@ -1007,24 +943,12 @@ public postfix func -<T>(rhs: Int) -> UnsafePointer<T> -> UnsafePointer<T> {
 	return { lhs in lhs - rhs }
 }
 
-public prefix func ~<T>(lhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer<T> {
-	return { rhs in lhs - rhs }
-}
-
 public postfix func -<T>(rhs: Int) -> UnsafeMutablePointer<T> -> UnsafeMutablePointer<T> {
-	return { lhs in lhs - rhs }
-}
-
-public prefix func ~<T>(rhs: Int) -> UnsafeMutablePointer<T> -> UnsafeMutablePointer<T> {
 	return { lhs in lhs - rhs }
 }
 
 public postfix func -<T>(lhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer<T> {
 	return { rhs in lhs - rhs }
-}
-
-public prefix func ~<T : Strideable>(rhs: T.Stride) -> T -> T {
-	return { lhs in lhs - rhs }
 }
 
 public postfix func -<T : Strideable>(lhs: T) -> T.Stride -> T {
@@ -1145,4 +1069,3 @@ public prefix func /(rhs: UInt) -> UInt -> UInt {
 public postfix func /(lhs: UInt) -> UInt -> UInt {
 	return { rhs in lhs / rhs }
 }
-
