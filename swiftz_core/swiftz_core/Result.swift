@@ -8,7 +8,6 @@
 
 import class Foundation.NSError
 import typealias Foundation.NSErrorPointer
-import swiftz_core
 
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.
