@@ -483,7 +483,6 @@ public postfix func |(lhs: UInt32) -> UInt32 -> UInt32 {
 }
 
 prefix operator ?? {}
-postfix operator ?? {}
 
 public prefix func ??<T>(defaultValue: T) -> T? -> T {
 	return { optional in optional ?? defaultValue }
@@ -878,7 +877,6 @@ public postfix func +<T : Strideable>(lhs: T) -> T.Stride -> T {
 	return { rhs in lhs + rhs }
 }
 
-prefix operator - {}
 postfix operator - {}
 
 public prefix func ~(rhs: Int64) -> Int64 -> Int64 {

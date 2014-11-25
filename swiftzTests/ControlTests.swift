@@ -11,15 +11,6 @@ import swiftz
 import swiftz_core
 
 class ControlTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testBase() {
 		let x = 1
 		let y = 2
