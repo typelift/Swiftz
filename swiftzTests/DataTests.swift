@@ -144,6 +144,8 @@ class DataTests: XCTestCase {
 		let this = Those<String, Int>.this("String")
 		let that = Those<String, Int>.that(1)
 		let both = Those<String, Int>.these("String", r: 1)
+		
+		XCTAssert((this.isThis() && that.isThat() && both.isThese()) == true, "")
 		XCTAssert(this.toTuple("String", r: 1) == that.toTuple("String", r: 1), "")
 		
 		XCTAssert(both.bimap(identity, g: identity) == both, "")

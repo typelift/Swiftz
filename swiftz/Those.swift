@@ -25,6 +25,33 @@ public enum Those<L, R> {
 		return .These(Box(l), Box(r))
 	}
 	
+	public func isThis() -> Bool {
+		switch self {
+		case .This(_):
+			return true
+		default:
+			return false
+		}
+	}
+	
+	public func isThat() -> Bool {
+		switch self {
+		case .That(_):
+			return true
+		default:
+			return false
+		}
+	}
+	
+	public func isThese() -> Bool {
+		switch self {
+		case .These(_, _):
+			return true
+		default:
+			return false
+		}
+	}
+	
 	public func fold<C>(this: L -> C, that: R -> C, these: (L, R) -> C) -> C {
 		switch self {
 		case let This(x):
