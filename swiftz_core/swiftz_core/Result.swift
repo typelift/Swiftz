@@ -65,13 +65,6 @@ public enum Result<V> {
 
 /// MARK: Function Constructors
 
-/// Infix 1-ary from
-public func !!<A, B>(fn : (A, NSErrorPointer) -> B, a : A) -> Result<B> {
-	var err : NSError? = nil
-	let b = fn(a, &err)
-	return (err != nil) ? .Error(err!) : .Value(Box(b))
-}
-
 /// Takes a 1-ary function that can potentially raise an error and constructs a Result depending on
 /// whether the error pointer has been set.
 public func from<A, B>(fn : (A, NSErrorPointer) -> B) -> A -> Result<B> {
@@ -120,6 +113,41 @@ public func from<A, B, C, D, E, F>(fn : (A, B, C, D, E, NSErrorPointer) -> F) ->
 		let f = fn(a, b, c, d, e, &err)
 		return (err != nil) ? .Error(err!) : .Value(Box(f))
 	} } } } }
+}
+
+/// Infix 1-ary from
+public func !!<A, B>(fn : (A, NSErrorPointer) -> B, a : A) -> Result<B> {
+	var err : NSError? = nil
+	let b = fn(a, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(b))
+}
+
+/// Infix 2-ary from
+public func !!<A, B, C>(fn : (A, B, NSErrorPointer) -> C, t : (A, B)) -> Result<C> {
+	var err : NSError? = nil
+	let c = fn(t.0, t.1, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(c))
+}
+
+/// Infix 3-ary from
+public func !!<A, B, C, D>(fn : (A, B, C, NSErrorPointer) -> D, t : (A, B, C)) -> Result<D> {
+	var err : NSError? = nil
+	let d = fn(t.0, t.1, t.2, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(d))
+}
+
+/// Infix 4-ary from
+public func !!<A, B, C, D, E>(fn : (A, B, C, D, NSErrorPointer) -> E, t : (A, B, C, D)) -> Result<E> {
+	var err : NSError? = nil
+	let e = fn(t.0, t.1, t.2, t.3, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(e))
+}
+
+/// Infix 5-ary from
+public func !!<A, B, C, D, E, F>(fn : (A, B, C, D, E, NSErrorPointer) -> F, t : (A, B, C, D, E)) -> Result<F> {
+	var err : NSError? = nil
+	let f = fn(t.0, t.1, t.2, t.3, t.4, &err)
+	return (err != nil) ? .Error(err!) : .Value(Box(f))
 }
 
 /// MARK: Equatable
