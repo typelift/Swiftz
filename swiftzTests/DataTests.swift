@@ -140,6 +140,15 @@ class DataTests: XCTestCase {
 		let typeinfworkplz = Result.Value(Box(1)).toEither().toResult(identity)
 	}
 	
+	func testThose() {
+		let this = Those<String, Int>.this("String")
+		let that = Those<String, Int>.that(1)
+		let both = Those<String, Int>.these("String", r: 1)
+		XCTAssert(this.toTuple("String", r: 1) == that.toTuple("String", r: 1), "")
+		
+		XCTAssert(both.bimap(identity, g: identity) == both, "")
+	}
+
 	func testFunctor() {
 		// TODO: test functor in general?
 	}

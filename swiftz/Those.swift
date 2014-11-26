@@ -52,6 +52,24 @@ public func merge<L>(f : L -> L -> L) -> Those<L, L> -> L {
 	return { $0.fold(identity, that: identity, these: uncurry(f)) }
 }
 
+/// Equatable
+public func ==<L : Equatable, R : Equatable>(lhs: Those<L, R>, rhs: Those<L, R>) -> Bool {
+	switch (lhs, rhs) {
+	case let (.This(l), .This(r)):
+		return l.value == r.value
+	case let (.That(l), .That(r)):
+		return l.value == r.value
+	case let (.These(la, ra), .These(lb, rb)):
+		return (la.value == lb.value) && (ra.value == rb.value)
+	default:
+		return false
+	}
+}
+
+public func !=<L : Equatable, R : Equatable>(lhs: Those<L, R>, rhs: Those<L, R>) -> Bool {
+	return !(lhs == rhs)
+}
+
 extension Those : Bifunctor {
 	typealias A = L
 	typealias B = Swift.Any
