@@ -72,14 +72,10 @@ class SectionTests: XCTestCase {
 	}
 	
 	func testSubtractionSections() {
-		let s = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-		let t = s.map({ x in x - 5 })
+		let s = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]		
+		let t = s.map({ x in 5 - x })
 		
-		let s2 : [Int] = s.map(~5)
-		XCTAssertTrue(s2 == t, "")
-		
-		let t2 = s.map({ x in 5 - x })
-		XCTAssertTrue(s.map(5-) == t2, "")
+		XCTAssertTrue(s.map(5-) == t, "")
 	}
 	
 	func testAdditionSections() {
@@ -179,5 +175,21 @@ class SectionTests: XCTestCase {
 		XCTAssertTrue(s.map(??0) == t, "")
 	}
 	
+	func testEqualitySections() {
+		let s = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+		let t = s.map({ x in x == 5 })
+		
+		XCTAssertTrue(s.map(==5) == t, "")
+	}
 	
+	func testReferenceEqualitySections() {
+		let x = Box()
+		let y = Box()
+		let z = Box()
+		
+		let s = [x, y, z]
+		let t = s.map({ x in x === y })
+		
+		XCTAssertTrue(s.map(===y) == t, "")
+	}
 }
