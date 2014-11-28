@@ -8,19 +8,7 @@
 
 import XCTest
 import swiftz
-class ImArrayTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
-	}
-	
-	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-		super.tearDown()
-	}
-	
-	
+class ImArrayTests: XCTestCase {	
 	func testScanl() {
 		let withArray = [1,2,3,4]
 		let scanned = scanl(0, withArray, +)
@@ -75,7 +63,7 @@ class ImArrayTests: XCTestCase {
 	
 	func testAll() {
 		let array = [1,3,24,5]
-		XCTAssert(all(array){$0 <= 24}, "Should be true")
+		XCTAssert(all(array)(<=24), "Should be true")
 	}
 	
 	func testConcat() {
@@ -114,12 +102,12 @@ class ImArrayTests: XCTestCase {
 	func testDropWhile() {
 		let array = [1,2,3,4,5]
 		
-		XCTAssert(dropWhile(array, {$0 <= 3}) == [4,5], "Should be equal")
+		XCTAssert(dropWhile(array, <=3) == [4,5], "Should be equal")
 	}
 	
 	func testTakeWhile() {
 		let array = [1,2,3,4,5]
 		
-		XCTAssert(takeWhile(array, {$0 <= 3}) == [1,2,3], "Should be equal")
+		XCTAssert(takeWhile(array, <=3) == [1,2,3], "Should be equal")
 	}
 }

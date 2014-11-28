@@ -1807,3 +1807,201 @@ public prefix func !=<T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T
 public postfix func !=<T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T> -> Bool {
 	return { rhs in lhs == rhs }
 }
+
+prefix operator <= {}
+postfix operator <= {}
+
+public prefix func <=(rhs: UInt16) -> UInt16 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: UInt16) -> UInt16 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: UInt8) -> UInt8 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: UInt8) -> UInt8 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=<T : _Comparable>(rhs: T) -> T -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=<T : _Comparable>(lhs: T) -> T -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=<T : _Comparable>(rhs: T?) -> T? -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=<T : _Comparable>(lhs: T?) -> T? -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: Int) -> Int -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: Int) -> Int -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: UInt) -> UInt -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: UInt) -> UInt -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: Int64) -> Int64 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: Int64) -> Int64 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: Int8) -> Int8 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: Int8) -> Int8 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: Int32) -> Int32 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: Int32) -> Int32 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: UInt32) -> UInt32 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: UInt32) -> UInt32 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: Int16) -> (lhs: Int16) -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: Int16) -> (lhs: Int16) -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+public prefix func <=(rhs: UInt64) -> UInt64 -> Bool {
+	return { lhs in lhs <= rhs }
+}
+
+public postfix func <=(lhs: UInt64) -> UInt64 -> Bool {
+	return { rhs in lhs <= rhs }
+}
+
+prefix operator >= {}
+postfix operator >= {}
+
+public prefix func >=(rhs: UInt16) -> UInt16 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: UInt16) -> UInt16 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: UInt8) -> UInt8 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: UInt8) -> UInt8 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=<T : _Comparable>(rhs: T) -> T -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=<T : _Comparable>(lhs: T) -> T -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=<T : _Comparable>(rhs: T?) -> T? -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=<T : _Comparable>(lhs: T?) -> T? -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: Int) -> Int -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: Int) -> Int -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: UInt) -> UInt -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: UInt) -> UInt -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: Int64) -> Int64 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: Int64) -> Int64 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: Int8) -> Int8 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: Int8) -> Int8 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: Int32) -> Int32 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: Int32) -> Int32 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: UInt32) -> UInt32 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: UInt32) -> UInt32 -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: Int16) -> (lhs: Int16) -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: Int16) -> (lhs: Int16) -> Bool {
+	return { rhs in lhs >= rhs }
+}
+
+public prefix func >=(rhs: UInt64) -> UInt64 -> Bool {
+	return { lhs in lhs >= rhs }
+}
+
+public postfix func >=(lhs: UInt64) -> UInt64 -> Bool {
+	return { rhs in lhs >= rhs }
+}
