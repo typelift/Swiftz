@@ -65,6 +65,14 @@ public enum Result<V> {
 
 /// MARK: Function Constructors
 
+/// Takes a function that can potentially raise an error and constructs a Result depending on
+/// whether the error pointer has been set.
+public func from<A>(fn : (NSErrorPointer) -> A) -> Result<A> {
+	var err : NSError? = nil
+	let b = fn(&err)
+	return (err != nil) ? .Error(err!) : .Value(Box(b))
+}
+
 /// Takes a 1-ary function that can potentially raise an error and constructs a Result depending on
 /// whether the error pointer has been set.
 public func from<A, B>(fn : (A, NSErrorPointer) -> B) -> A -> Result<B> {
