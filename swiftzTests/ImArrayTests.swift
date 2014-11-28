@@ -8,6 +8,8 @@
 
 import XCTest
 import swiftz
+import swiftz_core
+
 class ImArrayTests: XCTestCase {	
 	func testScanl() {
 		let withArray = [1,2,3,4]
@@ -63,7 +65,7 @@ class ImArrayTests: XCTestCase {
 	
 	func testAll() {
 		let array = [1,3,24,5]
-		XCTAssert(all(array)(<=24), "Should be true")
+		XCTAssert(all(array, <=24), "Should be true")
 	}
 	
 	func testConcat() {
