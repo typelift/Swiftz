@@ -2005,3 +2005,193 @@ public prefix func >=(rhs: UInt64) -> UInt64 -> Bool {
 public postfix func >=(lhs: UInt64) -> UInt64 -> Bool {
 	return { rhs in lhs >= rhs }
 }
+
+prefix operator > {}
+// postfix operator > {}
+
+public prefix func >(rhs: Int64) -> Int64 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Character) -> Character -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UInt8) -> UInt8 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Int8) -> Int8 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UInt16) -> UInt16 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Int16) -> Int16 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UInt32) -> UInt32 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Int32) -> Int32 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UInt64) -> UInt64 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Bit) -> Bit -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func ><T>(rhs: UnsafePointer<T>) -> UnsafePointer<T> -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func ><T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T> -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UnicodeScalar) -> UnicodeScalar -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: String.UnicodeScalarView.Index) -> String.UnicodeScalarView.Index -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: String.Index) -> String.Index -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: String) -> String -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func ><T : _Comparable>(rhs: T?) -> T? -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Swift.Float80) -> Swift.Float80 -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Double) -> Double -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Float) -> Float -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: Int) -> Int -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func >(rhs: UInt) -> UInt -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+public prefix func ><Key : Hashable, Value>(rhs: DictionaryIndex<Key, Value>) -> DictionaryIndex<Key, Value> -> Bool {
+	return { lhs in lhs > rhs }
+}
+
+// prefix operator < {}
+postfix operator < {}
+
+public postfix func <(lhs: Int64) -> Int64 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Character) -> Character -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UInt8) -> UInt8 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Int8) -> Int8 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UInt16) -> UInt16 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Int16) -> Int16 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UInt32) -> UInt32 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Int32) -> Int32 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UInt64) -> UInt64 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Bit) -> Bit -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <<T>(lhs: UnsafePointer<T>) -> UnsafePointer<T> -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <<T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T> -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UnicodeScalar) -> UnicodeScalar -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: String.UnicodeScalarView.Index) -> String.UnicodeScalarView.Index -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: String.Index) -> String.Index -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: String) -> String -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <<T : _Comparable>(lhs: T?) -> T? -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Double) -> Double -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Float) -> Float -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: Int) -> Int -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <(lhs: UInt) -> UInt -> Bool {
+	return { rhs in lhs < rhs }
+}
+
+public postfix func <<Key : Hashable, Value>(lhs: DictionaryIndex<Key, Value>) -> DictionaryIndex<Key, Value> -> Bool {
+	return { rhs in lhs < rhs }
+}

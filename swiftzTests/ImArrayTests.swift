@@ -32,7 +32,7 @@ class ImArrayTests: XCTestCase {
 	
 	func testFind() {
 		let withArray = [1,2,3,4]
-		if let found = find(withArray, {$0 == 4}) {
+		if let found = find(withArray, ==4) {
 			XCTAssert(found == 4, "Should be found")
 		}
 	}
@@ -60,7 +60,7 @@ class ImArrayTests: XCTestCase {
 	
 	func testAny() {
 		let withArray = Array([1,4,5,7])
-		XCTAssert(any(withArray) {$0 > 4}, "Should be false")
+		XCTAssert(any(withArray, >4), "Should be false")
 	}
 	
 	func testAll() {

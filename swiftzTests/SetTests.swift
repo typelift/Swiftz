@@ -58,7 +58,7 @@ class SetTests: XCTestCase {
 	
 	func testFilterMap() {
 		let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
-		let newSet = set.filter{$0 > 2}.map(+1)
+		let newSet = set.filter(>2).map(+1)
 		XCTAssert(newSet == Set(array: [4,5,6]), "Should be equal")
 	}
 	
