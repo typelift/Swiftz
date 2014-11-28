@@ -173,7 +173,7 @@ class DataTests: XCTestCase {
 	
 	func testMaybeApplicative() {
 		let x = MaybeF<Int, Int>.pure(2)
-		let fn = Maybe.just({ $0 * 2 })
+		let fn = Maybe.just(*2)
 		let y = MaybeF(x).ap(fn)
 		XCTAssert(y == Maybe.just(4))
 		

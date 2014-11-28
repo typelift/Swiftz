@@ -939,14 +939,6 @@ public postfix func -<T>(lhs: UnsafePointer<T>) -> Int -> UnsafePointer<T> {
 	return { rhs in lhs - rhs }
 }
 
-public postfix func -<T>(rhs: Int) -> UnsafePointer<T> -> UnsafePointer<T> {
-	return { lhs in lhs - rhs }
-}
-
-public postfix func -<T>(rhs: Int) -> UnsafeMutablePointer<T> -> UnsafeMutablePointer<T> {
-	return { lhs in lhs - rhs }
-}
-
 public postfix func -<T>(lhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer<T> {
 	return { rhs in lhs - rhs }
 }
@@ -1166,8 +1158,8 @@ public postfix func ==<Key : Hashable, Value>(lhs: DictionaryIndex<Key, Value>) 
 	return { rhs in lhs == rhs }
 }
 
-public postfix func ==(rhs: Double) -> Double -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func ==(lhs: Double) -> Double -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public prefix func ==(rhs: Double) -> Double -> Bool {
@@ -1210,8 +1202,8 @@ public prefix func ==<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBu
 	return { rhs in lhs == rhs }
 }
 
-public postfix func ==<Value, Element>(rhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func ==<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public prefix func ==<T>(rhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
@@ -1314,8 +1306,8 @@ public prefix func ==<T>(lhs: Range<T>) -> Range<T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public postfix func ==<T>(rhs: Range<T>) -> Range<T> -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func ==<T>(lhs: Range<T>) -> Range<T> -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public postfix func ==(lhs: UInt64) -> UInt64 -> Bool {
@@ -1528,8 +1520,8 @@ public postfix func !=<Key : Hashable, Value>(lhs: DictionaryIndex<Key, Value>) 
 	return { rhs in lhs == rhs }
 }
 
-public postfix func !=(rhs: Double) -> Double -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func !=(lhs: Double) -> Double -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public prefix func !=(rhs: Double) -> Double -> Bool {
@@ -1572,8 +1564,8 @@ public prefix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBu
 	return { rhs in lhs == rhs }
 }
 
-public postfix func !=<Value, Element>(rhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public prefix func !=<T>(rhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
@@ -1676,8 +1668,8 @@ public prefix func !=<T>(lhs: Range<T>) -> Range<T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public postfix func !=<T>(rhs: Range<T>) -> Range<T> -> Bool {
-	return { lhs in lhs == rhs }
+public postfix func !=<T>(lhs: Range<T>) -> Range<T> -> Bool {
+	return { rhs in lhs == rhs }
 }
 
 public postfix func !=(lhs: UInt64) -> UInt64 -> Bool {
