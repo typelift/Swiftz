@@ -45,12 +45,12 @@ public enum JSONValue: Printable {
 			return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
 		case let xs as NSDictionary:
 			return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
-				return (String(format: k as NSString), self.make(v as NSObject))
+				return (String(k as NSString), self.make(v as NSObject))
 			})
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
 		case let xs as NSString: 
-			return .JSONString(String(format: xs))
+			return .JSONString(String(xs))
 		case let xs as NSNull: 
 			return .JSONNull()
 		default: // TODO: what is swift's assert?
