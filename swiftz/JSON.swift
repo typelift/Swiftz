@@ -42,7 +42,7 @@ public enum JSONValue: Printable {
     case let xs as NSNumber:
       // TODO: number or bool?...
       return .JSONNumber(Double(xs.doubleValue))
-    case let xs as NSString: return .JSONString(String(format: xs))
+    case let xs as NSString: return .JSONString(String(xs))
     case let xs as NSNull: return .JSONNull()
     default: // TODO: what is swift's assert?
       perror("impossible"); abort()
