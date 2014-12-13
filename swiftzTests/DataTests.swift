@@ -11,15 +11,6 @@ import swiftz
 import swiftz_core
 
 class DataTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testNum() {
 		// TODO: test num
 	}
@@ -127,6 +118,22 @@ class DataTests: XCTestCase {
 		XCTAssert(Result(nil, 1) == Result.value(1), "special Result cons value")
 	}
 	
+	func testResultFrom() {
+		func throwableFunction(x : Int, e : NSErrorPointer) -> String {
+			if x <= 0 {
+				e.memory = NSError(domain: "TestErrorDomain", code: -1, userInfo: nil)
+			}
+			return "\(x)"
+		}
+		
+		let e = NSError(domain: "TestErrorDomain", code: -1, userInfo: nil)
+		XCTAssertTrue(from(throwableFunction)(-1) == Result.error(e), "")
+		XCTAssertTrue(from(throwableFunction)(1) == Result.value("1"), "")
+		
+		XCTAssertTrue((throwableFunction !! -1) == Result.error(e), "")
+		XCTAssertTrue((throwableFunction !! 1) == Result.value("1"), "")
+	}
+	
 	func testEitherResult() {
 		// tests:
 		// - either -> result
@@ -140,6 +147,17 @@ class DataTests: XCTestCase {
 		let typeinfworkplz = Result.Value(Box(1)).toEither().toResult(identity)
 	}
 	
+	func testThose() {
+		let this = Those<String, Int>.this("String")
+		let that = Those<String, Int>.that(1)
+		let both = Those<String, Int>.these("String", r: 1)
+		
+		XCTAssert((this.isThis() && that.isThat() && both.isThese()) == true, "")
+		XCTAssert(this.toTuple("String", r: 1) == that.toTuple("String", r: 1), "")
+		
+		XCTAssert(both.bimap(identity, g: identity) == both, "")
+	}
+
 	func testFunctor() {
 		// TODO: test functor in general?
 	}
@@ -184,7 +202,6 @@ class DataTests: XCTestCase {
 		let x = Maybe<Int>.pure(2)
 		let fn = Maybe.just({ $0 * 2 })
 		let y = x.ap(fn)
-		XCTAssert(y == Maybe.just(4))
 		
 		let fno = Maybe<Int -> String>.none()
 		let b = x.ap(fno)

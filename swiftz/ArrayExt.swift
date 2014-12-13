@@ -289,7 +289,7 @@ public func groupBy<A>(list:[ A], p: (A -> A -> Bool)) -> [[A]] {
 ///
 ///group([0,1,1,2,3,3,4,5,6,7,7]) == [[0],[1,1],[2],[3,3],[4],[5],[6],[7,7]]
 public func group<A:Equatable>(list: [A]) -> [[A]] {
-	return groupBy(list, {a in {b in a == b}})
+	return groupBy(list, { a in { b in a == b } })
 }
 
 ///dropWhile(list,p) returns the suffix remaining after takeWhile(list,p):
