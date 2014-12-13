@@ -8,17 +8,9 @@
 
 import XCTest
 import swiftz
+import swiftz_core
 
 class ExtTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testTupleExt() {
 		XCTAssert(fst((1,2)) == 1, "tuple fst")
 		XCTAssert(snd((1,2)) == 2, "tuple snd")
@@ -86,13 +78,13 @@ class ExtTests: XCTestCase {
 				return .None
 			}
 		}
-		// rdar://17149404
-		//    XCTAssert(x.flatMap(f) == .Some(2), "optional flatMap")
-		//    maybe(...)
-		//    XCTAssert(Optional.None.getOrElse(1) == 1, "optional getOrElse")
+		XCTAssert((x >>- f) == Optional.Some(2), "optional flatMap")
 		
-		//XCTAssert(x.maybe(0, { x in x + 1}) == 4, "maybe for Some works")
-		//XCTAssert(y.maybe(0, { x in x + 1}) == 0, "maybe for None works")
+		//    maybe(...)
+		XCTAssert(getOrElse(Optional.None)(1) == 1, "optional getOrElse")
+		
+		XCTAssert(maybe(x)(0)(+1) == 5, "maybe for Some works")
+		XCTAssert(maybe(y)(0)(+1) == 0, "maybe for None works")
 	}
 	
 	func testDictionaryExt() {
