@@ -36,6 +36,24 @@ extension Id: Functor {
 	}
 }
 
+extension Id : Copointed {
+	public func extract() -> A {
+		return self.a()
+	}
+}
+
+extension Id : Comonad {
+	typealias FFA = Id<Id<A>>
+	
+	public func duplicate() -> Id<Id<A>> {
+		return Id<Id<A>>(self)
+	}
+	
+	public func extend(f : Id<A> -> B) -> Id<B> {
+		return self.duplicate().fmap(f)
+	}
+}
+
 // instance Functor (Const m)
 public final class Const<A, B>: K2<A, B> {
 	private let a: () -> A
