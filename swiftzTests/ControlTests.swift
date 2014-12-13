@@ -11,15 +11,6 @@ import swiftz
 import swiftz_core
 
 class ControlTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testBase() {
 		let x = 1
 		let y = 2
@@ -27,32 +18,26 @@ class ControlTests: XCTestCase {
 		XCTAssert(identity(x) == x, "identity")
 		
 		// curry
-		XCTAssert(curry({ (ab: (Int, Int)) -> Int in 
-			switch ab {
-			case let (l, r): 
-				return (l + r)
-			}
-		}, x, y) == 3, "curry")
+		XCTAssert(curry(+, x, y) == 3, "curry")
 		XCTAssert(uncurry({ (a: Int) -> Int -> Int in
-			return ({ (b: Int) -> Int in
-				return (a + b)
-			})
+			return { b in (a + b) }
 		}, (x, y)) == 3, "uncurry")
 		
 		// thrush
-		XCTAssert((x |> {(a: Int) -> String in return a.description}) == "1", "thrush")
-		//    XCTAssert((x <| {(a: Int) -> String in return a.description}) == 1, "unsafe tap")
+		XCTAssert((x |> { a in a.description }) == "1", "thrush")
+		XCTAssert(({ a in a.description } <| x) == "1", "tap")
 		
-		let x2 = 1 |> ({$0.advancedBy($0)}) |> ({$0.advancedBy($0)}) |> ({$0 * $0})
+		let x2 = 1 |> { $0.advancedBy($0) } |> { $0.advancedBy($0) } |> { $0 * $0 }
 		XCTAssertTrue(x2 == 16, "Should equal 16")
 		
 		// flip
-		XCTAssert(flip({ $0 / $1 }, 1, 0) == 0, "flip")
-		XCTAssert(flip({ $0 / $1 })(b: 1, a: 0) == 0, "flip")
-		XCTAssert(flip({ x in { x / $0 } })(1)(0) == 0, "flip")
+		XCTAssert(flip(/, 1, 0) == 0, "flip")
+		XCTAssert(flip(/)(b: 1, a: 0) == 0, "flip")
+		XCTAssert(flip({ $0/ })(1)(0) == 0, "flip")
 		
 		// function composition
-		let composed2 = {(num:Int) in String(num) + String(1)} • {$0 + 1} • {$0 + 1} • {$0 + 1}
+		let addThree = +1 • +1 • +1
+		let composed2 : Int -> String = { num in String(num) + String(1) } • addThree
 		XCTAssert(composed2(0) == "31", "Should be 31")
 	}
 	
@@ -60,12 +45,12 @@ class ControlTests: XCTestCase {
 	func testBaseOptional() {
 		let x = Optional<Int>.Some(0)
 		let y = Optional<Int>.None
-		XCTAssert(({ $0 + 1 } <^> x) == 1, "optional map some")
-		XCTAssert(({ $0 + 1 } <^> y) == .None, "optional map none")
+		XCTAssert((+1 <^> x) == 1, "optional map some")
+		XCTAssert((+1 <^> y) == .None, "optional map none")
+				
+		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "apply some")
 		
-		XCTAssert((Optional<Int -> Int>.Some({ $0 + 1 }) <*> .Some(1)) == 2, "apply some")
-		
-		XCTAssert((x >>- { Optional.Some($0 + 1) }) == .Some(1), "bind some")
+		XCTAssert((x >>- (pure • (+1))) == Optional<Int>.Some(1), "bind some")
 		
 		XCTAssert(pure(1) == .Some(1), "pure some")
 	}
@@ -73,11 +58,11 @@ class ControlTests: XCTestCase {
 	func testBaseArray() {
 		let xs = [1, 2, 3]
 		let y = Optional<Int>.None
-		let incedXs = ({ $0 + 1 } <^> xs)
+		let incedXs = (+1 <^> xs)
 		XCTAssert(incedXs == [2, 3, 4], "array fmap")
 		XCTAssert(xs == [1, 2, 3], "fmap isn't destructive")
 		
-		XCTAssert((Optional<Int -> Int>.Some({ $0 + 1 }) <*> .Some(1)) == 2, "array apply")
+		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "array apply")
 		
 		func fs(x: Int) -> [Int] {
 			return [x, x+1, x+2]
@@ -85,7 +70,7 @@ class ControlTests: XCTestCase {
 		let rs = xs >>- fs
 		XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5], "array bind")
 		
-		XCTAssert((pure(1) as [Int]) == [1], "array pure")
+		XCTAssert(pure(1) == [1], "array pure")
 	}
 	
 	func testLens() {

@@ -9,9 +9,6 @@
 import Darwin
 import swiftz_core
 
-infix operator ∩ {}
-infix operator ∪ {}
-
 public struct Set<A: Hashable> : SequenceType {
 	let bucket:Dictionary<A, Bool> = Dictionary()
 

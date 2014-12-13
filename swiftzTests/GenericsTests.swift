@@ -10,15 +10,6 @@ import XCTest
 import swiftz
 
 class GenericsTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testGenericsSYB() {
 		let b = Shape.Plane(2)
 		let b2 = Shape.fromRep(b.toRep())
@@ -26,7 +17,7 @@ class GenericsTests: XCTestCase {
 		
 		// not sure why you would use SYB at the moment...
 		// without some kind of extendable generic dispatch, it isn't very useful.
-		let gJSON:Data -> JSONValue = {(d: Data) -> JSONValue in
+		let gJSON : Data -> JSONValue = { d in
 			var r = Dictionary<String, JSONValue>()
 			for (n, vs) in d.vals {
 				switch vs {
@@ -44,9 +35,7 @@ class GenericsTests: XCTestCase {
 			}
 			return .JSONObject(r)
 		}
-		
-		
-		
+
 		XCTAssert(gJSON(b.toRep()) == .JSONObject(["wingspan" : .JSONNumber(2)]))
 	}
 }

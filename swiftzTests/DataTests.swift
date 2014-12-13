@@ -11,15 +11,6 @@ import swiftz
 import swiftz_core
 
 class DataTests: XCTestCase {
-	
-	override func setUp() {
-		super.setUp()
-	}
-	
-	override func tearDown() {
-		super.tearDown()
-	}
-	
 	func testNum() {
 		// TODO: test num
 	}
@@ -198,7 +189,7 @@ class DataTests: XCTestCase {
 	
 	func testMaybeApplicative() {
 		let x = MaybeF<Int, Int>.pure(2)
-		let fn = Maybe.just({ $0 * 2 })
+		let fn = Maybe.just(*2)
 		let y = MaybeF(x).ap(fn)
 		XCTAssert(y == Maybe.just(4))
 		
