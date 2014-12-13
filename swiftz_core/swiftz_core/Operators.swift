@@ -55,3 +55,8 @@ associativity left
 infix operator >>- {
 associativity left
 }
+
+/// "From" for Results.
+infix operator !! {
+associativity none
+}
