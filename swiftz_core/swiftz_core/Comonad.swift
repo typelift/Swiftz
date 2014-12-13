@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-public protocol Comonad : Functor {
-	typealias FAB = K1<A> -> B
-	func extract() -> A
-	func extend(fab: FAB) -> K1<B>
+public protocol Comonad : Copointed {
+	typealias FFA = K1<Self>
+
+	func duplicate() -> FFA
+	func extend(Self -> B) -> FB
 }
