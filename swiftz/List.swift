@@ -27,7 +27,6 @@ public enum List<A> {
 		return { t in List(h, t) }
 	}
 	
-
 	public subscript(n : UInt) -> A {
 		switch self {
 		case .Nil:
@@ -42,7 +41,7 @@ public enum List<A> {
 	/// Creates a list of n repeating values.
 	public static func replicate(n : UInt, value : A) -> List<A> {
 		var l : List<A> = .Nil
-		for _ in 0...n {
+		for _ in 0..<n {
 			l = List.cons(value)(l)
 		}
 		return l
@@ -91,7 +90,7 @@ public enum List<A> {
 	/// Maps a function over the list.
 	public func map<B>(f : A -> B) -> List<B> {
 		var l : List<B> = .Nil
-		for x in self {
+		for x in self.reverse() {
 			l = List<B>(f(x), l)
 		}
 		return l
@@ -100,7 +99,7 @@ public enum List<A> {
 	/// Maps a function over a list and concatenates the results.
 	public func concatMap<B>(f : A -> List<B>) -> List<B> {
 		var l : List<B> = .Nil
-		for x in self {
+		for x in self.reverse() {
 			l = f(x) + l
 		}
 		return l
@@ -238,10 +237,10 @@ public func concat<A>(xss : List<List<A>>) -> List<A> {
 /// Appends two lists together.
 public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	var l = rhs
-	for x in lhs {
+	for x in lhs.reverse() {
 		l = List(x, l)
 	}
-	return rhs
+	return l
 }
 
 public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
