@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import swiftz_core
+
 /// A recursive List, with the same basic usage as Array.
 /// This is not currently possible with a bit of misdirection, hence the Box class.
 public enum List<A> {
@@ -136,27 +138,24 @@ extension List : SequenceType {
 
 extension List : Printable {
 	public var description : String {
-		var x = ", ".join(ListF(l: self).fmap({ "\($0)" }))
+		var x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }
 
 /// A struct that serves as a Functor for the above List data type.
 /// This is necessary since we don't yet have higher kinded types.
-public struct ListF<A, B> : Functor {
-	public let l : List<A>
-	
-	public init(l: List<A>) {
-		self.l = l
-	}
+extension List : Functor {
+	typealias B = Any
+	typealias FB = List<B>
 	
 	// is recursion ok here?
-	public func fmap(f : (A -> B)) -> List<B> {
-		switch l {
+	public func fmap<B>(f : (A -> B)) -> List<B> {
+		switch self {
 		case .Nil:
-			return List()
+			return List<B>()
 		case let .Cons(head, tail):
-			return List(f(head()), ListF(l: tail.value).fmap(f))
+			return List<B>.Cons(f(self.head()!), Box(tail.value.fmap(f)))
 		}
 	}
 }
