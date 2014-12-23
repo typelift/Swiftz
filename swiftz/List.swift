@@ -79,12 +79,11 @@ public enum List<A> {
 
 	/// Returns the length of the list.
 	public func length() -> Int {
-		switch self {
-		case .Nil:
-			return 0
-		case let .Cons(_, xs):
-			return 1 + xs().length()
+		var c = 0
+		for x in self {
+			c++
 		}
+		return c
 	}
 
 	/// Maps a function over the list.
