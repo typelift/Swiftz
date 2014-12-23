@@ -8,24 +8,46 @@
 
 import swiftz_core
 
-/// A recursive List, with the same basic usage as Array.
-/// This is not currently possible with a bit of misdirection, hence the Box class.
+/// A lazy finite sequence of values.
 public enum List<A> {
 	case Nil
-	case Cons(@autoclosure() -> A, Box<List<A>>)
-	
+	case Cons(@autoclosure() -> A, @autoclosure() -> List<A>)
+
 	public init() {
 		self = .Nil
 	}
-	
+
+	/// Construct a list with a given head and tail.
 	public init(_ head : A, _ tail : List<A>) {
-		self = .Cons(head, Box(tail))
+		self = .Cons(head, tail)
 	}
+
 	/// Appends and element onto the front of a list.
-	static public func cons(h: A) -> List<A> -> List<A> {
+	public static func cons(h: A) -> List<A> -> List<A> {
 		return { t in List(h, t) }
 	}
 	
+
+	public subscript(n : UInt) -> A {
+		switch self {
+		case .Nil:
+			assert(false, "Cannot extract an element from an empty list.")
+		case let .Cons(x, xs) where n == 0:
+			return x()
+		case let .Cons(x, xs):
+			return xs()[n - 1]
+		}
+	}
+
+	/// Creates a list of n repeating values.
+	public static func replicate(n : UInt, value : A) -> List<A> {
+		var l : List<A> = .Nil
+		for _ in 0...n {
+			l = List.cons(value)(l)
+		}
+		return l
+	}
+
 	/// Returns the first element in the list, or None, if the list is empty.
 	public func head() -> A? {
 		switch self {
@@ -35,41 +57,159 @@ public enum List<A> {
 			return head()
 		}
 	}
-	
+
 	/// Returns the tail of the list, or None if the list is Empty.
 	public func tail() -> List<A>? {
 		switch self {
 		case .Nil:
 			return .None
 		case let .Cons(_, tail):
-			return tail.value
+			return tail()
 		}
 	}
-	
+
+	/// Returns whether or not the reciever is the empty list.
+	public func isEmpty() -> Bool {
+		switch self {
+		case .Nil:
+			return true
+		default:
+			return false
+		}
+	}
+
 	/// Returns the length of the list.
 	public func length() -> Int {
 		switch self {
-		case .Nil: 
+		case .Nil:
 			return 0
-		case let .Cons(_, xs): 
-			return 1 + xs.value.length()
+		case let .Cons(_, xs):
+			return 1 + xs().length()
 		}
 	}
-	
-	/// Equivalent to the `reduce` function on normal arrays.
-	public func foldl<B>(f: B -> A -> B, initial: B) -> B {
+
+	/// Maps a function over the list.
+	public func map<B>(f : A -> B) -> List<B> {
+		var l : List<B> = .Nil
+		for x in self {
+			l = List<B>(f(x), l)
+		}
+		return l
+	}
+
+	/// Maps a function over a list and concatenates the results.
+	public func concatMap<B>(f : A -> List<B>) -> List<B> {
+		var l : List<B> = .Nil
+		for x in self {
+			l = f(x) + l
+		}
+		return l
+	}
+
+	/// Returns a list of elements satisfying a predicate.
+	public func filter(p : A -> Bool) -> List<A> {
+		switch self {
+		case .Nil:
+			return .Nil
+		case let .Cons(x, xs):
+			return p(x()) ? List(x(), xs().filter(p)) : xs().filter(p)
+		}
+	}
+
+	/// Applies a binary operator to reduce the elements of a list to a single value.
+	public func reduce<B>(f : B -> A -> B, initial: B) -> B {
 		var xs = initial
 		for x in self {
 			xs = f(xs)(x)
 		}
 		return xs
 	}
-	
+
+	/// Applies a binary operator to reduce the elements of a list to a single value.
+	public func reduce<B>(f : (B, A) -> B, initial: B) -> B {
+		var xs = initial
+		for x in self {
+			xs = f(xs, x)
+		}
+		return xs
+	}
+
+	/// Returns a list of successive applications of a function to the elements of a list.  
+	/// 
+	/// e.g.
+	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
+	///
+	/// [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	public func scanl<B>(f : B -> A -> B, initial: B) -> List<B> {
+		var acc = initial
+		var l : List<B> = .Nil
+		for x in self {
+			acc = f(acc)(x)
+			l = List<B>(acc, l)
+		}
+		return l
+	}
+
+	/// Like scanl but draws its initial value from the first element of the list itself.
+	///
+	/// This function is partial with respect to the empty list.
+	public func scanl1(f : A -> A -> A) -> List<A> {
+		return scanl(f, initial: self.head()!)
+	}
+
+	/// Returns the first n elements of a list.
+	public func take(n : UInt) -> List<A> {
+		var l = List<A>.Nil
+		for x in 0..<n {
+			l = List(self[x], l)
+		}
+		return l
+	}
+
+	/// Returns the remaining list after dropping n elements from a list.
+	public func drop(n : UInt) -> List<A> {
+		var l = self
+		for x in 0..<n {
+			l = l.tail() ?? .Nil
+		}
+		return l
+	}
+
+	/// Returns a tuple of the first n elements and the remainder of the list.
+	public func splitAt(n : UInt) -> (List<A>, List<A>) {
+		return (self.take(n), self.drop(n))
+	}
+
+	/// Returns a list of the longest prefix of elements satisfying a predicate.
+	public func takeWhile(p : A -> Bool) -> List<A> {
+		var l = List<A>.Nil
+		for x in self {
+			if !p(x) {
+				break
+			}
+			l = List(x, l)
+		}
+		return l
+	}
+
+	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
+	/// predicate has been removed.
+	public func dropWhile(p : A -> Bool) -> List<A> {
+		var l = self
+		for x in self {
+			if p(x) {
+				l = l.tail() ?? .Nil
+			}
+		}
+		return l
+	}
+
+
 	/// Reverse the list
 	public func reverse() -> List<A> {
-		return self.foldl(flip(List.cons), initial: List())
+		return self.reduce(flip(List.cons), initial: List())
 	}
-	
+
 	/// Given a predicate, searches the list until it find the first match, and returns that,
 	/// or None if no match was found.
 	public func find(pred: A -> Bool) -> A? {
@@ -80,7 +220,7 @@ public enum List<A> {
 		}
 		return nil
 	}
-	
+
 	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
 	/// and a key and returns the value for the given key, if there is one, or None otherwise.
 	public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
@@ -90,12 +230,26 @@ public enum List<A> {
 	}
 }
 
+/// Flattens a list of lists into a single lists.
+public func concat<A>(xss : List<List<A>>) -> List<A> {
+	return xss.reduce(+, initial: .Nil)
+}
+
+/// Appends two lists together.
+public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
+	var l = rhs
+	for x in lhs {
+		l = List(x, l)
+	}
+	return rhs
+}
+
 public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	switch (lhs, rhs) {
 	case (.Nil, .Nil):
 		return true
 	case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
-		return lHead() == rHead() && lTail.value == rTail.value
+		return lHead() == rHead() && lTail() == rTail()
 	default:
 		return false
 	}
@@ -103,7 +257,7 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 
 extension List : ArrayLiteralConvertible {
 	typealias Element = A
-	
+
 	public init(arrayLiteral s: Element...) {
 		var xs : [A] = []
 		var g = s.generate()
@@ -143,19 +297,30 @@ extension List : Printable {
 	}
 }
 
-/// A struct that serves as a Functor for the above List data type.
-/// This is necessary since we don't yet have higher kinded types.
 extension List : Functor {
 	typealias B = Any
 	typealias FB = List<B>
-	
-	// is recursion ok here?
+
 	public func fmap<B>(f : (A -> B)) -> List<B> {
-		switch self {
-		case .Nil:
-			return List<B>()
-		case let .Cons(head, tail):
-			return List<B>.Cons(f(self.head()!), Box(tail.value.fmap(f)))
-		}
+		return self.map(f)
+	}
+}
+
+extension List : Applicative {
+	typealias FA = List<A>
+	typealias FAB = List<A -> B>
+
+	public static func pure(a: A) -> List<A> {
+		return List(a, .Nil)
+	}
+
+	public func ap<B>(f : List<A -> B>) -> List<B> {
+		return concat(f.map({ self.map($0) }))
+	}
+}
+
+extension List : Monad {
+	public func bind<B>(f: A -> List<B>) -> List<B> {
+		return self.concatMap(f)
 	}
 }
