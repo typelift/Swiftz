@@ -30,6 +30,25 @@ class DataTests: XCTestCase {
 			}
 			XCTAssert(lst.length() == 26000)
 		}
+
+		let t : List<Int> = [1, 2, 3]
+		let u : List<Int> = [4, 5, 6]
+		XCTAssert(t + u == [1, 2, 3, 4, 5, 6], "")
+
+		let l : List<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+		XCTAssert(!l.isEmpty(), "")
+
+		XCTAssert(l.map(+1) == [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "")
+
+		XCTAssert(l.concatMap({ List<Int>.replicate(2, value: $0) }) == [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10], "")
+		XCTAssert(l.filter((==0) • (%2)) == [2, 4, 6, 8, 10], "")
+		XCTAssert(l.reduce(curry(+), initial: 0) == 55, "")
+
+		let cml = u.scanl(curry(+), initial: 0)
+		XCTAssert(u.scanl(curry(+), initial: 0) == [0, 4, 9, 15], "")
+		XCTAssert(u.scanl1(curry(+)) == [4, 9, 15], "")
+		XCTAssert(l.take(5) == [1, 2, 3, 4, 5], "")
+		XCTAssert(l.drop(5) == [6, 7, 8, 9, 10], "")
 	}
 	
 	func testListFunctor() {

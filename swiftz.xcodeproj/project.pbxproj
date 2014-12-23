@@ -91,6 +91,10 @@
 		59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
+		8437952B1A1BF45F009A79D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437952A1A1BF45F009A79D6 /* Operators.swift */; };
+		8437952C1A1BF45F009A79D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437952A1A1BF45F009A79D6 /* Operators.swift */; };
+		84452CB91A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
+		84452CBA1A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
 		847F3E5C1A2295610091B9D0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E5B1A2295610091B9D0 /* Kinds.swift */; };
 		847F3E5D1A2295610091B9D0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E5B1A2295610091B9D0 /* Kinds.swift */; };
 		847F3E651A2295730091B9D0 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E601A2295730091B9D0 /* Applicative.swift */; };
@@ -105,10 +109,6 @@
 		847F3E6E1A2295730091B9D0 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E641A2295730091B9D0 /* Monad.swift */; };
 		847F3E741A2295C20091B9D0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E731A2295C20091B9D0 /* List.swift */; };
 		847F3E751A2295C20091B9D0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E731A2295C20091B9D0 /* List.swift */; };
-		84452CB91A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
-		84452CBA1A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
-		8437952B1A1BF45F009A79D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437952A1A1BF45F009A79D6 /* Operators.swift */; };
-		8437952C1A1BF45F009A79D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437952A1A1BF45F009A79D6 /* Operators.swift */; };
 		847F3E7A1A229C3D0091B9D0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E791A229C3D0091B9D0 /* Sections.swift */; };
 		847F3E7B1A229C3D0091B9D0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E791A229C3D0091B9D0 /* Sections.swift */; };
 		849AA3B41A0989D200472F08 /* swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -274,6 +274,8 @@
 		59F35AE5193D3A0A006F1341 /* swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz.h; sourceTree = "<group>"; };
 		59F35AEB193D3A0A006F1341 /* swiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AF1193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8437952A1A1BF45F009A79D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		84452CB81A266B4A00CE192A /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Those.swift; sourceTree = "<group>"; };
 		847F3E5B1A2295610091B9D0 /* Kinds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Kinds.swift; path = swiftz/Kinds.swift; sourceTree = "<group>"; };
 		847F3E601A2295730091B9D0 /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Applicative.swift; path = swiftz/Applicative.swift; sourceTree = "<group>"; };
 		847F3E611A2295730091B9D0 /* Bifunctor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bifunctor.swift; path = swiftz/Bifunctor.swift; sourceTree = "<group>"; };
@@ -281,8 +283,6 @@
 		847F3E631A2295730091B9D0 /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Functor.swift; path = swiftz/Functor.swift; sourceTree = "<group>"; };
 		847F3E641A2295730091B9D0 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Monad.swift; path = swiftz/Monad.swift; sourceTree = "<group>"; };
 		847F3E731A2295C20091B9D0 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		84452CB81A266B4A00CE192A /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Those.swift; sourceTree = "<group>"; };
-		8437952A1A1BF45F009A79D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		847F3E791A229C3D0091B9D0 /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
 		849AA3BB1A098AA800472F08 /* swiftz_core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = swiftz_core.xcodeproj; path = swiftz_core/swiftz_core.xcodeproj; sourceTree = "<group>"; };
 		84D405E319F87C9D00EA0A36 /* Bounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bounded.swift; sourceTree = "<group>"; };
@@ -330,19 +330,19 @@
 		590BE976193DA939003DAC87 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				847F3E731A2295C20091B9D0 /* List.swift */,
 				1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */,
 				84D405E319F87C9D00EA0A36 /* Bounded.swift */,
-				59C50C3C193DEB8100FE8C86 /* Num.swift */,
-				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
-				595E3C391950537C00916AF4 /* MaybeFunctor.swift */,
-				593C913E193DDC610067F2BE /* Semigroup.swift */,
-				593C913C193DDC060067F2BE /* Monoid.swift */,
+				5919722A1952ED9B008FBC51 /* HList.swift */,
 				5951313B19406DA600AB490C /* JSON.swift */,
+				847F3E731A2295C20091B9D0 /* List.swift */,
+				595E3C391950537C00916AF4 /* MaybeFunctor.swift */,
+				593C913C193DDC060067F2BE /* Monoid.swift */,
+				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
+				59C50C3C193DEB8100FE8C86 /* Num.swift */,
+				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				DB76117A19439C8300A0AF82 /* Set.swift */,
 				84452CB81A266B4A00CE192A /* Those.swift */,
 				5919722D1952F2BC008FBC51 /* Tuple.swift */,
-				5919722A1952ED9B008FBC51 /* HList.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
