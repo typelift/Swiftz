@@ -53,8 +53,8 @@ public enum JSONValue: Printable {
 			return .JSONString(String(xs))
 		case let xs as NSNull: 
 			return .JSONNull()
-		default: // TODO: what is swift's assert?
-			perror("impossible"); abort()
+		default:
+			return error("Non-exhaustive pattern match performed.");
 		}
 	}
 	
