@@ -91,6 +91,20 @@
 		59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DB16241940895D00E656F9 /* NSDictionaryExt.swift */; };
 		59F35AE6193D3A0A006F1341 /* swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F35AE5193D3A0A006F1341 /* swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59F35AEC193D3A0A006F1341 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F35AE0193D3A0A006F1341 /* swiftz.framework */; };
+		847F3E5C1A2295610091B9D0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E5B1A2295610091B9D0 /* Kinds.swift */; };
+		847F3E5D1A2295610091B9D0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E5B1A2295610091B9D0 /* Kinds.swift */; };
+		847F3E651A2295730091B9D0 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E601A2295730091B9D0 /* Applicative.swift */; };
+		847F3E661A2295730091B9D0 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E601A2295730091B9D0 /* Applicative.swift */; };
+		847F3E671A2295730091B9D0 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E611A2295730091B9D0 /* Bifunctor.swift */; };
+		847F3E681A2295730091B9D0 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E611A2295730091B9D0 /* Bifunctor.swift */; };
+		847F3E691A2295730091B9D0 /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E621A2295730091B9D0 /* Comonad.swift */; };
+		847F3E6A1A2295730091B9D0 /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E621A2295730091B9D0 /* Comonad.swift */; };
+		847F3E6B1A2295730091B9D0 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E631A2295730091B9D0 /* Functor.swift */; };
+		847F3E6C1A2295730091B9D0 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E631A2295730091B9D0 /* Functor.swift */; };
+		847F3E6D1A2295730091B9D0 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E641A2295730091B9D0 /* Monad.swift */; };
+		847F3E6E1A2295730091B9D0 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E641A2295730091B9D0 /* Monad.swift */; };
+		847F3E741A2295C20091B9D0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E731A2295C20091B9D0 /* List.swift */; };
+		847F3E751A2295C20091B9D0 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E731A2295C20091B9D0 /* List.swift */; };
 		84452CB91A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
 		84452CBA1A266B4A00CE192A /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452CB81A266B4A00CE192A /* Those.swift */; };
 		8437952B1A1BF45F009A79D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8437952A1A1BF45F009A79D6 /* Operators.swift */; };
@@ -260,6 +274,13 @@
 		59F35AE5193D3A0A006F1341 /* swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz.h; sourceTree = "<group>"; };
 		59F35AEB193D3A0A006F1341 /* swiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F35AF1193D3A0A006F1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		847F3E5B1A2295610091B9D0 /* Kinds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Kinds.swift; path = swiftz/Kinds.swift; sourceTree = "<group>"; };
+		847F3E601A2295730091B9D0 /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Applicative.swift; path = swiftz/Applicative.swift; sourceTree = "<group>"; };
+		847F3E611A2295730091B9D0 /* Bifunctor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bifunctor.swift; path = swiftz/Bifunctor.swift; sourceTree = "<group>"; };
+		847F3E621A2295730091B9D0 /* Comonad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comonad.swift; path = swiftz/Comonad.swift; sourceTree = "<group>"; };
+		847F3E631A2295730091B9D0 /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Functor.swift; path = swiftz/Functor.swift; sourceTree = "<group>"; };
+		847F3E641A2295730091B9D0 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Monad.swift; path = swiftz/Monad.swift; sourceTree = "<group>"; };
+		847F3E731A2295C20091B9D0 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		84452CB81A266B4A00CE192A /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Those.swift; sourceTree = "<group>"; };
 		8437952A1A1BF45F009A79D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		847F3E791A229C3D0091B9D0 /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
@@ -309,6 +330,7 @@
 		590BE976193DA939003DAC87 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				847F3E731A2295C20091B9D0 /* List.swift */,
 				1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */,
 				84D405E319F87C9D00EA0A36 /* Bounded.swift */,
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
@@ -424,6 +446,7 @@
 				849AA3BB1A098AA800472F08 /* swiftz_core.xcodeproj */,
 				112743DF196B02DE00F7C6E3 /* README.md */,
 				11B6073D196B047100AC13D6 /* LICENSE */,
+				847F3E5B1A2295610091B9D0 /* Kinds.swift */,
 				59F35AE2193D3A0A006F1341 /* swiftz */,
 				59F35AEF193D3A0A006F1341 /* swiftzTests */,
 				59853A011967F99500A3158C /* swiftz_ios */,
@@ -454,6 +477,7 @@
 				590BE976193DA939003DAC87 /* Data */,
 				59BF7D9719433F8200EAFFAA /* Ext */,
 				59BF7D911943346900EAFFAA /* Generics */,
+				847F3E6F1A2295750091B9D0 /* Typeclasses */,
 				59F35AE3193D3A0A006F1341 /* Supporting Files */,
 			);
 			path = swiftz;
@@ -489,6 +513,19 @@
 				59F35AF1193D3A0A006F1341 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		847F3E6F1A2295750091B9D0 /* Typeclasses */ = {
+			isa = PBXGroup;
+			children = (
+				847F3E601A2295730091B9D0 /* Applicative.swift */,
+				847F3E611A2295730091B9D0 /* Bifunctor.swift */,
+				847F3E621A2295730091B9D0 /* Comonad.swift */,
+				847F3E631A2295730091B9D0 /* Functor.swift */,
+				847F3E641A2295730091B9D0 /* Monad.swift */,
+			);
+			name = Typeclasses;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		849AA3BC1A098AA800472F08 /* Products */ = {
@@ -721,12 +758,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				59853A2B1967F9F100A3158C /* Future.swift in Sources */,
+				847F3E6E1A2295730091B9D0 /* Monad.swift in Sources */,
+				847F3E6A1A2295730091B9D0 /* Comonad.swift in Sources */,
 				59853A2C1967F9F100A3158C /* Chan.swift in Sources */,
 				59853A2D1967F9F100A3158C /* MVar.swift in Sources */,
 				59853A2E1967F9F100A3158C /* ExecutionContext.swift in Sources */,
 				59853A2F1967F9F100A3158C /* GCDExecutionContext.swift in Sources */,
 				59853A301967F9F100A3158C /* Curry.swift in Sources */,
 				59853A311967F9F100A3158C /* IxCont.swift in Sources */,
+				847F3E681A2295730091B9D0 /* Bifunctor.swift in Sources */,
 				59853A321967F9F100A3158C /* IxState.swift in Sources */,
 				59853A331967F9F100A3158C /* IxStore.swift in Sources */,
 				84D405E519F87C9D00EA0A36 /* Bounded.swift in Sources */,
@@ -749,9 +789,13 @@
 				59853A411967F9F100A3158C /* ArrayExt.swift in Sources */,
 				59853A421967F9F100A3158C /* StringExt.swift in Sources */,
 				59853A431967F9F100A3158C /* OptionalExt.swift in Sources */,
+				847F3E5D1A2295610091B9D0 /* Kinds.swift in Sources */,
 				59853A441967F9F100A3158C /* DictionaryExt.swift in Sources */,
 				59853A451967F9F100A3158C /* NSDictionaryExt.swift in Sources */,
+				847F3E751A2295C20091B9D0 /* List.swift in Sources */,
 				59853A461967F9F100A3158C /* NSArrayExt.swift in Sources */,
+				847F3E661A2295730091B9D0 /* Applicative.swift in Sources */,
+				847F3E6C1A2295730091B9D0 /* Functor.swift in Sources */,
 				1129F6401990185500DCB516 /* Prism.swift in Sources */,
 				1168A5C11990104B005AD7F3 /* IxMultiStore.swift in Sources */,
 				59853A471967F9F100A3158C /* SYB.swift in Sources */,
@@ -781,12 +825,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5914510F1942B40300809E7E /* MVar.swift in Sources */,
+				847F3E6D1A2295730091B9D0 /* Monad.swift in Sources */,
+				847F3E691A2295730091B9D0 /* Comonad.swift in Sources */,
 				593C913D193DDC060067F2BE /* Monoid.swift in Sources */,
 				5919722E1952F2BC008FBC51 /* Tuple.swift in Sources */,
 				5951313C19406DA600AB490C /* JSON.swift in Sources */,
 				118EAA9119479877008250F3 /* IxCont.swift in Sources */,
 				593E7389193F16B10071B91D /* Future.swift in Sources */,
 				593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */,
+				847F3E671A2295730091B9D0 /* Bifunctor.swift in Sources */,
 				11DA49FB194908F20024F104 /* IxState.swift in Sources */,
 				590522CC193F5DBA0036614F /* OptionalExt.swift in Sources */,
 				84D405E419F87C9D00EA0A36 /* Bounded.swift in Sources */,
@@ -809,9 +856,13 @@
 				5931F2EA19407DC600B0526A /* NSArrayExt.swift in Sources */,
 				59DB16251940895D00E656F9 /* NSDictionaryExt.swift in Sources */,
 				59C50C3D193DEB8100FE8C86 /* Num.swift in Sources */,
+				847F3E5C1A2295610091B9D0 /* Kinds.swift in Sources */,
 				1143A189197F4F0900561B55 /* Prism.swift in Sources */,
 				597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */,
+				847F3E741A2295C20091B9D0 /* List.swift in Sources */,
 				59B2DCBA19434706002ACB3E /* TupleExt.swift in Sources */,
+				847F3E651A2295730091B9D0 /* Applicative.swift in Sources */,
+				847F3E6B1A2295730091B9D0 /* Functor.swift in Sources */,
 				1168A5C01990104A005AD7F3 /* IxMultiStore.swift in Sources */,
 				595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,

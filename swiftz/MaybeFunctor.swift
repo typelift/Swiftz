@@ -64,31 +64,32 @@ public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
 	return false
 }
 
-public struct MaybeF<A, B>: Functor, Applicative {
-	// functor
-	public let m: Maybe<A>
+extension Maybe : Functor {
+	typealias B = Any
+	typealias FB = Maybe<B>
 
-	public init(_ m: Maybe<A>) {
-		self.m = m
-	}
-	public func fmap(f: (A -> B)) -> Maybe<B> {
-		if m.isJust() {
-			let b: B = f(m.fromJust())
+	public func fmap<B>(f: (A -> B)) -> Maybe<B> {
+		if self.isJust() {
+			let b: B = f(self.fromJust())
 			return Maybe<B>.just(b)
 		} else {
 			return Maybe<B>.none()
 		}
 	}
+}
 
-	// applicative
-	public static func pure(a: A) -> Maybe<A>	 {
+extension Maybe : Applicative {
+	typealias FA = Maybe<A>
+	typealias FAB = Maybe<A -> B>
+	
+	public class func pure(a: A) -> Maybe<A>	 {
 		return Maybe<A>.just(a)
 	}
-
-	public func ap(f: Maybe<A -> B>) -> Maybe<B>	{
+	
+	public func ap<B>(f: Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
 			let fn: (A -> B) = f.fromJust()
-			return MaybeF(m).fmap(fn)
+			return self.fmap(fn)
 		} else {
 			return Maybe<B>.none()
 		}

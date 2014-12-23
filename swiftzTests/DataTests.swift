@@ -34,13 +34,13 @@ class DataTests: XCTestCase {
 	
 	func testListFunctor() {
 		let x : List<Int> = [1, 2, 3]
-		let y = ListF(l: x).fmap({ Double($0 * 2) })
+		let y = x.fmap({ Double($0 * 2) })
 		XCTAssert(y == [2.0, 4.0, 6.0])
 	}
 	
 	func testNonEmptyListFunctor() {
 		let x : NonEmptyList<Int> = [1, 2, 3]
-		let y = NonEmptyListF(l: x).fmap({ Double($0 * 2) })
+		let y = x.fmap({ Double($0 * 2) })
 		XCTAssert(y == [2.0, 4.0, 6.0])
 	}
 	
@@ -190,22 +190,21 @@ class DataTests: XCTestCase {
 	
 	func testMaybeFunctor() {
 		let x = Maybe.just(2)
-		let y = MaybeF(x).fmap({ $0 * 2 })
+		let y = x.fmap({ $0 * 2 })
 		XCTAssert(y == Maybe.just(4))
 		
 		let a = Maybe<Int>.none()
-		let b = MaybeF(a).fmap({ $0 * 2 })
+		let b = a.fmap({ $0 * 2 })
 		XCTAssert(b == a);
 	}
 	
 	func testMaybeApplicative() {
-		let x = MaybeF<Int, Int>.pure(2)
-		let fn = Maybe.just(*2)
-		let y = MaybeF(x).ap(fn)
-		XCTAssert(y == Maybe.just(4))
+		let x = Maybe<Int>.pure(2)
+		let fn = Maybe.just({ $0 * 2 })
+		let y = x.ap(fn)
 		
 		let fno = Maybe<Int -> String>.none()
-		let b = MaybeF<Int, String>(x).ap(fno)
+		let b = x.ap(fno)
 		XCTAssert(b == Maybe.none());
 	}
 	

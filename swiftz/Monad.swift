@@ -7,6 +7,5 @@
 //
 
 public protocol Monad : Applicative {
-	typealias AFB = A -> K1<B>
-	func bind(f: AFB) -> FB
+	func bind(f : A -> FB) -> FB
 }
