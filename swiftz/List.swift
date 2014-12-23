@@ -143,23 +143,23 @@ public enum List<A> {
 		var acc = initial
 		var l : List<B> = .Nil
 		for x in self {
-			acc = f(acc)(x)
 			l = List<B>(acc, l)
+			acc = f(acc)(x)
 		}
-		return l
+		return List<B>(acc, l).reverse()
 	}
 
 	/// Like scanl but draws its initial value from the first element of the list itself.
 	///
 	/// This function is partial with respect to the empty list.
 	public func scanl1(f : A -> A -> A) -> List<A> {
-		return scanl(f, initial: self.head()!)
+		return self.tail()!.scanl(f, initial: self.head()!)
 	}
 
 	/// Returns the first n elements of a list.
 	public func take(n : UInt) -> List<A> {
 		var l = List<A>.Nil
-		for x in 0..<n {
+		for x in lazy(0..<n).reverse() {
 			l = List(self[x], l)
 		}
 		return l
