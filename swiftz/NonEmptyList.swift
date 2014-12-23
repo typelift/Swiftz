@@ -74,19 +74,16 @@ extension NonEmptyList : SequenceType {
 
 extension NonEmptyList : Printable {
 	public var description : String {
-		var x = ", ".join(NonEmptyListF(l: self).fmap({ "\($0)" }))
+		var x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }
 
-public struct NonEmptyListF<A, B> : Functor {
-	let l : NonEmptyList<A>
-
-	public init(l: NonEmptyList<A>) {
-		self.l = l
-	}
-
-	public func fmap(f : (A -> B)) -> NonEmptyList<B> {
-		return NonEmptyList(f(l.head.value), ListF(l: l.tail).fmap(f))
+extension NonEmptyList : Functor {
+	typealias B = Any
+	typealias FB = NonEmptyList<B>
+	
+	public func fmap<B>(f : (A -> B)) -> NonEmptyList<B> {
+		return NonEmptyList<B>(f(self.head.value), self.tail.fmap(f))
 	}
 }
