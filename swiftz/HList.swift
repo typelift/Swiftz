@@ -34,7 +34,7 @@ public final class HCons<H, T: HList> : HList {
 		return false
 	}
 	public class func makeNil() -> HCons<H, T> {
-		abort() // impossible
+		return undefined() // impossible
 	}
 	public class func makeCons(h: Head, t: Tail) -> HCons<H, T> {
 		return HCons<H, T>(h: h, t: t)
@@ -59,7 +59,7 @@ public final class HNil : HList {
 	}
 
 	public class func makeCons(h: Head, t: Tail) -> HNil {
-		abort() // impossible
+		return undefined() // impossible
 	}
 
 	public class func length() -> Int {
