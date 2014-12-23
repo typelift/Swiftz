@@ -30,7 +30,9 @@ class DataTests: XCTestCase {
 			}
 			XCTAssert(lst.length() == 26000)
 		}
+	}
 
+	func testListCombinators() {
 		let t : List<Int> = [1, 2, 3]
 		let u : List<Int> = [4, 5, 6]
 		XCTAssert(t + u == [1, 2, 3, 4, 5, 6], "")
@@ -44,7 +46,6 @@ class DataTests: XCTestCase {
 		XCTAssert(l.filter((==0) • (%2)) == [2, 4, 6, 8, 10], "")
 		XCTAssert(l.reduce(curry(+), initial: 0) == 55, "")
 
-		let cml = u.scanl(curry(+), initial: 0)
 		XCTAssert(u.scanl(curry(+), initial: 0) == [0, 4, 9, 15], "")
 		XCTAssert(u.scanl1(curry(+)) == [4, 9, 15], "")
 		XCTAssert(l.take(5) == [1, 2, 3, 4, 5], "")
