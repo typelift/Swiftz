@@ -7,7 +7,6 @@
 //
 
 import swiftz
-import swiftz_core
 
 // A user example
 // an example of why we need SYB, Generics or macros

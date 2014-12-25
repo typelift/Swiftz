@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-import swiftz_core
 
 public final class Maybe<A>: K1<A> {
 	var value: A?
