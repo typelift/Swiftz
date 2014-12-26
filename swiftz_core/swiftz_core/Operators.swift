@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// Operators
+/// Compose | 
 infix operator • {
 associativity right
 }
@@ -31,23 +31,8 @@ infix operator <^> {
 associativity left
 }
 
-// "imap" like
-infix operator <^^> {
-associativity left
-}
-
-// "contramap" like
-infix operator <!> {
-associativity left
-}
-
 // "ap" like
 infix operator <*> {
-associativity left
-}
-
-// "extend" like
-infix operator ->> {
 associativity left
 }
 
