@@ -6,11 +6,14 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// the building blocks of FP
-
 /// The identity function.
 public func identity<A>(a: A) -> A {
 	return a;
+}
+
+/// The constant combinator ignores its second argument and always returns its first argument.
+public func const<A, B>(x : A) -> B -> A {
+	return { _ in x }
 }
 
 /// Flip a function's arguments
@@ -39,19 +42,43 @@ public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
 	}
 }
 
-/// Function application. Alt + 6
-/// Applies a function to its argument, i.e., calls the function.
+/// Apply | Applies an argument to a function.
+///
+///
+/// Because of this operator's extremely low precedence it can be used to elide parenthesis in
+/// complex expressions.  For example:
+///
+///   f § g § h x  =  f (g (h x))
+///
+/// Key Chord: Alt + 8
 public func §<A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
 
-/// Function application. Synonym for `§`: `f <| a == f § a`.
+/// Pipe Backward | Applies the function to its left to an argument on its right.
+///
+/// Because of this operator's extremely low precedence it can be used to elide parenthesis in
+/// complex expressions.  For example:
+///
+///   f <| g <| h x  =  f (g (h x))
+///
+/// Acts as a synonym for §.
 public func <|<A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
 
-/// Thrush function. Given an A, and a function A -> B, applies the function to A and returns the result
-/// can make code more readable
+/// Pipe forward | Applies an argument on the left to a function on the right.
+///
+/// Complex expressions may look more natural when expressed with this operator rather than normal
+/// argument application.  For example:
+///
+///     { $0 * $0 }({ $0.advancedBy($0) }({ $0.advancedBy($0) }(1)))
+///
+/// can also be written as:
+///
+///     1 |> { $0.advancedBy($0) }
+///       |> { $0.advancedBy($0) }
+///       |> { $0 * $0 }
 public func |><A, B>(a: A, f: A -> B) -> B {
 	return f(a)
 }
