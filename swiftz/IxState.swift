@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
 
 public struct IxState<I, O, A> {
 	let run: I -> (A, O)

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. Lll rights reserved.
 //
 
-import swiftz_core
 
 public enum Those<L, R> {
 	case This(Box<L>)

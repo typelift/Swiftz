@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
 
 public final class Iso<S, T, A, B> : K4<S, T, A, B> {
 	public let get: S -> A

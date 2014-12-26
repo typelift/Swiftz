@@ -7,7 +7,6 @@
 //
 
 import Dispatch
-import swiftz_core
 
 public let gcdExecutionContext = GCDExecutionContext()
 public let gcdDispatchQueueGlobal = dispatch_queue_create("swiftz.global", DISPATCH_QUEUE_CONCURRENT)
