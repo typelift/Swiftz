@@ -6,8 +6,15 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+/// A Comonad is the categorical dual to a Monad.  If a Monad is the model of a computation that
+/// produces a value of type T, a Comonad is a value produced from a context.
+///
+/// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Functor {
-	typealias FAB = K1<A> -> B
+	/// Uses the surrounding context to compute a value.
 	func extract() -> A
-	func extend(fab: FAB) -> K1<B>
+
+	/// Duplicates the surrounding context and computes a value from it while remaining in the 
+	/// original context.
+	func extend(fab : Self -> B) -> FB
 }
