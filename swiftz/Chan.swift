@@ -57,12 +57,10 @@ public final class Chan<A> : K1<A> {
 
 }
 
-public func <-<A>(chan: Chan<A>, value: A) -> Void
-{
+public func <-<A>(chan: Chan<A>, value: A) -> Void {
 	chan.write(value)
 }
 
-public prefix func <-<A>(chan: Chan<A>) -> A
-{
+public prefix func <-<A>(chan: Chan<A>) -> A {
 	return chan.read()
 }

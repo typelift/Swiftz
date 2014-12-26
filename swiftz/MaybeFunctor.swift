@@ -7,23 +7,20 @@
 //
 
 
-public final class Maybe<A>: K1<A> {
-	var value: A?
+public struct Maybe<A> {
+	let value: A?
 
-	public init(_ v: A) {
+	public init(_ v : A) {
 		value = v
-		super.init()
 	}
 
-	public override init() {
-		super.init()
-	}
+	public init() { }
 
-	public class func just(t: A) -> Maybe<A> {
+	public static func just(t : A) -> Maybe<A> {
 		return Maybe(t)
 	}
 
-	public class func none() -> Maybe {
+	public static func none() -> Maybe {
 		return Maybe()
 	}
 
@@ -45,13 +42,13 @@ public final class Maybe<A>: K1<A> {
 	}
 }
 
-extension Maybe: BooleanType {
-	public var boolValue:Bool {
+extension Maybe : BooleanType {
+	public var boolValue : Bool {
 		return isJust()
 	}
 }
 
-public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+public func ==<A: Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
 		return true
 	}
@@ -67,7 +64,7 @@ extension Maybe : Functor {
 	typealias B = Any
 	typealias FB = Maybe<B>
 
-	public func fmap<B>(f: (A -> B)) -> Maybe<B> {
+	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
 		if self.isJust() {
 			let b: B = f(self.fromJust())
 			return Maybe<B>.just(b)
@@ -81,11 +78,11 @@ extension Maybe : Applicative {
 	typealias FA = Maybe<A>
 	typealias FAB = Maybe<A -> B>
 	
-	public class func pure(a: A) -> Maybe<A>	 {
+	public static func pure(a : A) -> Maybe<A>	 {
 		return Maybe<A>.just(a)
 	}
 	
-	public func ap<B>(f: Maybe<A -> B>) -> Maybe<B>	{
+	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
 			let fn: (A -> B) = f.fromJust()
 			return self.fmap(fn)

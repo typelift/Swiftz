@@ -19,29 +19,34 @@ public protocol Functor {
 //}
 
 // instance Functor Id
-public final class Id<A>: K1<A> {
-	private let a: () -> A
+public struct Id<A> {
+	private let a : @autoclosure() -> A
+
 	public init(_ aa: A) {
-		a = { aa }
+		a = aa
 	}
+
 	public var runId: A {
 		return a()
 	}
 }
 
-extension Id: Functor {
+extension Id : Functor {
 	public typealias B = Any
-	public func fmap(f: (A -> B)) -> Id<B> {
+
+	public func fmap<B>(f: (A -> B)) -> Id<B> {
 		return (Id<B>(f(self.runId)))
 	}
 }
 
 // instance Functor (Const m)
-public final class Const<A, B>: K2<A, B> {
-	private let a: () -> A
+public struct Const<A, B> {
+	private let a : @autoclosure() -> A
+
 	public init(_ aa: A) {
-		a = { aa }
+		a = aa
 	}
+
 	public var runConst: A {
 		return a()
 	}
@@ -58,7 +63,7 @@ extension Const : Bifunctor {
 	typealias PBC = Const<B, C>
 	typealias PBD = Const<B, D>
 
-	public func bimap<B, C, D>(f: (A -> B), g: (C -> D)) -> Const<B, D> {
+	public func bimap<B, C, D>(f : A -> B, g : C -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
 	}
 }
@@ -67,7 +72,7 @@ extension Const : Bifunctor {
 extension Const: Functor {
 	typealias FB = Const<A, B>
 
-	public func fmap<B>(f: (A -> B)) -> Const<A, B> {
+	public func fmap<B>(f : A -> B) -> Const<A, B> {
 		return Const<A, B>(self.runConst)
 	}
 }
