@@ -11,7 +11,7 @@
 /// This is not currently possible with a bit of misdirection, hence the Box class.
 public enum List<A> {
 	case Nil
-	case Cons(@autoclosure() -> A, Box<List<A>>)
+	case Cons(@autoclosure () -> A, Box<List<A>>)
 	
 	public init() {
 		self = .Nil

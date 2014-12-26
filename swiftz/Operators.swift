@@ -38,14 +38,16 @@ infix operator <^> {
 	precedence 140
 }
 
-/// Imap | Maps an invariant function "inside" a functor.
+/// Imap | 
 infix operator <^^> {
-associativity left
+	associativity left
+	precedence 140
 }
 
 /// Contramap | Maps a contravariant function "inside" a functor.
 infix operator <!> {
-associativity left
+	associativity left
+	precedence 140
 }
 
 /// Ap | Applies a function "inside" a functor to another functor.
