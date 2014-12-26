@@ -50,9 +50,9 @@ public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
 /// Because of this operator's extremely low precedence it can be used to elide parenthesis in
 /// complex expressions.  For example:
 ///
-///   f § g § h x  =  f (g (h x))
+///   f § g § h § x = f(g(h(x)))
 ///
-/// Key Chord: Alt + 8
+/// Key Chord: ⌥ + 6
 public func §<A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
@@ -62,7 +62,7 @@ public func §<A, B>(f: A -> B, a: A) -> B {
 /// Because of this operator's extremely low precedence it can be used to elide parenthesis in
 /// complex expressions.  For example:
 ///
-///   f <| g <| h x  =  f (g (h x))
+///   f <| g <| h <| x  =  f (g (h x))
 ///
 /// Acts as a synonym for §.
 public func <|<A, B>(f: A -> B, a: A) -> B {
