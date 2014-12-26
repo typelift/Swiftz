@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-public struct ArrayZipper<A>: ArrayLiteralConvertible {
+/// A cursor for arrays.
+public struct ArrayZipper<A> : ArrayLiteralConvertible {
 	typealias Element = A
 
 	public let values: [A]

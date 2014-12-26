@@ -17,10 +17,10 @@ class ControlTests: XCTestCase {
 		XCTAssert(identity(x) == x, "identity")
 		
 		// curry
-		XCTAssert(curry(+, x, y) == 3, "curry")
+		XCTAssert(curry(+)(x)(y) == 3, "curry")
 		XCTAssert(uncurry({ (a: Int) -> Int -> Int in
 			return { b in (a + b) }
-		}, (x, y)) == 3, "uncurry")
+		})(x, y) == 3, "uncurry")
 		
 		// thrush
 		XCTAssert((x |> { a in a.description }) == "1", "thrush")
