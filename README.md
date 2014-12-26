@@ -12,8 +12,7 @@ Setup
 
 Swiftz comes in two distinct flavors: Core and Full.  Swiftz_Core is
 a smaller and simpler way to introduce pure functional datatypes into any
-codebase.  It also provides a few of the more popular typeclasses and conformances
-for Swiftz types.  It can be included one of two ways:
+codebase.  It can be included one of two ways:
 
 **Framework**
 
@@ -40,7 +39,7 @@ Using the full Swiftz framework works in much the same way:
 - Click the + and add swiftz
 - Click the + at the top left corner to add a Copy Files build phase
 - Set the directory to `Frameworks`
-- Click the + and add swiftz *and* swiftz_core
+- Click the + and add swiftz
 
 Examples
 --------
