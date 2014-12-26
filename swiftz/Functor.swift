@@ -16,8 +16,8 @@ public protocol Functor {
 	/// A Target Functor
 	typealias FB = K1<B>
 
-	/// Map "inside" a Functor.
-	func fmap(f: (A -> B)) -> FB
+	/// Map a function over the value encapsulated by the Functor.
+	func fmap(f : A -> B) -> FB
 }
 
 // TODO: instance Functor ((->) r)
@@ -29,11 +29,11 @@ public protocol Functor {
 public struct Id<A> {
 	private let a : @autoclosure () -> A
 
-	public init(_ aa: A) {
+	public init(_ aa : A) {
 		a = aa
 	}
 
-	public var runId: A {
+	public var runId : A {
 		return a()
 	}
 }
@@ -41,7 +41,7 @@ public struct Id<A> {
 extension Id : Functor {
 	public typealias B = Any
 
-	public func fmap<B>(f: A -> B) -> Id<B> {
+	public func fmap<B>(f : A -> B) -> Id<B> {
 		return (Id<B>(f(self.runId)))
 	}
 }
@@ -50,11 +50,11 @@ extension Id : Functor {
 public struct Const<A, B> {
 	private let a : @autoclosure () -> A
 
-	public init(_ aa: A) {
+	public init(_ aa : A) {
 		a = aa
 	}
 
-	public var runConst: A {
+	public var runConst : A {
 		return a()
 	}
 }

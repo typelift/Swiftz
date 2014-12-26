@@ -34,13 +34,13 @@ infix operator |> {
 
 /// MARK: Control.*
 
-/// Fmap | Maps a function "inside" a functor.
+/// Fmap | Maps a function over the value encapsulated by a functor.
 infix operator <^> {
 	associativity left
 	precedence 140
 }
 
-/// Ap | Applies a function "inside" a functor to another functor.
+/// Ap | Applies a function encapsulated by a functor to the value encapsulated by another functor.
 infix operator <*> {
 	associativity left
 	precedence 140
