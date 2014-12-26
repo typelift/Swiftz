@@ -81,8 +81,10 @@ func decodeWeb(str: String) -> Result<User> {
 let getUser: Result<User> = getWeb() >>- decodeWeb
 
 switch (getUser) {
-  case let .Error(e): println("NSError: \(e)")
-  case let .Value(user): println(user.name)
+case let .Error(e): 
+	println("NSError: \(e)")
+case let .Value(user): 
+	println(user.name)
 }
 
 // If we use getUser and getWeb fails, the NSError will be from doStuff.
@@ -114,8 +116,8 @@ XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
 ```swift
 // we can delay computations with futures
 let x: Future<Int> = Future(exec: gcdExecutionContext, {
-  sleep(1)
-  return 4
+	sleep(1)
+	return 4
 })
 x.result() == x.result() // true, returns in 1 second
 
@@ -130,7 +132,7 @@ println((x1, x2)) // 1, 2
 // we can map and flatMap over futures
 x.map({ $0.description }).result() // "4", returns instantly
 x.flatMap({ (x: Int) -> Future<Int> in
-  return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
+	return Future(exec: gcdExecutionContext, { sleep(1); return x + 1 })
 }).result() // sleeps another second, then returns 5
 ```
 

@@ -1,8 +1,8 @@
 //
 //  Operators.swift
-//  swiftz_core
+//  swiftz
 //
-//  Created by Maxwell Swadling on 28/06/2014.
+//  Created by Robert Widmann on 11/18/14.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
@@ -60,3 +60,16 @@ associativity left
 infix operator !! {
 associativity none
 }
+
+
+/// MARK: Data.Chan
+
+infix operator  <- {}
+prefix operator <- {}
+
+/// MARK: Data.Set
+
+infix operator ∩ {}
+infix operator ∪ {}
+
+
