@@ -38,7 +38,7 @@ infix operator <^> {
 	precedence 140
 }
 
-/// Imap | 
+/// Imap | Maps covariantly over the index of a right-leaning bifunctor.
 infix operator <^^> {
 	associativity left
 	precedence 140
