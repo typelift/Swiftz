@@ -28,8 +28,8 @@ public func <^><T, U>(f: T -> U, x: Box<T>) -> Box<U> {
 }
 
 extension Box: Printable {
-    public var description: String {
-        return "Box(\(toString(value)))"
-    }
+	public var description: String {
+		return "Box(\(toString(value)))"
+	}
 }
 
