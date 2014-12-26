@@ -33,8 +33,8 @@ public struct ArrayZipper<A> : ArrayLiteralConvertible {
 		return f <^> self
 	}
 
-	public func extract(xz : ArrayZipper<A>) -> A {
-		return xz.values[xz.position]
+	public func extract() -> A {
+		return self.values[self.position]
 	}
 
 	public func duplicate() -> ArrayZipper<ArrayZipper<A>> {
