@@ -7,7 +7,7 @@
 //
 
 extension String {
-	/// Returns an array of sections of the reciever separated by newlines.
+	/// Returns an array of strings at newlines.
 	public func lines() -> [String] {
 		var xs: [String] = []
 		var line: String = ""
@@ -32,7 +32,7 @@ extension String {
 		return xs.reduce("", combine: { "\($0)\($1)\n" } )
 	}
 
-	/// Returns a lens into the array of sections of the reciever sectioned by newlines.
+	/// Returns a Lens that targets the newline-seperated sections of a String
 	public static func lines() -> Iso<String, String, [String], [String]> {
 		return Iso(get: { $0.lines() }, inject: unlines)
 	}
