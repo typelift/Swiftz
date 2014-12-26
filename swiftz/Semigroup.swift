@@ -8,21 +8,21 @@
 
 public protocol Semigroup {
 	typealias M
-	func op(x: M, y: M) -> M
+	func op(x : M, y : M) -> M
 }
 
-public func sconcat<M, S: Semigroup where S.M == M>(s: S, h: M, t: [M]) -> M {
+public func sconcat<M, S: Semigroup where S.M == M>(s : S, h : M, t : [M]) -> M {
 	return (t.reduce(h) { s.op($0, y: $1) })
 }
 
-public final class Min<A: Comparable>: Semigroup {
+public struct Min<A: Comparable>: Semigroup {
 	public typealias M = A
 
 	public init() {
 
 	}
 
-	public func op(x: M, y: M) -> M {
+	public func op(x : M, y : M) -> M {
 		if x < y {
 			return x
 		} else {
@@ -31,10 +31,10 @@ public final class Min<A: Comparable>: Semigroup {
 	}
 }
 
-public final class Max<A: Comparable>: Semigroup {
+public struct Max<A: Comparable> : Semigroup {
 	public typealias M = A
 
-	public func op(x: M, y: M) -> M {
+	public func op(x : M, y : M) -> M {
 		if x > y {
 			return x
 		} else {
@@ -43,18 +43,18 @@ public final class Max<A: Comparable>: Semigroup {
 	}
 }
 
-public final class First<A: Comparable>: Semigroup {
+public struct First<A: Comparable> : Semigroup {
 	public typealias M = A
 
-	public func op(x: M, y: M) -> M {
+	public func op(x : M, y : M) -> M {
 		return x;
 	}
 }
 
-public final class Last<A: Comparable>: Semigroup {
+public struct Last<A: Comparable> : Semigroup {
 	public typealias M = A
 
-	public func op(x: M, y: M) -> M {
+	public func op(x : M, y : M) -> M {
 		return y;
 	}
 }

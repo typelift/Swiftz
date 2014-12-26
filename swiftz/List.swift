@@ -119,11 +119,13 @@ extension List : ArrayLiteralConvertible {
 
 public final class ListGenerator<A> : GeneratorType {
 	var l : List<A>?
+
 	public func next() -> A? {
 		var r = l?.head()
 		l = self.l?.tail()
 		return r
 	}
+	
 	public init(_ l : List<A>) {
 		self.l = l
 	}
