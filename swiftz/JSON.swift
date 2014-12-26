@@ -267,10 +267,10 @@ public struct JNull : JSON {
 
 
 // container types should be split
-public final class JArrayFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecode {
+public struct JArrayFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
 	public typealias J = [A]
 	
-	public class func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x: JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
 			let r = xs.map({ B.fromJSON($0) })
@@ -286,18 +286,18 @@ public final class JArrayFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecod
 	}
 }
 
-public final class JArrayTo<A, B: JSONEncode where B.J == A>: K1<B>, JSONEncode {
+public struct JArrayTo<A, B: JSONEncode where B.J == A> : JSONEncode {
 	public typealias J = [A]
 	
-	public class func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
 	}
 }
 
-public final class JArray<A, B: JSON where B.J == A>: K1<B>, JSON {
+public struct JArray<A, B: JSON where B.J == A> : JSON {
 	public typealias J = [A]
 	
-	public class func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x: JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
 			let r = xs.map({ B.fromJSON($0) })
@@ -312,16 +312,16 @@ public final class JArray<A, B: JSON where B.J == A>: K1<B>, JSON {
 		}
 	}
 	
-	public class func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
 	}
 }
 
 
-public final class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSONDecode {
+public struct JDictionaryFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
 	public typealias J = Dictionary<String, A>
 	
-	public class func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x: JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
 			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
@@ -333,20 +333,20 @@ public final class JDictionaryFrom<A, B: JSONDecode where B.J == A>: K1<B>, JSON
 	}
 }
 
-public final class JDictionaryTo<A, B: JSONEncode where B.J == A>: K1<B>, JSONEncode {
+public struct JDictionaryTo<A, B: JSONEncode where B.J == A> : JSONEncode {
 	public typealias J = Dictionary<String, A>
 	
-	public class func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
 			return (k, B.toJSON(x))
 		}))
 	}
 }
 
-public final class JDictionary<A, B: JSON where B.J == A>: K1<B>, JSON {
+public struct JDictionary<A, B: JSON where B.J == A> : JSON {
 	public typealias J = Dictionary<String, A>
 	
-	public class func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x: JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
 			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
@@ -357,7 +357,7 @@ public final class JDictionary<A, B: JSON where B.J == A>: K1<B>, JSON {
 		}
 	}
 	
-	public class func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs: J) -> JSONValue {
 		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
 			return (k, B.toJSON(x))
 		}))
