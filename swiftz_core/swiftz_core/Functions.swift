@@ -33,9 +33,11 @@ public func flip<A, B, C>(f: A -> B -> C) -> B -> A -> C {
 	return { b in { a in f(a)(b) } }
 }
 
-/// Function composition. Alt + 8
-/// Given two functions, `f` and `g` returns a function that takes an `A` and returns a `C`.
-/// f and g are applied like so: f(g(a))
+/// Compose | Applies one function to the result of another function to produce a third function.
+///
+///     f : B -> C
+///     g : A -> B
+///     (f • g)(x) === f(g(x)) : A -> B -> C
 public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
 	return { (a: A) -> C in
 		return f(g(a))

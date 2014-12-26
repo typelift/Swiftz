@@ -9,12 +9,9 @@
 /// MARK: Combinators
 
 /// Compose | Applies one function to the result of another function to produce a third function.
-///
-///     f : B -> C
-///     g : A -> B
-///     (f • g)(x) === f(g(x)) : A -> B -> C
 infix operator • {
 	associativity right
+	precedence 190
 }
 
 /// Apply | Applies an argument to a function.
@@ -40,17 +37,20 @@ infix operator |> {
 /// Fmap | Maps a function "inside" a functor.
 infix operator <^> {
 	associativity left
+	precedence 140
 }
 
 /// Ap | Applies a function "inside" a functor to another functor.
 infix operator <*> {
 	associativity left
+	precedence 140
 }
 
 /// Bind | Sequences and composes two monadic actions by passing the value inside the monad on the 
 /// left to a function on the right yielding a new monad.
 infix operator >>- {
 	associativity left
+	precedence 110
 }
 
 /// MARK: Data.Result
@@ -58,4 +58,5 @@ infix operator >>- {
 /// From | Creates a Result given a function that can possibly fail with an error.
 infix operator !! {
 	associativity none
+	precedence 120
 }
