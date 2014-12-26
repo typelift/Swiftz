@@ -7,7 +7,6 @@
 //
 
 import Dispatch
-import swiftz_core
 
 public final class Future<A> : K1<A> {
 	var value: A?

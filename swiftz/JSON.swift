@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import swiftz_core
 
 public enum JSONValue: Printable {
 	case JSONArray([JSONValue])

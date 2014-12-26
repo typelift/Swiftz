@@ -7,7 +7,6 @@
 //
 
 import Darwin
-import swiftz_core
 
 public struct Set<A: Hashable> : SequenceType {
 	let bucket:Dictionary<A, Bool> = Dictionary()
