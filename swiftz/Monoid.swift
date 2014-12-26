@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// A Monoid is a semigroup that distinguishes an identity element.
+/// A Monoid is a Semigroup that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
 	func mzero() -> M

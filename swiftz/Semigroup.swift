@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// A Semigroup is a Set together with an associative binary operator.
+/// A Semigroup is a type with a closed, associative, binary operator.
 public protocol Semigroup {
 	/// The type of elements in the semigroup.
 	typealias M
@@ -19,7 +19,7 @@ public func sconcat<M, S: Semigroup where S.M == M>(s : S, h : M, t : [M]) -> M 
 	return (t.reduce(h) { s.op($0, y: $1) })
 }
 
-/// The semigroup of comparable values under MIN().
+/// The Semigroup of comparable values under MIN().
 public struct Min<A: Comparable>: Semigroup {
 	public typealias M = A
 
@@ -34,7 +34,7 @@ public struct Min<A: Comparable>: Semigroup {
 	}
 }
 
-/// The semigroup of comparable values under MAX().
+/// The Semigroup of comparable values under MAX().
 public struct Max<A: Comparable> : Semigroup {
 	public typealias M = A
 
@@ -49,7 +49,7 @@ public struct Max<A: Comparable> : Semigroup {
 	}
 }
 
-/// The left-biased Maybe semigroup.
+/// The left-biased Maybe Semigroup.
 public struct First<A: Comparable> : Semigroup {
 	public typealias M = Maybe<A>
 
@@ -63,7 +63,7 @@ public struct First<A: Comparable> : Semigroup {
 	}
 }
 
-/// The right-biased Maybe semigroup.
+/// The right-biased Maybe Semigroup.
 public struct Last<A: Comparable> : Semigroup {
 	public typealias M = Maybe<A>
 
