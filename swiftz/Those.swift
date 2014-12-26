@@ -13,17 +13,17 @@ public enum Those<L, R> {
 	case That(Box<R>)
 	case These(Box<L>, Box<R>)
 
-	/// Creates a This containing a value.
-	public static func this(l: L) -> Those<L, R> {
+	/// Constructs a This containing a left value.
+	public static func this(l : L) -> Those<L, R> {
 		return .This(Box(l))
 	}
 
-	/// Creates a That containing a value.
-	public static func that(r: R) -> Those<L, R> {
+	/// Constructs a That containing a right value.
+	public static func that(r : R) -> Those<L, R> {
 		return .That(Box(r))
 	}
 
-	/// Creates a These containing a left and right value.
+	/// Constructs a These containing a left and right value.
 	public static func these(l : L, r: R) -> Those<L, R> {
 		return .These(Box(l), Box(r))
 	}
@@ -61,7 +61,7 @@ public enum Those<L, R> {
 	/// Case analysis for the Those type.  If there is a left value the first function is applied
 	/// to it to yield a result.  If there is a right value the middle function is applied.  If
 	/// there is both a left and right value the last function is applied to both.
-	public func fold<C>(this: L -> C, that: R -> C, these: (L, R) -> C) -> C {
+	public func fold<C>(this : L -> C, that : R -> C, these : (L, R) -> C) -> C {
 		switch self {
 		case let This(x):
 			return this(x.value)
