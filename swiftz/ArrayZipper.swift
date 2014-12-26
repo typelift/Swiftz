@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-public final class ArrayZipper<A>: ArrayLiteralConvertible {
+public struct ArrayZipper<A>: ArrayLiteralConvertible {
 	typealias Element = A
 
 	public let values: [A]
 	public let position: Int
 
-	public required init(_ values: [A] = [], _ position: Int = 0) {
+	public init(_ values: [A] = [], _ position: Int = 0) {
 		if position < 0 {
 			self.position = 0
 		} else if position >= values.count {
@@ -23,7 +23,7 @@ public final class ArrayZipper<A>: ArrayLiteralConvertible {
 		self.values = values
 	}
 
-	public convenience init(arrayLiteral elements: Element...) {
+	public init(arrayLiteral elements: Element...) {
 		self.init(elements, 0)
 	}
 
