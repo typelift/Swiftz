@@ -8,8 +8,9 @@
 
 import Darwin
 
-// An unbound FIFO channel.
-// http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html
+/// Channels are unbounded FIFO streams of values with a read and write terminals.  Writing to a
+/// channel places a value at the tail end of the channel.  Reading from a channel pops a value from
+/// its head.  If no such value exists the read blocks until a value is placed in the channel.
 public final class Chan<A> : K1<A> {
 	var stream: [A]
 
@@ -37,6 +38,7 @@ public final class Chan<A> : K1<A> {
 		matt.destroy()
 	}
 
+	/// Writes a value to a channel.
 	public func write(a: A) {
 		pthread_mutex_lock(mutex)
 		stream.append(a)
@@ -44,6 +46,7 @@ public final class Chan<A> : K1<A> {
 		pthread_cond_signal(cond)
 	}
 
+	/// Reads a value from the channel.
 	public func read() -> A {
 		pthread_mutex_lock(mutex)
 		while (stream.isEmpty) {
@@ -57,10 +60,12 @@ public final class Chan<A> : K1<A> {
 
 }
 
+/// Write | Writes a value to a channel.
 public func <-<A>(chan: Chan<A>, value: A) -> Void {
 	chan.write(value)
 }
 
+/// Read | Reads a value from the channel.
 public prefix func <-<A>(chan: Chan<A>) -> A {
 	return chan.read()
 }
