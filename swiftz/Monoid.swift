@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-
+/// A Monoid is a semigroup that distinguishes an identity element.
 public protocol Monoid : Semigroup {
+	/// The identity element of the Monoid.
 	func mzero() -> M
 }
 
@@ -15,6 +16,7 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 	return (t.reduce(s.mzero()) { s.op($0, y: $1) })
 }
 
+/// The Monoid of numeric types under addition.
 public struct Sum<A, N: Num where N.N == A> : Monoid {
 	public typealias M = A
 
@@ -33,6 +35,7 @@ public struct Sum<A, N: Num where N.N == A> : Monoid {
 	}
 }
 
+/// The Monoid of numeric types under multiplication.
 public struct Product<A, N: Num where N.N == A> : Monoid {
 	public typealias M = A
 
