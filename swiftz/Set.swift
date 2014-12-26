@@ -156,6 +156,14 @@ public struct Set<A : Hashable> {
 	}
 }
 
+extension Set : ArrayLiteralConvertible {
+	typealias Element = A
+
+	public init(arrayLiteral elements : A...) {
+		self.init(array: elements)
+	}
+}
+
 extension Set : SequenceType {
 	public func generate() -> SetGenerator<A> {
 		let items = self.array
@@ -164,6 +172,8 @@ extension Set : SequenceType {
 }
 
 public struct SetGenerator<A> : GeneratorType {
+	var items : Slice<A>
+
 	mutating public func next() -> A?	 {
 		if items.isEmpty {
 			return nil
@@ -172,9 +182,6 @@ public struct SetGenerator<A> : GeneratorType {
 		items = items[1..<items.count]
 		return ret
 	}
-
-	var items:Slice<A>
-
 }
 
 extension Set : Printable, DebugPrintable {
@@ -184,13 +191,6 @@ extension Set : Printable, DebugPrintable {
 
 	public var debugDescription: String {
 		return "\(self.array)"
-	}
-}
-
-extension Set : ArrayLiteralConvertible {
-	typealias Element = A
-	public init(arrayLiteral elements:A...) {
-		self.init(array: elements)
 	}
 }
 
@@ -223,15 +223,15 @@ public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 
 /// MARK: Functor
 
-func pure<A>(a:A) -> Set<A> {
+public func pure<A>(a : A) -> Set<A> {
 	return Set(arrayLiteral: a)
 }
 
-func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+public func <^><A, B>(f : A -> B, set : Set<A>) -> Set<B> {
 	return set.map(f)
 }
 
-func >>-<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+public func >>-<A, B>(a : Set<A>, f : A -> Set<B>) -> Set<B> {
 	var se = [B]()
 	for x in a {
 		se.extend(f(x))
