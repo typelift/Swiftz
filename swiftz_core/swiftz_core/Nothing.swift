@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// An enum that represents Nothing
-public enum Nothing {
-
-}
+/// An enum that represents Nothing, otherwise called Bottom or Absurdity.  It is the type from 
+/// which no information can be drawn and no instance may be constructed.
+public enum Nothing { }

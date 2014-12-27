@@ -6,7 +6,11 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-
+/// Encapsultes a value that may or may not exist.  A Maybe<A> contains either a value of type A or
+/// nothing.
+///
+/// Because the nil case of Maybe does not indicate any significant information about cause, it may
+/// be more appropriate to use Result or Either which have explicit error cases.
 public struct Maybe<A> {
 	let value: A?
 
@@ -16,14 +20,17 @@ public struct Maybe<A> {
 
 	public init() { }
 
+	/// Constructs a Maybe holding a value.
 	public static func just(t : A) -> Maybe<A> {
 		return Maybe(t)
 	}
 
+	/// Constructs a Maybe with no value.
 	public static func none() -> Maybe {
 		return Maybe()
 	}
 
+	/// Returns whether or not the reciever contains a value.
 	public func isJust() -> Bool {
 		switch value {
 		case .Some(_): 
@@ -33,10 +40,14 @@ public struct Maybe<A> {
 		}
 	}
 
+	/// Returns whether or not the reciever has no value.
 	public func isNone() -> Bool {
 		return !isJust()
 	}
 
+	/// Forces a value from the reciever.
+	///
+	/// If the reciever contains no value this function will throw an exception.
 	public func fromJust() -> A {
 		return self.value!
 	}
@@ -47,6 +58,8 @@ extension Maybe : BooleanType {
 		return isJust()
 	}
 }
+
+/// MARK: Equatable
 
 public func ==<A: Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
@@ -59,6 +72,8 @@ public func ==<A: Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 
 	return false
 }
+
+/// MARK: Functor
 
 extension Maybe : Functor {
 	typealias B = Any

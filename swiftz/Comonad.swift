@@ -6,8 +6,19 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+/// A Comonad is the categorical dual to a Monad.
+///
+/// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Functor {
-	typealias FAB = K1<A> -> B
+	typealias FFA = K1<Self>
+
+	/// Uses the surrounding context to compute a value.
 	func extract() -> A
-	func extend(fab: FAB) -> K1<B>
+
+	/// Duplicates the surrounding comonadic context and embeds the reciever in it.
+	func duplicate() -> FFA
+
+	/// Duplicates the surrounding comonadic context of the reciever and applies a function to the
+	/// reciever to yield a new value in that context.
+	func extend(fab : Self -> B) -> FB
 }
