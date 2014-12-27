@@ -8,7 +8,6 @@
 
 import XCTest
 import swiftz
-import swiftz_core
 
 class DataTests: XCTestCase {
 	func testNum() {

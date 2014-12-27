@@ -6,11 +6,14 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// the building blocks of FP
-
 /// The identity function.
 public func identity<A>(a: A) -> A {
 	return a;
+}
+
+/// The constant combinator ignores its second argument and always returns its first argument.
+public func const<A, B>(x : A) -> B -> A {
+	return { _ in x }
 }
 
 /// Flip a function's arguments
@@ -30,28 +33,54 @@ public func flip<A, B, C>(f: A -> B -> C) -> B -> A -> C {
 	return { b in { a in f(a)(b) } }
 }
 
-/// Function composition. Alt + 8
-/// Given two functions, `f` and `g` returns a function that takes an `A` and returns a `C`.
-/// f and g are applied like so: f(g(a))
+/// Compose | Applies one function to the result of another function to produce a third function.
+///
+///     f : B -> C
+///     g : A -> B
+///     (f • g)(x) === f(g(x)) : A -> B -> C
 public func •<A, B, C>(f: B -> C, g: A -> B) -> A -> C {
 	return { (a: A) -> C in
 		return f(g(a))
 	}
 }
 
-/// Function application. Alt + 6
-/// Applies a function to its argument, i.e., calls the function.
+/// Apply | Applies an argument to a function.
+///
+///
+/// Because of this operator's extremely low precedence it can be used to elide parenthesis in
+/// complex expressions.  For example:
+///
+///   f § g § h § x = f(g(h(x)))
+///
+/// Key Chord: ⌥ + 6
 public func §<A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
 
-/// Function application. Synonym for `§`: `f <| a == f § a`.
+/// Pipe Backward | Applies the function to its left to an argument on its right.
+///
+/// Because of this operator's extremely low precedence it can be used to elide parenthesis in
+/// complex expressions.  For example:
+///
+///   f <| g <| h <| x  =  f (g (h x))
+///
+/// Acts as a synonym for §.
 public func <|<A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
 
-/// Thrush function. Given an A, and a function A -> B, applies the function to A and returns the result
-/// can make code more readable
+/// Pipe forward | Applies an argument on the left to a function on the right.
+///
+/// Complex expressions may look more natural when expressed with this operator rather than normal
+/// argument application.  For example:
+///
+///     { $0 * $0 }({ $0.advancedBy($0) }({ $0.advancedBy($0) }(1)))
+///
+/// can also be written as:
+///
+///     1 |> { $0.advancedBy($0) }
+///       |> { $0.advancedBy($0) }
+///       |> { $0 * $0 }
 public func |><A, B>(a: A, f: A -> B) -> B {
 	return f(a)
 }

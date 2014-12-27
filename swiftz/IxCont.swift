@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
-
 public struct IxCont<R, O, A> {
 	let run: (A -> O) -> R
 

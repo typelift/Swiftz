@@ -26,7 +26,7 @@ public enum List<A> {
 	public static func cons(h: A) -> List<A> -> List<A> {
 		return { t in List(h, t) }
 	}
-	
+
 	public subscript(n : UInt) -> A {
 		switch self {
 		case .Nil:
@@ -132,8 +132,8 @@ public enum List<A> {
 		return xs
 	}
 
-	/// Returns a list of successive applications of a function to the elements of a list.  
-	/// 
+	/// Returns a list of successive applications of a function to the elements of a list.
+	///
 	/// e.g.
 	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
 	///

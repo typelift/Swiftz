@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
 
-public final class Prism<S, T, A, B> {
+public struct Prism<S, T, A, B> {
 	public let tryGet: S -> A?
 	public let inject: B -> T
 

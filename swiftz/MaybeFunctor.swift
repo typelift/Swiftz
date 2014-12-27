@@ -6,28 +6,31 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
-import swiftz_core
+/// Encapsultes a value that may or may not exist.  A Maybe<A> contains either a value of type A or
+/// nothing.
+///
+/// Because the nil case of Maybe does not indicate any significant information about cause, it may
+/// be more appropriate to use Result or Either which have explicit error cases.
+public struct Maybe<A> {
+	let value: A?
 
-public final class Maybe<A>: K1<A> {
-	var value: A?
-
-	public init(_ v: A) {
+	public init(_ v : A) {
 		value = v
-		super.init()
 	}
 
-	public override init() {
-		super.init()
-	}
+	public init() { }
 
-	public class func just(t: A) -> Maybe<A> {
+	/// Constructs a Maybe holding a value.
+	public static func just(t : A) -> Maybe<A> {
 		return Maybe(t)
 	}
 
-	public class func none() -> Maybe {
+	/// Constructs a Maybe with no value.
+	public static func none() -> Maybe {
 		return Maybe()
 	}
 
+	/// Returns whether or not the reciever contains a value.
 	public func isJust() -> Bool {
 		switch value {
 		case .Some(_): 
@@ -37,22 +40,28 @@ public final class Maybe<A>: K1<A> {
 		}
 	}
 
+	/// Returns whether or not the reciever has no value.
 	public func isNone() -> Bool {
 		return !isJust()
 	}
 
+	/// Forces a value from the reciever.
+	///
+	/// If the reciever contains no value this function will throw an exception.
 	public func fromJust() -> A {
 		return self.value!
 	}
 }
 
-extension Maybe: BooleanType {
-	public var boolValue:Bool {
+extension Maybe : BooleanType {
+	public var boolValue : Bool {
 		return isJust()
 	}
 }
 
-public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
+/// MARK: Equatable
+
+public func ==<A: Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
 		return true
 	}
@@ -64,11 +73,13 @@ public func ==<A: Equatable>(lhs: Maybe<A>, rhs: Maybe<A>) -> Bool {
 	return false
 }
 
+/// MARK: Functor
+
 extension Maybe : Functor {
 	typealias B = Any
 	typealias FB = Maybe<B>
 
-	public func fmap<B>(f: (A -> B)) -> Maybe<B> {
+	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
 		if self.isJust() {
 			let b: B = f(self.fromJust())
 			return Maybe<B>.just(b)
@@ -82,11 +93,11 @@ extension Maybe : Applicative {
 	typealias FA = Maybe<A>
 	typealias FAB = Maybe<A -> B>
 	
-	public class func pure(a: A) -> Maybe<A>	 {
+	public static func pure(a : A) -> Maybe<A>	 {
 		return Maybe<A>.just(a)
 	}
 	
-	public func ap<B>(f: Maybe<A -> B>) -> Maybe<B>	{
+	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
 			let fn: (A -> B) = f.fromJust()
 			return self.fmap(fn)
