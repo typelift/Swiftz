@@ -6,11 +6,18 @@
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
 //
 
+/// Functors are mappings from the functions and objects in one set to the functions and objects
+/// in another set.
 public protocol Functor {
+	/// Source
 	typealias A
+	/// Target
 	typealias B
+	/// A Target Functor
 	typealias FB = K1<B>
-	func fmap(f: (A -> B)) -> FB
+
+	/// Map a function over the value encapsulated by the Functor.
+	func fmap(f : A -> B) -> FB
 }
 
 // TODO: instance Functor ((->) r)
@@ -18,15 +25,15 @@ public protocol Functor {
 //
 //}
 
-// instance Functor Id
+/// The Identity Functor holds a singular value.
 public struct Id<A> {
-	private let a : @autoclosure() -> A
+	private let a : @autoclosure () -> A
 
-	public init(_ aa: A) {
+	public init(_ aa : A) {
 		a = aa
 	}
 
-	public var runId: A {
+	public var runId : A {
 		return a()
 	}
 }
@@ -34,20 +41,20 @@ public struct Id<A> {
 extension Id : Functor {
 	public typealias B = Any
 
-	public func fmap<B>(f: (A -> B)) -> Id<B> {
+	public func fmap<B>(f : A -> B) -> Id<B> {
 		return (Id<B>(f(self.runId)))
 	}
 }
 
-// instance Functor (Const m)
+// The Constant Functor ignores fmap.
 public struct Const<A, B> {
-	private let a : @autoclosure() -> A
+	private let a : @autoclosure () -> A
 
-	public init(_ aa: A) {
+	public init(_ aa : A) {
 		a = aa
 	}
 
-	public var runConst: A {
+	public var runConst : A {
 		return a()
 	}
 }
@@ -69,7 +76,7 @@ extension Const : Bifunctor {
 }
 
 
-extension Const: Functor {
+extension Const : Functor {
 	typealias FB = Const<A, B>
 
 	public func fmap<B>(f : A -> B) -> Const<A, B> {

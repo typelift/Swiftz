@@ -48,7 +48,7 @@ public struct IxMultiStore<O, I, A> {
 	}
 
 	public func peek(x: I) -> A {
-		return extract(put(x))
+		return put(x).extract()
 	}
 
 	public func peeks(f: O -> I) -> A {
@@ -57,7 +57,7 @@ public struct IxMultiStore<O, I, A> {
 }
 
 public func extract<I, A>(a: IxMultiStore<I, I, A>) -> A {
-	return extract(a.set)(a.pos)
+	return a.set.extract()(a.pos)
 }
 
 public func <^><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {

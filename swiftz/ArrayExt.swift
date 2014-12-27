@@ -6,29 +6,20 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-// MARK: Array extensions
+/// MARK: Array extensions
 
-///Array subscripting is bad and you should feel bad for using it.
-///This is a safe alternative that eleminates out of bounds errors
-///and returns an Optional instead.
-public func safeIndex<T>(array: Array<T>)(i: Int) -> T? {
+/// Safely indexes into an array by converting out of bounds errors to nils.
+public func safeIndex<T>(array : Array<T>)(i : Int) -> T? {
 	return indexArray(array, i)
 }
 
-///Appends an array onto the end of the receiving array.
-///Does not mutate the receiving array.
-public func concat<T>(#lhs: [T])(#rhs: [T]) -> [T] {
-	if rhs.isEmpty {
-		return lhs
-	}
-	else {
-		var newArr = Array(lhs)
-		newArr.extend(rhs)
-		return newArr
-	}
+/// Returns the result of concatenating the values in the left and right arrays together.
+public func concat<T>(#lhs: [T])(#rhs : [T]) -> [T] {
+	return lhs + rhs
 }
 
-public func mapWithIndex<T, U>(array: Array<T>)(f: (Int, T) -> U) -> [U] {
+/// Maps a function over an array that takes pairs of (index, element) to a different element.
+public func mapWithIndex<T, U>(array : Array<T>)(f : (Int, T) -> U) -> [U] {
 	var res = [U]()
 	res.reserveCapacity(array.count)
 	for i in 0 ..< array.count {
@@ -37,7 +28,8 @@ public func mapWithIndex<T, U>(array: Array<T>)(f: (Int, T) -> U) -> [U] {
 	return res
 }
 
-public func foldRight<T, U>(array: Array<T>)(z: U, f: (T, U) -> U) -> U {
+/// Folds a reducing function over an array from right to left.
+public func foldRight<T, U>(array : Array<T>)(z : U, f : (T, U) -> U) -> U {
 	var res = z
 	for x in array {
 		res = f(x, res)
@@ -45,14 +37,12 @@ public func foldRight<T, U>(array: Array<T>)(z: U, f: (T, U) -> U) -> U {
 	return res
 }
 
-///scanl is similar to reduce, but returns a list of successive reduced values from the left:
+/// Takes a binary function, an initial value, and a list and scans the function across each element
+/// of a list accumulating the results of successive function calls applied to reduced values from
+/// the left to the right.
 ///
-///scanl(start, func, [x1, x2, ...] == [start, func(start,x1), func(func(start,x1), x2), ...]
-///
-///Note that
-///
-///last((scanl(start,func,list)) == reduce(start,list,func)
-public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
+///     scanl(z, [x1, x2, ...], f) == [z, f(z, x1), f(f(z, x1), x2), ...]
+public func scanl<B, T>(start : B, list : [T], r : (B, T) -> B) -> [B] {
 	if list.isEmpty {
 		return []
 	}
@@ -66,9 +56,9 @@ public func scanl<B, T>(start:B, list:[T], r:(B, T) -> B) -> [B] {
 	return Array(arr)
 }
 
-///The find function takes a predicate and a list and returns the first element
-///in the list matching the predicate, or None if there is no such element.
-public func find<T>(list:[T], f:(T -> Bool)) -> T? {
+/// Returns the first element in a list matching a given predicate.  If no such element exists, this
+/// function returns nil.
+public func find<T>(list : [T], f : (T -> Bool)) -> T? {
 	for x in list {
 		if f(x) {
 			return .Some(x)
@@ -77,21 +67,15 @@ public func find<T>(list:[T], f:(T -> Bool)) -> T? {
 	return .None
 }
 
-///splitAt(n xs) returns a tuple where first element is xs prefix of length n and second element is the
-///remainder of the list:
+/// Returns a tuple containing the first n elements of a list first and the remaining elements
+/// second.
 ///
-///splitAt(3, [1,2,3,4,5]) == ([1,2,3],[4,5])
-///
-///splitAt(1, [1,2,3]) == ([1],[2,3])
-///
-///splitAt(3, [1,2,3]) == ([1,2,3],[])
-///
-///splitAt(4, [1,2,3]) == ([1,2,3],[])
-///
-///splitAt(0, [1,2,3]) == ([],[1,2,3])
-///
-///splitAt(-1, [1,2,3]) == ([],[1,2,3])
-public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
+///     splitAt(3, [1,2,3,4,5]) == ([1,2,3],[4,5])
+///     splitAt(1, [1,2,3])     == ([1],[2,3])
+///     splitAt(3, [1,2,3])     == ([1,2,3],[])
+///     splitAt(4, [1,2,3])     == ([1,2,3],[])
+///     splitAt(0, [1,2,3])     == ([],[1,2,3])
+public func splitAt<T>(index : Int, list : [T]) -> ([T], [T]) {
 	switch index {
 	case 0..<list.count: 
 		return (Array(list[0..<index]), Array(list[index..<list.count]))
@@ -100,11 +84,10 @@ public func splitAt<T>(index:Int, list:[T]) -> ([T], [T]) {
 	}
 }
 
-///The intersperse function takes an element and a list and `intersperses' that element between the elements of
-///the list. For example,
+/// Takes a separator and a list and intersperses that element throughout the list.
 ///
-///intersperse(",", ["a","b","c","d","e"] == ["a",",","b",",","c",",","d",",","e"]
-public func intersperse<T>(item:T, list:[T]) -> [T] {
+///     intersperse(",", ["a","b","c","d","e"] == ["a",",","b",",","c",",","d",",","e"]
+public func intersperse<T>(item : T, list : [T]) -> [T] {
 	func prependAll(item:T, array:[T]) -> [T] {
 		var arr = Array([item])
 		for i in 0..<(array.count - 1) {
@@ -162,9 +145,9 @@ public func intersperse<T>(item:T, list:[T]) -> [T] {
 //  	return newArr
 //}
 
-///maps a function over a list of Optionals, applying the function of the optional is Some,
-///discarding the value if it is None and returning a list of non Optional values
-public func mapFlatten<A>(xs: [A?]) -> [A] {
+/// Maps a function over a list of Optionals, applying the function of the optional is Some, 
+/// discarding the value if it is None and returning a list of non Optional values
+public func mapFlatten<A>(xs : [A?]) -> [A] {
 	var w = [A]()
 	w.reserveCapacity(foldRight(xs)(z: 0) { c, n in
 		if c != nil {
@@ -183,45 +166,39 @@ public func mapFlatten<A>(xs: [A?]) -> [A] {
 	return w
 }
 
-///Array subscripting is bad and you should feel bad for using it.
-///This is a safe alternative that eleminates out of bounds errors
-///and returns an Optional instead.
-public func indexArray<A>(xs: [A], i: Int) -> A? {
+/// Safely indexes into an array by converting out of bounds errors to nils.
+public func indexArray<A>(xs : [A], i : Int) -> A? {
 	if i < xs.count && i >= 0 {
 		return xs[i]
 	} else {
 		return nil
 	}
 }
-///and returns the conjunction of a Boolean list. For the result to be True, the list must be finite; False,
-///however, results from a False value at a finite index of a finite or infinite list.
-public func and(list: [Bool]) -> Bool {
+
+/// Returns the conjunction of a list of Booleans.
+public func and(list : [Bool]) -> Bool {
 	return list.reduce(true) {$0 && $1}
 }
 
-///or returns the disjunction of a Boolean list. For the result to be False, the list must be finite; True,
-///however, results from a True value at a finite index of a finite or infinite list.
-public func or(list: [Bool]) -> Bool {
+/// Returns the dijunction of a list of Booleans.
+public func or(list : [Bool]) -> Bool {
 	return list.reduce(false) {$0 || $1}
 }
 
-
-///Applied to a predicate and a list, any determines if any element of the list satisfies the predicate. For
-///the result to be False, the list must be finite; True, however, results from a True value for the predicate
-///applied to an element at a finite index of a finite or infinite list.
-public func any<A>(list: [A], f: (A -> Bool)) -> Bool {
+/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+/// least once by an element of the list.
+public func any<A>(list : [A], f : (A -> Bool)) -> Bool {
 	return or(list.map(f))
 }
 
-///Applied to a predicate and a list, all determines if all elements of the list satisfy the predicate. 
-///For the result to be True, the list must be finite; False, however, results from a False value for
-///the predicate applied to an element at a finite index of a finite or infinite list.
-public func all<A>(list: [A], f: (A -> Bool)) -> Bool {
+/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+/// all elemenets of the list.
+public func all<A>(list : [A], f : (A -> Bool)) -> Bool {
 	return and(list.map(f))
 }
 
-///Concatenate a list of lists.
-public func concat<A>(list: [[A]]) -> [A] {
+/// Concatenate a list of lists.
+public func concat<A>(list : [[A]]) -> [A] {
 	return list.reduce([]) { (start, l) -> [A] in
 		return concat(lhs: start)(rhs: l)
 	}
@@ -235,25 +212,21 @@ public func concatMap<A,B>(list: [A], f: A -> [B]) -> [B] {
 }
 
 
-///intercalate(list, nested) is equivalent to concat(intersperse(list, nested)). It inserts the list `list` in between the
-///lists in `nested` and concatenates the result.
-public func intercalate<A>(list: [A], nested:[[A]]) -> [A] {
+/// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
+public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 	return concat(intersperse(list, nested))
 }
 
 
-///span(list,p) returns a tuple where first element is
-///the longest prefix (possibly empty) of `list` of elements that satisfy p and 
-///the second element is the remainder of the list:
+/// Returns a tuple with the first elements that satisfy a predicate until that predicate returns
+/// false first, and a the rest of the elements second.
 ///
-///span([1,2,3,4,1,2,3,4]) {$0 < 3} == ([1,2],[3,4,1,2,3,4])
+///     span([1, 2, 3, 4, 1, 2, 3, 4]) { <3 } == ([1, 2],[3, 4, 1, 2, 3, 4])
+///     span([1, 2, 3]) { <9 }                == ([1, 2, 3],[])
+///     span([1, 2, 3]) { <0 }                == ([],[1, 2, 3])
 ///
-///span([1,2,3]){$0 < 9} == ([1,2,3],[])
-///
-///span([1,2,3]){$0 < 0} == ([],[1,2,3])
-///
-///span(list,p) is equivalent to (takeWhile(list,p), dropWhile(list,p))
-public func span<A>(list: [A], p: (A -> Bool)) -> ([A], [A]) {
+///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
+public func span<A>(list : [A], p : (A -> Bool)) -> ([A], [A]) {
 	switch list.count {
 	case 0: 
 		return (list, list)
@@ -267,9 +240,9 @@ public func span<A>(list: [A], p: (A -> Bool)) -> ([A], [A]) {
 	}
 }
 
-///The groupBy function is equivalent to group, except you supply your
-///own predicate function.
-public func groupBy<A>(list:[ A], p: (A -> A -> Bool)) -> [[A]] {
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other according to an equality predicate.
+public func groupBy<A>(list : [A], p : (A -> A -> Bool)) -> [[A]] {
 	switch list.count {
 	case 0: 
 		return []
@@ -283,23 +256,22 @@ public func groupBy<A>(list:[ A], p: (A -> A -> Bool)) -> [[A]] {
 	}
 }
 
-///The group function takes a list and returns a list of lists such that the concatenation 
-///of the result is equal to the argument. Moreover, each sublist in the result contains
-///only equal elements. For example,
+
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other.
 ///
-///group([0,1,1,2,3,3,4,5,6,7,7]) == [[0],[1,1],[2],[3,3],[4],[5],[6],[7,7]]
-public func group<A:Equatable>(list: [A]) -> [[A]] {
+///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
+public func group<A:Equatable>(list : [A]) -> [[A]] {
 	return groupBy(list, { a in { b in a == b } })
 }
 
-///dropWhile(list,p) returns the suffix remaining after takeWhile(list,p):
+/// Returns a list of the first elements that do not satisfy a predicate until that predicate
+/// returns false.
 ///
-///dropWhile([1,2,3,4,5,1,2,3]){$0 < 3} == [3,4,5,1,2,3]
-///
-///dropWhile([1,2,3]){$0 < 9} == []
-///
-///dropWhile([1,2,3]){$0 < 0} == [1,2,3]
-public func dropWhile<A>(list: [A], p: A -> Bool) -> [A] {
+///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3]){ <3 } == [3,4,5,1,2,3]
+///     dropWhile([1, 2, 3]){ <9 }                == []
+///     dropWhile([1, 2, 3]){ <0 }                == [1,2,3]
+public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 	switch list.count {
 	case 0: 
 		return list
@@ -310,13 +282,12 @@ public func dropWhile<A>(list: [A], p: A -> Bool) -> [A] {
 	}
 }
 
-///takeWhile, applied to a predicate p and a list xs, returns the longest prefix (possibly empty) of xs of elements that satisfy p:
+/// Returns a list of the first elements that satisfy a predicate until that predicate returns
+/// false.
 ///
-///takeWhile([1,2,3,4,1,2,3,4]){$0 < 3} == [1,2]
-///
-///takeWhile([1,2,3]){$0 < 9} == [1,2,3]
-///
-///takeWhile([1,2,3]){$0 < 0} == []
+///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4]){ <3 } == [1, 2]
+///     takeWhile([1,2,3]){ <9 }                  == [1, 2, 3]
+///     takeWhile([1,2,3]){ <0 }                  == []
 public func takeWhile<A>(list: [A], p: A -> Bool) -> [A] {
 	switch list.count {
 	case 0: 

@@ -8,20 +8,24 @@
 
 import Darwin
 
-// Reading an MVar that is empty will block until it has something in it.
-// Putting into an MVar will block if it has something in it, until someone reads from it.
-// http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-MVar.html
+/// A mutable reference with potentially blocking reads and writes.  An MVar is either empty or
+/// contains a value.  If the MVar is currently full then any subsequent writes to the MVar will
+/// block.  If the MVar is empty than any subsequent reads will block until the MVar is full.
+///
+/// MVars are often used as synchronization points in concurrent code.  A thread will often
+/// advertise an MVar and spark a computation that depends on a value computed in another thread.
+/// The first thread blocks waiting for the second to finish, then immediatly continues its work
+/// once a value has been put into the MVar.
 public final class MVar<A> : K1<A> {
-	var value: Optional<(() -> A)>
+	var value : Optional<(() -> A)>
 
-	var mutex: UnsafeMutablePointer<pthread_mutex_t>
-	var condPut: UnsafeMutablePointer<pthread_cond_t>
-	var condRead: UnsafeMutablePointer<pthread_cond_t>
-	let matt: UnsafeMutablePointer<pthread_mutexattr_t>
+	let mutex : UnsafeMutablePointer<pthread_mutex_t>
+	let condPut : UnsafeMutablePointer<pthread_cond_t>
+	let condRead : UnsafeMutablePointer<pthread_cond_t>
+	let matt : UnsafeMutablePointer<pthread_mutexattr_t>
 
 	public override init() {
-
-		var mattr:UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
+		let mattr : UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
 		mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
 		condPut = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
 		condRead = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
@@ -45,6 +49,9 @@ public final class MVar<A> : K1<A> {
 		matt.destroy()
 	}
 
+	/// Puts a value into an MVar.
+	///
+	/// If the MVar is currently full, the function will block until it becomes empty again.
 	public func put(x: A) {
 		pthread_mutex_lock(mutex)
 		while (value != nil) {
@@ -55,6 +62,10 @@ public final class MVar<A> : K1<A> {
 		pthread_cond_signal(condPut)
 	}
 
+	/// Returns the contents of the MVar.
+	///
+	/// If the MVar is empty, this will block until a value is put into the MVar.  If the MVar is full,
+	/// it is emptied and the value is returned immediately.
 	public func take() -> A {
 		pthread_mutex_lock(mutex)
 		while (value) == nil {
@@ -67,9 +78,11 @@ public final class MVar<A> : K1<A> {
 		return cp
 	}
 
-	// this isn't very useful! it is just a snapshot at this point in time.
-	// you could check it is empty, then put, and it could block.
-	// it is mostly for debugging and testing.
+	/// Checks whether a given MVar is empty.
+	///
+	/// This function is just a snapshot of the state of the MVar at that point in time.  In heavily
+	/// concurrent computations, this may change out from under you without warning, or even by the 
+	/// time it can be acted on.
 	public func isEmpty() -> Bool {
 		return (value == nil)
 	}
