@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// An array with a zipper.  Zippers are convenient ways of traversing and modifying the parts of a
-/// structure using a cursor to focus on individual parts of the structure.
+/// A zipper for arrays.  Zippers are convenient ways of traversing and modifying the parts of a
+/// structure using a cursor to focus on its individual parts.
 public struct ArrayZipper<A> : ArrayLiteralConvertible {
 	typealias Element = A
 
