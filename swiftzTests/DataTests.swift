@@ -187,6 +187,20 @@ class DataTests: XCTestCase {
 		XCTAssert(y.1 == t.1)
 	}
 	
+	func testMaybe() {
+		let x = Maybe.just(10)
+		let y = Maybe.just(7)
+		let z = Maybe<Int>.none()
+		
+		XCTAssertTrue(x == x, "")
+		XCTAssertTrue(y == y, "")
+		XCTAssertTrue(z == z, "")
+
+		XCTAssertTrue(x != y, "")
+		XCTAssertTrue(x != z)
+		XCTAssertTrue(y != z, "")
+	}
+	
 	func testMaybeFunctor() {
 		let x = Maybe.just(2)
 		let y = x.fmap({ $0 * 2 })
