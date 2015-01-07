@@ -6,25 +6,28 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// A lazy finite sequence of values.
+/// A lazy ordered sequence of values.
+///
+/// Unlike an Array, a List can potentially represent an infinite sequence of values.
 public enum List<A> {
 	case Nil
-	case Cons(@autoclosure() -> A, @autoclosure() -> List<A>)
+	case Cons(@autoclosure() -> A, () -> List<A>)
 
 	public init() {
 		self = .Nil
 	}
 
 	/// Construct a list with a given head and tail.
-	public init(_ head : A, _ tail : List<A>) {
+	public init(_ head : A, _ tail : @autoclosure() -> List<A>) {
 		self = .Cons(head, tail)
 	}
 
 	/// Appends and element onto the front of a list.
-	public static func cons(h: A) -> List<A> -> List<A> {
+	public static func cons(h: A) -> (@autoclosure() -> List<A>) -> List<A> {
 		return { t in List(h, t) }
 	}
 
+	/// Indexes into an array.
 	public subscript(n : UInt) -> A {
 		switch self {
 		case .Nil:
@@ -51,7 +54,7 @@ public enum List<A> {
 		case .Nil:
 			return .None
 		case let .Cons(head, _):
-			return head()
+			return .Some(head())
 		}
 	}
 
@@ -61,7 +64,7 @@ public enum List<A> {
 		case .Nil:
 			return .None
 		case let .Cons(_, tail):
-			return tail()
+			return .Some(tail())
 		}
 	}
 
@@ -76,6 +79,8 @@ public enum List<A> {
 	}
 
 	/// Returns the length of the list.
+	///
+	/// For infinite lists this function will diverge.
 	public func length() -> Int {
 		var c = 0
 		for x in self {
@@ -86,20 +91,15 @@ public enum List<A> {
 
 	/// Maps a function over the list.
 	public func map<B>(f : A -> B) -> List<B> {
-		var l : List<B> = .Nil
-		for x in self.reverse() {
-			l = List<B>(f(x), l)
+		if self.isEmpty() {
+			return .Nil
 		}
-		return l
+		return List<B>(f(self.head()!), self.tail()!.map(f))
 	}
 
 	/// Maps a function over a list and concatenates the results.
 	public func concatMap<B>(f : A -> List<B>) -> List<B> {
-		var l : List<B> = .Nil
-		for x in self.reverse() {
-			l = f(x) + l
-		}
-		return l
+		return self.reduce(curry(+) • f, initial: [])
 	}
 
 	/// Returns a list of elements satisfying a predicate.
