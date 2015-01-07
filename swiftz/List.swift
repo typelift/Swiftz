@@ -105,8 +105,11 @@ public struct List<A> {
 	/// Returns the length of the list.
 	///
 	/// For infinite lists this function will diverge.
-	public func length() -> Int {
-		return self.len
+	public func length() -> UInt {
+		if self.len == -1 {
+			return error("Cannot take the length of an infinite list.")
+		}
+		return UInt(self.len)
 	}
 
 	/// Maps a function over the list.
