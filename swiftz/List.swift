@@ -11,7 +11,7 @@
 /// Unlike an Array, a List can potentially represent an infinite sequence of values.
 public enum List<A> {
 	case Nil
-	case Cons(@autoclosure() -> A, () -> List<A>)
+	case Cons(@autoclosure() -> A, @autoclosure() -> List<A>)
 
 	public init() {
 		self = .Nil
@@ -23,7 +23,7 @@ public enum List<A> {
 	}
 
 	/// Appends and element onto the front of a list.
-	public static func cons(h: A) -> (@autoclosure() -> List<A>) -> List<A> {
+	public static func cons(h : A) -> (@autoclosure() -> List<A>) -> List<A> {
 		return { t in List(h, t) }
 	}
 
@@ -97,9 +97,17 @@ public enum List<A> {
 		return List<B>(f(self.head()!), self.tail()!.map(f))
 	}
 
+	public func append(rhs: List<A>) -> List<A> {
+		var l = rhs
+		for x in self.reverse() {
+			l = List(x, l)
+		}
+		return l
+	}
+
 	/// Maps a function over a list and concatenates the results.
 	public func concatMap<B>(f : A -> List<B>) -> List<B> {
-		return self.reduce(curry(+) • f, initial: [])
+		return self.reduce({ l, r in l.append(f(r)) }, initial: List<B>.Nil)
 	}
 
 	/// Returns a list of elements satisfying a predicate.
@@ -203,7 +211,7 @@ public enum List<A> {
 
 	/// Reverse the list
 	public func reverse() -> List<A> {
-		return self.reduce(flip(List.cons), initial: List())
+		return self.reduce({ l, r in List<A>.cons(r)(l) }, initial: List<A>.Nil)
 	}
 
 	/// Given a predicate, searches the list until it find the first match, and returns that,
@@ -307,7 +315,7 @@ extension List : Applicative {
 	typealias FAB = List<A -> B>
 
 	public static func pure(a: A) -> List<A> {
-		return List(a, .Nil)
+		return List(a, List<A>.Nil)
 	}
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
