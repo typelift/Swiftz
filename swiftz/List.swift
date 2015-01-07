@@ -6,136 +6,162 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+/// An enum representing the possible values a list can match against.
+public enum ListMatcher<A> {
+	/// The empty list.
+	case Nil
+	/// A cons cell.
+	case Cons(A, List<A>)
+}
+
 /// A lazy ordered sequence of values.
 ///
 /// Unlike an Array, a List can potentially represent an infinite sequence of values.
-public enum List<A> {
-	case Nil
-	case Cons(@autoclosure() -> A, @autoclosure() -> List<A>)
+public struct List<A> {
+	let len : Int
+	let next : () -> (head : A, tail : List<A>)
 
+	/// Constructs the empty list.
+	init(_ next : @autoclosure () -> (head : A, tail : List<A>)) {
+		self.len = 0
+		self.next = next
+	}
+
+	/// Construct a list with no head or tail.
 	public init() {
-		self = .Nil
+		self.init((error("The empty list has no head"), error("The empty list has no tail")))
 	}
 
 	/// Construct a list with a given head and tail.
-	public init(_ head : A, _ tail : @autoclosure() -> List<A>) {
-		self = .Cons(head, tail)
+	public init(_ head : A, _ tail : List<A> = List<A>()) {
+		if tail.len == -1 {
+			self.len = -1
+		} else {
+			self.len = tail.len.successor()
+		}
+		self.next = { (head, tail) }
 	}
 
 	/// Appends and element onto the front of a list.
-	public static func cons(h : A) -> (@autoclosure() -> List<A>) -> List<A> {
-		return { t in List(h, t) }
+	public static func cons(head : A, tail : List<A>) -> List<A> {
+		return List(head, tail)
+	}
+
+	/// Destructures a list into its constituent parts or Nil.
+	public func match() -> ListMatcher<A> {
+		if self.len == 0 {
+			return .Nil
+		}
+		let (hd, tl) = self.next()
+		return .Cons(hd, tl)
 	}
 
 	/// Indexes into an array.
 	public subscript(n : UInt) -> A {
-		switch self {
+		switch self.match() {
 		case .Nil:
-			assert(false, "Cannot extract an element from an empty list.")
+			return error("Cannot extract an element from an empty list.")
 		case let .Cons(x, xs) where n == 0:
-			return x()
+			return x
 		case let .Cons(x, xs):
-			return xs()[n - 1]
+			return xs[n - 1]
 		}
 	}
 
 	/// Creates a list of n repeating values.
 	public static func replicate(n : UInt, value : A) -> List<A> {
-		var l : List<A> = .Nil
+		var l = List<A>()
 		for _ in 0..<n {
-			l = List.cons(value)(l)
+			l = List.cons(value, tail: l)
 		}
 		return l
 	}
 
 	/// Returns the first element in the list, or None, if the list is empty.
-	public func head() -> A? {
-		switch self {
+	public func head() -> Optional<A> {
+		switch self.match() {
 		case .Nil:
 			return .None
 		case let .Cons(head, _):
-			return .Some(head())
+			return .Some(head)
 		}
 	}
 
 	/// Returns the tail of the list, or None if the list is Empty.
-	public func tail() -> List<A>? {
-		switch self {
+	public func tail() -> Optional<List<A>> {
+		switch self.match() {
 		case .Nil:
 			return .None
 		case let .Cons(_, tail):
-			return .Some(tail())
+			return .Some(tail)
 		}
 	}
 
 	/// Returns whether or not the reciever is the empty list.
 	public func isEmpty() -> Bool {
-		switch self {
-		case .Nil:
-			return true
-		default:
-			return false
-		}
+		return self.len == 0
 	}
 
 	/// Returns the length of the list.
 	///
 	/// For infinite lists this function will diverge.
 	public func length() -> Int {
-		var c = 0
-		for x in self {
-			c++
-		}
-		return c
+		return self.len
 	}
 
 	/// Maps a function over the list.
 	public func map<B>(f : A -> B) -> List<B> {
-		if self.isEmpty() {
-			return .Nil
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(hd, tl):
+			return List<B>(f(hd), tl.map(f))
 		}
-		return List<B>(f(self.head()!), self.tail()!.map(f))
 	}
 
-	public func append(rhs: List<A>) -> List<A> {
-		var l = rhs
-		for x in self.reverse() {
-			l = List(x, l)
+	/// Appends two lists together.
+	public func append(rhs : List<A>) -> List<A> {
+		switch self.match() {
+		case .Nil:
+			return rhs
+		case let .Cons(x, xs):
+			return List.cons(x, tail: xs.append(rhs))
 		}
-		return l
 	}
 
 	/// Maps a function over a list and concatenates the results.
 	public func concatMap<B>(f : A -> List<B>) -> List<B> {
-		return self.reduce({ l, r in l.append(f(r)) }, initial: List<B>.Nil)
+		return self.reduce({ l, r in l.append(f(r)) }, initial: List<B>())
 	}
 
 	/// Returns a list of elements satisfying a predicate.
 	public func filter(p : A -> Bool) -> List<A> {
-		switch self {
+		switch self.match() {
 		case .Nil:
-			return .Nil
+			return []
 		case let .Cons(x, xs):
-			return p(x()) ? List(x(), xs().filter(p)) : xs().filter(p)
+			return p(x) ? List(x, xs.filter(p)) : xs.filter(p)
 		}
 	}
 
 	/// Applies a binary operator to reduce the elements of a list to a single value.
-	public func reduce<B>(f : B -> A -> B, initial: B) -> B {
-		var xs = initial
-		for x in self {
-			xs = f(xs)(x)
+	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
+		switch self.match() {
+		case .Nil:
+			return initial
+		case let .Cons(x, xs):
+			return xs.reduce(f, initial: f(initial)(x))
 		}
-		return xs
 	}
 
 	/// Applies a binary operator to reduce the elements of a list to a single value.
-	public func reduce<B>(f : (B, A) -> B, initial: B) -> B {
-		var xs = initial
-		for x in self {
-			xs = f(xs, x)
+	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
+		switch self.match() {
+		case .Nil:
+			return initial
+		case let .Cons(x, xs):
+			return xs.reduce(f, initial: f(initial, x))
 		}
-		return xs
 	}
 
 	/// Returns a list of successive applications of a function to the elements of a list.
@@ -144,39 +170,76 @@ public enum List<A> {
 	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
 	///
 	/// [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
-	public func scanl<B>(f : B -> A -> B, initial: B) -> List<B> {
-		var acc = initial
-		var l : List<B> = .Nil
-		for x in self {
-			l = List<B>(acc, l)
-			acc = f(acc)(x)
+	public func scanl<B>(f : B -> A -> B, initial : B) -> List<B> {
+		switch self.match() {
+		case .Nil:
+			return List<B>(initial)
+		case let .Cons(x, xs):
+			return List<B>.cons(initial, tail: xs.scanl(f, initial: f(initial)(x)))
 		}
-		return List<B>(acc, l).reverse()
+	}
+
+	/// Returns a list of successive applications of a function to the elements of a list.
+	///
+	/// e.g.
+	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z, x0), f(f(z, x0), x1), f(f(f(z, x2), x1), x0)]
+	///
+	/// [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	public func scanl<B>(f : (B, A) -> B, initial : B) -> List<B> {
+		switch self.match() {
+		case .Nil:
+			return List<B>(initial)
+		case let .Cons(x, xs):
+			return List<B>.cons(initial, tail: xs.scanl(f, initial: f(initial, x)))
+		}
 	}
 
 	/// Like scanl but draws its initial value from the first element of the list itself.
-	///
-	/// This function is partial with respect to the empty list.
 	public func scanl1(f : A -> A -> A) -> List<A> {
-		return self.tail()!.scanl(f, initial: self.head()!)
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
+			return xs.scanl(f, initial: x)
+		}
+	}
+
+	/// Like scanl but draws its initial value from the first element of the list itself.
+	public func scanl1(f : (A, A) -> A) -> List<A> {
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
+			return xs.scanl(f, initial: x)
+		}
 	}
 
 	/// Returns the first n elements of a list.
 	public func take(n : UInt) -> List<A> {
-		var l = List<A>.Nil
-		for x in lazy(0..<n).reverse() {
-			l = List(self[x], l)
+		if n == 0 {
+			return []
 		}
-		return l
+
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
+			return List.cons(x, tail: xs.take(n - 1))
+		}
 	}
 
 	/// Returns the remaining list after dropping n elements from a list.
 	public func drop(n : UInt) -> List<A> {
-		var l = self
-		for x in 0..<n {
-			l = l.tail() ?? .Nil
+		if n == 0 {
+			return self
 		}
-		return l
+
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
+			return xs.drop(n - 1)
+		}
 	}
 
 	/// Returns a tuple of the first n elements and the remainder of the list.
@@ -186,37 +249,39 @@ public enum List<A> {
 
 	/// Returns a list of the longest prefix of elements satisfying a predicate.
 	public func takeWhile(p : A -> Bool) -> List<A> {
-		var l = List<A>.Nil
-		for x in self {
-			if !p(x) {
-				break
+		switch self.match() {
+		case .Nil:
+			return []
+		case .Cons(let x, let xs):
+			if p(x) {
+				return List.cons(x, tail: xs.takeWhile(p))
 			}
-			l = List(x, l)
+			return []
 		}
-		return l
 	}
 
 	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
 	/// predicate has been removed.
 	public func dropWhile(p : A -> Bool) -> List<A> {
-		var l = self
-		for x in self {
+		switch self.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
 			if p(x) {
-				l = l.tail() ?? .Nil
+				return xs.dropWhile(p)
 			}
+			return self
 		}
-		return l
 	}
-
 
 	/// Reverse the list
 	public func reverse() -> List<A> {
-		return self.reduce({ l, r in List<A>.cons(r)(l) }, initial: List<A>.Nil)
+		return self.reduce(flip(List.cons), initial: [])
 	}
 
 	/// Given a predicate, searches the list until it find the first match, and returns that,
 	/// or None if no match was found.
-	public func find(pred: A -> Bool) -> A? {
+	public func find(pred: A -> Bool) -> Optional<A> {
 		for x in self {
 			if pred(x) {
 				return x
@@ -227,7 +292,7 @@ public enum List<A> {
 
 	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
 	/// and a key and returns the value for the given key, if there is one, or None otherwise.
-	public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> V? {
+	public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> Optional<V> {
 		let pred: (K, V) -> Bool = { (k, _) in k == key }
 		let val: (K, V) -> V = { (_, v) in v }
 		return (({ val(ev($0)) }) <^> self.find({ pred(ev($0)) }))
@@ -236,24 +301,20 @@ public enum List<A> {
 
 /// Flattens a list of lists into a single lists.
 public func concat<A>(xss : List<List<A>>) -> List<A> {
-	return xss.reduce(+, initial: .Nil)
+	return xss.reduce(+, initial: [])
 }
 
 /// Appends two lists together.
 public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
-	var l = rhs
-	for x in lhs.reverse() {
-		l = List(x, l)
-	}
-	return l
+	return lhs.append(rhs)
 }
 
 public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
-	switch (lhs, rhs) {
+	switch (lhs.match(), rhs.match()) {
 	case (.Nil, .Nil):
 		return true
 	case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
-		return lHead() == rHead() && lTail() == rTail()
+		return lHead == rHead && lTail == rTail
 	default:
 		return false
 	}
@@ -268,6 +329,7 @@ extension List : ArrayLiteralConvertible {
 		while let x : A = g.next() {
 			xs.append(x)
 		}
+
 		var l = List()
 		for x in xs.reverse() {
 			l = List(x, l)
@@ -277,12 +339,18 @@ extension List : ArrayLiteralConvertible {
 }
 
 public final class ListGenerator<A> : GeneratorType {
-	var l : List<A>?
-	public func next() -> A? {
-		var r = l?.head()
-		l = self.l?.tail()
-		return r
+	var l : List<A>
+
+	public func next() -> Optional<A> {
+		if l.len == 0 {
+			return nil
+		}
+
+		let (hd, tl) = l.next()
+		l = tl
+		return hd
 	}
+
 	public init(_ l : List<A>) {
 		self.l = l
 	}
@@ -315,7 +383,7 @@ extension List : Applicative {
 	typealias FAB = List<A -> B>
 
 	public static func pure(a: A) -> List<A> {
-		return List(a, List<A>.Nil)
+		return List(a, [])
 	}
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {

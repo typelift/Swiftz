@@ -22,13 +22,13 @@ class DataTests: XCTestCase {
 		let re: String? = xs.lookup(identity, key: 1)
 		XCTAssert(re! == "one")
 		
-//		self.measureBlock() {
-//			var lst: List<Int> = List()
-//			for x : Int in (0..<2600) {
-//				lst = List(x, lst)
-//			}
-//			XCTAssert(lst.length() == 2600)
-//		}
+		self.measureBlock() {
+			var lst: List<Int> = List()
+			for x : Int in (0..<2600) {
+				lst = List(x, lst)
+			}
+			XCTAssert(lst.length() == 2600)
+		}
 	}
 
 	func testListCombinators() {
