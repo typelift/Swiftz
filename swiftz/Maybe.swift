@@ -61,16 +61,20 @@ extension Maybe : BooleanType {
 
 /// MARK: Equatable
 
-public func ==<A: Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
+public func ==<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
 		return true
 	}
-
-	if lhs && rhs {
+	
+	if lhs.isJust() && rhs.isJust() {
 		return lhs.fromJust() == rhs.fromJust()
 	}
-
+	
 	return false
+}
+
+public func !=<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
+	return !(lhs == rhs)
 }
 
 /// MARK: Functor
