@@ -33,7 +33,7 @@
 		593C9141193DE6AC0067F2BE /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C9140193DE6AB0067F2BE /* ArrayExt.swift */; };
 		593E7389193F16B10071B91D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593E7388193F16B10071B91D /* Future.swift */; };
 		5951313C19406DA600AB490C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
-		595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E3C391950537C00916AF4 /* MaybeFunctor.swift */; };
+		595E3C3A1950537C00916AF4 /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E3C391950537C00916AF4 /* Maybe.swift */; };
 		597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB1471946FC51002DF62D /* NonEmptyList.swift */; };
 		59853A051967F99500A3158C /* swiftz_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 59853A041967F99500A3158C /* swiftz_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59853A0B1967F99600A3158C /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59853A001967F99500A3158C /* swiftz.framework */; };
@@ -60,7 +60,7 @@
 		59853A341967F9F100A3158C /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592A122819435308003BF787 /* Lens.swift */; };
 		59853A351967F9F100A3158C /* Num.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C50C3C193DEB8100FE8C86 /* Num.swift */; };
 		59853A361967F9F100A3158C /* NonEmptyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB1471946FC51002DF62D /* NonEmptyList.swift */; };
-		59853A371967F9F100A3158C /* MaybeFunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E3C391950537C00916AF4 /* MaybeFunctor.swift */; };
+		59853A371967F9F100A3158C /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E3C391950537C00916AF4 /* Maybe.swift */; };
 		59853A381967F9F100A3158C /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913E193DDC610067F2BE /* Semigroup.swift */; };
 		59853A391967F9F100A3158C /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593C913C193DDC060067F2BE /* Monoid.swift */; };
 		59853A3A1967F9F100A3158C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
@@ -215,7 +215,7 @@
 		593C9140193DE6AB0067F2BE /* ArrayExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ArrayExt.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		593E7388193F16B10071B91D /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		5951313B19406DA600AB490C /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
-		595E3C391950537C00916AF4 /* MaybeFunctor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaybeFunctor.swift; sourceTree = "<group>"; };
+		595E3C391950537C00916AF4 /* Maybe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maybe.swift; sourceTree = "<group>"; };
 		597AB1471946FC51002DF62D /* NonEmptyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyList.swift; sourceTree = "<group>"; };
 		59853A001967F99500A3158C /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59853A031967F99500A3158C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 				84D405E319F87C9D00EA0A36 /* Bounded.swift */,
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
 				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
-				595E3C391950537C00916AF4 /* MaybeFunctor.swift */,
+				595E3C391950537C00916AF4 /* Maybe.swift */,
 				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				593C913C193DDC060067F2BE /* Monoid.swift */,
 				5951313B19406DA600AB490C /* JSON.swift */,
@@ -715,7 +715,7 @@
 				59853A341967F9F100A3158C /* Lens.swift in Sources */,
 				59853A351967F9F100A3158C /* Num.swift in Sources */,
 				59853A361967F9F100A3158C /* NonEmptyList.swift in Sources */,
-				59853A371967F9F100A3158C /* MaybeFunctor.swift in Sources */,
+				59853A371967F9F100A3158C /* Maybe.swift in Sources */,
 				8453AF761A4BB0FA0086BED5 /* Array.swift in Sources */,
 				59853A381967F9F100A3158C /* Semigroup.swift in Sources */,
 				59853A391967F9F100A3158C /* Monoid.swift in Sources */,
@@ -818,7 +818,7 @@
 				847F3E6B1A2295730091B9D0 /* Functor.swift in Sources */,
 				1168A5C01990104A005AD7F3 /* IxMultiStore.swift in Sources */,
 				8453AF851A4BB0FA0086BED5 /* Result.swift in Sources */,
-				595E3C3A1950537C00916AF4 /* MaybeFunctor.swift in Sources */,
+				595E3C3A1950537C00916AF4 /* Maybe.swift in Sources */,
 				5908C1B8194076810024A36C /* DictionaryExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
