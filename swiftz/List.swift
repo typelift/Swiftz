@@ -29,7 +29,7 @@ public struct List<A> {
 
 	/// Construct a list with no head or tail.
 	public init() {
-		self.init((error("The empty list has no head"), error("The empty list has no tail")))
+		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the emepty list.")))
 	}
 
 	/// Construct a list with a given head and tail.
