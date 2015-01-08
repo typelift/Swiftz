@@ -29,7 +29,7 @@ public struct List<A> {
 
 	/// Constructs the empty list.
 	public init() {
-		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the emepty list.")), isEmpty: true)
+		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")), isEmpty: true)
 	}
 
 	/// Construct a list with a given head and tail.
@@ -109,7 +109,7 @@ public struct List<A> {
 
 	/// Returns the length of the list.
 	///
-	/// For infinite lists this function will diverge.
+	/// For infinite lists this function will throw an exception.
 	public func length() -> UInt {
 		if self.len == -1 {
 			return error("Cannot take the length of an infinite list.")
