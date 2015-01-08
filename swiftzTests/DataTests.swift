@@ -29,6 +29,11 @@ class DataTests: XCTestCase {
 			}
 			XCTAssert(lst.length() == 2600)
 		}
+
+		let nats = List.iterate(+1, initial: 0)
+		XCTAssertTrue(nats[0] == 0)
+		XCTAssertTrue(nats[1] == 1)
+		XCTAssertTrue(nats[2] == 2)
 	}
 
 	func testListCombinators() {

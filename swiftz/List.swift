@@ -21,15 +21,15 @@ public struct List<A> {
 	let len : Int
 	let next : () -> (head : A, tail : List<A>)
 
-	/// Constructs the empty list.
-	init(_ next : @autoclosure () -> (head : A, tail : List<A>)) {
-		self.len = 0
+	/// Constructs a potentially infinite list.
+	init(_ next : @autoclosure () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
+		self.len = isEmpty ? 0 : -1
 		self.next = next
 	}
 
-	/// Construct a list with no head or tail.
+	/// Constructs the empty list.
 	public init() {
-		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the emepty list.")))
+		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the emepty list.")), isEmpty: true)
 	}
 
 	/// Construct a list with a given head and tail.
@@ -100,6 +100,11 @@ public struct List<A> {
 	/// Returns whether or not the reciever is the empty list.
 	public func isEmpty() -> Bool {
 		return self.len == 0
+	}
+
+	/// Returns whether or not the reciever is a potentially infinite list.
+	public func isFinite() -> Bool {
+		return self.len != -1
 	}
 
 	/// Returns the length of the list.
@@ -293,12 +298,16 @@ public struct List<A> {
 		return nil
 	}
 
-	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function(pass the identity function)
-	/// and a key and returns the value for the given key, if there is one, or None otherwise.
-	public func lookup<K: Equatable, V>(ev: A -> (K, V), key: K) -> Optional<V> {
-		let pred: (K, V) -> Bool = { (k, _) in k == key }
-		let val: (K, V) -> V = { (_, v) in v }
-		return (({ val(ev($0)) }) <^> self.find({ pred(ev($0)) }))
+	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity 
+	/// function) and a key and returns the value for the given key, if there is one, or None 
+	/// otherwise.
+	public func lookup<K : Equatable, V>(ev : A -> (K, V), key : K) -> Optional<V> {
+		return { ev($0).1 } <^> self.find({ ev($0).0 == key })
+	}
+
+	/// Returns a List of an infinite number of iteratations of applications of a function to a value.
+	public static func iterate(f : A -> A, initial : A) -> List<A> {
+		return List((initial, iterate(f, initial: f(initial))))
 	}
 }
 
