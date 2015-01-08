@@ -414,12 +414,26 @@ extension List : SequenceType {
 	}
 }
 
+extension List : CollectionType {
+	public typealias Index = UInt
+
+	public var startIndex: UInt { get { return 0 } }
+
+	public var endIndex: UInt {
+		get {
+			return self.isFinite() ? self.length() : error("An infinite list has no end index.")
+		}
+	}
+}
+
 extension List : Printable {
 	public var description : String {
 		var x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }
+
+/// MARK: Control.*
 
 extension List : Functor {
 	typealias B = Any
