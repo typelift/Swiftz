@@ -309,6 +309,12 @@ public struct List<A> {
 	public static func iterate(f : A -> A, initial : A) -> List<A> {
 		return List((initial, iterate(f, initial: f(initial))))
 	}
+
+	/// Cycles a finite list into an infinite list.
+	public func cycle() -> List<A> {
+		let (hd, tl) = self.next()
+		return List((hd, (tl + [hd]).cycle()))
+	}
 }
 
 /// Flattens a list of lists into a single lists.

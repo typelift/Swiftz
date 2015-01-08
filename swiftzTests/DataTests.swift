@@ -34,6 +34,12 @@ class DataTests: XCTestCase {
 		XCTAssertTrue(nats[0] == 0)
 		XCTAssertTrue(nats[1] == 1)
 		XCTAssertTrue(nats[2] == 2)
+
+		let finite : List<Int> = [1, 2, 3, 4, 5]
+		let cycle = finite.cycle()
+		for i : UInt in (0...100) {
+			XCTAssertTrue(cycle[i] == finite[(i % 5)])
+		}
 	}
 
 	func testListCombinators() {
