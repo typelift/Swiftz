@@ -14,7 +14,7 @@ public enum ListMatcher<A> {
 	case Cons(A, List<A>)
 }
 
-/// A lazy ordered sequence of values.
+/// A lazy ordered sequence of homogenous values.
 ///
 /// Unlike an Array, a List can potentially represent an infinite sequence of values.
 public struct List<A> {
@@ -42,7 +42,7 @@ public struct List<A> {
 		self.next = { (head, tail) }
 	}
 
-	/// Appends and element onto the front of a list.
+	/// Appends an element onto the front of a list.
 	public static func cons(head : A, tail : List<A>) -> List<A> {
 		return List(head, tail)
 	}
