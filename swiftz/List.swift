@@ -16,7 +16,20 @@ public enum ListMatcher<A> {
 
 /// A lazy ordered sequence of homogenous values.
 ///
-/// Unlike an Array, a List can potentially represent an infinite sequence of values.
+/// A List is typically constructed by two primitives: Nil and Cons.  Due to limitations of the
+/// language, we instead provide a nullary constructor for Nil and a Cons Constructor and an actual
+/// static function named `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
+/// isomorphic to the traditional inductive definition.  As such, the method `match()` is provided
+/// that allows the list to be destructured into a more traditional `Nil | Cons(A, List<A>)` form
+/// that is also compatible with switch-case blocks.
+///
+/// This kind of list is optimized for access to its length, which always occurs in O(1), and
+/// modifications to its head, which always occur in O(1).  Access to the elements occurs in O(n).
+///
+/// Unlike an Array, a List can potentially represent an infinite sequence of values.  Because the
+/// List holds these values in a lazy manner, certain primitives like iteration or reversing the 
+/// list will force evaluation of the entire list.  For infinite lists this can lead to a program 
+/// diverging.
 public struct List<A> {
 	let len : Int
 	let next : () -> (head : A, tail : List<A>)
@@ -28,6 +41,8 @@ public struct List<A> {
 	}
 
 	/// Constructs the empty list.
+	///
+	/// Attempts to access the head or tail of this list in an unsafe manner will throw an exception.
 	public init() {
 		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")), isEmpty: true)
 	}
@@ -47,7 +62,8 @@ public struct List<A> {
 		return List(head, tail)
 	}
 
-	/// Destructures a list into its constituent parts or Nil.
+	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
+	/// the result is Cons(head, tail).
 	public func match() -> ListMatcher<A> {
 		if self.len == 0 {
 			return .Nil
@@ -57,6 +73,8 @@ public struct List<A> {
 	}
 
 	/// Indexes into an array.
+	///
+	/// Indexing into the empty list will throw an exception.
 	public subscript(n : UInt) -> A {
 		switch self.match() {
 		case .Nil:
@@ -77,7 +95,7 @@ public struct List<A> {
 		return l
 	}
 
-	/// Returns the first element in the list, or None, if the list is empty.
+	/// Returns the first element in the list, or None if the list is empty.
 	public func head() -> Optional<A> {
 		switch self.match() {
 		case .Nil:
@@ -87,7 +105,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the tail of the list, or None if the list is Empty.
+	/// Returns the tail of the list, or None if the list is empty.
 	public func tail() -> Optional<List<A>> {
 		switch self.match() {
 		case .Nil:
@@ -102,7 +120,10 @@ public struct List<A> {
 		return self.len == 0
 	}
 
-	/// Returns whether or not the reciever is a potentially infinite list.
+	/// Returns whether or not the reciever has a countable number of elements.
+	///
+	/// It may be dangerous to attempt to iterate over an infinite list of values because the loop
+	/// will never terminate.
 	public func isFinite() -> Bool {
 		return self.len != -1
 	}
@@ -117,7 +138,7 @@ public struct List<A> {
 		return UInt(self.len)
 	}
 
-	/// Maps a function over the list.
+	/// Yields a new list by applying a function to each element of the reciever.
 	public func map<B>(f : A -> B) -> List<B> {
 		switch self.match() {
 		case .Nil:
@@ -128,6 +149,8 @@ public struct List<A> {
 	}
 
 	/// Appends two lists together.
+	///
+	/// If the reciever is infinite, the result of this function will be the reciever itself.
 	public func append(rhs : List<A>) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -152,7 +175,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of a list to a single value.
+	/// Applies a binary operator to reduce the elements of the reciever to a single value.
 	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
 		switch self.match() {
 		case .Nil:
@@ -162,7 +185,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of a list to a single value.
+	/// Applies a binary operator to reduce the elements of the reciever to a single value.
 	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
 		switch self.match() {
 		case .Nil:
@@ -172,12 +195,13 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of a list.
+	/// Returns a list of successive applications of a function to the elements of the reciever.
 	///
 	/// e.g.
-	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
 	///
-	/// [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
+	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	///
 	public func scanl<B>(f : B -> A -> B, initial : B) -> List<B> {
 		switch self.match() {
 		case .Nil:
@@ -187,12 +211,13 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of a list.
+	/// Returns a list of successive applications of a function to the elements of the reciever.
 	///
 	/// e.g.
-	/// [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z, x0), f(f(z, x0), x1), f(f(f(z, x2), x1), x0)]
 	///
-	/// [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z, x0), f(f(z, x0), x1), f(f(f(z, x2), x1), x0)]
+	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
+	///
 	public func scanl<B>(f : (B, A) -> B, initial : B) -> List<B> {
 		switch self.match() {
 		case .Nil:
@@ -202,7 +227,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the list itself.
+	/// Like scanl but draws its initial value from the first element of the reciever itself.
 	public func scanl1(f : A -> A -> A) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -212,7 +237,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the list itself.
+	/// Like scanl but draws its initial value from the first element of the reciever itself.
 	public func scanl1(f : (A, A) -> A) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -222,7 +247,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the first n elements of a list.
+	/// Returns the first n elements of the reciever.
 	public func take(n : UInt) -> List<A> {
 		if n == 0 {
 			return []
@@ -236,7 +261,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the remaining list after dropping n elements from a list.
+	/// Returns the remaining list after dropping n elements from the reciever.
 	public func drop(n : UInt) -> List<A> {
 		if n == 0 {
 			return self
@@ -282,13 +307,17 @@ public struct List<A> {
 		}
 	}
 
-	/// Reverse the list
+	/// Returns the elements of the reciever in reverse order.
+	///
+	/// For infinite lists this function will diverge.
 	public func reverse() -> List<A> {
 		return self.reduce(flip(List.cons), initial: [])
 	}
 
 	/// Given a predicate, searches the list until it find the first match, and returns that,
 	/// or None if no match was found.
+	///
+	/// For infinite lists this function will diverge.
 	public func find(pred: A -> Bool) -> Optional<A> {
 		for x in self {
 			if pred(x) {
@@ -305,7 +334,8 @@ public struct List<A> {
 		return { ev($0).1 } <^> self.find({ ev($0).0 == key })
 	}
 
-	/// Returns a List of an infinite number of iteratations of applications of a function to a value.
+	/// Returns a List of an infinite number of iteratations of applications of a function to an
+	/// initial value.
 	public static func iterate(f : A -> A, initial : A) -> List<A> {
 		return List((initial, iterate(f, initial: f(initial))))
 	}
@@ -327,6 +357,8 @@ public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	return lhs.append(rhs)
 }
 
+/// MARK: Equatable
+
 public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 	case (.Nil, .Nil):
@@ -337,6 +369,8 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 		return false
 	}
 }
+
+/// MARK: Collection Protocols
 
 extension List : ArrayLiteralConvertible {
 	typealias Element = A
