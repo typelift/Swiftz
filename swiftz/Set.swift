@@ -223,10 +223,6 @@ public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 
 /// MARK: Functor
 
-public func pure<A>(a : A) -> Set<A> {
-	return Set(arrayLiteral: a)
-}
-
 public func <^><A, B>(f : A -> B, set : Set<A>) -> Set<B> {
 	return set.map(f)
 }

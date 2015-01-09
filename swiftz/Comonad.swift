@@ -12,9 +12,6 @@
 public protocol Comonad : Copointed, Functor {
 	typealias FFA = K1<Self>
 
-	/// Uses the surrounding context to compute a value.
-	func extract() -> A
-
 	/// Duplicates the surrounding comonadic context and embeds the reciever in it.
 	func duplicate() -> FFA
 

@@ -11,3 +11,33 @@ public protocol Pointed {
 	typealias A
 	class func pure(A) -> Self
 }
+
+extension Box : Pointed {
+	typealias A = T
+
+	public class func pure(x : T) -> Box<T> {
+		return Box(x)
+	}
+}
+
+extension Result : Pointed {
+	typealias A = V
+
+	public static func pure(x : V) -> Result<V> {
+		return Result.value(x)
+	}
+}
+
+extension Either : Pointed {
+	typealias A = R
+
+	public static func pure(r : R) -> Either<L, R> {
+		return Either.right(r)
+	}
+}
+
+extension Set : Pointed {
+	public static func pure(x : A) -> Set<A> {
+		return Set(arrayLiteral: x)
+	}
+}
