@@ -33,10 +33,6 @@ public struct ArrayZipper<A> : ArrayLiteralConvertible {
 		return f <^> self
 	}
 
-	public func extract() -> A {
-		return self.values[self.position]
-	}
-
 	public func duplicate() -> ArrayZipper<ArrayZipper<A>> {
 		return ArrayZipper<ArrayZipper<A>>((0 ..< self.values.count).map { ArrayZipper(self.values, $0) }, self.position)
 	}
@@ -60,4 +56,10 @@ public func <^><A, B>(f : A -> B, xz : ArrayZipper<A>) -> ArrayZipper<B> {
 
 public func ->><A, B>(xz : ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
 	return ArrayZipper((0 ..< xz.values.count).map { f(ArrayZipper(xz.values, $0)) }, xz.position)
+}
+
+extension ArrayZipper : Copointed {
+	public func extract() -> A {
+		return self.values[self.position]
+	}
 }
