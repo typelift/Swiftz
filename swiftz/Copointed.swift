@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-
 public protocol Copointed : Functor {	
 	func extract() -> A
 }
