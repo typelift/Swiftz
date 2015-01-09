@@ -13,8 +13,6 @@ public protocol Pointed {
 }
 
 extension Box : Pointed {
-	typealias A = T
-
 	public class func pure(x : T) -> Box<T> {
 		return Box(x)
 	}

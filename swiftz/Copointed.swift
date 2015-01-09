@@ -11,11 +11,3 @@ public protocol Copointed {
 	typealias A
 	func extract() -> A
 }
-
-extension Box : Copointed {
-	public func extract() -> A {
-		return self.value
-	}
-}
-
-
