@@ -303,19 +303,23 @@
 		590BE976193DA939003DAC87 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				847F3E731A2295C20091B9D0 /* List.swift */,
 				1168A5BD198F74A6005AD7F3 /* ArrayZipper.swift */,
 				84D405E319F87C9D00EA0A36 /* Bounded.swift */,
+				5919722A1952ED9B008FBC51 /* HList.swift */,
+				5951313B19406DA600AB490C /* JSON.swift */,
+				847F3E731A2295C20091B9D0 /* List.swift */,
+				595E3C391950537C00916AF4 /* MaybeFunctor.swift */,
 				59C50C3C193DEB8100FE8C86 /* Num.swift */,
 				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
 				595E3C391950537C00916AF4 /* Maybe.swift */,
 				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				593C913C193DDC060067F2BE /* Monoid.swift */,
-				5951313B19406DA600AB490C /* JSON.swift */,
+				597AB1471946FC51002DF62D /* NonEmptyList.swift */,
+				59C50C3C193DEB8100FE8C86 /* Num.swift */,
+				593C913E193DDC610067F2BE /* Semigroup.swift */,
 				DB76117A19439C8300A0AF82 /* Set.swift */,
 				84452CB81A266B4A00CE192A /* Those.swift */,
 				5919722D1952F2BC008FBC51 /* Tuple.swift */,
-				5919722A1952ED9B008FBC51 /* HList.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
