@@ -7,15 +7,19 @@
 //
 
 import Dispatch
-import swiftz_core
 
+/// Represents a value that has yet to be computed.  Futures are always paired with an
+/// ExecutionContext that dictates where and how work is done.
+///
+/// The results of the computation that is performed when a Future is forced occur on a private 
+/// background thread, but are delivered through the calling thread via a blocking operation.
 public final class Future<A> : K1<A> {
 	var value: A?
 
 	// The resultQueue is used to read the result. It begins suspended
 	// and is resumed once a result exists.
 	// FIXME: Would like to add a uniqueid to the label
-	let resultQueue = dispatch_queue_create("swift.future", DISPATCH_QUEUE_CONCURRENT)
+	let resultQueue = dispatch_queue_create("com.typelift.swift.future.resultQueue", DISPATCH_QUEUE_CONCURRENT)
 
 	let execCtx: ExecutionContext // for map
 	public init(exec: ExecutionContext) {
@@ -37,12 +41,7 @@ public final class Future<A> : K1<A> {
 		exec.submit(self, work: a)
 	}
 
-	internal func sig(x: A) {
-		assert(self.value == nil, "Future cannot complete more than once")
-		self.value = x
-		dispatch_resume(self.resultQueue)
-	}
-
+	/// Forces a value to be computed 
 	public func result() -> A {
 		var result : A? = nil
 		dispatch_sync(resultQueue, {
@@ -51,6 +50,14 @@ public final class Future<A> : K1<A> {
 		return result!
 	}
 
+	internal func sig(x: A) {
+		assert(self.value == nil, "Future cannot complete more than once")
+		self.value = x
+		dispatch_resume(self.resultQueue)
+	}
+
+	/// Returns a future that maps the results of the reciever through a function in the same
+	/// execution context.
 	public func map<B>(f: A -> B) -> Future<B> {
 		return Future<B>(exec: execCtx, { f(self.result()) })
 	}

@@ -7,34 +7,40 @@
 //
 
 import Darwin
-import swiftz_core
 
-public struct Set<A: Hashable> : SequenceType {
-	let bucket:Dictionary<A, Bool> = Dictionary()
+/// An immutable unordered sequence of distinct values.  Values are checked for uniqueness using 
+/// their hashes.
+public struct Set<A : Hashable> {
+	let bucket : Dictionary<A, Bool> = Dictionary()
 
-	var array:[A] {
+	var array : [A] {
 		var arr = [A]()
-			for (key, _) in bucket {
-				arr.append(key)
-			}
-			return arr
-
+		for (key, _) in bucket {
+			arr.append(key)
+		}
+		return arr
 	}
 
-	public var count:Int {
+	public var count : Int {
 		return bucket.count
 	}
 
-	public init() {
-		// an empty set
-	}
+	/// Returns an empty set.
+	public init() { }
 
-	public init(array:[A]) {
+	/// Creates a set from an array of objects.
+	///
+	/// If there are multiple objects contained in the set that are not distinct, the last of any 
+	/// such objects are what will remain in the returned set.
+	public init(array : [A]) {
 		for obj in array {
 			bucket[obj] = true
 		}
 	}
 
+	/// Retrieves a random element from the reciever.
+	///
+	/// If the reciever has no values this function will return nil.
 	public func any() -> A? {
 		let ar = self.array
 		if ar.isEmpty {
@@ -45,7 +51,8 @@ public struct Set<A: Hashable> : SequenceType {
 		}
 	}
 
-	public func contains(item:A) -> Bool {
+	/// Returns whether the reciever contains a given value.
+	public func contains(item : A) -> Bool {
 		if let c = bucket[item] {
 			return c
 		} else {
@@ -53,7 +60,9 @@ public struct Set<A: Hashable> : SequenceType {
 		}
 	}
 
-	public func containsAll(set:Set<A>) -> Bool {
+	/// Returns whether the reciever contains all of the items from another set.  That is, returns
+	/// whether or not the reciever is the superset of a given set.
+	public func containsAll(set : Set<A>) -> Bool {
 		var count = 0
 		for x in self {
 			if let memb = set.member(x) {
@@ -64,7 +73,8 @@ public struct Set<A: Hashable> : SequenceType {
 		return self.count == count
 	}
 
-	public func member(item:A) -> A? {
+	/// Checks whether a given value is in the set.  If it is that value is returned, else nil.
+	public func member(item : A) -> A? {
 		if self.contains(item) {
 			return .Some(item)
 		} else {
@@ -72,7 +82,8 @@ public struct Set<A: Hashable> : SequenceType {
 		}
 	}
 
-	public func interectsSet(set:Set<A>) -> Bool {
+	/// Returns whether the reciever and a given set intersect at any point.
+	public func interectsSet(set : Set<A>) -> Bool {
 		for x in set {
 			if self.contains(x) {
 				return true
@@ -81,8 +92,9 @@ public struct Set<A: Hashable> : SequenceType {
 		return false
 	}
 
-	public func intersect(set:Set<A>) -> Set<A> {
-		var array:[A] = Array()
+	/// Computes and returns the intersection of the reciever and a given set.
+	public func intersect(set : Set<A>) -> Set<A> {
+		var array = [A]()
 		for x in self {
 			if let memb = set.member(x) {
 				array.append(memb)
@@ -91,8 +103,9 @@ public struct Set<A: Hashable> : SequenceType {
 		return Set(array:array)
 	}
 
-	public func minus(set:Set<A>) -> Set<A> {
-		var array:[A] = Array()
+	/// Returns a set containing the reciever's elements minus the elements of a given set.
+	public func minus(set : Set<A>) -> Set<A> {
+		var array = [A]()
 		for x in self {
 			if !set.contains(x) {
 				array.append(x)
@@ -101,13 +114,17 @@ public struct Set<A: Hashable> : SequenceType {
 		return Set(array:array)
 	}
 
-	public func union(set:Set<A>) -> Set<A> {
+	/// Computes and returns the union of the reicever and a given set.
+	public func union(set : Set<A>) -> Set<A> {
 		var current = self.array
 		current += set.array
 		return Set(array: current)
 	}
 
-	public func add(item:A) -> Set<A> {
+	/// Appends an item to the set.
+	///
+	/// If the item already exists the reciever is returned unaltered.
+	public func add(item : A) -> Set<A> {
 		if contains(item) {
 			return self
 		} else {
@@ -117,7 +134,8 @@ public struct Set<A: Hashable> : SequenceType {
 		}
 	}
 
-	public func filter(f:(A -> Bool)) -> Set<A> {
+	/// Returns the set of elements in the reciever that pass a given predicate.
+	public func filter(f : A -> Bool) -> Set<A> {
 		var array = [A]()
 		for x in self {
 			if f(x) {
@@ -127,35 +145,46 @@ public struct Set<A: Hashable> : SequenceType {
 		return Set(array: array)
 	}
 
-	public func map<B>(f:(A -> B)) -> Set<B> {
-		var array:[B] = Array()
+	/// Maps a function over the elements of the reciever and aggregates the result in a new set.
+	public func map<B>(f : A -> B) -> Set<B> {
+		var array = [B]()
 		for x in self {
 			array.append(f(x))
 		}
 
 		return Set<B>(array: array)
 	}
+}
 
+extension Set : ArrayLiteralConvertible {
+	typealias Element = A
+
+	public init(arrayLiteral elements : A...) {
+		self.init(array: elements)
+	}
+}
+
+extension Set : SequenceType {
 	public func generate() -> SetGenerator<A> {
 		let items = self.array
 		return SetGenerator(items: items[0..<items.count])
 	}
 }
 
-
 public struct SetGenerator<A> : GeneratorType {
+	var items : Slice<A>
+
 	mutating public func next() -> A?	 {
-		if items.isEmpty { return nil }
+		if items.isEmpty {
+			return nil
+		}
 		let ret = items[0]
 		items = items[1..<items.count]
 		return ret
 	}
-
-	var items:Slice<A>
-
 }
 
-extension Set : Printable,DebugPrintable {
+extension Set : Printable, DebugPrintable {
 	public var description: String {
 		return "\(self.array)"
 	}
@@ -165,12 +194,24 @@ extension Set : Printable,DebugPrintable {
 	}
 }
 
-extension Set : ArrayLiteralConvertible {
-	typealias Element = A
-	public init(arrayLiteral elements:A...) {
-		self.init(array: elements)
-	}
+/// MARK: Set Operators
+
+/// Minus | Returns a set containing the reciever's elements minus the elements of a given set.
+public func -<A>(lhs : Set<A>, rhs : Set<A>) -> Set<A> {
+	return lhs.minus(rhs)
 }
+
+/// Intersect | Computes and returns the intersection of the reciever and a given set.
+public func ∩<A>(lhs : Set<A>, rhs : Set<A>) -> Set<A> {
+	return lhs.intersect(rhs)
+}
+
+/// Union | Computes and returns the union of the reicever and a given set.
+public func ∪<A>(lhs : Set<A>, rhs : Set<A>) -> Set<A> {
+	return lhs.union(rhs)
+}
+
+/// MARK: Equatable
 
 public func ==<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 	return lhs.containsAll(rhs) && rhs.containsAll(lhs)
@@ -180,44 +221,17 @@ public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-func +=<A>(set:Set<A>, item:A) -> Set<A> {
-	if set.contains(item) {
-		return set
-	} else {
-		var arr = set.array
-		arr.append(item)
-		return Set(array:arr)
-	}
-}
+/// MARK: Functor
 
-func -<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
-	return lhs.minus(rhs)
-}
-
-func ∩<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
-	return lhs.intersect(rhs)
-}
-
-func ∪<A>(lhs:Set<A>, rhs:Set<A>) -> Set<A> {
-	return lhs.union(rhs)
-}
-
-// Set 'functions'
-
-func pure<A>(a:A) -> Set<A> {
+public func pure<A>(a : A) -> Set<A> {
 	return Set(arrayLiteral: a)
 }
 
-func <^><A, B>(f: A -> B, set:Set<A>) -> Set<B> {
+public func <^><A, B>(f : A -> B, set : Set<A>) -> Set<B> {
 	return set.map(f)
 }
 
-// Can't do applicative on a Set currently
-// func <*><A, B>(f:Set<A -> B>, a:Set<A>) -> Set<B> {
-//	return Set<B>()
-//}
-
-func >>-<A, B>(a:Set<A>, f: A -> Set<B>) -> Set<B> {
+public func >>-<A, B>(a : Set<A>, f : A -> Set<B>) -> Set<B> {
 	var se = [B]()
 	for x in a {
 		se.extend(f(x))

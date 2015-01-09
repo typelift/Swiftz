@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
 
 // N.B.:  This is the "inlining" of the indexed store comonad transformer
 // applied to the array zipper comonad
@@ -49,7 +48,7 @@ public struct IxMultiStore<O, I, A> {
 	}
 
 	public func peek(x: I) -> A {
-		return extract(put(x))
+		return put(x).extract()
 	}
 
 	public func peeks(f: O -> I) -> A {
@@ -58,7 +57,7 @@ public struct IxMultiStore<O, I, A> {
 }
 
 public func extract<I, A>(a: IxMultiStore<I, I, A>) -> A {
-	return extract(a.set)(a.pos)
+	return a.set.extract()(a.pos)
 }
 
 public func <^><O, I, A, B>(f: A -> B, a: IxMultiStore<O, I, A>) -> IxMultiStore<O, I, B> {

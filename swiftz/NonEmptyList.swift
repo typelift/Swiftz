@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz_core
-
+/// A list that may not ever be empty.
+///
+/// Traditionally partial operations on regular lists are total with non-empty lilsts.
 public struct NonEmptyList<A> {
 	public let head: Box<A>
 	public let tail: List<A>
