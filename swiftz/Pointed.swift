@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Maxwell Swadling. All rights reserved.
 //
 
+/// Functors equipped with a point taking values to instances of themselves.
 public protocol Pointed {
 	typealias A
 	class func pure(A) -> Self

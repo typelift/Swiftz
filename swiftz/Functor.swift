@@ -88,8 +88,16 @@ extension Const : Bifunctor {
 	typealias PBC = Const<B, C>
 	typealias PBD = Const<B, D>
 
-	public func bimap<B, C, D>(f : A -> B, g : C -> D) -> Const<B, D> {
+	public func bimap<B, C, D>(f : A -> B, _ g : C -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
+	}
+
+	public func leftMap<C, B>(f : A -> B) -> Const<B, C> {
+		return self.bimap(f, identity)
+	}
+
+	public func rightMap<C, D>(g : C -> D) -> Const<A, D> {
+		return self.bimap(identity, g)
 	}
 }
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+/// Functors equipped with a copoint that yields a value.
 public protocol Copointed : Functor {	
 	func extract() -> A
 }

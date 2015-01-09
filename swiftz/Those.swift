@@ -120,8 +120,8 @@ extension Those : Bifunctor {
 	typealias PAD = Those<A, D>
 	typealias PBC = Those<B, C>
 	typealias PBD = Those<B, D>
-	
-	public func bimap<B, D>(f: (A -> B), g: (C -> D)) -> Those<B, D> {
+
+	public func bimap<B, D>(f : A -> B, _ g : C -> D) -> Those<B, D> {
 		switch self {
 		case let This(x):
 			return .This(Box(f(x.value)))
@@ -130,5 +130,13 @@ extension Those : Bifunctor {
 		case let These(x, y):
 			return .These(Box(f(x.value)), Box((g(y.value))))
 		}
+	}
+
+	public func leftMap<B>(f : A -> B) -> Those<B, C> {
+		return self.bimap(f, identity)
+	}
+
+	public func rightMap<D>(g : C -> D) -> Those<A, D> {
+		return self.bimap(identity, g)
 	}
 }

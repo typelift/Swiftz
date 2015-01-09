@@ -512,13 +512,13 @@
 		847F3E6F1A2295750091B9D0 /* Typeclasses */ = {
 			isa = PBXGroup;
 			children = (
-				847F3E601A2295730091B9D0 /* Applicative.swift */,
+				847F3E631A2295730091B9D0 /* Functor.swift */,
 				847F3E611A2295730091B9D0 /* Bifunctor.swift */,
-				847F3E621A2295730091B9D0 /* Comonad.swift */,
 				847795DC1A5F85EA00D50F6C /* Pointed.swift */,
 				847795DF1A5F85FE00D50F6C /* Copointed.swift */,
-				847F3E631A2295730091B9D0 /* Functor.swift */,
+				847F3E601A2295730091B9D0 /* Applicative.swift */,
 				847F3E641A2295730091B9D0 /* Monad.swift */,
+				847F3E621A2295730091B9D0 /* Comonad.swift */,
 			);
 			name = Typeclasses;
 			path = ..;

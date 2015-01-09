@@ -189,7 +189,7 @@ class DataTests: XCTestCase {
 		XCTAssert((this.isThis() && that.isThat() && both.isThese()) == true, "")
 		XCTAssert(this.toTuple("String", r: 1) == that.toTuple("String", r: 1), "")
 		
-		XCTAssert(both.bimap(identity, g: identity) == both, "")
+		XCTAssert(both.bimap(identity, identity) == both, "")
 	}
 
 	func testFunctor() {
@@ -211,7 +211,7 @@ class DataTests: XCTestCase {
 	
 	func testConstBifunctor() {
 		let x : Const<String, String> = Const("Hello!")
-		let y : Const<String, String>  = x.bimap({ "Why, " + $0 }, g: identity)
+		let y : Const<String, String>  = x.bimap({ "Why, " + $0 }, identity)
 		XCTAssert(x.runConst != y.runConst)
 	}
 	
