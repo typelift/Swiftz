@@ -5,7 +5,7 @@ Swiftz
 
 Swiftz is a Swift library for functional programming.
 
-It defines purely functional data structure, functions, and extensions that augment the Swift standard library.
+It defines functional data structures, functions, and extensions that augment the Swift standard library.
 
 Setup
 -----
