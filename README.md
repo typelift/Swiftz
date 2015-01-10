@@ -5,14 +5,15 @@ Swiftz
 
 Swiftz is a Swift library for functional programming.
 
-It defines functional data structures, functions, and extensions that augment the Swift standard library.
+It defines functional data structures, functions, and extensions that augment 
+the Swift standard library.
 
 Setup
 -----
 
-Swiftz comes in two distinct flavors: Core and Full.  Swiftz_Core is
-a smaller and simpler way to introduce pure functional datatypes into any
-codebase.  It can be included one of two ways:
+Swiftz comes in two distinct flavors: Core and Full.  Swiftz_Core is a smaller 
+and simpler way to introduce pure functional datatypes into any codebase.  It 
+can be included one of two ways:
 
 **Framework**
 
@@ -27,8 +28,7 @@ codebase.  It can be included one of two ways:
 
 **Standalone**
 
-- Copy the swift files under `swiftz/swiftz_core/swiftz_core` into your
-  project.
+- Copy the swift files under `swiftz/swiftz_core/swiftz_core` into your project.
 
 Using the full Swiftz framework works in much the same way:
 
@@ -41,11 +41,9 @@ Using the full Swiftz framework works in much the same way:
 - Set the directory to `Frameworks`
 - Click the + and add swiftz
 
-Examples
---------
-
-**Data abstractions:**
-
+Introduction
+------------
+ 
 ```swift
 let xs: [Int8] = [1, 2, 0, 3, 4]
 
