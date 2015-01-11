@@ -38,9 +38,9 @@ public struct Set<A : Hashable> {
 		}
 	}
 
-	/// Retrieves a random element from the reciever.
+	/// Retrieves a random element from the receiver.
 	///
-	/// If the reciever has no values this function will return nil.
+	/// If the receiver has no values this function will return nil.
 	public func any() -> A? {
 		let ar = self.array
 		if ar.isEmpty {
@@ -51,7 +51,7 @@ public struct Set<A : Hashable> {
 		}
 	}
 
-	/// Returns whether the reciever contains a given value.
+	/// Returns whether the receiver contains a given value.
 	public func contains(item : A) -> Bool {
 		if let c = bucket[item] {
 			return c
@@ -60,8 +60,8 @@ public struct Set<A : Hashable> {
 		}
 	}
 
-	/// Returns whether the reciever contains all of the items from another set.  That is, returns
-	/// whether or not the reciever is the superset of a given set.
+	/// Returns whether the receiver contains all of the items from another set.  That is, returns
+	/// whether or not the receiver is the superset of a given set.
 	public func containsAll(set : Set<A>) -> Bool {
 		var count = 0
 		for x in self {
@@ -82,7 +82,7 @@ public struct Set<A : Hashable> {
 		}
 	}
 
-	/// Returns whether the reciever and a given set intersect at any point.
+	/// Returns whether the receiver and a given set intersect at any point.
 	public func interectsSet(set : Set<A>) -> Bool {
 		for x in set {
 			if self.contains(x) {
@@ -92,7 +92,7 @@ public struct Set<A : Hashable> {
 		return false
 	}
 
-	/// Computes and returns the intersection of the reciever and a given set.
+	/// Computes and returns the intersection of the receiver and a given set.
 	public func intersect(set : Set<A>) -> Set<A> {
 		var array = [A]()
 		for x in self {
@@ -103,7 +103,7 @@ public struct Set<A : Hashable> {
 		return Set(array:array)
 	}
 
-	/// Returns a set containing the reciever's elements minus the elements of a given set.
+	/// Returns a set containing the receiver's elements minus the elements of a given set.
 	public func minus(set : Set<A>) -> Set<A> {
 		var array = [A]()
 		for x in self {
@@ -123,7 +123,7 @@ public struct Set<A : Hashable> {
 
 	/// Appends an item to the set.
 	///
-	/// If the item already exists the reciever is returned unaltered.
+	/// If the item already exists the receiver is returned unaltered.
 	public func add(item : A) -> Set<A> {
 		if contains(item) {
 			return self
@@ -134,7 +134,7 @@ public struct Set<A : Hashable> {
 		}
 	}
 
-	/// Returns the set of elements in the reciever that pass a given predicate.
+	/// Returns the set of elements in the receiver that pass a given predicate.
 	public func filter(f : A -> Bool) -> Set<A> {
 		var array = [A]()
 		for x in self {
@@ -145,7 +145,7 @@ public struct Set<A : Hashable> {
 		return Set(array: array)
 	}
 
-	/// Maps a function over the elements of the reciever and aggregates the result in a new set.
+	/// Maps a function over the elements of the receiver and aggregates the result in a new set.
 	public func map<B>(f : A -> B) -> Set<B> {
 		var array = [B]()
 		for x in self {
@@ -196,12 +196,12 @@ extension Set : Printable, DebugPrintable {
 
 /// MARK: Set Operators
 
-/// Minus | Returns a set containing the reciever's elements minus the elements of a given set.
+/// Minus | Returns a set containing the receiver's elements minus the elements of a given set.
 public func -<A>(lhs : Set<A>, rhs : Set<A>) -> Set<A> {
 	return lhs.minus(rhs)
 }
 
-/// Intersect | Computes and returns the intersection of the reciever and a given set.
+/// Intersect | Computes and returns the intersection of the receiver and a given set.
 public func ∩<A>(lhs : Set<A>, rhs : Set<A>) -> Set<A> {
 	return lhs.intersect(rhs)
 }

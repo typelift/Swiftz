@@ -30,7 +30,7 @@ public struct Maybe<A> {
 		return Maybe()
 	}
 
-	/// Returns whether or not the reciever contains a value.
+	/// Returns whether or not the receiver contains a value.
 	public func isJust() -> Bool {
 		switch value {
 		case .Some(_): 
@@ -40,14 +40,14 @@ public struct Maybe<A> {
 		}
 	}
 
-	/// Returns whether or not the reciever has no value.
+	/// Returns whether or not the receiver has no value.
 	public func isNone() -> Bool {
 		return !isJust()
 	}
 
-	/// Forces a value from the reciever.
+	/// Forces a value from the receiver.
 	///
-	/// If the reciever contains no value this function will throw an exception.
+	/// If the receiver contains no value this function will throw an exception.
 	public func fromJust() -> A {
 		return self.value!
 	}
