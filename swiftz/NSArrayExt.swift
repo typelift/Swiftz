@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSArray {
-	/// Maps all elements of the reciever into a Swift Array.
+	/// Maps all elements of the receiver into a Swift Array.
 	public func mapToArray<U>(transform: AnyObject -> (U)) -> [U] {
 		var xs: [U] = Array()
 		self.enumerateObjectsUsingBlock({ (v: AnyObject?, _: Int, _: UnsafeMutablePointer<ObjCBool>) in

@@ -18,6 +18,6 @@ public protocol Applicative : Functor {
 	/// Lifts a value into the Functor.
 	class func pure(a : A) -> Self
 
-	/// Applies the function encapsulated by the Functor to the encapsulated by the reciever.
+	/// Applies the function encapsulated by the Functor to the encapsulated by the receiver.
 	func ap(f : FAB) -> FB
 }
