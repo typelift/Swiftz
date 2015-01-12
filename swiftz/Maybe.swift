@@ -93,13 +93,15 @@ extension Maybe : Functor {
 	}
 }
 
+extension Maybe : Pointed {
+	public static func pure(x : A) -> Maybe<A> {
+		return Maybe.just(x)
+	}
+}
+
 extension Maybe : Applicative {
 	typealias FA = Maybe<A>
 	typealias FAB = Maybe<A -> B>
-	
-	public static func pure(a : A) -> Maybe<A>	 {
-		return Maybe<A>.just(a)
-	}
 	
 	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {

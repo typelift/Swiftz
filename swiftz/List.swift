@@ -444,13 +444,15 @@ extension List : Functor {
 	}
 }
 
-extension List : Applicative {
-	typealias FA = List<A>
-	typealias FAB = List<A -> B>
-
+extension List : Pointed {
 	public static func pure(a: A) -> List<A> {
 		return List(a, [])
 	}
+}
+
+extension List : Applicative {
+	typealias FA = List<A>
+	typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
 		return concat(f.map({ self.map($0) }))

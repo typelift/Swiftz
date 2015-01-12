@@ -220,21 +220,3 @@ public func ==<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 public func !=<A: Equatable>(lhs:Set<A>, rhs:Set<A>) -> Bool {
 	return !(lhs == rhs)
 }
-
-/// MARK: Functor
-
-public func pure<A>(a : A) -> Set<A> {
-	return Set(arrayLiteral: a)
-}
-
-public func <^><A, B>(f : A -> B, set : Set<A>) -> Set<B> {
-	return set.map(f)
-}
-
-public func >>-<A, B>(a : Set<A>, f : A -> Set<B>) -> Set<B> {
-	var se = [B]()
-	for x in a {
-		se.extend(f(x))
-	}
-	return Set(array:se)
-}
