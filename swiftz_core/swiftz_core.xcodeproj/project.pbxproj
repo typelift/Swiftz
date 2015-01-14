@@ -349,7 +349,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Maxwell Swadling";
+				ORGANIZATIONNAME = TypeLift;
 				TargetAttributes = {
 					598539DD1967F95B00A3158C = {
 						CreatedOnToolsVersion = 6.0;
