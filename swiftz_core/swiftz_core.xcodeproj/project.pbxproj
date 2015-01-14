@@ -27,17 +27,6 @@
 		59BB9807195EFF34002C0FA1 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9806195EFF34002C0FA1 /* Operators.swift */; };
 		59BB980C195F0592002C0FA1 /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB980B195F0592002C0FA1 /* Nothing.swift */; };
 		59C7F31B195F097200530114 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31A195F097200530114 /* Box.swift */; };
-		59C7F31D195F09ED00530114 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C7F31C195F09ED00530114 /* List.swift */; };
-		8462DB6A1A244D4200E0746E /* SectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8462DB691A244D4200E0746E /* SectionTests.swift */; };
-		8462DB6B1A244D4200E0746E /* SectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8462DB691A244D4200E0746E /* SectionTests.swift */; };
-		847F3E7D1A229CA90091B9D0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E7C1A229CA90091B9D0 /* Sections.swift */; };
-		847F3E7E1A229CA90091B9D0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F3E7C1A229CA90091B9D0 /* Sections.swift */; };
-		8487947019832A90002DA439 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
-		849AA3DE1A09960300472F08 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849AA3DD1A09960300472F08 /* Kinds.swift */; };
-		849AA3DF1A09960300472F08 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849AA3DD1A09960300472F08 /* Kinds.swift */; };
-		84D77DE91A3BC534000F5683 /* Copointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DE81A3BC534000F5683 /* Copointed.swift */; };
-		84D77DEA1A3BC534000F5683 /* Copointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DE81A3BC534000F5683 /* Copointed.swift */; };
-		DB3AFD7F1991B5630094C1B9 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487946F19832A90002DA439 /* Bifunctor.swift */; };
 		8471E0751A49551900B1EECE /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8471E0741A49551900B1EECE /* Error.swift */; };
 		8471E0761A49551900B1EECE /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8471E0741A49551900B1EECE /* Error.swift */; };
 		84D77DF01A3BD2C1000F5683 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DEF1A3BD2C1000F5683 /* Sections.swift */; };
