@@ -11,7 +11,6 @@
 		59380E2719615657007B9568 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59380E2619615657007B9568 /* Result.swift */; };
 		598539E31967F95B00A3158C /* swiftz_core_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 598539E21967F95B00A3158C /* swiftz_core_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		598539E91967F95C00A3158C /* swiftz_core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598539DE1967F95B00A3158C /* swiftz_core.framework */; };
-		598539F01967F95C00A3158C /* swiftz_core_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598539EF1967F95C00A3158C /* swiftz_core_iosTests.swift */; };
 		59853A4A1967FA4800A3158C /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB97FE195EFC4B002C0FA1 /* Functions.swift */; };
 		59853A4B1967FA4800A3158C /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB9806195EFF34002C0FA1 /* Operators.swift */; };
 		59853A4C1967FA4800A3158C /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BB980B195F0592002C0FA1 /* Nothing.swift */; };
@@ -84,7 +83,6 @@
 		598539E21967F95B00A3158C /* swiftz_core_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz_core_ios.h; sourceTree = "<group>"; };
 		598539E81967F95B00A3158C /* swiftz_core_iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftz_core_iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		598539EE1967F95C00A3158C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		598539EF1967F95C00A3158C /* swiftz_core_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftz_core_iosTests.swift; sourceTree = "<group>"; };
 		59BB97DC195EFAF2002C0FA1 /* swiftz_core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz_core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59BB97E0195EFAF2002C0FA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59BB97E1195EFAF2002C0FA1 /* swiftz_core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz_core.h; sourceTree = "<group>"; };
@@ -154,7 +152,6 @@
 		598539EC1967F95C00A3158C /* swiftz_core_iosTests */ = {
 			isa = PBXGroup;
 			children = (
-				598539EF1967F95C00A3158C /* swiftz_core_iosTests.swift */,
 				598539ED1967F95C00A3158C /* Supporting Files */,
 			);
 			path = swiftz_core_iosTests;
@@ -443,7 +440,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				598539F01967F95C00A3158C /* swiftz_core_iosTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
