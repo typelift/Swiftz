@@ -37,7 +37,6 @@
 		597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB1471946FC51002DF62D /* NonEmptyList.swift */; };
 		59853A051967F99500A3158C /* swiftz_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 59853A041967F99500A3158C /* swiftz_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59853A0B1967F99600A3158C /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59853A001967F99500A3158C /* swiftz.framework */; };
-		59853A121967F99600A3158C /* swiftz_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59853A111967F99600A3158C /* swiftz_iosTests.swift */; };
 		59853A1F1967F9C600A3158C /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7CB1945944200F5B3E1 /* UserExample.swift */; };
 		59853A201967F9C600A3158C /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7CD1945945F00F5B3E1 /* PartyExample.swift */; };
 		59853A211967F9C600A3158C /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7CF194594B600F5B3E1 /* ShapeExample.swift */; };
@@ -228,7 +227,6 @@
 		59853A041967F99500A3158C /* swiftz_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz_ios.h; sourceTree = "<group>"; };
 		59853A0A1967F99600A3158C /* swiftz_iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftz_iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59853A101967F99600A3158C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		59853A111967F99600A3158C /* swiftz_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftz_iosTests.swift; sourceTree = "<group>"; };
 		59B26544193F365A007AA82B /* GCDExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDExecutionContext.swift; sourceTree = "<group>"; };
 		59B2DCB919434706002ACB3E /* TupleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleExt.swift; sourceTree = "<group>"; };
 		59B39E3D1943094F00F4B222 /* Curry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Curry.swift; sourceTree = "<group>"; };
@@ -376,7 +374,6 @@
 		59853A0E1967F99600A3158C /* swiftz_iosTests */ = {
 			isa = PBXGroup;
 			children = (
-				59853A111967F99600A3158C /* swiftz_iosTests.swift */,
 				59853A0F1967F99600A3158C /* Supporting Files */,
 			);
 			path = swiftz_iosTests;
@@ -633,7 +630,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Maxwell Swadling";
+				ORGANIZATIONNAME = TypeLift;
 				TargetAttributes = {
 					598539FF1967F99500A3158C = {
 						CreatedOnToolsVersion = 6.0;
@@ -777,7 +774,6 @@
 				59853A261967F9C600A3158C /* GenericsTests.swift in Sources */,
 				59853A291967F9C600A3158C /* ImArrayTests.swift in Sources */,
 				59853A2A1967F9C600A3158C /* SetTests.swift in Sources */,
-				59853A121967F99600A3158C /* swiftz_iosTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
