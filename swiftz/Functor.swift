@@ -46,6 +46,24 @@ extension Id : Functor {
 	}
 }
 
+extension Id : Copointed {
+	public func extract() -> A {
+		return self.a()
+	}
+}
+
+extension Id : Comonad {
+	typealias FFA = Id<Id<A>>
+	
+	public func duplicate() -> Id<Id<A>> {
+		return Id<Id<A>>(self)
+	}
+	
+	public func extend(f : Id<A> -> B) -> Id<B> {
+		return self.duplicate().fmap(f)
+	}
+}
+
 // The Constant Functor ignores fmap.
 public struct Const<A, B> {
 	private let a : @autoclosure () -> A
@@ -70,8 +88,16 @@ extension Const : Bifunctor {
 	typealias PBC = Const<B, C>
 	typealias PBD = Const<B, D>
 
-	public func bimap<B, C, D>(f : A -> B, g : C -> D) -> Const<B, D> {
+	public func bimap<B, C, D>(f : A -> B, _ g : C -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
+	}
+
+	public func leftMap<C, B>(f : A -> B) -> Const<B, C> {
+		return self.bimap(f, identity)
+	}
+
+	public func rightMap<C, D>(g : C -> D) -> Const<A, D> {
+		return self.bimap(identity, g)
 	}
 }
 

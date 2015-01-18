@@ -11,11 +11,11 @@
 
 /// Types that can serialize themselves to and from a given data format.
 public protocol Dataable {
-	/// The type of values of the reciever.
+	/// The type of values of the receiver.
 	class func typeRep() -> Any.Type
-	/// Deserializes data into a value of the type of the reciever.
+	/// Deserializes data into a value of the type of the receiver.
 	class func fromRep(r : Data) -> Self?
-	/// Serializes the reciever into data.
+	/// Serializes the receiver into data.
 	func toRep() -> Data
 }
 

@@ -28,7 +28,7 @@ public enum Those<L, R> {
 		return .These(Box(l), Box(r))
 	}
 
-	/// Returns whether the reciever contains a left value.
+	/// Returns whether the receiver contains a left value.
 	public func isThis() -> Bool {
 		switch self {
 		case .This(_):
@@ -38,7 +38,7 @@ public enum Those<L, R> {
 		}
 	}
 
-	/// Returns whether the reciever contains a right value.
+	/// Returns whether the receiver contains a right value.
 	public func isThat() -> Bool {
 		switch self {
 		case .That(_):
@@ -48,7 +48,7 @@ public enum Those<L, R> {
 		}
 	}
 
-	/// Returns whether the reciever contains both a left and right value.
+	/// Returns whether the receiver contains both a left and right value.
 	public func isThese() -> Bool {
 		switch self {
 		case .These(_, _):
@@ -72,7 +72,7 @@ public enum Those<L, R> {
 		}
 	}
 
-	/// Extracts values from the reciever filling in any missing values with given default ones.
+	/// Extracts values from the receiver filling in any missing values with given default ones.
 	public func toTuple(l : L, r : R) -> (L, R) {
 		switch self {
 		case let This(x):
@@ -120,8 +120,8 @@ extension Those : Bifunctor {
 	typealias PAD = Those<A, D>
 	typealias PBC = Those<B, C>
 	typealias PBD = Those<B, D>
-	
-	public func bimap<B, D>(f: (A -> B), g: (C -> D)) -> Those<B, D> {
+
+	public func bimap<B, D>(f : A -> B, _ g : C -> D) -> Those<B, D> {
 		switch self {
 		case let This(x):
 			return .This(Box(f(x.value)))
@@ -130,5 +130,13 @@ extension Those : Bifunctor {
 		case let These(x, y):
 			return .These(Box(f(x.value)), Box((g(y.value))))
 		}
+	}
+
+	public func leftMap<B>(f : A -> B) -> Those<B, C> {
+		return self.bimap(f, identity)
+	}
+
+	public func rightMap<D>(g : C -> D) -> Those<A, D> {
+		return self.bimap(identity, g)
 	}
 }

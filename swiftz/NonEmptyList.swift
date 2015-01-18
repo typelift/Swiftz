@@ -10,11 +10,25 @@
 ///
 /// Traditionally partial operations on regular lists are total with non-empty lilsts.
 public struct NonEmptyList<A> {
-	public let head: Box<A>
-	public let tail: List<A>
-	public init(_ a: A, _ t: List<A>) {
+	public let head : Box<A>
+	public let tail : List<A>
+
+	public init(_ a : A, _ t : List<A>) {
 		head = Box(a)
 		tail = t
+	}
+
+	public init?(_ list : List<A>) {
+		switch list.match() {
+		case .Nil:
+			return nil
+		case let .Cons(h, t):
+			self.init(h, t)
+		}
+	}
+
+	public func toList() -> List<A> {
+		return List(head.value, tail)
 	}
 }
 
@@ -86,5 +100,50 @@ extension NonEmptyList : Functor {
 	
 	public func fmap<B>(f : (A -> B)) -> NonEmptyList<B> {
 		return NonEmptyList<B>(f(self.head.value), self.tail.fmap(f))
+	}
+}
+
+extension NonEmptyList : Pointed {
+	public static func pure(x : A) -> NonEmptyList<A> {
+		return NonEmptyList(x, List())
+	}
+}
+
+extension NonEmptyList : Applicative {
+	typealias FA = NonEmptyList<A>
+	typealias FAB = NonEmptyList<A -> B>
+
+	public func ap<B>(f : NonEmptyList<A -> B>) -> NonEmptyList<B> {
+		return f.bind({ f in self.bind({ x in NonEmptyList<B>.pure(f(x)) }) })
+	}
+}
+
+extension NonEmptyList : Monad {
+	public func bind<B>(f : A -> NonEmptyList<B>) -> NonEmptyList<B> {
+		let nh = f(self.head.value)
+		return NonEmptyList<B>(nh.head.value, nh.tail + self.tail.bind { t in f(t).toList() })
+	}
+}
+
+extension NonEmptyList : Copointed {
+	public func extract() -> A {
+		return self.head.value
+	}
+}
+
+extension NonEmptyList : Comonad {
+	typealias FFA = NonEmptyList<NonEmptyList<A>>
+
+	public func duplicate() -> NonEmptyList<NonEmptyList<A>> {
+		switch NonEmptyList(self.tail) {
+		case .None:
+			return NonEmptyList<NonEmptyList<A>>(self, [])
+		case let .Some(x):
+			return NonEmptyList<NonEmptyList<A>>(self, x.duplicate().toList())
+		}
+	}
+
+	public func extend<B>(fab : NonEmptyList<A> -> B) -> NonEmptyList<B> {
+		return self.duplicate().fmap(fab)
 	}
 }

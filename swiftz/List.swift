@@ -115,12 +115,12 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns whether or not the reciever is the empty list.
+	/// Returns whether or not the receiver is the empty list.
 	public func isEmpty() -> Bool {
 		return self.len == 0
 	}
 
-	/// Returns whether or not the reciever has a countable number of elements.
+	/// Returns whether or not the receiver has a countable number of elements.
 	///
 	/// It may be dangerous to attempt to iterate over an infinite list of values because the loop
 	/// will never terminate.
@@ -138,7 +138,7 @@ public struct List<A> {
 		return UInt(self.len)
 	}
 
-	/// Yields a new list by applying a function to each element of the reciever.
+	/// Yields a new list by applying a function to each element of the receiver.
 	public func map<B>(f : A -> B) -> List<B> {
 		switch self.match() {
 		case .Nil:
@@ -150,7 +150,7 @@ public struct List<A> {
 
 	/// Appends two lists together.
 	///
-	/// If the reciever is infinite, the result of this function will be the reciever itself.
+	/// If the receiver is infinite, the result of this function will be the receiver itself.
 	public func append(rhs : List<A>) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -175,7 +175,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of the reciever to a single value.
+	/// Applies a binary operator to reduce the elements of the receiver to a single value.
 	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
 		switch self.match() {
 		case .Nil:
@@ -185,7 +185,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of the reciever to a single value.
+	/// Applies a binary operator to reduce the elements of the receiver to a single value.
 	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
 		switch self.match() {
 		case .Nil:
@@ -195,7 +195,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of the reciever.
+	/// Returns a list of successive applications of a function to the elements of the receiver.
 	///
 	/// e.g.
 	///
@@ -211,7 +211,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of the reciever.
+	/// Returns a list of successive applications of a function to the elements of the receiver.
 	///
 	/// e.g.
 	///
@@ -227,7 +227,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the reciever itself.
+	/// Like scanl but draws its initial value from the first element of the receiver itself.
 	public func scanl1(f : A -> A -> A) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -237,7 +237,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the reciever itself.
+	/// Like scanl but draws its initial value from the first element of the receiver itself.
 	public func scanl1(f : (A, A) -> A) -> List<A> {
 		switch self.match() {
 		case .Nil:
@@ -247,7 +247,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the first n elements of the reciever.
+	/// Returns the first n elements of the receiver.
 	public func take(n : UInt) -> List<A> {
 		if n == 0 {
 			return []
@@ -261,7 +261,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the remaining list after dropping n elements from the reciever.
+	/// Returns the remaining list after dropping n elements from the receiver.
 	public func drop(n : UInt) -> List<A> {
 		if n == 0 {
 			return self
@@ -307,7 +307,7 @@ public struct List<A> {
 		}
 	}
 
-	/// Returns the elements of the reciever in reverse order.
+	/// Returns the elements of the receiver in reverse order.
 	///
 	/// For infinite lists this function will diverge.
 	public func reverse() -> List<A> {
@@ -444,13 +444,15 @@ extension List : Functor {
 	}
 }
 
-extension List : Applicative {
-	typealias FA = List<A>
-	typealias FAB = List<A -> B>
-
+extension List : Pointed {
 	public static func pure(a: A) -> List<A> {
 		return List(a, [])
 	}
+}
+
+extension List : Applicative {
+	typealias FA = List<A>
+	typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
 		return concat(f.map({ self.map($0) }))

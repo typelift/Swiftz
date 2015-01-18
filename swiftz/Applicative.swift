@@ -11,13 +11,10 @@
 /// of a functor containing that value. Applicative Functors provide the ability to operate on not
 /// just values, but values in a functorial context such as Eithers, Lists, and Optionals without
 /// needing to unwrap or map over their contents.
-public protocol Applicative : Functor {
+public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 
-	/// Lifts a value into the Functor.
-	class func pure(a : A) -> Self
-
-	/// Applies the function encapsulated by the Functor to the encapsulated by the reciever.
+	/// Applies the function encapsulated by the Functor to the encapsulated by the receiver.
 	func ap(f : FAB) -> FB
 }

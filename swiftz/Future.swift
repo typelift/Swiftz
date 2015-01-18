@@ -56,7 +56,7 @@ public final class Future<A> : K1<A> {
 		dispatch_resume(self.resultQueue)
 	}
 
-	/// Returns a future that maps the results of the reciever through a function in the same
+	/// Returns a future that maps the results of the receiver through a function in the same
 	/// execution context.
 	public func map<B>(f: A -> B) -> Future<B> {
 		return Future<B>(exec: execCtx, { f(self.result()) })
