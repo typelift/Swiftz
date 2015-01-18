@@ -146,10 +146,10 @@ public protocol ArrowChoice : Arrow {
 
 	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the
 	/// output.
-	class func left(Self) -> LEFT
+	func left() -> LEFT
 
 	/// The mirror image of left.
-	class func right(Self) -> RIGHT
+	func right() -> RIGHT
 
 	/// Splat | Split the input between both argument arrows, then retag and merge their outputs
 	/// into Eithers.

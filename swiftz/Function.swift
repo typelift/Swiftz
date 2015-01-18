@@ -88,12 +88,12 @@ extension Function : ArrowChoice {
 	typealias ACD = Function<B, D>
 	typealias FANIN = Function<Either<A, B>, D>
 
-	public static func left(f : Function<A, B>) -> Function<Either<A, D>, Either<B, D>> {
-		return f +++ Function.id()
+	public func left() -> Function<Either<A, D>, Either<B, D>> {
+		return self +++ Function.id()
 	}
 
-	public static func right(f : Function<A, B>) -> Function<Either<D, A>, Either<D, B>> {
-		return Function.id() +++ f
+	public func right() -> Function<Either<D, A>, Either<D, B>> {
+		return Function.id() +++ self
 	}
 }
 
