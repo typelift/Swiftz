@@ -35,7 +35,6 @@
 		5951313C19406DA600AB490C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951313B19406DA600AB490C /* JSON.swift */; };
 		595E3C3A1950537C00916AF4 /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E3C391950537C00916AF4 /* Maybe.swift */; };
 		597AB1481946FC51002DF62D /* NonEmptyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB1471946FC51002DF62D /* NonEmptyList.swift */; };
-		59853A051967F99500A3158C /* swiftz_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 59853A041967F99500A3158C /* swiftz_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59853A0B1967F99600A3158C /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59853A001967F99500A3158C /* swiftz.framework */; };
 		59853A1F1967F9C600A3158C /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7CB1945944200F5B3E1 /* UserExample.swift */; };
 		59853A201967F9C600A3158C /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9E7CD1945945F00F5B3E1 /* PartyExample.swift */; };
@@ -229,10 +228,7 @@
 		595E3C391950537C00916AF4 /* Maybe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maybe.swift; sourceTree = "<group>"; };
 		597AB1471946FC51002DF62D /* NonEmptyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyList.swift; sourceTree = "<group>"; };
 		59853A001967F99500A3158C /* swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		59853A031967F99500A3158C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		59853A041967F99500A3158C /* swiftz_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftz_ios.h; sourceTree = "<group>"; };
 		59853A0A1967F99600A3158C /* swiftz_iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftz_iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		59853A101967F99600A3158C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59B26544193F365A007AA82B /* GCDExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDExecutionContext.swift; sourceTree = "<group>"; };
 		59B2DCB919434706002ACB3E /* TupleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleExt.swift; sourceTree = "<group>"; };
 		59B39E3D1943094F00F4B222 /* Curry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Curry.swift; sourceTree = "<group>"; };
@@ -366,39 +362,6 @@
 			name = Concurrent;
 			sourceTree = "<group>";
 		};
-		59853A011967F99500A3158C /* swiftz_ios */ = {
-			isa = PBXGroup;
-			children = (
-				59853A041967F99500A3158C /* swiftz_ios.h */,
-				59853A021967F99500A3158C /* Supporting Files */,
-			);
-			path = swiftz_ios;
-			sourceTree = "<group>";
-		};
-		59853A021967F99500A3158C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				59853A031967F99500A3158C /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		59853A0E1967F99600A3158C /* swiftz_iosTests */ = {
-			isa = PBXGroup;
-			children = (
-				59853A0F1967F99600A3158C /* Supporting Files */,
-			);
-			path = swiftz_iosTests;
-			sourceTree = "<group>";
-		};
-		59853A0F1967F99600A3158C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				59853A101967F99600A3158C /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		59B9E7CA1945943100F5B3E1 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,8 +402,6 @@
 				11B6073D196B047100AC13D6 /* LICENSE */,
 				59F35AE2193D3A0A006F1341 /* swiftz */,
 				59F35AEF193D3A0A006F1341 /* swiftzTests */,
-				59853A011967F99500A3158C /* swiftz_ios */,
-				59853A0E1967F99600A3158C /* swiftz_iosTests */,
 				59F35AE1193D3A0A006F1341 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -544,7 +505,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59853A051967F99500A3158C /* swiftz_ios.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,7 +871,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = swiftz_ios/Info.plist;
+				INFOPLIST_FILE = swiftz/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -932,7 +892,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = swiftz_ios/Info.plist;
+				INFOPLIST_FILE = swiftz/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -956,7 +916,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = swiftz_iosTests/Info.plist;
+				INFOPLIST_FILE = swiftzTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
@@ -972,7 +932,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = swiftz_iosTests/Info.plist;
+				INFOPLIST_FILE = swiftzTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
