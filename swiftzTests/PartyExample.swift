@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import XCTest
 import swiftz
 
 // A party has a host, who is a user.
 // A lens example
-public class Party {
-	let host: User
-	public init(h: User) {
+class Party {
+	let host : User
+
+	init(h : User) {
 		host = h
 	}
 
@@ -26,5 +28,17 @@ public class Party {
 		}
 
 		return Lens(get: getter, set: setter)
+	}
+}
+
+class PartySpec {
+	func testLens() {
+		let party = Party(h: User("max", 1, [], Dictionary()))
+		let hostnameLens = Party.lpartyHost() • User.luserName()
+
+		XCTAssert(hostnameLens.get(party) == "max")
+
+		let updatedParty: Party = (Party.lpartyHost() • User.luserName()).set(party, "Max")
+		XCTAssert(hostnameLens.get(updatedParty) == "Max")
 	}
 }
