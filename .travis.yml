@@ -1,9 +1,7 @@
 language: objective-c
-osx_image: xcode61
 
 script:
 - xctool -project swiftz.xcodeproj -scheme swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO build test
 - xctool -project swiftz.xcodeproj -scheme swiftz_ios -sdk iphonesimulator8.1 ONLY_ACTIVE_ARCH=NO build test
 
 - xctool -project swiftz_core/swiftz_core.xcodeproj -scheme swiftz_core -sdk macosx ONLY_ACTIVE_ARCH=NO build test
-- xctool -project  swiftz_core/swiftz_core.xcodeproj -scheme swiftz_core_ios -sdk iphonesimulator8.1 ONLY_ACTIVE_ARCH=NO build test
