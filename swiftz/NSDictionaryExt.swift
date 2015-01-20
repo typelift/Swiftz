@@ -9,6 +9,7 @@
 import class Foundation.NSDictionary
 
 extension NSDictionary {
+	/// Maps all object key-value pairs in the receiver into a Swift Dictionary.
 	public func mapValuesToDictionary<K, V>(transform: (AnyObject, AnyObject) -> (K, V)) -> Dictionary<K, V> {
 		var d = Dictionary<K, V>()
 		for (key : AnyObject, value : AnyObject) in self {

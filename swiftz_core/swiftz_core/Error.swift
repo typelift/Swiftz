@@ -7,8 +7,10 @@
 //
 
 /// Immediately terminates the program with an error message.
+///
+/// This currently only works in Debug mode, since the underlying assertion is optimized away in Release mode.
 public func error<A>(x : String) -> A {
-	assert(false, x)
+    return assert(false, x) as A
 }
 
 /// A special case of error.
@@ -22,6 +24,8 @@ public func error<A>(x : String) -> A {
 ///     public func sortBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [A] {
 ///         return undefined()
 ///     }
+///
+/// The same caveat about compilation modes applies to "undefined" as to "error".
 public func undefined<A>() -> A {
 	return error("Undefined")
 }

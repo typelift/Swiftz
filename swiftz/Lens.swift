@@ -6,19 +6,18 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-
-public final class Lens<S, T, A, B> : K4<S, T, A, B> {
+public struct Lens<S, T, A, B> {
 	public let run: S -> IxStore<A, B, T>
 
 	public init(_ run: S -> IxStore<A, B, T>) {
 		self.run = run
 	}
 
-	public convenience init(get: S -> A, set: (S, B) -> T) {
+	public init(get: S -> A, set: (S, B) -> T) {
 		self.init({ v in IxStore(get(v)) { set(v, $0) } })
 	}
 
-	public convenience init(get: S -> A, modify: (S, A -> B) -> T) {
+	public init(get: S -> A, modify: (S, A -> B) -> T) {
 		self.init(get: get, set: { v, x in modify(v) { _ in x } })
 	}
 

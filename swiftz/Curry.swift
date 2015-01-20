@@ -6,41 +6,12 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-public func curry<A, B, C>(f: (A, B) -> C, a: A, b: B) -> C {
-	return f((a, b))
-}
-
-public func uncurry<A, B, C>(f: (A -> (B -> C)), ab: (A, B)) -> C {
-	switch ab {
-	case let (a, b):
-		return (f(a)(b))
-	}
-}
-
-public func curry<A, B, C, D>(f: (A, B, C) -> D, a: A, b: B, c: C) -> D {
-	return f((a, b, c))
-}
-
-public func uncurry<A, B, C, D>(f: (A -> (B -> (C -> D))), abc: (A, B, C)) -> D {
-	switch abc {
-	case let (a, b, c): 
-		return (f(a)(b)(c))
-	}
-}
-
-public func curry<A, B, C, D, E>(f: (A, B, C, D) -> E, a: A, b: B, c: C, d: D) -> E {
-	return f((a, b, c, d))
-}
-
-public func uncurry<A, B, C, D, E>(f: (A -> (B -> (C -> (D -> E)))), abcd: (A, B, C, D)) -> E {
-	switch abcd {
-	case let (a, b, c, d): 
-		return (f(a)(b)(c)(d))
-	}
-}
-
-public func curry<A,B,C>(f: (A,B) -> C) -> A -> B -> C {
-	return { a in { b in f(a,b) } }
+/// Converts an uncurried function to a curried function.
+///
+/// A curried function is a function that always returns another function or a value when applied
+/// as opposed to an uncurried function which may take tuples.
+public func curry<A, B, C>(f : (A, B) -> C) -> A -> B -> C {
+	return { a in { b in f(a, b) } }
 }
 
 public func curry<A,B,C,D>(f: (A,B,C) -> D) -> A -> B -> C -> D {
@@ -95,8 +66,12 @@ public func curry<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(f: (A,B,C,D,E,F,G,H,I,J,K,L,M
 	return { a in { b in { c in { d in { e in { ff in { g in { h in { i in { j in { k in { l in { m in { n in { o in f(a,b,c,d,e,ff,g,h,i,j,k,l,m,n,o) } } } } } } } } } } } } } } }
 }
 
-public func uncurry<A,B,C>(f: A -> B -> C) -> (A,B) -> C {
-	return { a,b in f(a)(b) }
+/// Converts a curried function to an uncurried function.
+///
+/// An uncurried function may take tuples as opposed to a curried function which must take a single
+/// value and return a single value or function.
+public func uncurry<A, B, C>(f : A -> B -> C) -> (A, B) -> C {
+	return { t in f(t.0)(t.1) }
 }
 
 public func uncurry<A,B,C,D>(f: A -> B -> C -> D) -> (A,B,C) -> D {
@@ -150,4 +125,3 @@ public func uncurry<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O>(f: A -> B -> C -> D -> E -> F
 public func uncurry<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(f: A -> B -> C -> D -> E -> F -> G -> H -> I -> J -> K -> L -> M -> N -> O -> P) -> (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O) -> P {
 	return { a,b,c,d,e,ff,g,h,i,j,k,l,m,n,o in f(a)(b)(c)(d)(e)(ff)(g)(h)(i)(j)(k)(l)(m)(n)(o) }
 }
-

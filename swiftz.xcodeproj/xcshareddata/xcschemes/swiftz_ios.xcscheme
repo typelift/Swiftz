@@ -28,7 +28,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "59853A091967F99600A3158C"
+               BuildableName = "swiftz_iosTests.xctest"
+               BlueprintName = "swiftz_iosTests"
+               ReferencedContainer = "container:swiftz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "598539FF1967F99500A3158C"
+            BuildableName = "swiftz.framework"
+            BlueprintName = "swiftz_ios"
+            ReferencedContainer = "container:swiftz.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
