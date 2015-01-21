@@ -110,3 +110,13 @@ Operator | Name      | Type
 `>>-`    | bind      | `>>- <A, B>(F<A>, A -> F<B>) -> F<B>`
 `->>`    | extend    | `->> <A, B>(F<A>, F<A> -> B) -> F<B>`
 
+System Requirements
+===================
+
+Swiftz and Swiftz Core support OS X 10.9+ and iOS 7.0+.
+
+License
+=======
+
+Swiftz and Swiftz Core are released under the BSD license.
+
