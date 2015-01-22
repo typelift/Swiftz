@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 // shape example for SYB
 enum Shape : Dataable {

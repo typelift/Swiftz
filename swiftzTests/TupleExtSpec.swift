@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class TupleExtSpec : XCTestCase {
 	func testTupleExt() {

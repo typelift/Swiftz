@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class JSONSpec : XCTestCase {
 	func testDataJSON() {

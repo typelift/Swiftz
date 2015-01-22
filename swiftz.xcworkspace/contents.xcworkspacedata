@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:swiftz_core/swiftz_core.xcodeproj">
+      location = "group:Swiftz-iOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:swiftz.xcodeproj">
+      location = "group:Swiftz.xcodeproj">
    </FileRef>
 </Workspace>

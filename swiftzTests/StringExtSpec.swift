@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class StringExtSpec : XCTestCase {
 	func testStringExt() {

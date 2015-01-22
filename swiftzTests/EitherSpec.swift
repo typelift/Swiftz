@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class EitherSpec : XCTestCase {
 	func testEither() {

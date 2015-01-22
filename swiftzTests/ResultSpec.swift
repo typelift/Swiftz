@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class ResultSpec : XCTestCase {
 	func testResult() {

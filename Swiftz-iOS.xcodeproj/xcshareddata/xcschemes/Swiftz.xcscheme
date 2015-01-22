@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "598539DD1967F95B00A3158C"
-               BuildableName = "swiftz_core.framework"
-               BlueprintName = "swiftz_core_ios"
-               ReferencedContainer = "container:swiftz_core/swiftz_core.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "598539FF1967F99500A3158C"
-               BuildableName = "swiftz.framework"
-               BlueprintName = "swiftz_ios"
-               ReferencedContainer = "container:swiftz.xcodeproj">
+               BlueprintIdentifier = "84A88D971A70C280003D53CF"
+               BuildableName = "Swiftz.framework"
+               BlueprintName = "Swiftz"
+               ReferencedContainer = "container:Swiftz-iOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,30 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "598539E71967F95B00A3158C"
-               BuildableName = "swiftz_core_iosTests.xctest"
-               BlueprintName = "swiftz_core_iosTests"
-               ReferencedContainer = "container:swiftz_core/swiftz_core.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59853A091967F99600A3158C"
-               BuildableName = "swiftz_iosTests.xctest"
-               BlueprintName = "swiftz_iosTests"
-               ReferencedContainer = "container:swiftz.xcodeproj">
+               BlueprintIdentifier = "84A88D5B1A70C23D003D53CF"
+               BuildableName = "Swiftz-iOSTests.xctest"
+               BlueprintName = "Swiftz-iOSTests"
+               ReferencedContainer = "container:Swiftz-iOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "598539FF1967F99500A3158C"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz_ios"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D971A70C280003D53CF"
+            BuildableName = "Swiftz.framework"
+            BlueprintName = "Swiftz"
+            ReferencedContainer = "container:Swiftz-iOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -85,10 +61,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "598539FF1967F99500A3158C"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz_ios"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D971A70C280003D53CF"
+            BuildableName = "Swiftz.framework"
+            BlueprintName = "Swiftz"
+            ReferencedContainer = "container:Swiftz-iOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -103,10 +79,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "598539FF1967F99500A3158C"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz_ios"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D971A70C280003D53CF"
+            BuildableName = "Swiftz.framework"
+            BlueprintName = "Swiftz"
+            ReferencedContainer = "container:Swiftz-iOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

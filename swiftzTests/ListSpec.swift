@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class ListSpec : XCTestCase {
 	func testList() {

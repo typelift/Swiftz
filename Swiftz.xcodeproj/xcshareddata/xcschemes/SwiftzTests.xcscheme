@@ -9,29 +9,15 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59BB97DB195EFAF2002C0FA1"
-               BuildableName = "swiftz_core.framework"
-               BlueprintName = "swiftz_core"
-               ReferencedContainer = "container:swiftz_core/swiftz_core.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59F35ADF193D3A09006F1341"
-               BuildableName = "swiftz.framework"
-               BlueprintName = "swiftz"
-               ReferencedContainer = "container:swiftz.xcodeproj">
+               BlueprintIdentifier = "84A88D811A70C24E003D53CF"
+               BuildableName = "SwiftzTests.xctest"
+               BlueprintName = "SwiftzTests"
+               ReferencedContainer = "container:Swiftz.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,30 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59BB97E6195EFAF2002C0FA1"
-               BuildableName = "swiftz_coreTests.xctest"
-               BlueprintName = "swiftz_coreTests"
-               ReferencedContainer = "container:swiftz_core/swiftz_core.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "59F35AEA193D3A0A006F1341"
-               BuildableName = "swiftzTests.xctest"
-               BlueprintName = "swiftzTests"
-               ReferencedContainer = "container:swiftz.xcodeproj">
+               BlueprintIdentifier = "84A88D811A70C24E003D53CF"
+               BuildableName = "SwiftzTests.xctest"
+               BlueprintName = "SwiftzTests"
+               ReferencedContainer = "container:Swiftz.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "59F35ADF193D3A09006F1341"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D811A70C24E003D53CF"
+            BuildableName = "SwiftzTests.xctest"
+            BlueprintName = "SwiftzTests"
+            ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -85,10 +61,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "59F35ADF193D3A09006F1341"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D811A70C24E003D53CF"
+            BuildableName = "SwiftzTests.xctest"
+            BlueprintName = "SwiftzTests"
+            ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -103,10 +79,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "59F35ADF193D3A09006F1341"
-            BuildableName = "swiftz.framework"
-            BlueprintName = "swiftz"
-            ReferencedContainer = "container:swiftz.xcodeproj">
+            BlueprintIdentifier = "84A88D811A70C24E003D53CF"
+            BuildableName = "SwiftzTests.xctest"
+            BlueprintName = "SwiftzTests"
+            ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

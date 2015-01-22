@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import swiftz
+import Swiftz
 
 // A user example
 // an example of why we need SYB, Generics or macros

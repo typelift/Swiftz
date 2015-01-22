@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class SetTests: XCTestCase {
 	func testInit() {

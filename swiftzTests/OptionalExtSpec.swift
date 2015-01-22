@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import swiftz
+import Swiftz
 
 class OptionalExtSpec : XCTestCase {
 	func testOptional() {

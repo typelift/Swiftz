@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:swiftz_core.xcodeproj">
+      location = "self:Swiftz-iOS.xcodeproj">
    </FileRef>
 </Workspace>

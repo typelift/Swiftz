@@ -1,19 +1,19 @@
 //
-//  swiftz.h
-//  swiftz
+//  Swiftz.h
+//  Swiftz
 //
-//  Created by Maxwell Swadling on 3/06/2014.
-//  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
+//  Created by Robert Widmann on 1/21/15.
+//  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for swiftz.
-FOUNDATION_EXPORT double swiftzVersionNumber;
+//! Project version number for Swiftz.
+FOUNDATION_EXPORT double SwiftzVersionNumber;
 
-//! Project version string for swiftz.
-FOUNDATION_EXPORT const unsigned char swiftzVersionString[];
+//! Project version string for Swiftz.
+FOUNDATION_EXPORT const unsigned char SwiftzVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <swiftz/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <Swiftz/PublicHeader.h>
 
 
