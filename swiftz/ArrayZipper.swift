@@ -47,7 +47,7 @@ extension ArrayZipper : Functor {
 	}
 }
 
-public func <^><A, B>(f : A -> B, xz : ArrayZipper<A>) -> ArrayZipper<B> {
+public func <^> <A, B>(f : A -> B, xz : ArrayZipper<A>) -> ArrayZipper<B> {
 	return xz.fmap(f)
 }
 
@@ -69,6 +69,6 @@ extension ArrayZipper : Comonad {
 	}
 }
 
-public func ->><A, B>(xz : ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
+public func ->> <A, B>(xz : ArrayZipper<A>, f: ArrayZipper<A> -> B) -> ArrayZipper<B> {
 	return xz.extend(f)
 }

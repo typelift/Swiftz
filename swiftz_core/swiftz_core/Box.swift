@@ -25,7 +25,7 @@ public final class Box<T> {
 }
 
 /// Fmap | Applies a function to the value of the receiver to yield a new box.
-public func <^><T, U>(f: T -> U, x: Box<T>) -> Box<U> {
+public func <^> <T, U>(f: T -> U, x: Box<T>) -> Box<U> {
 	return x.map(f)
 }
 
