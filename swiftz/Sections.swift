@@ -50,88 +50,88 @@ postfix operator >>- {}
 /// MARK: functions as a monad and profunctor
 
 // •
-public func <^><I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
+public func <^> <I, A, B>(f: A -> B, k: I -> A) -> (I -> B) {
 	return { x in f(k(x)) }
 }
 
 // flip(•)
-public func <!><I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
+public func <!> <I, J, A>(f: J -> I, k: I -> A) -> (J -> A) {
 	return { x in k(f(x)) }
 }
 
 // the S combinator
-public func <*><I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
+public func <*> <I, A, B>(f: I -> (A -> B), k: I -> A) -> (I -> B) {
 	return { x in f(x)(k(x)) }
 }
 
 // the S' combinator
-public func >>-<I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
+public func >>- <I, A, B>(f: A -> (I -> B), k: I -> A) -> (I -> B) {
 	return { x in f(k(x))(x) }
 }
 
 /// MARK: Sections
 
-public prefix func •<A, B, C>(g : A -> B) -> (B -> C) -> A -> C {
+public prefix func • <A, B, C>(g : A -> B) -> (B -> C) -> A -> C {
 	return { f in { a in f(g(a)) } }
 }
 
-public postfix func •<A, B, C>(f: B -> C) -> (A -> B) -> A -> C {
+public postfix func • <A, B, C>(f: B -> C) -> (A -> B) -> A -> C {
 	return { g in { a in f(g(a)) } }
 }
 
-public prefix func §<A, B>(a: A) -> (A -> B) -> B {
+public prefix func § <A, B>(a: A) -> (A -> B) -> B {
 	return { f in f(a) }
 }
 
-public postfix func §<A, B>(f: A -> B) -> A -> B {
+public postfix func § <A, B>(f: A -> B) -> A -> B {
 	return { a in f(a) }
 }
 
-public prefix func <|<A, B>(a: A) -> (A -> B) -> B {
+public prefix func <| <A, B>(a: A) -> (A -> B) -> B {
 	return { f in f(a) }
 }
 
-public postfix func <|<A, B>(f: A -> B) -> A -> B {
+public postfix func <| <A, B>(f: A -> B) -> A -> B {
 	return { a in f(a) }
 }
 
-public prefix func |><A, B>(f: A -> B) -> A -> B {
+public prefix func |> <A, B>(f: A -> B) -> A -> B {
 	return { a in f(a) }
 }
 
-public postfix func |><A, B>(a: A) -> (A -> B) -> B {
+public postfix func |> <A, B>(a: A) -> (A -> B) -> B {
 	return { f in f(a) }
 }
 
-public prefix func <^><I, A, B>(k: I -> A) -> (A -> B) -> (I -> B) {
+public prefix func <^> <I, A, B>(k: I -> A) -> (A -> B) -> (I -> B) {
 	return { f in { x in f(k(x)) } }
 }
 
-public postfix func <^><I, A, B>(f: A -> B) -> (I -> A) -> (I -> B) {
+public postfix func <^> <I, A, B>(f: A -> B) -> (I -> A) -> (I -> B) {
 	return { k in { x in f(k(x)) } }
 }
 
-public prefix func <!><I, J, A>(k: I -> A) -> (J -> I) -> (J -> A) {
+public prefix func <!> <I, J, A>(k: I -> A) -> (J -> I) -> (J -> A) {
 	return { f in { x in k(f(x)) } }
 }
 
-public postfix func <!><I, J, A>(f: J -> I) -> (I -> A) -> (J -> A) {
+public postfix func <!> <I, J, A>(f: J -> I) -> (I -> A) -> (J -> A) {
 	return { k in { x in k(f(x)) } }
 }
 
-public prefix func <*><I, A, B>(k: I -> A) -> (I -> (A -> B)) -> (I -> B) {
+public prefix func <*> <I, A, B>(k: I -> A) -> (I -> (A -> B)) -> (I -> B) {
 	return { f in { x in f(x)(k(x)) } }
 }
 
-public postfix func <*><I, A, B>(f: I -> (A -> B)) -> (I -> A) -> (I -> B) {
+public postfix func <*> <I, A, B>(f: I -> (A -> B)) -> (I -> A) -> (I -> B) {
 	return { k in { x in f(x)(k(x)) } }
 }
 
-public prefix func >>-<I, A, B>(k: I -> A) -> (A -> (I -> B)) -> (I -> B) {
+public prefix func >>- <I, A, B>(k: I -> A) -> (A -> (I -> B)) -> (I -> B) {
 	return { f in { x in f(k(x))(x) } }
 }
 
-public postfix func >>-<I, A, B>(f: A -> (I -> B)) -> (I -> A) -> (I -> B) {
+public postfix func >>- <I, A, B>(f: A -> (I -> B)) -> (I -> A) -> (I -> B) {
 	return { k in { x in f(k(x))(x) } }
 }
 

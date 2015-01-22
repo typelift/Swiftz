@@ -65,7 +65,7 @@ public func § <A, B>(f: A -> B, a: A) -> B {
 ///   f <| g <| h <| x  =  f (g (h x))
 ///
 /// Acts as a synonym for §.
-public func <|<A, B>(f: A -> B, a: A) -> B {
+public func <| <A, B>(f: A -> B, a: A) -> B {
 	return f(a)
 }
 

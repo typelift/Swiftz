@@ -43,7 +43,7 @@ public struct Lens<S, T, A, B> {
 	}
 }
 
-public func •<S, T, I, J, A, B>(l1: Lens<S, T, I, J>, l2: Lens<I, J, A, B>) -> Lens<S, T, A, B> {
+public func • <S, T, I, J, A, B>(l1: Lens<S, T, I, J>, l2: Lens<I, J, A, B>) -> Lens<S, T, A, B> {
 	return Lens { v in
 		let q1 = l1.run(v)
 		let q2 = l2.run(q1.pos)
