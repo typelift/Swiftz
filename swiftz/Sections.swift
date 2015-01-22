@@ -674,6 +674,7 @@ public postfix func %<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs % rhs }
 }
 
+#if os(OSX)
 public prefix func %(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { lhs in lhs % rhs }
 }
@@ -681,6 +682,7 @@ public prefix func %(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 public postfix func %(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs % rhs }
 }
+#endif
 
 public prefix func %(rhs: Double) -> Double -> Double {
 	return { lhs in lhs % rhs }
@@ -789,6 +791,7 @@ public postfix func *<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs * rhs }
 }
 
+#if os(OSX)
 public prefix func *(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { lhs in lhs * rhs }
 }
@@ -796,6 +799,7 @@ public prefix func *(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 public postfix func *(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs * rhs }
 }
+#endif
 
 public prefix func *(rhs: Double) -> Double -> Double {
 	return { lhs in lhs * rhs }
@@ -904,6 +908,7 @@ public postfix func +<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs + rhs }
 }
 
+#if os(OSX)
 public prefix func +(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { lhs in lhs + rhs }
 }
@@ -911,6 +916,7 @@ public prefix func +(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 public postfix func +(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs + rhs }
 }
+#endif
 
 public prefix func +(rhs: Double) -> Double -> Double {
 	return { lhs in lhs + rhs }
@@ -1034,9 +1040,11 @@ public postfix func -<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs - rhs }
 }
 
+#if os(OSX)
 public postfix func -(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs - rhs }
 }
+#endif
 
 public postfix func -(lhs: Double) -> Double -> Double {
 	return { rhs in lhs - rhs }
@@ -1129,6 +1137,7 @@ public postfix func /<T : _IntegerArithmeticType>(lhs: T) -> T -> T {
 	return { rhs in lhs / rhs }
 }
 
+#if os(OSX)
 public prefix func /(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { lhs in lhs / rhs }
 }
@@ -1136,6 +1145,7 @@ public prefix func /(rhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 public postfix func /(lhs: Swift.Float80) -> Swift.Float80 -> Swift.Float80 {
 	return { rhs in lhs / rhs }
 }
+#endif
 
 public prefix func /(rhs: Double) -> Double -> Double {
 	return { lhs in lhs / rhs }
@@ -1313,6 +1323,7 @@ public prefix func ==(rhs: Character) -> Character -> Bool {
 	return { lhs in lhs == rhs }
 }
 
+#if os(OSX)
 public postfix func ==(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { rhs in lhs == rhs }
 }
@@ -1320,6 +1331,7 @@ public postfix func ==(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
 public prefix func ==(rhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { lhs in lhs == rhs }
 }
+#endif
 
 public postfix func ==(lhs: FloatingPointClassification) -> FloatingPointClassification -> Bool {
 	return { rhs in lhs == rhs }
@@ -1675,6 +1687,7 @@ public prefix func !=(rhs: Character) -> Character -> Bool {
 	return { lhs in lhs == rhs }
 }
 
+#if os(OSX)
 public postfix func !=(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { rhs in lhs == rhs }
 }
@@ -1682,6 +1695,7 @@ public postfix func !=(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
 public prefix func !=(rhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { lhs in lhs == rhs }
 }
+#endif
 
 public postfix func !=(lhs: FloatingPointClassification) -> FloatingPointClassification -> Bool {
 	return { rhs in lhs == rhs }
@@ -2208,9 +2222,11 @@ public prefix func ><T : _Comparable>(rhs: T?) -> T? -> Bool {
 	return { lhs in lhs > rhs }
 }
 
+#if os(OSX)
 public prefix func >(rhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { lhs in lhs > rhs }
 }
+#endif
 
 public prefix func >(rhs: Double) -> Double -> Bool {
 	return { lhs in lhs > rhs }
@@ -2303,9 +2319,11 @@ public postfix func <<T : _Comparable>(lhs: T?) -> T? -> Bool {
 	return { rhs in lhs < rhs }
 }
 
+#if os(OSX)
 public postfix func <(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
 	return { rhs in lhs < rhs }
 }
+#endif
 
 public postfix func <(lhs: Double) -> Double -> Bool {
 	return { rhs in lhs < rhs }
