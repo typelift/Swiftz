@@ -837,35 +837,35 @@ public postfix func +(lhs: UInt) -> UInt -> UInt {
 	return { rhs in lhs + rhs }
 }
 
-public prefix func + <T>(rhs: UnsafePointer <T>) -> Int -> UnsafePointer <T> {
+public prefix func + <T>(rhs: UnsafePointer<T>) -> Int -> UnsafePointer <T> {
 	return { lhs in lhs + rhs }
 }
 
-public postfix func + <T>(lhs: Int) -> UnsafePointer <T> -> UnsafePointer <T> {
+public postfix func + <T>(lhs: Int) -> UnsafePointer<T> -> UnsafePointer <T> {
 	return { rhs in lhs + rhs }
 }
 
-public prefix func + <T>(rhs: Int) -> UnsafePointer <T> -> UnsafePointer <T> {
+public prefix func + <T>(rhs: Int) -> UnsafePointer<T> -> UnsafePointer <T> {
 	return { lhs in lhs + rhs }
 }
 
-public postfix func + <T>(lhs: UnsafePointer <T>) -> Int -> UnsafePointer <T> {
+public postfix func + <T>(lhs: UnsafePointer<T>) -> Int -> UnsafePointer <T> {
 	return { rhs in lhs + rhs }
 }
 
-public prefix func + <T>(rhs: UnsafeMutablePointer <T>) -> Int -> UnsafeMutablePointer <T> {
+public prefix func + <T>(rhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer <T> {
 	return { lhs in lhs + rhs }
 }
 
-public postfix func + <T>(lhs: Int) -> UnsafeMutablePointer <T> -> UnsafeMutablePointer <T> {
+public postfix func + <T>(lhs: Int) -> UnsafeMutablePointer<T> -> UnsafeMutablePointer <T> {
 	return { rhs in lhs + rhs }
 }
 
-public prefix func + <T>(rhs: Int) -> UnsafeMutablePointer <T> -> UnsafeMutablePointer <T> {
+public prefix func + <T>(rhs: Int) -> UnsafeMutablePointer<T> -> UnsafeMutablePointer <T> {
 	return { lhs in lhs + rhs }
 }
 
-public postfix func + <T>(lhs: UnsafeMutablePointer <T>) -> Int -> UnsafeMutablePointer <T> {
+public postfix func + <T>(lhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer <T> {
 	return { rhs in lhs + rhs }
 }
 
@@ -943,11 +943,11 @@ public postfix func -(lhs: UInt) -> UInt -> UInt {
 	return { rhs in lhs - rhs }
 }
 
-public postfix func - <T>(lhs: UnsafePointer <T>) -> Int -> UnsafePointer <T> {
+public postfix func - <T>(lhs: UnsafePointer<T>) -> Int -> UnsafePointer <T> {
 	return { rhs in lhs - rhs }
 }
 
-public postfix func - <T>(lhs: UnsafeMutablePointer <T>) -> Int -> UnsafeMutablePointer <T> {
+public postfix func - <T>(lhs: UnsafeMutablePointer<T>) -> Int -> UnsafeMutablePointer <T> {
 	return { rhs in lhs - rhs }
 }
 
@@ -1103,11 +1103,11 @@ public prefix func ==(rhs: Int64) -> Int64 -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T>(lhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public postfix func == <T>(lhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T>(rhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public prefix func == <T>(rhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
@@ -1214,27 +1214,27 @@ public postfix func == <Value, Element>(lhs: HeapBuffer <Value, Element>) -> Hea
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T>(rhs: CFunctionPointer <T>) -> CFunctionPointer <T> -> Bool {
+public prefix func == <T>(rhs: CFunctionPointer<T>) -> CFunctionPointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T>(lhs: CFunctionPointer <T>) -> CFunctionPointer <T> -> Bool {
+public postfix func == <T>(lhs: CFunctionPointer<T>) -> CFunctionPointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T : Comparable>(rhs: HalfOpenInterval <T>) -> HalfOpenInterval <T> -> Bool {
+public prefix func == <T : Comparable>(rhs: HalfOpenInterval<T>) -> HalfOpenInterval <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T : Comparable>(lhs: HalfOpenInterval <T>) -> HalfOpenInterval <T> -> Bool {
+public postfix func == <T : Comparable>(lhs: HalfOpenInterval<T>) -> HalfOpenInterval <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T : Comparable>(rhs: ClosedInterval <T>) -> ClosedInterval <T> -> Bool {
+public prefix func == <T : Comparable>(rhs: ClosedInterval<T>) -> ClosedInterval <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T : Comparable>(lhs: ClosedInterval <T>) -> ClosedInterval <T> -> Bool {
+public postfix func == <T : Comparable>(lhs: ClosedInterval<T>) -> ClosedInterval <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1254,11 +1254,11 @@ public postfix func == <T : Equatable>(lhs: T?) -> T? -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T>(rhs: AutoreleasingUnsafeMutablePointer <T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
+public prefix func == <T>(rhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T>(lhs: AutoreleasingUnsafeMutablePointer <T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
+public postfix func == <T>(lhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1278,19 +1278,19 @@ public postfix func == <T : Equatable>(lhs: [T]) -> [T] -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T : Equatable>(rhs: Slice <T>) -> Slice <T> -> Bool{
+public prefix func == <T : Equatable>(rhs: Slice<T>) -> Slice <T> -> Bool{
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T : Equatable>(lhs: Slice <T>) -> Slice <T> -> Bool {
+public postfix func == <T : Equatable>(lhs: Slice<T>) -> Slice <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T : Equatable>(rhs: ContiguousArray <T>) -> ContiguousArray <T> -> Bool {
+public prefix func == <T : Equatable>(rhs: ContiguousArray<T>) -> ContiguousArray <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T : Equatable>(lhs: ContiguousArray <T>) -> ContiguousArray <T> -> Bool {
+public postfix func == <T : Equatable>(lhs: ContiguousArray<T>) -> ContiguousArray <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1310,11 +1310,11 @@ public postfix func == <T>(lhs: _OptionalNilComparisonType) -> T? -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func == <T>(lhs: Range <T>) -> Range <T> -> Bool {
+public prefix func == <T>(lhs: Range<T>) -> Range <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public postfix func == <T>(lhs: Range <T>) -> Range <T> -> Bool {
+public postfix func == <T>(lhs: Range<T>) -> Range <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1446,11 +1446,11 @@ public prefix func ==(rhs: UnicodeScalar) -> UnicodeScalar -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public prefix func == <T>(rhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public prefix func == <T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func == <T>(lhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public postfix func == <T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1465,11 +1465,11 @@ public prefix func !=(rhs: Int64) -> Int64 -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T>(lhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public postfix func != <T>(lhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T>(rhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public prefix func != <T>(rhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
@@ -1576,27 +1576,27 @@ public postfix func != <Value, Element>(lhs: HeapBuffer <Value, Element>) -> Hea
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T>(rhs: CFunctionPointer <T>) -> CFunctionPointer <T> -> Bool {
+public prefix func != <T>(rhs: CFunctionPointer<T>) -> CFunctionPointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T>(lhs: CFunctionPointer <T>) -> CFunctionPointer <T> -> Bool {
+public postfix func != <T>(lhs: CFunctionPointer<T>) -> CFunctionPointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T : Comparable>(rhs: HalfOpenInterval <T>) -> HalfOpenInterval <T> -> Bool {
+public prefix func != <T : Comparable>(rhs: HalfOpenInterval<T>) -> HalfOpenInterval <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T : Comparable>(lhs: HalfOpenInterval <T>) -> HalfOpenInterval <T> -> Bool {
+public postfix func != <T : Comparable>(lhs: HalfOpenInterval<T>) -> HalfOpenInterval <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T : Comparable>(rhs: ClosedInterval <T>) -> ClosedInterval <T> -> Bool {
+public prefix func != <T : Comparable>(rhs: ClosedInterval<T>) -> ClosedInterval <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T : Comparable>(lhs: ClosedInterval <T>) -> ClosedInterval <T> -> Bool {
+public postfix func != <T : Comparable>(lhs: ClosedInterval<T>) -> ClosedInterval <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1616,11 +1616,11 @@ public postfix func != <T : Equatable>(lhs: T?) -> T? -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T>(rhs: AutoreleasingUnsafeMutablePointer <T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
+public prefix func != <T>(rhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T>(lhs: AutoreleasingUnsafeMutablePointer <T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
+public postfix func != <T>(lhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1640,19 +1640,19 @@ public postfix func != <T : Equatable>(lhs: [T]) -> [T] -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T : Equatable>(rhs: Slice <T>) -> Slice <T> -> Bool{
+public prefix func != <T : Equatable>(rhs: Slice<T>) -> Slice <T> -> Bool{
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T : Equatable>(lhs: Slice <T>) -> Slice <T> -> Bool {
+public postfix func != <T : Equatable>(lhs: Slice<T>) -> Slice <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T : Equatable>(rhs: ContiguousArray <T>) -> ContiguousArray <T> -> Bool {
+public prefix func != <T : Equatable>(rhs: ContiguousArray<T>) -> ContiguousArray <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T : Equatable>(lhs: ContiguousArray <T>) -> ContiguousArray <T> -> Bool {
+public postfix func != <T : Equatable>(lhs: ContiguousArray<T>) -> ContiguousArray <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1672,11 +1672,11 @@ public postfix func != <T>(lhs: _OptionalNilComparisonType) -> T? -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public prefix func != <T>(lhs: Range <T>) -> Range <T> -> Bool {
+public prefix func != <T>(lhs: Range<T>) -> Range <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
-public postfix func != <T>(lhs: Range <T>) -> Range <T> -> Bool {
+public postfix func != <T>(lhs: Range<T>) -> Range <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -1808,11 +1808,11 @@ public prefix func !=(rhs: UnicodeScalar) -> UnicodeScalar -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public prefix func != <T>(rhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public prefix func != <T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { lhs in lhs == rhs }
 }
 
-public postfix func != <T>(lhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public postfix func != <T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { rhs in lhs == rhs }
 }
 
@@ -2057,11 +2057,11 @@ public prefix func >(rhs: Bit) -> Bit -> Bool {
 	return { lhs in lhs > rhs }
 }
 
-public prefix func > <T>(rhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public prefix func > <T>(rhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { lhs in lhs > rhs }
 }
 
-public prefix func > <T>(rhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public prefix func > <T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { lhs in lhs > rhs }
 }
 
@@ -2152,11 +2152,11 @@ public postfix func <(lhs: Bit) -> Bit -> Bool {
 	return { rhs in lhs < rhs }
 }
 
-public postfix func <<T>(lhs: UnsafePointer <T>) -> UnsafePointer <T> -> Bool {
+public postfix func <<T>(lhs: UnsafePointer<T>) -> UnsafePointer <T> -> Bool {
 	return { rhs in lhs < rhs }
 }
 
-public postfix func <<T>(lhs: UnsafeMutablePointer <T>) -> UnsafeMutablePointer <T> -> Bool {
+public postfix func <<T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer <T> -> Bool {
 	return { rhs in lhs < rhs }
 }
 
