@@ -7,29 +7,29 @@
 //
 
 /// The identity function.
-public func identity <A>(a: A) -> A {
-	return a;
+public func identity<A>(a: A) -> A {
+	return a
 }
 
 /// The constant combinator ignores its second argument and always returns its first argument.
-public func const <A, B>(x : A) -> B -> A {
+public func const<A, B>(x : A) -> B -> A {
 	return { _ in x }
 }
 
 /// Flip a function's arguments
-public func flip <A, B, C>(f: ((A, B) -> C), b: B, a: A) -> C {
+public func flip<A, B, C>(f: ((A, B) -> C), b: B, a: A) -> C {
 	return f(a, b)
 }
 
 /// Flip a function's arguments and return a function that takes
 /// the arguments in flipped order.
-public func flip <A, B, C>(f: (A, B) -> C)(b: B, a: A) -> C {
+public func flip<A, B, C>(f: (A, B) -> C)(b: B, a: A) -> C {
 	return f(a, b)
 }
 
 /// Flip a function's arguments and return a curried function that takes
 /// the arguments in flipped order.
-public func flip <A, B, C>(f: A -> B -> C) -> B -> A -> C {
+public func flip<A, B, C>(f: A -> B -> C) -> B -> A -> C {
 	return { b in { a in f(a)(b) } }
 }
 
