@@ -8,8 +8,8 @@
 
 import class Foundation.NSError
 
-/// The Either type represents values with two possibilities: a value of type Either<A, B> is either
-/// Left<A> or Right<B>.
+/// The Either type represents values with two possibilities: a value of type Either <A, B> is either
+/// Left <A> or Right <B>.
 ///
 /// The Either type is sometimes used to represent a value which is either correct or an error; by 
 /// convention, the Left constructor is used to hold an error value and the Right constructor is 
@@ -68,7 +68,7 @@ public func pure<L, R>(a: R) -> Either<L, R> {
 
 /// Fmap | If the Either is Left, ignores the function and returns the Left. If the Either is Right,
 /// applies the function to the Right value and returns the result in a new Right.
-public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
+public func <^> <L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
 	switch a {
 	case let .Left(l): 
 		return .Left(l)
@@ -77,10 +77,10 @@ public func <^><L, RA, RB>(f: RA -> RB, a: Either<L, RA>) -> Either<L, RB> {
 	}
 }
 
-/// Ap | Given an Either<L, RA -> RB> and an Either<L,RA>, returns an Either<L,RB>. If the `f` or 
+/// Ap | Given an Either<L, RA -> RB> and an Either<L,RA>, returns an Either<L,RB>. If the `f` or
 /// `a' param is a Left, simply returns a Left with the same value. Otherwise the function taken 
 /// from Right(f) is applied to the value from Right(a) and a Right is returned.
-public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
+public func <*> <L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L, RB> {
 	switch (a, f) {
 	case let (.Left(l), _): 
 		return .Left(l)
@@ -91,10 +91,10 @@ public func <*><L, RA, RB>(f: Either<L, RA -> RB>, a: Either<L, RA>) -> Either<L
 	}
 }
 
-/// Bind | Given an Either<L,RA>, and a function from RA -> Either<L,RB>, applies the function `f` 
+/// Bind | Given an Either<L,RA>, and a function from RA -> Either<L,RB>, applies the function `f`
 /// if `a` is Right, otherwise the function is ignored and a Left with the Left value from `a` is 
 /// returned.
-public func >>-<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
+public func >>- <L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L, RB> {
 	switch a {
 	case let .Left(l): 
 		return .Left(l)
@@ -104,7 +104,7 @@ public func >>-<L, RA, RB>(a: Either<L, RA>, f: RA -> Either<L, RB>) -> Either<L
 }
 
 /// MARK: Equatable
-public func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+public func == <L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
 	switch (lhs, rhs) {
 	case let (.Left(l), .Left(r)) where l.value == r.value:
 		return true
@@ -115,6 +115,6 @@ public func ==<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>)
 	}
 }
 
-public func !=<L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+public func != <L: Equatable, R: Equatable>(lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
 	return !(lhs == rhs)
 }
