@@ -877,6 +877,14 @@ public postfix func +<T : Strideable>(lhs: T) -> T.Stride -> T {
 	return { rhs in lhs + rhs }
 }
 
+public prefix func +(rhs: String) -> String -> String {
+	return { lhs in lhs + rhs }
+}
+
+public postfix func +(lhs: String) -> String -> String {
+	return { rhs in lhs + rhs }
+}
+
 postfix operator - {}
 
 public postfix func -(lhs: Int64) -> Int64 -> Int64 {
