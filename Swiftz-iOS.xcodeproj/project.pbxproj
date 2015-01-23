@@ -295,6 +295,7 @@
 		84A88F7F1A70C86D003D53CF /* Control */ = {
 			isa = PBXGroup;
 			children = (
+				84A88DB11A70C2B5003D53CF /* Applicative.swift */,
 				84A88DB41A70C2B5003D53CF /* Arrow.swift */,
 				84A88DB71A70C2B5003D53CF /* Category.swift */,
 				84A88DBA1A70C2B5003D53CF /* Comonad.swift */,
@@ -328,7 +329,6 @@
 		84A88F811A70C8BC003D53CF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				84A88DB11A70C2B5003D53CF /* Applicative.swift */,
 				84A88DB21A70C2B5003D53CF /* ArrayExt.swift */,
 				84A88DB31A70C2B5003D53CF /* ArrayZipper.swift */,
 				84A88DB51A70C2B5003D53CF /* Bifunctor.swift */,

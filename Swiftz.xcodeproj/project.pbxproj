@@ -101,7 +101,7 @@
 /* Begin PBXFileReference section */
 		84A88F981A71DF7F003D53CF /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A88F9C1A71DF7F003D53CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84A88F9D1A71DF7F003D53CF /* Swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swiftz.h; sourceTree = "<group>"; };
+		84A88F9D1A71DF7F003D53CF /* Swiftz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Swiftz.h; path = Swiftz/Swiftz.h; sourceTree = "<group>"; };
 		84A88FA31A71DF7F003D53CF /* SwiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A88FA91A71DF7F003D53CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A88FB41A71DFA0003D53CF /* ArrayExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtSpec.swift; sourceTree = "<group>"; };
@@ -205,6 +205,7 @@
 		84A88F8E1A71DF7F003D53CF = {
 			isa = PBXGroup;
 			children = (
+				84A88F9D1A71DF7F003D53CF /* Swiftz.h */,
 				84A88F9A1A71DF7F003D53CF /* Swiftz */,
 				84A88FA71A71DF7F003D53CF /* SwiftzTests */,
 				84A88F991A71DF7F003D53CF /* Products */,
@@ -223,63 +224,14 @@
 		84A88F9A1A71DF7F003D53CF /* Swiftz */ = {
 			isa = PBXGroup;
 			children = (
-				84A88F9D1A71DF7F003D53CF /* Swiftz.h */,
-				84A8903E1A71DFE5003D53CF /* Array.swift */,
-				84A8903F1A71DFE5003D53CF /* Box.swift */,
-				84A890401A71DFE5003D53CF /* Either.swift */,
-				84A890411A71DFE5003D53CF /* Error.swift */,
-				84A890421A71DFE5003D53CF /* Functions.swift */,
-				84A890431A71DFE5003D53CF /* Nothing.swift */,
-				84A890451A71DFE5003D53CF /* Optional.swift */,
-				84A890461A71DFE5003D53CF /* Result.swift */,
-				84A88FDE1A71DFC5003D53CF /* Applicative.swift */,
-				84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */,
-				84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */,
-				84A88FE11A71DFC5003D53CF /* Arrow.swift */,
-				84A88FE21A71DFC5003D53CF /* Bifunctor.swift */,
-				84A88FE31A71DFC5003D53CF /* Bounded.swift */,
-				84A88FE41A71DFC5003D53CF /* Category.swift */,
-				84A88FE51A71DFC5003D53CF /* Chan.swift */,
-				84A88FE61A71DFC5003D53CF /* CharacterExt.swift */,
-				84A88FE71A71DFC5003D53CF /* Comonad.swift */,
-				84A88FE81A71DFC5003D53CF /* Copointed.swift */,
-				84A88FE91A71DFC5003D53CF /* Curry.swift */,
-				84A88FEA1A71DFC5003D53CF /* DictionaryExt.swift */,
-				84A88FEB1A71DFC5003D53CF /* ExecutionContext.swift */,
-				84A88FEC1A71DFC5003D53CF /* Function.swift */,
-				84A88FED1A71DFC5003D53CF /* Functor.swift */,
-				84A88FEE1A71DFC5003D53CF /* Future.swift */,
-				84A88FEF1A71DFC5003D53CF /* GCDExecutionContext.swift */,
-				84A88FF01A71DFC5003D53CF /* HList.swift */,
-				84A88FF11A71DFC5003D53CF /* Iso.swift */,
-				84A88FF21A71DFC5003D53CF /* IxCont.swift */,
-				84A88FF31A71DFC5003D53CF /* IxMultiStore.swift */,
-				84A88FF41A71DFC5003D53CF /* IxState.swift */,
-				84A88FF51A71DFC5003D53CF /* IxStore.swift */,
-				84A88FF61A71DFC5003D53CF /* JSON.swift */,
 				84A88FF71A71DFC5003D53CF /* Kinds.swift */,
-				84A88FF81A71DFC5003D53CF /* Lens.swift */,
-				84A88FF91A71DFC5003D53CF /* List.swift */,
-				84A88FFA1A71DFC5003D53CF /* Maybe.swift */,
-				84A88FFB1A71DFC5003D53CF /* Monad.swift */,
-				84A88FFC1A71DFC5003D53CF /* Monoid.swift */,
-				84A88FFD1A71DFC5003D53CF /* MVar.swift */,
-				84A88FFE1A71DFC5003D53CF /* NonEmptyList.swift */,
-				84A88FFF1A71DFC5003D53CF /* NSArrayExt.swift */,
-				84A890001A71DFC5003D53CF /* NSDictionaryExt.swift */,
-				84A890011A71DFC5003D53CF /* Num.swift */,
 				84A890021A71DFC5003D53CF /* Operators.swift */,
-				84A890031A71DFC5003D53CF /* OptionalExt.swift */,
-				84A890041A71DFC5003D53CF /* Pointed.swift */,
-				84A890051A71DFC5003D53CF /* Prism.swift */,
 				84A890061A71DFC5003D53CF /* Sections.swift */,
-				84A890071A71DFC5003D53CF /* Semigroup.swift */,
-				84A890081A71DFC5003D53CF /* Set.swift */,
-				84A890091A71DFC5003D53CF /* StringExt.swift */,
-				84A8900A1A71DFC5003D53CF /* SYB.swift */,
-				84A8900B1A71DFC5003D53CF /* Those.swift */,
-				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
-				84A8900D1A71DFC5003D53CF /* TupleExt.swift */,
+				84A890521A71E138003D53CF /* Core */,
+				84A890531A71E149003D53CF /* Concurrent */,
+				84A890541A71E170003D53CF /* Control */,
+				84A890561A71E19D003D53CF /* Data */,
+				84A890551A71E183003D53CF /* Ext */,
 				84A88F9B1A71DF7F003D53CF /* Supporting Files */,
 			);
 			path = Swiftz;
@@ -296,27 +248,10 @@
 		84A88FA71A71DF7F003D53CF /* SwiftzTests */ = {
 			isa = PBXGroup;
 			children = (
-				84A88FB41A71DFA0003D53CF /* ArrayExtSpec.swift */,
-				84A88FB51A71DFA0003D53CF /* ChanSpec.swift */,
-				84A88FB61A71DFA0003D53CF /* ConcurrentTests.swift */,
-				84A88FB71A71DFA0003D53CF /* EitherSpec.swift */,
-				84A88FB81A71DFA0003D53CF /* FunctorSpec.swift */,
-				84A88FB91A71DFA0003D53CF /* FutureSpec.swift */,
-				84A88FBA1A71DFA0003D53CF /* HListSpec.swift */,
-				84A88FBB1A71DFA0003D53CF /* JSONSpec.swift */,
-				84A88FBC1A71DFA0003D53CF /* ListSpec.swift */,
-				84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */,
-				84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */,
-				84A88FBF1A71DFA0003D53CF /* MVarSpec.swift */,
-				84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */,
-				84A88FC11A71DFA0003D53CF /* PartyExample.swift */,
-				84A88FC21A71DFA0003D53CF /* ResultSpec.swift */,
-				84A88FC31A71DFA0003D53CF /* SetTests.swift */,
-				84A88FC41A71DFA0003D53CF /* ShapeExample.swift */,
-				84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */,
-				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
-				84A88FC71A71DFA0003D53CF /* TupleExtSpec.swift */,
-				84A88FC81A71DFA0003D53CF /* UserExample.swift */,
+				84A890591A71E1D7003D53CF /* Examples */,
+				84A890581A71E1C5003D53CF /* Concurrent */,
+				84A8905A1A71E1EE003D53CF /* Data */,
+				84A890571A71E1B5003D53CF /* Ext */,
 				84A88FA81A71DF7F003D53CF /* Supporting Files */,
 			);
 			path = SwiftzTests;
@@ -328,6 +263,143 @@
 				84A88FA91A71DF7F003D53CF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84A890521A71E138003D53CF /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				84A8903E1A71DFE5003D53CF /* Array.swift */,
+				84A8903F1A71DFE5003D53CF /* Box.swift */,
+				84A890401A71DFE5003D53CF /* Either.swift */,
+				84A890411A71DFE5003D53CF /* Error.swift */,
+				84A890421A71DFE5003D53CF /* Functions.swift */,
+				84A890431A71DFE5003D53CF /* Nothing.swift */,
+				84A890451A71DFE5003D53CF /* Optional.swift */,
+				84A890461A71DFE5003D53CF /* Result.swift */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		84A890531A71E149003D53CF /* Concurrent */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FE51A71DFC5003D53CF /* Chan.swift */,
+				84A88FEB1A71DFC5003D53CF /* ExecutionContext.swift */,
+				84A88FEE1A71DFC5003D53CF /* Future.swift */,
+				84A88FEF1A71DFC5003D53CF /* GCDExecutionContext.swift */,
+				84A88FFD1A71DFC5003D53CF /* MVar.swift */,
+			);
+			name = Concurrent;
+			sourceTree = "<group>";
+		};
+		84A890541A71E170003D53CF /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FDE1A71DFC5003D53CF /* Applicative.swift */,
+				84A88FE11A71DFC5003D53CF /* Arrow.swift */,
+				84A88FE41A71DFC5003D53CF /* Category.swift */,
+				84A88FE71A71DFC5003D53CF /* Comonad.swift */,
+				84A88FE91A71DFC5003D53CF /* Curry.swift */,
+				84A88FF11A71DFC5003D53CF /* Iso.swift */,
+				84A88FF21A71DFC5003D53CF /* IxCont.swift */,
+				84A88FF31A71DFC5003D53CF /* IxMultiStore.swift */,
+				84A88FF41A71DFC5003D53CF /* IxState.swift */,
+				84A88FF51A71DFC5003D53CF /* IxStore.swift */,
+				84A88FF81A71DFC5003D53CF /* Lens.swift */,
+				84A88FFB1A71DFC5003D53CF /* Monad.swift */,
+				84A890051A71DFC5003D53CF /* Prism.swift */,
+			);
+			name = Control;
+			sourceTree = "<group>";
+		};
+		84A890551A71E183003D53CF /* Ext */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */,
+				84A88FE61A71DFC5003D53CF /* CharacterExt.swift */,
+				84A88FEA1A71DFC5003D53CF /* DictionaryExt.swift */,
+				84A88FFF1A71DFC5003D53CF /* NSArrayExt.swift */,
+				84A890001A71DFC5003D53CF /* NSDictionaryExt.swift */,
+				84A890031A71DFC5003D53CF /* OptionalExt.swift */,
+				84A890091A71DFC5003D53CF /* StringExt.swift */,
+				84A8900D1A71DFC5003D53CF /* TupleExt.swift */,
+			);
+			name = Ext;
+			sourceTree = "<group>";
+		};
+		84A890561A71E19D003D53CF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */,
+				84A88FE21A71DFC5003D53CF /* Bifunctor.swift */,
+				84A88FE31A71DFC5003D53CF /* Bounded.swift */,
+				84A88FE81A71DFC5003D53CF /* Copointed.swift */,
+				84A88FEC1A71DFC5003D53CF /* Function.swift */,
+				84A88FED1A71DFC5003D53CF /* Functor.swift */,
+				84A88FF01A71DFC5003D53CF /* HList.swift */,
+				84A88FF61A71DFC5003D53CF /* JSON.swift */,
+				84A88FF91A71DFC5003D53CF /* List.swift */,
+				84A88FFA1A71DFC5003D53CF /* Maybe.swift */,
+				84A88FFC1A71DFC5003D53CF /* Monoid.swift */,
+				84A88FFE1A71DFC5003D53CF /* NonEmptyList.swift */,
+				84A890011A71DFC5003D53CF /* Num.swift */,
+				84A890041A71DFC5003D53CF /* Pointed.swift */,
+				84A890071A71DFC5003D53CF /* Semigroup.swift */,
+				84A890081A71DFC5003D53CF /* Set.swift */,
+				84A8900A1A71DFC5003D53CF /* SYB.swift */,
+				84A8900B1A71DFC5003D53CF /* Those.swift */,
+				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		84A890571A71E1B5003D53CF /* Ext */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FB41A71DFA0003D53CF /* ArrayExtSpec.swift */,
+				84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */,
+				84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */,
+				84A88FC71A71DFA0003D53CF /* TupleExtSpec.swift */,
+			);
+			name = Ext;
+			sourceTree = "<group>";
+		};
+		84A890581A71E1C5003D53CF /* Concurrent */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FB51A71DFA0003D53CF /* ChanSpec.swift */,
+				84A88FB61A71DFA0003D53CF /* ConcurrentTests.swift */,
+				84A88FB91A71DFA0003D53CF /* FutureSpec.swift */,
+				84A88FBF1A71DFA0003D53CF /* MVarSpec.swift */,
+			);
+			name = Concurrent;
+			sourceTree = "<group>";
+		};
+		84A890591A71E1D7003D53CF /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FC11A71DFA0003D53CF /* PartyExample.swift */,
+				84A88FC41A71DFA0003D53CF /* ShapeExample.swift */,
+				84A88FC81A71DFA0003D53CF /* UserExample.swift */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		84A8905A1A71E1EE003D53CF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				84A88FB71A71DFA0003D53CF /* EitherSpec.swift */,
+				84A88FB81A71DFA0003D53CF /* FunctorSpec.swift */,
+				84A88FBA1A71DFA0003D53CF /* HListSpec.swift */,
+				84A88FBB1A71DFA0003D53CF /* JSONSpec.swift */,
+				84A88FBC1A71DFA0003D53CF /* ListSpec.swift */,
+				84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */,
+				84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */,
+				84A88FC21A71DFA0003D53CF /* ResultSpec.swift */,
+				84A88FC31A71DFA0003D53CF /* SetTests.swift */,
+				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

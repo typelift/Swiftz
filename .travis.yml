@@ -4,5 +4,5 @@ install: git submodule update -i --recursive
 
 script:
 - xctool -project Swiftz.xcodeproj -scheme Swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
-- xctool -project Swiftz-iOS.xcodeproj -scheme Swiftz -sdk iphonesimulator8.1 ONLY_ACTIVE_ARCH=NO clean build test
+- xctool -project Swiftz-iOS.xcodeproj -scheme Swiftz -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test
 
