@@ -86,6 +86,7 @@
 		84A88F791A70C7A0003D53CF /* ThoseSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDE1A70C707003D53CF /* ThoseSpec.swift */; };
 		84A88F7A1A70C7A0003D53CF /* TupleExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDF1A70C707003D53CF /* TupleExtSpec.swift */; };
 		84A88F7B1A70C7A0003D53CF /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EE01A70C707003D53CF /* UserExample.swift */; };
+		84A8905C1A71E4C3003D53CF /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88D981A70C280003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,19 @@
 			remoteInfo = Swiftz;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84A8905B1A71E4BB003D53CF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				84A8905C1A71E4C3003D53CF /* Swiftz.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		84A88D5C1A70C23D003D53CF /* Swiftz-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftz-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -423,6 +437,7 @@
 				84A88D581A70C23D003D53CF /* Sources */,
 				84A88D591A70C23D003D53CF /* Frameworks */,
 				84A88D5A1A70C23D003D53CF /* Resources */,
+				84A8905B1A71E4BB003D53CF /* CopyFiles */,
 			);
 			buildRules = (
 			);
