@@ -217,16 +217,40 @@ import struct Swiftz.Either
 let comp = Function.arr(+3) • Function.arr(*6) • Function.arr(/2)
 let both = comp.apply(10) // 33
 
-/// An arrow that runs both operations on its input and combines both
+/// An Arrow that runs both operations on its input and combines both
 /// results into a tuple
 let add5AndMultiply2 = Function.arr(+5) &&& Function.arr(*2)
 let both = add5AndMultiply2.apply(10) // (15, 20)
 
-/// Produces an arrow that chooses a particular function to apply
+/// Produces an Arrow that chooses a particular function to apply
 /// when presented with the side of an Either.
 let divideLeftMultiplyRight = Function.arr(/2) ||| Function.arr(*2)
 let left = divideLeftMultiplyRight.apply(Either.left(4)) // 2
 let right = divideLeftMultiplyRight.apply(Either.right(7)) // 14
+```
+
+**Concurrency**
+
+```swift
+import class Swiftz.Chan
+
+/// A Channel is an unbounded FIFO stream of values with special semantics
+/// for reads and writes.
+let chan : Chan<Int> = Chan()
+
+/// All writes to the Channel always succeed.  The Channel now contains `1`
+chan.write(1) // happens immediately
+
+/// Reads to Channels contain items occur immediately.  The Channel is now empty.
+let x1 = chan.read()
+
+/// But if we read from an empty Channel the read blocks
+let x2 = chan.read() // Blocks our thread.
+
+/// Until we write to the Channel again
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+    chan.write(2) // Causes the read to suceed and unblocks the reading thread.
+})
 ```
 
 Operators
