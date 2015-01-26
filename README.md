@@ -8,38 +8,37 @@ Swiftz is a Swift library for functional programming.
 It defines functional data structures, functions, idioms, and extensions that augment 
 the Swift standard library.
 
+For a small, simpler way to introduce functional primitives into any codebase,
+see [Swiftx](https://github.com/typelift/Swiftx). 
+
 Setup
 -----
 
-Swiftz comes in two distinct flavors: Core and Full.  Swiftz Core is a smaller 
-and simpler way to introduce pure functional datatypes into any codebase.  It 
-can be included one of two ways:
+To add Swiftz to your application:
 
-**Framework**
+**Using Carthage**
 
-- Drag `swiftz_core.xcodeproj` into your project tree as a subproject
+- Add Swiftz to your Cartfile
+- Run `carthage update`
+- Drag the relevant copy of Swiftz into your project.
+- Expand the Link Binary With Libraries phase
+- Click the + and add Swiftz
+- Click the + at the top left corner to add a Copy Files build phase
+- Set the directory to `Frameworks`
+- Click the + and add Swiftz
+
+**As a Submodule**
+
+- Clone Swiftz as a submodule into the directory of your choice
+- Run `git submodule init -i --recursive`
+- Drag `Swiftz.xcodeproj` or `Swiftz-iOS.xcodeproj` into your project tree as a subproject
 - Under your project's Build Phases, expand Target Dependencies
-- Click the + and add swiftz_core
+- Click the + and add Swiftz
 - Expand the Link Binary With Libraries phase
-- Click the + and add swiftz_core
+- Click the + and add Swiftz
 - Click the + at the top left corner to add a Copy Files build phase
 - Set the directory to `Frameworks`
-- Click the + and add swiftz_core
-
-**Standalone**
-
-- Copy the swift files under `swiftz/swiftz_core/swiftz_core` into your project.
-
-Using the full Swiftz framework works in much the same way:
-
-- Drag `swiftz.xcodeproj` into your project tree as a subproject
-- Under your project's Build Phases, expand Target Dependencies 
-- Click the + and add swiftz
-- Expand the Link Binary With Libraries phase
-- Click the + and add swiftz
-- Click the + at the top left corner to add a Copy Files build phase
-- Set the directory to `Frameworks`
-- Click the + and add swiftz
+- Click the + and add Swiftz
 
 Introduction
 ------------
