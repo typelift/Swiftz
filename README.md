@@ -75,7 +75,7 @@ let even = l.filter((==0) • (%2)) // [2, 4, 6, 8, 10]
 let sum = l.reduce(curry(+), initial: 0) // 55
 
 /// Plus a few more.
-let scan = u.scanl(curry(+), initial: 0) // [0, 4, 9, 15]
+let partialSums = l.scanl(curry(+), initial: 0) // [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55]
 let firstHalf = l.take(5) // [1, 2, 3, 4, 5]
 let lastHalf = l.drop(5) // [6, 7, 8, 9, 10]
 ```
