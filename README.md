@@ -241,7 +241,7 @@ let chan : Chan<Int> = Chan()
 /// All writes to the Channel always succeed.  The Channel now contains `1`
 chan.write(1) // happens immediately
 
-/// Reads to Channels contain items occur immediately.  The Channel is now empty.
+/// Reads to non-empty Channels occur immediately.  The Channel is now empty.
 let x1 = chan.read()
 
 /// But if we read from an empty Channel the read blocks
