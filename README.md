@@ -183,14 +183,14 @@ let properName = hostnameLens.get(updatedParty) // "Max"
 **Semigroups and Monoids**
 
 ```swift
+let xs = [1, 2, 0, 3, 4]
+
 import protocol Swiftz.Semigroup
 import func Swiftz.sconcat
 import struct Swiftz.Min
 
-/// We can find the smallest element of a list of objects in a 
-/// Semigroup with Min.
-let xs = [1, 2, 0, 3, 4]
-let smallestElement = sconcat(Min(), 2, xs)
+/// The least element of a list can be had with the Min semigroup.
+let smallestElement = sconcat(Min(), 2, xs) // 0
 
 import protocol Swiftz.Monoid
 import func Swiftz.mconcat
@@ -201,8 +201,8 @@ let sum = mconcat(Sum<Int8, NInt8>(i: nint8), xs) // 10
 
 import struct Swiftz.Product
 
-/// Or the of a list product with the Product Monoid.
-let product = mconcat(Product<Int8, NInt8>(i: nint8), xs) == 0, "monoid product works")
+/// Or the product of a list with the Product Monoid.
+let product = mconcat(Product<Int8, NInt8>(i: nint8), xs) // 0
 ```
 
 **Arrows**
