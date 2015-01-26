@@ -195,6 +195,7 @@ let smallestElement = sconcat(Min(), 2, xs)
 import protocol Swiftz.Monoid
 import func Swiftz.mconcat
 import struct Swiftz.Sum
+
 /// Or take the sum of a list with the Sum Monoid.
 let sum = mconcat(Sum<Int8, NInt8>(i: nint8), xs) // 10
 
@@ -202,6 +203,30 @@ import struct Swiftz.Product
 
 /// Or the of a list product with the Product Monoid.
 let product = mconcat(Product<Int8, NInt8>(i: nint8), xs) == 0, "monoid product works")
+```
+
+**Arrows**
+
+```swift
+import struct Swiftz.Function
+import struct Swiftz.Either
+
+/// An Arrow is a function just like any other.  Only this time around we
+/// can treat them like a full algebraic structure and introduce a number
+/// of operators to augment them.
+let comp = Function.arr(+3) • Function.arr(*6) • Function.arr(/2)
+let both = comp.apply(10) // 33
+
+/// An arrow that runs both operations on its input and combines both
+/// results into a tuple
+let add5AndMultiply2 = Function.arr(+5) &&& Function.arr(*2)
+let both = add5AndMultiply2.apply(10) // (15, 20)
+
+/// Produces an arrow that chooses a particular function to apply
+/// when presented with the side of an Either.
+let divideLeftMultiplyRight = Function.arr(/2) ||| Function.arr(*2)
+let left = divideLeftMultiplyRight.apply(Either.left(4)) // 2
+let right = divideLeftMultiplyRight.apply(Either.right(7)) // 14
 ```
 
 Operators
