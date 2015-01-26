@@ -244,13 +244,12 @@ chan.write(1) // happens immediately
 /// Reads to non-empty Channels occur immediately.  The Channel is now empty.
 let x1 = chan.read()
 
-/// But if we read from an empty Channel the read blocks
-let x2 = chan.read() // Blocks our thread.
-
-/// Until we write to the Channel again
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+/// But if we read from an empty Channel the read blocks until we write to the Channel again.
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * Double(NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
     chan.write(2) // Causes the read to suceed and unblocks the reading thread.
 })
+
+let x2 = chan.read() // Blocks until the dispatch block is executed and the Channel becomes non-empty.
 ```
 
 Operators
