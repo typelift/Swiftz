@@ -166,7 +166,7 @@ extension User {
     }
 }
 
-/// Let's create one now
+/// Let's throw a party now.
 let party = Party(h: User("max", 1, [], Dictionary()))
 
 /// A lens that for a party host's name.
@@ -201,7 +201,7 @@ let sum = mconcat(Sum<Int8, NInt8>(i: nint8), xs) // 10
 
 import struct Swiftz.Product
 
-/// Or product of a list with the Product Monoid.
+/// Or the product of a list with the Product Monoid.
 let product = mconcat(Product<Int8, NInt8>(i: nint8), xs) // 0
 ```
 
@@ -218,7 +218,7 @@ let comp = Function.arr(+3) • Function.arr(*6) • Function.arr(/2)
 let both = comp.apply(10) // 33
 
 /// An Arrow that runs both operations on its input and combines both
-/// results into a tuple
+/// results into a tuple.
 let add5AndMultiply2 = Function.arr(+5) &&& Function.arr(*2)
 let both = add5AndMultiply2.apply(10) // (15, 20)
 
@@ -238,7 +238,7 @@ import class Swiftz.Chan
 /// for reads and writes.
 let chan : Chan<Int> = Chan()
 
-/// All writes to the Channel always succeed.  The Channel now contains `1`
+/// All writes to the Channel always succeed.  The Channel now contains `1`.
 chan.write(1) // happens immediately
 
 /// Reads to non-empty Channels occur immediately.  The Channel is now empty.
