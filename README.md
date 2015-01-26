@@ -54,8 +54,131 @@ be expressed more clearly in Swift.
 Swiftz is a proper superset of [Swiftx](https://github.com/typelift/Swiftx) that
 implements higher-level data types like Lenses, Zippers, HLists, and a number of
 typeclasses integral to programming with the maximum amount of support from the
-type system.  A small number of examples are included in the test suite to
-illustrate uses of these kinds of abstractions.
+type system.
+
+To illustrate use of these abstractions, take these few examples:
+
+**Lists**
+
+```swift
+import struct Swiftz.List
+
+/// Cycles a finite list of numbers into an infinite list.
+let finite : List<UInt> = [1, 2, 3, 4, 5]
+let infiniteCycle = finite.cycle()
+
+/// Lists also support the standard map, filter, and reduce operators.
+let l : List<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+let twoToEleven = l.map(+1) // [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+let even = l.filter((==0) • (%2)) // [2, 4, 6, 8, 10]
+let sum = l.reduce(curry(+), initial: 0) // 55
+
+/// Plus a few more.
+let scan = u.scanl(curry(+), initial: 0) // [0, 4, 9, 15]
+let firstHalf = l.take(5) // [1, 2, 3, 4, 5]
+let lastHalf = l.drop(5) // [6, 7, 8, 9, 10]
+```
+
+**JSON**
+
+```swift
+import protocol Swiftz.JSONDecode
+
+final class User: JSONDecode {
+    typealias J = User
+    let name   : String
+    let age    : Int
+    let tweets : [String]
+    let attrs  : Dictionary<String, String>
+    
+    public init(_ n : String, _ a : Int, _ t : [String], _ r : Dictionary<String, String>) {
+        name = n
+        age = a
+        tweets = t
+        attrs = r
+    }
+
+    // JSON
+    public class func create(x : String) -> Int -> [String] -> Dictionary<String, String> -> User {
+        return { (y: Int) in { (z: [String]) in { User(x, y, z, $0) } } }
+    }
+    
+    public class func fromJSON(x : JSONValue) -> User? {
+        var n: String?
+        var a: Int?
+        var t: [String]?
+        var r: Dictionary<String, String>?
+        switch x {
+        case let .JSONObject(d):
+            n = d["name"]   >>- JString.fromJSON
+            a = d["age"]    >>- JInt.fromJSON
+            t = d["tweets"] >>- JArray<String, JString>.fromJSON
+            r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
+            // alternatively, if n && a && t... { return User(n!, a!, ...
+            return (User.create <^> n <*> a <*> t <*> r)
+        default:
+            return .None
+        }
+    }
+
+    public class func luserName() -> Lens<User, User, String, String> {
+        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
+    }
+}
+
+public func ==(lhs: User, rhs: User) -> Bool {
+    return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
+}    
+```
+
+**Lenses**
+
+```swift
+import struct Swiftz.Lens
+import struct Swiftz.IxStore
+
+/// A party has a host, who is a user.
+final class Party {
+    let host : User
+
+    init(h : User) {
+        host = h
+    }
+
+    class func lpartyHost() -> Lens<Party, Party, User, User> {
+        let getter = { (party : Party) -> User in
+            party.host
+        }
+
+        let setter = { (party : Party, host : User) -> Party in
+            Party(h: host)
+        }
+
+        return Lens(get: getter, set: setter)
+    }
+}
+
+/// A Lens for the User's name.
+extension User {
+    public class func luserName() -> Lens<User, User, String, String> {
+        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
+    }
+}
+
+/// Let's create one now
+let party = Party(h: User("max", 1, [], Dictionary()))
+
+/// A lens that for a party host's name.
+let hostnameLens = Party.lpartyHost() • User.luserName()
+
+/// Retrieve our gracious host's name.
+let name = hostnameLens.get(party) // "max"
+
+/// Our party seems to be lacking in proper nouns. 
+let updatedParty = (Party.lpartyHost() • User.luserName()).set(party, "Max")
+let properName = hostnameLens.get(updatedParty) // "Max"
+```
 
 Operators
 ---------
