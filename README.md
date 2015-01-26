@@ -169,7 +169,7 @@ extension User {
 /// Let's throw a party now.
 let party = Party(h: User("max", 1, [], Dictionary()))
 
-/// A lens that for a party host's name.
+/// A lens for a party host's name.
 let hostnameLens = Party.lpartyHost() • User.luserName()
 
 /// Retrieve our gracious host's name.
@@ -259,7 +259,7 @@ Swiftz introduces the following operators at global scope
 
 Operator | Name      | Type
 -------- | --------- | ------------------------------------------
-`•`      | compose   | `• <A, B, C>(f: B -> C, g: A -> B) -> A -> C`
+`•`      | compose   | `• <A, B, C>(B -> C, A -> B) -> A -> C`
 `<|`     | apply     | `<| <A, B>(A -> B, A) -> B`
 `|>`     | thrush    | `|> <A, B>(A, A -> B) -> B`
 `<-`     | extract   | `<- <A>(M<A>, A) -> Void`
@@ -275,10 +275,10 @@ Operator | Name      | Type
 System Requirements
 ===================
 
-Swiftz and Swiftz Core support OS X 10.9+ and iOS 7.0+.
+Swiftz supports OS X 10.9+ and iOS 7.0+.
 
 License
 =======
 
-Swiftz and Swiftz Core are released under the BSD license.
+Swiftz is released under the BSD license.
 
