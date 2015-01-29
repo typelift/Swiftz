@@ -121,6 +121,13 @@ public class User : JSONDecodable {
 public func ==(lhs : User, rhs : User) -> Bool {
     return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attr == rhs.attr
 }
+
+let userjs : NSData? = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
+	.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+
+/// The JSON we've decoded works perfectly with the User structure we defined above.  In case it didn't,
+/// the user would be nil.
+let user : User? = userjs >>- JSONValue.decode >>- User.fromJSON // User("max", 10, ["hello"], "1")
 ```
 
 **Lenses**
