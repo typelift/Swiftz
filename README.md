@@ -190,19 +190,19 @@ import func Swiftz.sconcat
 import struct Swiftz.Min
 
 /// The least element of a list can be had with the Min Semigroup.
-let smallestElement = sconcat(Min(), 2, xs) // 0
+let smallestElement = sconcat(Min(2), xs.map { Min($0) }).value() // 0
 
 import protocol Swiftz.Monoid
 import func Swiftz.mconcat
 import struct Swiftz.Sum
 
 /// Or the sum of a list with the Sum Monoid.
-let sum = mconcat(Sum<Int8, NInt8>(i: nint8), xs) // 10
+let sum = mconcat(xs.map { Sum($0) }).value() // 10
 
 import struct Swiftz.Product
 
 /// Or the product of a list with the Product Monoid.
-let product = mconcat(Product<Int8, NInt8>(i: nint8), xs) // 0
+let product = mconcat(xs.map { Product($0) }).value() // 0
 ```
 
 **Arrows**

@@ -8,40 +8,40 @@
 
 /// A Monoid is a Semigroup that distinguishes an identity element.
 public protocol Monoid : Semigroup {
-	/// The identity element of the Monoid.
-    class var mzero: Self { get }
+    /// The identity element of the Monoid.
+    class var mzero : Self { get }
 }
 
-public func mconcat<S: Monoid>(t: [S]) -> S {
-	return sconcat(S.mzero, t)
+public func mconcat<S : Monoid>(t : [S]) -> S {
+    return sconcat(S.mzero, t)
 }
 
 /// The Monoid of numeric types under addition.
-public struct Sum<N: Num> : Monoid {
-    public let value: () -> N
+public struct Sum<N : Num> : Monoid {
+    public let value : () -> N
 
-	public init(_ x: @autoclosure () -> N) {
-		value = x
-	}
+    public init(_ x : @autoclosure () -> N) {
+        value = x
+    }
 
-    public static var mzero: Sum<N> {
-		return Sum(N.zero)
-	}
+    public static var mzero : Sum<N> {
+        return Sum(N.zero)
+    }
 
-	public func op(other : Sum<N>) -> Sum<N> {
-		return Sum(value().plus(other.value()))
+    public func op(other : Sum<N>) -> Sum<N> {
+        return Sum(value().plus(other.value()))
     }
 }
 
 /// The Monoid of numeric types under multiplication.
-public struct Product<N: Num> : Monoid {
-    public let value: () -> N
+public struct Product<N : Num> : Monoid {
+    public let value : () -> N
 
-    public init(_ x: @autoclosure () -> N) {
+    public init(_ x : @autoclosure () -> N) {
         value = x
     }
 
-    public static var mzero: Product<N> {
+    public static var mzero : Product<N> {
         return Product(N.one)
     }
 
@@ -51,18 +51,18 @@ public struct Product<N: Num> : Monoid {
 }
 
 /// The Semigroup-lifting Maybe Monoid
-public struct AdjoinNil<A: Semigroup> : Monoid {
-    public let value: () -> Maybe<A>
+public struct AdjoinNil<A : Semigroup> : Monoid {
+    public let value : () -> Maybe<A>
 
-    public init(_ x: @autoclosure () -> Maybe<A>) {
+    public init(_ x : @autoclosure () -> Maybe<A>) {
         value = x
     }
 
-    public static var mzero: AdjoinNil<A> {
+    public static var mzero : AdjoinNil<A> {
         return AdjoinNil(Maybe.none())
     }
 
-    public func op(other: AdjoinNil<A>) -> AdjoinNil<A> {
+    public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
         if let x = value().value {
             if let y = other.value().value {
                 return AdjoinNil(Maybe(x.op(y)))
@@ -76,14 +76,14 @@ public struct AdjoinNil<A: Semigroup> : Monoid {
 }
 
 /// The left-biased Maybe Monoid.
-public struct First<A: Comparable> : Monoid {
-    public let value: () -> Maybe<A>
+public struct First<A : Comparable> : Monoid {
+    public let value : () -> Maybe<A>
 
-    public init(_ x: @autoclosure () -> Maybe<A>) {
+    public init(_ x : @autoclosure () -> Maybe<A>) {
         value = x
     }
 
-    public static var mzero: First<A> {
+    public static var mzero : First<A> {
         return First(Maybe.none())
     }
 
@@ -97,15 +97,15 @@ public struct First<A: Comparable> : Monoid {
 }
 
 /// The right-biased Maybe Monoid.
-public struct Last<A: Comparable> : Semigroup {
-    public let value: () -> Maybe<A>
+public struct Last<A : Comparable> : Monoid {
+    public let value : () -> Maybe<A>
 
-    public init(_ x: @autoclosure () -> Maybe<A>) {
+    public init(_ x : @autoclosure () -> Maybe<A>) {
         value = x
     }
 
-    public static var mzero: First<A> {
-        return First(Maybe.none())
+    public static var mzero : Last<A> {
+        return Last(Maybe.none())
     }
 
     public func op(other : Last<A>) -> Last<A> {
