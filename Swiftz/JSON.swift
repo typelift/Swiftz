@@ -139,7 +139,7 @@ public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
 //  return !(lhs >= rhs)
 //}
 
-public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- { A.fromJSON($0) }
@@ -148,7 +148,7 @@ public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypat
 	}
 }
 
-public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- JArrayFrom<A, A>.fromJSON
@@ -157,7 +157,7 @@ public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypat
 	}
 }
 
-public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- JDictionaryFrom<A, A>.fromJSON
@@ -168,18 +168,18 @@ public func <! <A : JSONDecode where A == A.J>(lhs : JSONValue, rhs : JSONKeypat
 
 // traits
 
-public protocol JSONDecode {
+public protocol JSONDecodable {
 	typealias J = Self
 	class func fromJSON(x: JSONValue) -> J?
 }
 
-public protocol JSONEncode {
+public protocol JSONEncodable {
 	typealias J
 	class func toJSON(x: J) -> JSONValue
 }
 
 // J mate
-public protocol JSON : JSONDecode, JSONEncode { }
+public protocol JSON : JSONDecodable, JSONEncodable { }
 
 // instances
 
@@ -279,7 +279,7 @@ extension NSNull : JSON {
 }
 
 // container types should be split
-public struct JArrayFrom<A, B : JSONDecode where B.J == A> : JSONDecode {
+public struct JArrayFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 	public typealias J = [A]
 	
 	public static func fromJSON(x : JSONValue) -> J? {
@@ -298,7 +298,7 @@ public struct JArrayFrom<A, B : JSONDecode where B.J == A> : JSONDecode {
 	}
 }
 
-public struct JArrayTo<A, B : JSONEncode where B.J == A> : JSONEncode {
+public struct JArrayTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
 	public typealias J = [A]
 	
 	public static func toJSON(xs: J) -> JSONValue {
@@ -330,7 +330,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 }
 
 
-public struct JDictionaryFrom<A, B : JSONDecode where B.J == A> : JSONDecode {
+public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 	public typealias J = Dictionary<String, A>
 	
 	public static func fromJSON(x : JSONValue) -> J? {
@@ -345,7 +345,7 @@ public struct JDictionaryFrom<A, B : JSONDecode where B.J == A> : JSONDecode {
 	}
 }
 
-public struct JDictionaryTo<A, B : JSONEncode where B.J == A> : JSONEncode {
+public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
 	public typealias J = Dictionary<String, A>
 	
 	public static func toJSON(xs : J) -> JSONValue {

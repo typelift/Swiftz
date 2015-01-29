@@ -10,8 +10,7 @@ import Swiftz
 
 // A user example
 // an example of why we need SYB, Generics or macros
-public class User : JSONDecode {
-	typealias J = User
+public class User : JSONDecodable {
 	let name : String
 	let age : Int
 	let tweets : [String]
