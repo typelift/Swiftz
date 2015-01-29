@@ -86,7 +86,7 @@ let lastHalf = l.drop(5) // [6, 7, 8, 9, 10]
 import protocol Swiftz.JSONDecode
 import struct Swiftz.JSONKeypath
     
-public class User : JSONDecode {
+public class User : JSONDecodable {
     typealias J = User
     let name : String
     let age : Int
