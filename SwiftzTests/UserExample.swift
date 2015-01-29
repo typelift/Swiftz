@@ -30,16 +30,12 @@ public class User: JSONDecode {
 	}
 	
 	public class func fromJSON(x: JSONValue) -> User? {
-		var n: String?
-		var a: Int?
-		var t: [String]?
-		var r: Dictionary<String, String>?
 		switch x {
 		case let .JSONObject(d):
-			n = d["name"]   >>- JString.fromJSON
-			a = d["age"]    >>- JInt.fromJSON
-			t = d["tweets"] >>- JArray<String, JString>.fromJSON
-			r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
+			let n = d["name"]   >>- JString.fromJSON
+			let a = d["age"]    >>- JInt.fromJSON
+			let t = d["tweets"] >>- JArray<String, JString>.fromJSON
+			let r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
 			// alternatively, if n && a && t... { return User(n!, a!, ...
 			return (User.create <^> n <*> a <*> t <*> r)
 		default:
