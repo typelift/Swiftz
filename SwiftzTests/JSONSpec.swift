@@ -22,7 +22,7 @@ class JSONSpec : XCTestCase {
 		let userjs: NSData? = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
 			.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
 		let user: User? = userjs >>- JSONValue.decode >>- User.fromJSON
-		XCTAssert(user! == User("max", 10, ["hello"], ["one": "1"]))
+		XCTAssert(user! == User("max", 10, ["hello"], "1"))
 
 		// not a user, missing age
 		let notuserjs: NSData? = "{\"name\": \"max\", \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)

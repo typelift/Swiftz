@@ -33,7 +33,7 @@ class Party {
 
 class PartySpec {
 	func testLens() {
-		let party = Party(h: User("max", 1, [], Dictionary()))
+		let party = Party(h: User("max", 1, [], "one"))
 		let hostnameLens = Party.lpartyHost() • User.luserName()
 
 		XCTAssert(hostnameLens.get(party) == "max")
