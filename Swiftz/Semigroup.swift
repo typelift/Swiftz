@@ -8,71 +8,45 @@
 
 /// A Semigroup is a type with a closed, associative, binary operator.
 public protocol Semigroup {
-	/// The type of elements in the semigroup.
-	typealias M
 
 	/// An associative binary operator.
-	func op(x : M, y : M) -> M
+	func op(other : Self) -> Self
 }
 
-public func sconcat<M, S: Semigroup where S.M == M>(s : S, h : M, t : [M]) -> M {
-	return (t.reduce(h) { s.op($0, y: $1) })
+public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
+	return t.reduce(h) { $0.op($1) }
 }
 
 /// The Semigroup of comparable values under MIN().
 public struct Min<A: Comparable>: Semigroup {
-	public typealias M = A
+	public let value: () -> A
 
-	public init() { }
+	public init(_ x: @autoclosure () -> A) {
+		value = x
+	}
 
-	public func op(x : M, y : M) -> M {
-		if x < y {
-			return x
+	public func op(other : Min<A>) -> Min<A> {
+		if value() < other.value() {
+			return self
 		} else {
-			return y
+			return other
 		}
 	}
 }
 
 /// The Semigroup of comparable values under MAX().
 public struct Max<A: Comparable> : Semigroup {
-	public typealias M = A
+	public let value: () -> A
 
-	public init() { }
+	public init(_ x: @autoclosure () -> A) {
+		value = x
+	}
 
-	public func op(x : M, y : M) -> M {
-		if x > y {
-			return x
+	public func op(other : Max<A>) -> Max<A> {
+		if other.value() < value() {
+			return self
 		} else {
-			return y
+			return other
 		}
-	}
-}
-
-/// The left-biased Maybe Semigroup.
-public struct First<A: Comparable> : Semigroup {
-	public typealias M = Maybe<A>
-
-	public init() { }
-
-	public func op(x : M, y : M) -> M {
-		if x.isJust() {
-			return x
-		}
-		return y
-	}
-}
-
-/// The right-biased Maybe Semigroup.
-public struct Last<A: Comparable> : Semigroup {
-	public typealias M = Maybe<A>
-
-	public init() { }
-
-	public func op(x : M, y : M) -> M {
-		if y.isJust() {
-			return y
-		}
-		return x
 	}
 }

@@ -12,12 +12,12 @@ import Swiftz
 class MonoidSpec : XCTestCase {
 	func testDataSemigroup() {
 		let xs = [1, 2, 0, 3, 4]
-		XCTAssert(sconcat(Min(), 2, xs) == 0, "sconcat works")
+		XCTAssert(sconcat(Min(2), xs.map { Min($0) }).value() == 0, "sconcat works")
 	}
 
 	func testDataMonoid() {
 		let xs: [Int8] = [1, 2, 0, 3, 4]
-		XCTAssert(mconcat(Sum    <Int8, NInt8>(i: nint8), xs) == 10, "monoid sum works")
-		XCTAssert(mconcat(Product<Int8, NInt8>(i: nint8), xs) == 0, "monoid product works")
+		XCTAssert(mconcat(xs.map { Sum($0) }).value() == 10, "monoid sum works")
+		XCTAssert(mconcat(xs.map { Product($0) }).value() == 0, "monoid product works")
 	}
 }

@@ -10,81 +10,64 @@
 // Num 'typeclass'
 
 public protocol Num {
-	typealias N
-	func zero() -> N
-	func succ(n: N) -> N
-	func add(x: N, y: N) -> N
-	func multiply(x: N, y: N) -> N
+	class var zero: Self { get }
+	class var one: Self { get }
+	func plus(other: Self) -> Self
+	func times(other: Self) -> Self
 }
 
-public let nint8 = NInt8()
-public struct NInt8 : Num {
-	public typealias N = Int8
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension Int8 : Num {
+	public static var zero: Int8 { return 0 }
+	public static var one: Int8 { return 1 }
+	public func plus(other: Int8) -> Int8 { return self + other }
+	public func times(other: Int8) -> Int8 { return self * other }
 }
 
-public let nint16 = NInt16()
-public struct NInt16 : Num {
-	public typealias N = Int16
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension Int16 : Num {
+	public static var zero: Int16 { return 0 }
+	public static var one: Int16 { return 1 }
+	public func plus(other: Int16) -> Int16 { return self + other }
+	public func times(other: Int16) -> Int16 { return self * other }
 }
 
-public let nint32 = NInt32()
-public struct NInt32 : Num {
-	public typealias N = Int32
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension Int32 : Num {
+	public static var zero: Int32 { return 0 }
+	public static var one: Int32 { return 1 }
+	public func plus(other: Int32) -> Int32 { return self + other }
+	public func times(other: Int32) -> Int32 { return self * other }
 }
 
-public let nint64 = NInt64()
-public struct NInt64 : Num {
-	public typealias N = Int64
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension Int64 : Num {
+	public static var zero: Int64 { return 0 }
+	public static var one: Int64 { return 1 }
+	public func plus(other: Int64) -> Int64 { return self + other }
+	public func times(other: Int64) -> Int64 { return self * other }
 }
 
-public let nuint8 = NUInt8()
-public struct NUInt8 : Num {
-	public typealias N = UInt8
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension UInt8 : Num {
+	public static var zero: UInt8 { return 0 }
+	public static var one: UInt8 { return 1 }
+	public func plus(other: UInt8) -> UInt8 { return self + other }
+	public func times(other: UInt8) -> UInt8 { return self * other }
 }
 
-public let nuint16 = NUInt16()
-public struct NUInt16 : Num {
-	public typealias N = UInt16
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension UInt16 : Num {
+	public static var zero: UInt16 { return 0 }
+	public static var one: UInt16 { return 1 }
+	public func plus(other: UInt16) -> UInt16 { return self + other }
+	public func times(other: UInt16) -> UInt16 { return self * other }
 }
 
-public let nuint32 = NUInt32()
-public struct NUInt32 : Num {
-	public typealias N = UInt32
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension UInt32 : Num {
+	public static var zero: UInt32 { return 0 }
+	public static var one: UInt32 { return 1 }
+	public func plus(other: UInt32) -> UInt32 { return self + other }
+	public func times(other: UInt32) -> UInt32 { return self * other }
 }
 
-public let nuint64 = NUInt64()
-public struct NUInt64 : Num {
-	public typealias N = UInt64
-	public func zero() -> N { return 0 }
-	public func succ(n: N) -> N { return n + 1 }
-	public func add(x: N, y: N) -> N { return x + y }
-	public func multiply(x: N, y: N) -> N { return x * y }
+extension UInt64 : Num {
+	public static var zero: UInt64 { return 0 }
+	public static var one: UInt64 { return 1 }
+	public func plus(other: UInt64) -> UInt64 { return self + other }
+	public func times(other: UInt64) -> UInt64 { return self * other }
 }
