@@ -86,6 +86,7 @@
 		84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890431A71DFE5003D53CF /* Nothing.swift */; };
 		84A8904F1A71DFE5003D53CF /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890451A71DFE5003D53CF /* Optional.swift */; };
 		84A890501A71DFE5003D53CF /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890461A71DFE5003D53CF /* Result.swift */; };
+		84F2C4FA1A7AEB9B00316E5F /* JSONKeypath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +182,7 @@
 		84A890431A71DFE5003D53CF /* Nothing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Nothing.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Nothing.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890451A71DFE5003D53CF /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Optional.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Optional.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890461A71DFE5003D53CF /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Result.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
+		84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONKeypath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +340,7 @@
 				84A88FED1A71DFC5003D53CF /* Functor.swift */,
 				84A88FF01A71DFC5003D53CF /* HList.swift */,
 				84A88FF61A71DFC5003D53CF /* JSON.swift */,
+				84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */,
 				84A88FF91A71DFC5003D53CF /* List.swift */,
 				84A88FFA1A71DFC5003D53CF /* Maybe.swift */,
 				84A88FFC1A71DFC5003D53CF /* Monoid.swift */,
@@ -564,6 +567,7 @@
 				84A890151A71DFC5003D53CF /* Chan.swift in Sources */,
 				84A8901B1A71DFC5003D53CF /* ExecutionContext.swift in Sources */,
 				84A890171A71DFC5003D53CF /* Comonad.swift in Sources */,
+				84F2C4FA1A7AEB9B00316E5F /* JSONKeypath.swift in Sources */,
 				84A8901F1A71DFC5003D53CF /* GCDExecutionContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

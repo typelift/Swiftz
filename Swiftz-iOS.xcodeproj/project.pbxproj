@@ -87,6 +87,7 @@
 		84A88F7A1A70C7A0003D53CF /* TupleExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDF1A70C707003D53CF /* TupleExtSpec.swift */; };
 		84A88F7B1A70C7A0003D53CF /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EE01A70C707003D53CF /* UserExample.swift */; };
 		84A8905C1A71E4C3003D53CF /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88D981A70C280003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84F2C4FC1A7AF34C00316E5F /* JSONKeypath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2C4FB1A7AF34C00316E5F /* JSONKeypath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		84A88EDE1A70C707003D53CF /* ThoseSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThoseSpec.swift; path = SwiftzTests/ThoseSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDF1A70C707003D53CF /* TupleExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TupleExtSpec.swift; path = SwiftzTests/TupleExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88EE01A70C707003D53CF /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserExample.swift; path = SwiftzTests/UserExample.swift; sourceTree = SOURCE_ROOT; };
+		84F2C4FB1A7AF34C00316E5F /* JSONKeypath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONKeypath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,6 +354,7 @@
 				84A88DC01A70C2B5003D53CF /* Functor.swift */,
 				84A88DC31A70C2B5003D53CF /* HList.swift */,
 				84A88DCA1A70C2B5003D53CF /* JSON.swift */,
+				84F2C4FB1A7AF34C00316E5F /* JSONKeypath.swift */,
 				84A88DCD1A70C2B5003D53CF /* List.swift */,
 				84A88DCE1A70C2B5003D53CF /* Maybe.swift */,
 				84A88DD01A70C2B5003D53CF /* Monoid.swift */,
@@ -607,6 +610,7 @@
 				84A88F2B1A70C77B003D53CF /* SYB.swift in Sources */,
 				84A88F2C1A70C77B003D53CF /* Those.swift in Sources */,
 				84A88F2D1A70C77B003D53CF /* Tuple.swift in Sources */,
+				84F2C4FC1A7AF34C00316E5F /* JSONKeypath.swift in Sources */,
 				84A88F2E1A70C77B003D53CF /* TupleExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
