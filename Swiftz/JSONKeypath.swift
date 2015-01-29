@@ -12,7 +12,7 @@
 public struct JSONKeypath : StringLiteralConvertible {
 	typealias StringLiteralType = String
 	
-	let path : [String]
+	public let path : [String]
 	
 	public init(_ path : [String]) {
 		self.path = path

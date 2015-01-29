@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum JSONValue: Printable {
+public enum JSONValue : Printable {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
 	case JSONNumber(Double)
@@ -36,7 +36,7 @@ public enum JSONValue: Printable {
 	}
 	
 	// we know this is safe because of the NSJSONSerialization docs
-	private static func make(a: NSObject) -> JSONValue {
+	private static func make(a : NSObject) -> JSONValue {
 		switch a {
 		case let xs as NSArray:
 			return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
@@ -63,7 +63,7 @@ public enum JSONValue: Printable {
 	}
 	
 	// TODO: should this be optional?
-	public static func decode(s: NSData) -> JSONValue? {
+	public static func decode(s : NSData) -> JSONValue? {
 		var e: NSError?
 		let opts: NSJSONReadingOptions = nil
 		let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
@@ -73,6 +73,10 @@ public enum JSONValue: Printable {
 		} else {
 			return .None
 		}
+	}
+	
+	public static func decode(s : String) -> JSONValue? {
+		return JSONValue.decode(s.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
 	}
 	
 	public var description: String {
