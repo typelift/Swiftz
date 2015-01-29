@@ -30,6 +30,13 @@ infix operator |> {
 	precedence 0
 }
 
+/// MARK: Data.Monoid
+
+infix operator <> {
+	associativity right
+	precedence 160
+}
+
 /// MARK: Control.*
 
 /// Fmap | Maps a function over the value encapsulated by a functor.
@@ -130,6 +137,12 @@ infix operator <+> {
 	associativity right
 }
 
+/// MARK: Data.JSON
+
+infix operator <! {
+	precedence 150
+	associativity left
+}
 
 /// MARK: Data.Result
 
