@@ -32,6 +32,7 @@ infix operator |> {
 
 /// MARK: Data.Monoid
 
+/// Append | Alias for a Semigroup's operation.
 infix operator <> {
 	associativity right
 	precedence 160
@@ -139,6 +140,10 @@ infix operator <+> {
 
 /// MARK: Data.JSON
 
+/// Retrieve | Retrieves a value from a dictionary of JSON values using a given keypath.
+///
+/// If the given keypath is not present or the retrieved value is not of the appropriate type, this
+/// function returns `.None`.
 infix operator <! {
 	precedence 150
 	associativity left
