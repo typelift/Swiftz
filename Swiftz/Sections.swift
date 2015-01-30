@@ -1218,11 +1218,11 @@ prefix operator !== {}
 postfix operator !== {}
 
 public prefix func !==(rhs: AnyObject?) -> AnyObject? -> Bool {
-	return { lhs in lhs === rhs }
+	return { lhs in lhs !== rhs }
 }
 
 public postfix func !==(lhs: AnyObject?) -> AnyObject? -> Bool {
-	return { rhs in lhs === rhs }
+	return { rhs in lhs !== rhs }
 }
 
 prefix operator == {}
@@ -1593,82 +1593,82 @@ prefix operator != {}
 postfix operator != {}
 
 public postfix func !=(lhs: Int64) -> Int64 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Int64) -> Int64 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: UnsafePointer<T>) -> UnsafePointer<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: UnsafePointer<T>) -> UnsafePointer<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Bit) -> Bit -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Bit) -> Bit -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UInt) -> UInt -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 public prefix func !=(rhs: UInt) -> UInt -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Int) -> Int -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Int) -> Int -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<Base : CollectionType>(lhs: FilterCollectionViewIndex<Base>) -> FilterCollectionViewIndex<Base> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<Base : CollectionType>(rhs: FilterCollectionViewIndex<Base>) -> FilterCollectionViewIndex<Base> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Float) -> Float -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Float) -> Float -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<Key : Equatable, Value : Equatable>(rhs: [Key : Value]) -> [Key : Value] -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<Key : Equatable, Value : Equatable>(lhs: [Key : Value]) -> [Key : Value] -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<Key : Hashable, Value>(rhs: DictionaryIndex<Key, Value>) -> DictionaryIndex<Key, Value> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<Key : Hashable, Value>(lhs: DictionaryIndex<Key, Value>) -> DictionaryIndex<Key, Value> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Double) -> Double -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Double) -> Double -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=<T : _RawOptionSetType>(b: T) -> T -> Bool {
@@ -1680,197 +1680,197 @@ public postfix func !=<T : _RawOptionSetType>(a: T) -> T -> Bool {
 }
 
 public postfix func !=(lhs: Character) -> Character -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Character) -> Character -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 #if os(OSX)
 public postfix func !=(lhs: Swift.Float80) -> Swift.Float80 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Swift.Float80) -> Swift.Float80 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 #endif
 
 public postfix func !=(lhs: FloatingPointClassification) -> FloatingPointClassification -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: FloatingPointClassification) -> FloatingPointClassification -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=<Value, Element>(lhs: HeapBuffer<Value, Element>) -> HeapBuffer<Value, Element> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: CFunctionPointer<T>) -> CFunctionPointer<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T : Comparable>(rhs: HalfOpenInterval<T>) -> HalfOpenInterval<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Comparable>(lhs: HalfOpenInterval<T>) -> HalfOpenInterval<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T : Comparable>(rhs: ClosedInterval<T>) -> ClosedInterval<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Comparable>(lhs: ClosedInterval<T>) -> ClosedInterval<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: COpaquePointer) -> COpaquePointer -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: COpaquePointer) -> COpaquePointer -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=<T : Equatable>(rhs: T?) -> T? -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Equatable>(lhs: T?) -> T? -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: AutoreleasingUnsafeMutablePointer<T>) -> AutoreleasingUnsafeMutablePointer<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Bool) -> Bool -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Bool) -> Bool -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=<T : Equatable>(rhs: [T]) -> [T] -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Equatable>(lhs: [T]) -> [T] -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T : Equatable>(rhs: Slice<T>) -> Slice<T> -> Bool{
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Equatable>(lhs: Slice<T>) -> Slice<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T : Equatable>(rhs: ContiguousArray<T>) -> ContiguousArray<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T : Equatable>(lhs: ContiguousArray<T>) -> ContiguousArray<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: _OptionalNilComparisonType) -> T? -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: T?) -> _OptionalNilComparisonType -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: T?) -> _OptionalNilComparisonType -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: _OptionalNilComparisonType) -> T? -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T>(lhs: Range<T>) -> Range<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: Range<T>) -> Range<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UInt64) -> UInt64 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: UInt64) -> UInt64 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Int32) -> Int32 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Int32) -> Int32 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UInt32) -> UInt32 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: UInt32) -> UInt32 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Int16) -> Int16 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Int16) -> Int16 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UInt16) -> UInt16 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: UInt16) -> UInt16 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: Int8) -> Int8 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: Int8) -> Int8 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UInt8) -> UInt8 -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: UInt8) -> UInt8 -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=(y: ObjectIdentifier) -> ObjectIdentifier -> Bool {
@@ -1882,19 +1882,19 @@ public postfix func !=(x: ObjectIdentifier) -> ObjectIdentifier -> Bool {
 }
 
 public prefix func !=<I>(rhs: ReverseBidirectionalIndex<I>) -> ReverseBidirectionalIndex<I> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<I>(lhs: ReverseBidirectionalIndex<I>) -> ReverseBidirectionalIndex<I> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<I>(rhs: ReverseRandomAccessIndex<I>) -> ReverseRandomAccessIndex<I> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<I>(lhs: ReverseRandomAccessIndex<I>) -> ReverseRandomAccessIndex<I> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=<T : _Strideable>(y: T) -> T -> Bool {
@@ -1906,51 +1906,51 @@ public postfix func !=<T : _Strideable>(x: T) -> T -> Bool {
 }
 
 public postfix func !=(lhs: String) -> String -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: String) -> String -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: String.Index) -> String.Index -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: String.Index) -> String.Index -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: String.UTF8View.Index) -> String.UTF8View.Index -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: String.UTF8View.Index) -> String.UTF8View.Index -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: String.UnicodeScalarView.Index) -> String.UnicodeScalarView.Index -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: String.UnicodeScalarView.Index) -> String.UnicodeScalarView.Index -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=(lhs: UnicodeScalar) -> UnicodeScalar -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 public prefix func !=(rhs: UnicodeScalar) -> UnicodeScalar -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public prefix func !=<T>(rhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T> -> Bool {
-	return { lhs in lhs == rhs }
+	return { lhs in lhs != rhs }
 }
 
 public postfix func !=<T>(lhs: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<T> -> Bool {
-	return { rhs in lhs == rhs }
+	return { rhs in lhs != rhs }
 }
 
 prefix operator <= {}
