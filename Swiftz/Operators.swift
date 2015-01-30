@@ -144,6 +144,17 @@ infix operator <+> {
 ///
 /// If the given keypath is not present or the retrieved value is not of the appropriate type, this
 /// function returns `.None`.
+infix operator <? {
+	precedence 150
+	associativity left
+}
+
+/// Force Retrieve | Retrieves a value from a dictionary of JSON values using a given keypath,
+/// forcing any Optionals it finds.
+///
+/// If the given keypath is not present or the retrieved value is not of the appropriate type, this
+/// function will terminate with a fatal error.  It is recommended that you use Force Retrieve's 
+/// total cousin `<!` (Retrieve).
 infix operator <! {
 	precedence 150
 	associativity left

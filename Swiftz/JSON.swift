@@ -143,7 +143,7 @@ public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 //  return !(lhs >= rhs)
 //}
 
-public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- { A.fromJSON($0) }
@@ -152,7 +152,7 @@ public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	}
 }
 
-public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- JArrayFrom<A, A>.fromJSON
@@ -161,7 +161,7 @@ public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	}
 }
 
-public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
 	switch lhs {
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs) >>- JDictionaryFrom<A, A>.fromJSON
@@ -170,6 +170,27 @@ public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	}
 }
 
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A { 
+	if let r : A = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find value at keypath \(rhs) in JSON object \(rhs).")
+}
+
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A] { 
+	if let r : [A] = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find array at keypath \(rhs) in JSON object \(rhs).")
+}
+
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A] { 
+	if let r : [String:A] = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find object at keypath \(rhs) in JSON object \(rhs).")
+}
+	
 // traits
 
 public protocol JSONDecodable {

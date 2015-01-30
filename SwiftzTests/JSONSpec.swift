@@ -56,8 +56,8 @@ struct Coordinate : JSONDecodable {
 	
 	static func fromJSON(x: JSONValue) -> Coordinate? {
 		return Coordinate.create	
-			<^> x <! "map" <> "coordinates" <> "xPart" 
-			<*> x <! "map" <> "coordinates" <> "yPart"
+			<^> x <? "map" <> "coordinates" <> "xPart" 
+			<*> x <? "map" <> "coordinates" <> "yPart"
 	}
 }
 
@@ -67,6 +67,7 @@ extension JSONSpec {
 		let badJSON = "{ \"map\": { \"coordinates\": { \"zPart\": \"0.0\", \"ePart\": \"10.0\" } } }"
 		
 		let coord = JSONValue.decode(JSON) >>- Coordinate.fromJSON
+		
 		XCTAssertTrue(coord != nil)
 		XCTAssertTrue(coord?.x == 1000.0)
 		XCTAssertTrue(coord?.y == 2.0)

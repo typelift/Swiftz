@@ -40,3 +40,9 @@ extension JSONKeypath : Monoid {
 		return JSONKeypath(self.path + other.path)
 	}
 }
+
+extension JSONKeypath : Printable {
+	public var description : String {
+		return intersperse(".", self.path).reduce("", combine: +)
+	}
+}
