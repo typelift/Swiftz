@@ -154,7 +154,7 @@ infix operator <? {
 ///
 /// If the given keypath is not present or the retrieved value is not of the appropriate type, this
 /// function will terminate with a fatal error.  It is recommended that you use Force Retrieve's 
-/// total cousin `<!` (Retrieve).
+/// total cousin `<?` (Retrieve).
 infix operator <! {
 	precedence 150
 	associativity left
