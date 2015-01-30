@@ -255,20 +255,32 @@ Operators
 
 Swiftz introduces the following operators at global scope
 
-Operator | Name      | Type
--------- | --------- | ------------------------------------------
-`•`      | compose   | `•    <A, B, C>(B -> C, A -> B) -> A -> C`
-`<|`     | apply     | `<|   <A, B>(A -> B, A) -> B`
-`|>`     | thrush    | `|>   <A, B>(A, A -> B) -> B`
-`<-`     | extract   | `<-   <A>(M<A>, A) -> Void`
-`∪`      | union     | `∪    <A>(Set<A>, Set<A>) -> Set<A>`
-`∩`      | intersect | `∩    <A>(Set<A>, Set<A>) -> Set<A>`
-`<^>`    | fmap      | `<^>  <A, B>(A -> B, a: F<A>) -> F<B>`
-`<^^>`   | imap      | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
-`<!>`    | contramap | `<^>  <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
-`<*>`    | apply     | `<*>  <A, B>(F<A -> B>, F<A>) -> F<B>`
-`>>-`    | bind      | `>>-  <A, B>(F<A>, A -> F<B>) -> F<B>`
-`->>`    | extend    | `->>  <A, B>(F<A>, F<A> -> B) -> F<B>`
+Operator | Name           | Type
+-------- | -------------- | ------------------------------------------
+`•`      | compose        | `•    <A, B, C>(B -> C, A -> B) -> A -> C`
+`<|`     | apply          | `<|   <A, B>(A -> B, A) -> B`
+`|>`     | thrush         | `|>   <A, B>(A, A -> B) -> B`
+`<-`     | extract        | `<-   <A>(M<A>, A) -> Void`
+`∪`      | union          | `∪    <A>(Set<A>, Set<A>) -> Set<A>`
+`∩`      | intersect      | `∩    <A>(Set<A>, Set<A>) -> Set<A>`
+`!!`     | from           | `!!   <A, ..., F>(NSErrorPointer, A, ..., F) -> Result<F>`
+`<>`     | op             | `<>   <A : Monoid>(A, A) -> A`
+`<?`     | retrieve       | `<?   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A?` 
+`<!`     | force retrieve | `<?   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A` 
+`<^>`    | fmap           | `<^>  <A, B>(A -> B, a: F<A>) -> F<B>`
+`<^^>`   | imap           | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
+`<!>`    | contramap      | `<^>  <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
+`<*>`    | apply          | `<*>  <A, B>(F<A -> B>, F<A>) -> F<B>`
+`>>-`    | bind           | `>>-  <A, B>(F<A>, A -> F<B>) -> F<B>`
+`->>`    | extend         | `->>  <A, B>(F<A>, F<A> -> B) -> F<B>`
+`<<<`    | r-t-l compose  | `>>>  <C, A, B, C>(C<A, B>, C<B, C>) -> C<A, C>` 
+`>>>`    | ltr compose    | `<<<  <C, A, B, C>(C<B, C>, C<A, B>) -> C<A, C>` 
+`&&&`    | split          | `&&&  <A, B, C, D>(A<B, C>, A<B, D>) -> A<B, (C, D)>` 
+`***`    | fanout         | `***  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<(B, D), (C, E)>` 
+`+++`    | splat          | `+++  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<Either<D, B>, Either<C, E>>`
+`|||`    | fanin          | `|||  <A, B, C, D, E>(A<B, D>, A<C, D>) -> A<Either<B, C>, D>`
+`<+>`    | op             | `<+>  <A, B, C>(A<B, C>, A<B, C>) -> A<B, C>`
+ 
 
 System Requirements
 ===================
