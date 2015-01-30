@@ -55,8 +55,9 @@ struct Coordinate : JSONDecodable {
 	}
 	
 	static func fromJSON(x: JSONValue) -> Coordinate? {
-		return Coordinate.create	<^> x <! "map" <> "coordinates" <> "xPart" 
-									<*> x <! "map" <> "coordinates" <> "yPart"
+		return Coordinate.create	
+			<^> x <! "map" <> "coordinates" <> "xPart" 
+			<*> x <! "map" <> "coordinates" <> "yPart"
 	}
 }
 

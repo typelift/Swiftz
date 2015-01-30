@@ -79,7 +79,7 @@ public enum JSONValue : Printable {
 		return JSONValue.decode(s.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
 	}
 	
-	public var description: String {
+	public var description : String {
 		get {
 			switch self {
 			case .JSONNull(): 
@@ -101,7 +101,7 @@ public enum JSONValue : Printable {
 
 // you'll have more fun if you match tuples
 // Equatable
-public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	switch (lhs, rhs) {
 	case (.JSONNull(), .JSONNull()): 
 		return true
@@ -121,7 +121,7 @@ public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
 	}
 }
 
-public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -328,7 +328,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs : J) -> JSONValue {
 		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
 	}
 }
@@ -340,7 +340,7 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+			return map(dict: xs)({ k, x in
 				return (k, B.fromJSON(x)!)
 			})
 		default: 
@@ -353,7 +353,7 @@ public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable
 	public typealias J = Dictionary<String, A>
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
+		return JSONValue.JSONObject(map(dict: xs)({ k, x -> (String, JSONValue) in
 			return (k, B.toJSON(x))
 		}))
 	}
@@ -365,7 +365,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+			return map(dict: xs)({ k, x in
 				return (k, B.fromJSON(x)!)
 			})
 		default: 
@@ -374,7 +374,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	}
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
+		return JSONValue.JSONObject(map(dict: xs)({ k, x in
 			return (k, B.toJSON(x))
 		}))
 	}

@@ -18,15 +18,15 @@ public struct JSONKeypath : StringLiteralConvertible {
 		self.path = path
 	}
 	
-	public init(unicodeScalarLiteral value: UnicodeScalar) {
+	public init(unicodeScalarLiteral value : UnicodeScalar) {
 		self.path = ["\(value)"]
 	}
 	
-	public init(extendedGraphemeClusterLiteral value: String) {
+	public init(extendedGraphemeClusterLiteral value : String) {
 		self.path = [value]
 	}
 	
-	public init(stringLiteral value: String) {
+	public init(stringLiteral value : String) {
 		self.path = [value]
 	}
 }

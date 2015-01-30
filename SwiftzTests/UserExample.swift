@@ -28,11 +28,12 @@ public class User : JSONDecodable {
 		return { y in { z in { User(x, y, z, $0) } } }
 	}
 	
-	public class func fromJSON(x: JSONValue) -> User? {
-		return User.create	<^> x <! "name" 
-							<*> x <! "age"
-							<*> x <! "tweets" 
-							<*> x <! "attrs" <> "one" // A nested keypath
+	public class func fromJSON(x : JSONValue) -> User? {
+		return User.create
+			<^> x <! "name" 
+			<*> x <! "age"
+			<*> x <! "tweets" 							
+			<*> x <! "attrs" <> "one" // A nested keypath
 	}
 	
 	// lens example
