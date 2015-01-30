@@ -16,8 +16,13 @@ class MonoidSpec : XCTestCase {
 	}
 
 	func testDataMonoid() {
-		let xs: [Int8] = [1, 2, 0, 3, 4]
+		let xs : [Int8] = [1, 2, 0, 3, 4]
 		XCTAssert(mconcat(xs.map { Sum($0) }).value() == 10, "monoid sum works")
 		XCTAssert(mconcat(xs.map { Product($0) }).value() == 0, "monoid product works")
+	}
+
+	func testMonoidCoproduct() {
+		let v : MonoidCoproduct<Product<Int8>, Sum<Int16>> = MonoidCoproduct([Either.left(Product(2)), Either.left(Product(3)), Either.right(Sum(5)), Either.left(Product(7))])
+		XCTAssert(v.fold(onLeft: { n in Sum(Int16(n.value())) }, onRight: identity).value() == 18, "monoid coproduct works")
 	}
 }

@@ -117,3 +117,42 @@ public struct Last<A : Comparable> : Monoid {
 	}
 }
 
+/// The coproduct of Monoids
+public struct MonoidCoproduct<A : Monoid, B : Monoid> : Monoid {
+	public let values : [Either<A, B>]
+
+	public init(_ vs : [Either<A, B>]) {
+		values = []
+		for v in vs {
+			if let z = values.last {
+				switch (z, v) {
+				case let (.Left(x), .Left(y)): values[values.endIndex - 1] = Either.left(x.value.op(y.value))
+				case let (.Right(x), .Right(y)): values[values.endIndex - 1] = Either.right(x.value.op(y.value))
+				default: values.append(v)
+				}
+			} else {
+				values = [v]
+			}
+		}
+	}
+
+	public static func left(x: A) -> MonoidCoproduct<A, B> {
+		return MonoidCoproduct([Either.left(x)])
+	}
+
+	public static func right(y: B) -> MonoidCoproduct<A, B> {
+		return MonoidCoproduct([Either.right(y)])
+	}
+
+	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
+		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+	}
+
+	public static var mzero : MonoidCoproduct<A, B> {
+		return MonoidCoproduct([])
+	}
+
+	public func op(other : MonoidCoproduct<A, B>) -> MonoidCoproduct<A, B> {
+		return MonoidCoproduct(values + other.values)
+	}
+}
