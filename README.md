@@ -105,11 +105,12 @@ public class User : JSONDecodable {
         return { y in { z in { User(x, y, z, $0) } } }
     }
     
-    public class func fromJSON(x: JSONValue) -> User? {
-        return User.create  <^> x <! "name" 
-                            <*> x <! "age"
-                            <*> x <! "tweets" 
-                            <*> x <! "attrs" <> "one" // A nested keypath
+    public class func fromJSON(x : JSONValue) -> User? {
+        return User.create
+			<^> x <! "name" 
+			<*> x <! "age"
+			<*> x <! "tweets" 
+			<*> x <! "attrs" <> "one" // A nested keypath
     }
     
     // lens example
@@ -256,18 +257,18 @@ Swiftz introduces the following operators at global scope
 
 Operator | Name      | Type
 -------- | --------- | ------------------------------------------
-`•`      | compose   | `• <A, B, C>(B -> C, A -> B) -> A -> C`
-`<|`     | apply     | `<| <A, B>(A -> B, A) -> B`
-`|>`     | thrush    | `|> <A, B>(A, A -> B) -> B`
-`<-`     | extract   | `<- <A>(M<A>, A) -> Void`
-`∪`      | union     | `∪ <A>(Set<A>, Set<A>) -> Set<A>`
-`∩`      | intersect | `∩ <A>(Set<A>, Set<A>) -> Set<A>`
-`<^>`    | fmap      | `<^> <A, B>(A -> B, a: F<A>) -> F<B>`
+`•`      | compose   | `•    <A, B, C>(B -> C, A -> B) -> A -> C`
+`<|`     | apply     | `<|   <A, B>(A -> B, A) -> B`
+`|>`     | thrush    | `|>   <A, B>(A, A -> B) -> B`
+`<-`     | extract   | `<-   <A>(M<A>, A) -> Void`
+`∪`      | union     | `∪    <A>(Set<A>, Set<A>) -> Set<A>`
+`∩`      | intersect | `∩    <A>(Set<A>, Set<A>) -> Set<A>`
+`<^>`    | fmap      | `<^>  <A, B>(A -> B, a: F<A>) -> F<B>`
 `<^^>`   | imap      | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
-`<!>`    | contramap | `<^> <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
-`<*>`    | apply     | `<*> <A, B>(F<A -> B>, F<A>) -> F<B>`
-`>>-`    | bind      | `>>- <A, B>(F<A>, A -> F<B>) -> F<B>`
-`->>`    | extend    | `->> <A, B>(F<A>, F<A> -> B) -> F<B>`
+`<!>`    | contramap | `<^>  <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
+`<*>`    | apply     | `<*>  <A, B>(F<A -> B>, F<A>) -> F<B>`
+`>>-`    | bind      | `>>-  <A, B>(F<A>, A -> F<B>) -> F<B>`
+`->>`    | extend    | `->>  <A, B>(F<A>, F<A> -> B) -> F<B>`
 
 System Requirements
 ===================
