@@ -266,7 +266,7 @@ Operator | Name           | Type
 `!!`     | from           | `!!   <A, ..., F>(NSErrorPointer, A, ..., F) -> Result<F>`
 `<>`     | op             | `<>   <A : Monoid>(A, A) -> A`
 `<?`     | retrieve       | `<?   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A?` 
-`<!`     | force retrieve | `<?   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A` 
+`<!`     | force retrieve | `<!   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A` 
 `<^>`    | fmap           | `<^>  <A, B>(A -> B, a: F<A>) -> F<B>`
 `<^^>`   | imap           | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
 `<!>`    | contramap      | `<^>  <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
