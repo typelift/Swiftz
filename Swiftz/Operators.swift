@@ -155,4 +155,41 @@ infix operator ∩ {}
 /// Union | Returns the union of two sets.
 infix operator ∪ {}
 
+/// MARK: Sections
+
+prefix operator • {}
+postfix operator • {}
+
+prefix operator § {}
+postfix operator § {}
+
+prefix operator |> {}
+postfix operator |> {}
+
+prefix operator <| {}
+postfix operator <| {}
+
+// "fmap" like
+prefix operator <^> {}
+postfix operator <^> {}
+
+// "imap" like
+prefix operator <^^> {}
+postfix operator <^^> {}
+
+// "contramap" like
+prefix operator <!> {}
+postfix operator <!> {}
+
+// "ap" like
+prefix operator <*> {}
+postfix operator <*> {}
+
+// "extend" like
+prefix operator ->> {}
+postfix operator ->> {}
+
+/// Monadic bind
+prefix operator >>- {}
+postfix operator >>- {}
 
