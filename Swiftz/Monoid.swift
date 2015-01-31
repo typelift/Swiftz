@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// A Monoid is a Semigroup that distinguishes an identity element.
+/// A `Monoid` is a `Semigroup` that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
 	class var mzero : Self { get }
@@ -16,7 +16,7 @@ public func mconcat<S : Monoid>(t : [S]) -> S {
 	return sconcat(S.mzero, t)
 }
 
-/// The Monoid of numeric types under addition.
+/// The `Monoid` of numeric types under addition.
 public struct Sum<N : Num> : Monoid {
 	public let value : () -> N
 
@@ -33,7 +33,7 @@ public struct Sum<N : Num> : Monoid {
 	}
 }
 
-/// The Monoid of numeric types under multiplication.
+/// The `Monoid` of numeric types under multiplication.
 public struct Product<N : Num> : Monoid {
 	public let value : () -> N
 
@@ -50,7 +50,7 @@ public struct Product<N : Num> : Monoid {
 	}
 }
 
-/// The Semigroup-lifting Maybe Monoid
+/// The `Semigroup`-lifting `Maybe` `Monoid`
 public struct AdjoinNil<A : Semigroup> : Monoid {
 	public let value : () -> Maybe<A>
 
@@ -75,7 +75,7 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 	}
 }
 
-/// The left-biased Maybe Monoid.
+/// The left-biased `Maybe` `Monoid`
 public struct First<A : Comparable> : Monoid {
 	public let value : () -> Maybe<A>
 
@@ -96,7 +96,7 @@ public struct First<A : Comparable> : Monoid {
 	}
 }
 
-/// The right-biased Maybe Monoid.
+/// The right-biased `Maybe` `Monoid`.
 public struct Last<A : Comparable> : Monoid {
 	public let value : () -> Maybe<A>
 
@@ -117,8 +117,8 @@ public struct Last<A : Comparable> : Monoid {
 	}
 }
 
-/// The coproduct of Monoids
-public struct MonoidCoproduct<A : Monoid, B : Monoid> : Monoid {
+/// The coproduct of `Monoid`s
+public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public let values : [Either<A, B>]
 
 	public init(_ vs : [Either<A, B>]) {
@@ -136,23 +136,23 @@ public struct MonoidCoproduct<A : Monoid, B : Monoid> : Monoid {
 		}
 	}
 
-	public static func left(x: A) -> MonoidCoproduct<A, B> {
-		return MonoidCoproduct([Either.left(x)])
+	public static func left(x: A) -> Dither<A, B> {
+		return Dither([Either.left(x)])
 	}
 
-	public static func right(y: B) -> MonoidCoproduct<A, B> {
-		return MonoidCoproduct([Either.right(y)])
+	public static func right(y: B) -> Dither<A, B> {
+		return Dither([Either.right(y)])
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
 		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
-	public static var mzero : MonoidCoproduct<A, B> {
-		return MonoidCoproduct([])
+	public static var mzero : Dither<A, B> {
+		return Dither([])
 	}
 
-	public func op(other : MonoidCoproduct<A, B>) -> MonoidCoproduct<A, B> {
-		return MonoidCoproduct(values + other.values)
+	public func op(other : Dither<A, B>) -> Dither<A, B> {
+		return Dither(values + other.values)
 	}
 }

@@ -21,8 +21,8 @@ class MonoidSpec : XCTestCase {
 		XCTAssert(mconcat(xs.map { Product($0) }).value() == 0, "monoid product works")
 	}
 
-	func testMonoidCoproduct() {
-		let v : MonoidCoproduct<Product<Int8>, Sum<Int16>> = MonoidCoproduct([Either.left(Product(2)), Either.left(Product(3)), Either.right(Sum(5)), Either.left(Product(7))])
-		XCTAssert(v.fold(onLeft: { n in Sum(Int16(n.value())) }, onRight: identity).value() == 18, "monoid coproduct works")
+	func testDither() {
+		let v : Dither<Product<Int8>, Sum<Int16>> = Dither([Either.left(Product(2)), Either.left(Product(3)), Either.right(Sum(5)), Either.left(Product(7))])
+		XCTAssert(v.fold(onLeft: { n in Sum(Int16(n.value())) }, onRight: identity).value() == 18, "Dither works")
 	}
 }
