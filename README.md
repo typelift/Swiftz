@@ -84,48 +84,50 @@ let lastHalf = l.drop(5) // [6, 7, 8, 9, 10]
 
 ```swift
 import protocol Swiftz.JSONDecode
-
-final class User: JSONDecode {
-    typealias J = User
-    let name   : String
-    let age    : Int
-    let tweets : [String]
-    let attrs  : Dictionary<String, String>
+import struct Swiftz.JSONKeypath
     
-    public init(_ n : String, _ a : Int, _ t : [String], _ r : Dictionary<String, String>) {
+public class User : JSONDecodable {
+    typealias J = User
+    let name : String
+    let age : Int
+    let tweets : [String]
+    let attr : String
+    
+    public init(_ n : String, _ a : Int, _ t : [String], _ r : String) {
         name = n
         age = a
         tweets = t
-        attrs = r
+        attr = r
     }
-
+    
     // JSON
-    public class func create(x : String) -> Int -> [String] -> Dictionary<String, String> -> User {
-        return { (y: Int) in { (z: [String]) in { User(x, y, z, $0) } } }
+    public class func create(x : String) -> Int -> ([String] -> String -> User) {
+        return { y in { z in { User(x, y, z, $0) } } }
     }
     
     public class func fromJSON(x : JSONValue) -> User? {
-        switch x {
-        case let .JSONObject(d):
-            let n = d["name"]   >>- JString.fromJSON
-            let a = d["age"]    >>- JInt.fromJSON
-            let t = d["tweets"] >>- JArray<String, JString>.fromJSON
-            let r = d["attrs"]  >>- JDictionary<String, JString>.fromJSON
-            // alternatively, if n && a && t... { return User(n!, a!, ...
-            return (User.create <^> n <*> a <*> t <*> r)
-        default:
-            return .None
-        }
+        return User.create
+			<^> x <? "name" 
+			<*> x <? "age"
+			<*> x <? "tweets" 
+			<*> x <? "attrs" <> "one" // A nested keypath
     }
-
+    
+    // lens example
     public class func luserName() -> Lens<User, User, String, String> {
-        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
+        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attr) } }
     }
 }
 
-public func ==(lhs: User, rhs: User) -> Bool {
-    return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attrs == rhs.attrs
-}    
+public func ==(lhs : User, rhs : User) -> Bool {
+    return lhs.name == rhs.name && lhs.age == rhs.age && lhs.tweets == rhs.tweets && lhs.attr == rhs.attr
+}
+
+let userjs = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
+
+/// The JSON we've decoded works perfectly with the User structure we defined above.  In case it didn't,
+/// the user would be nil.
+let user : User? = JSONValue.decode(userjs) >>- User.fromJSON // .Some( User("max", 10, ["hello"], "1") )
 ```
 
 **Lenses**
@@ -253,20 +255,32 @@ Operators
 
 Swiftz introduces the following operators at global scope
 
-Operator | Name      | Type
--------- | --------- | ------------------------------------------
-`•`      | compose   | `• <A, B, C>(B -> C, A -> B) -> A -> C`
-`<|`     | apply     | `<| <A, B>(A -> B, A) -> B`
-`|>`     | thrush    | `|> <A, B>(A, A -> B) -> B`
-`<-`     | extract   | `<- <A>(M<A>, A) -> Void`
-`∪`      | union     | `∪ <A>(Set<A>, Set<A>) -> Set<A>`
-`∩`      | intersect | `∩ <A>(Set<A>, Set<A>) -> Set<A>`
-`<^>`    | fmap      | `<^> <A, B>(A -> B, a: F<A>) -> F<B>`
-`<^^>`   | imap      | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
-`<!>`    | contramap | `<^> <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
-`<*>`    | apply     | `<*> <A, B>(F<A -> B>, F<A>) -> F<B>`
-`>>-`    | bind      | `>>- <A, B>(F<A>, A -> F<B>) -> F<B>`
-`->>`    | extend    | `->> <A, B>(F<A>, F<A> -> B) -> F<B>`
+Operator | Name           | Type
+-------- | -------------- | ------------------------------------------
+`•`      | compose        | `•    <A, B, C>(B -> C, A -> B) -> A -> C`
+`<|`     | apply          | `<|   <A, B>(A -> B, A) -> B`
+`|>`     | thrush         | `|>   <A, B>(A, A -> B) -> B`
+`<-`     | extract        | `<-   <A>(M<A>, A) -> Void`
+`∪`      | union          | `∪    <A>(Set<A>, Set<A>) -> Set<A>`
+`∩`      | intersect      | `∩    <A>(Set<A>, Set<A>) -> Set<A>`
+`!!`     | from           | `!!   <A, ..., F>(NSErrorPointer, A, ..., F) -> Result<F>`
+`<>`     | op             | `<>   <A : Monoid>(A, A) -> A`
+`<?`     | retrieve       | `<?   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A?` 
+`<!`     | force retrieve | `<!   <A : JSONDecodable>(JSONValue, JSONKeypath) -> A` 
+`<^>`    | fmap           | `<^>  <A, B>(A -> B, a: F<A>) -> F<B>`
+`<^^>`   | imap           | `<^^> <I, J, A>(I -> J, F<I, A>) -> F<J, A>`
+`<!>`    | contramap      | `<^>  <I, J, A>(J -> I, F<I, A>) -> F<J, A>`
+`<*>`    | apply          | `<*>  <A, B>(F<A -> B>, F<A>) -> F<B>`
+`>>-`    | bind           | `>>-  <A, B>(F<A>, A -> F<B>) -> F<B>`
+`->>`    | extend         | `->>  <A, B>(F<A>, F<A> -> B) -> F<B>`
+`<<<`    | r-t-l compose  | `>>>  <C, A, B, C>(C<A, B>, C<B, C>) -> C<A, C>` 
+`>>>`    | l-t-r compose  | `<<<  <C, A, B, C>(C<B, C>, C<A, B>) -> C<A, C>` 
+`&&&`    | split          | `&&&  <A, B, C, D>(A<B, C>, A<B, D>) -> A<B, (C, D)>` 
+`***`    | fanout         | `***  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<(B, D), (C, E)>` 
+`+++`    | splat          | `+++  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<Either<D, B>, Either<C, E>>`
+`|||`    | fanin          | `|||  <A, B, C, D, E>(A<B, D>, A<C, D>) -> A<Either<B, C>, D>`
+`<+>`    | op             | `<+>  <A, B, C>(A<B, C>, A<B, C>) -> A<B, C>`
+ 
 
 System Requirements
 ===================

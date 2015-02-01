@@ -13,6 +13,10 @@ public protocol Semigroup {
 	func op(other : Self) -> Self
 }
 
+public func <> <A : Semigroup>(lhs : A, rhs : A) -> A {
+	return lhs.op(rhs)
+}
+
 public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
 	return t.reduce(h) { $0.op($1) }
 }
