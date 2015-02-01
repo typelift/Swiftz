@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum JSONValue: Printable {
+public enum JSONValue : Printable {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
 	case JSONNumber(Double)
@@ -16,8 +16,7 @@ public enum JSONValue: Printable {
 	case JSONBool(Bool)
 	case JSONNull()
 	
-	// private
-	public func values() -> NSObject {
+	private func values() -> NSObject {
 		switch self {
 		case let JSONArray(xs): 
 			return NSArray(array: xs.map { $0.values() })
@@ -36,9 +35,8 @@ public enum JSONValue: Printable {
 		}
 	}
 	
-	// private
 	// we know this is safe because of the NSJSONSerialization docs
-	public static func make(a: NSObject) -> JSONValue {
+	private static func make(a : NSObject) -> JSONValue {
 		switch a {
 		case let xs as NSArray:
 			return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
@@ -65,7 +63,7 @@ public enum JSONValue: Printable {
 	}
 	
 	// TODO: should this be optional?
-	public static func decode(s: NSData) -> JSONValue? {
+	public static func decode(s : NSData) -> JSONValue? {
 		var e: NSError?
 		let opts: NSJSONReadingOptions = nil
 		let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
@@ -77,7 +75,11 @@ public enum JSONValue: Printable {
 		}
 	}
 	
-	public var description: String {
+	public static func decode(s : String) -> JSONValue? {
+		return JSONValue.decode(s.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+	}
+	
+	public var description : String {
 		get {
 			switch self {
 			case .JSONNull(): 
@@ -99,7 +101,7 @@ public enum JSONValue: Printable {
 
 // you'll have more fun if you match tuples
 // Equatable
-public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	switch (lhs, rhs) {
 	case (.JSONNull(), .JSONNull()): 
 		return true
@@ -119,7 +121,7 @@ public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
 	}
 }
 
-public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -141,79 +143,73 @@ public func !=(lhs: JSONValue, rhs: JSONValue) -> Bool {
 //  return !(lhs >= rhs)
 //}
 
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
+	switch lhs {
+	case let .JSONObject(d):
+		return resolveKeypath(d, rhs) >>- { A.fromJSON($0) }
+	default:
+		return .None
+	}
+}
+
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
+	switch lhs {
+	case let .JSONObject(d):
+		return resolveKeypath(d, rhs) >>- JArrayFrom<A, A>.fromJSON
+	default:
+		return .None
+	}
+}
+
+public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
+	switch lhs {
+	case let .JSONObject(d):
+		return resolveKeypath(d, rhs) >>- JDictionaryFrom<A, A>.fromJSON
+	default:
+		return .None
+	}
+}
+
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A { 
+	if let r : A = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find value at keypath \(rhs) in JSON object \(rhs).")
+}
+
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A] { 
+	if let r : [A] = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find array at keypath \(rhs) in JSON object \(rhs).")
+}
+
+public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A] { 
+	if let r : [String:A] = (lhs <? rhs) {
+		return r
+	}
+	return error("Cannot find object at keypath \(rhs) in JSON object \(rhs).")
+}
+	
 // traits
 
-public protocol JSONDecode {
-	typealias J
+public protocol JSONDecodable {
+	typealias J = Self
 	class func fromJSON(x: JSONValue) -> J?
 }
 
-public protocol JSONEncode {
+public protocol JSONEncodable {
 	typealias J
 	class func toJSON(x: J) -> JSONValue
 }
 
-public protocol JSON: JSONDecode, JSONEncode {
-	// J mate
-}
+// J mate
+public protocol JSON : JSONDecodable, JSONEncodable { }
 
 // instances
 
-public struct JDouble : JSON {
-	public typealias J = Double
-	
-	public static func fromJSON(x: JSONValue) -> J? {
-		switch x {
-		case let .JSONNumber(n): 
-			return n
-		default: 
-			return Optional.None
-		}
-	}
-	
-	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONNumber(xs)
-	}
-}
-
-public struct JInt : JSON {
-	public typealias J = Int
-	
-	public static func fromJSON(x: JSONValue) -> J? {
-		switch x {
-		case let .JSONNumber(n): 
-			return Int(n)
-		default: 
-			return Optional.None
-		}
-	}
-	
-	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONNumber(Double(xs))
-	}
-}
-
-public struct JNumber : JSON {
-	public typealias J = NSNumber
-	
-	public static func fromJSON(x: JSONValue) -> J? {
-		switch x {
-		case let .JSONNumber(n): 
-			return NSNumber(double: n)
-		default: 
-			return Optional.None
-		}
-	}
-	
-	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONNumber(Double(xs))
-	}
-}
-
-public struct JBool : JSON {
-	public typealias J = Bool
-	
-	public static func fromJSON(x: JSONValue) -> J? {
+extension Bool : JSON {	
+	public static func fromJSON(x : JSONValue) -> Bool? {
 		switch x {
 		case let .JSONBool(n): 
 			return n
@@ -226,15 +222,58 @@ public struct JBool : JSON {
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs : Bool) -> JSONValue {
 		return JSONValue.JSONNumber(Double(xs))
 	}
 }
 
-public struct JString : JSON {
-	public typealias J = String
+extension Int : JSON {	
+	public static func fromJSON(x : JSONValue) -> Int? {
+		switch x {
+		case let .JSONNumber(n): 
+			return Int(n)
+		default: 
+			return Optional.None
+		}
+	}
 	
-	public static func fromJSON(x: JSONValue) -> J? {
+	public static func toJSON(xs : Int) -> JSONValue {
+		return JSONValue.JSONNumber(Double(xs))
+	}
+}
+
+extension Double : JSON {	
+	public static func fromJSON(x : JSONValue) -> Double? {
+		switch x {
+		case let .JSONNumber(n): 
+			return n
+		default: 
+			return Optional.None
+		}
+	}
+	
+	public static func toJSON(xs : Double) -> JSONValue {
+		return JSONValue.JSONNumber(xs)
+	}
+}
+
+extension NSNumber : JSON {	
+	public class func fromJSON(x : JSONValue) -> NSNumber? {
+		switch x {
+		case let .JSONNumber(n): 
+			return NSNumber(double: n)
+		default: 
+			return Optional.None
+		}
+	}
+	
+	public class func toJSON(xs : NSNumber) -> JSONValue {
+		return JSONValue.JSONNumber(Double(xs))
+	}
+}
+
+extension String : JSON {	
+	public static func fromJSON(x : JSONValue) -> String? {
 		switch x {
 		case let .JSONString(n): 
 			return n
@@ -243,34 +282,32 @@ public struct JString : JSON {
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs : String) -> JSONValue {
 		return JSONValue.JSONString(xs)
 	}
 }
 
 // or unit...
-public let jnull = JNull()
-public struct JNull : JSON {
-	public typealias J = ()
-	
-	public static func fromJSON(x: JSONValue) -> J? {
+extension NSNull : JSON {	
+	public class func fromJSON(x : JSONValue) -> NSNull? {
 		switch x {
-		case .JSONNull(): return ()
-		default: return Optional.None
+		case .JSONNull():
+			return NSNull()
+		default: 
+			return Optional.None
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
+	public class func toJSON(xs : NSNull) -> JSONValue {
 		return JSONValue.JSONNull()
 	}
 }
 
-
 // container types should be split
-public struct JArrayFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
+public struct JArrayFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 	public typealias J = [A]
 	
-	public static func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
 			let r = xs.map({ B.fromJSON($0) })
@@ -286,7 +323,7 @@ public struct JArrayFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
 	}
 }
 
-public struct JArrayTo<A, B: JSONEncode where B.J == A> : JSONEncode {
+public struct JArrayTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
 	public typealias J = [A]
 	
 	public static func toJSON(xs: J) -> JSONValue {
@@ -294,10 +331,10 @@ public struct JArrayTo<A, B: JSONEncode where B.J == A> : JSONEncode {
 	}
 }
 
-public struct JArray<A, B: JSON where B.J == A> : JSON {
+public struct JArray<A, B : JSON where B.J == A> : JSON {
 	public typealias J = [A]
 	
-	public static func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
 			let r = xs.map({ B.fromJSON($0) })
@@ -312,19 +349,19 @@ public struct JArray<A, B: JSON where B.J == A> : JSON {
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
+	public static func toJSON(xs : J) -> JSONValue {
 		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
 	}
 }
 
 
-public struct JDictionaryFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
+public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 	public typealias J = Dictionary<String, A>
 	
-	public static func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+			return map(dict: xs)({ k, x in
 				return (k, B.fromJSON(x)!)
 			})
 		default: 
@@ -333,23 +370,23 @@ public struct JDictionaryFrom<A, B: JSONDecode where B.J == A> : JSONDecode {
 	}
 }
 
-public struct JDictionaryTo<A, B: JSONEncode where B.J == A> : JSONEncode {
+public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
 	public typealias J = Dictionary<String, A>
 	
-	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
+	public static func toJSON(xs : J) -> JSONValue {
+		return JSONValue.JSONObject(map(dict: xs)({ k, x -> (String, JSONValue) in
 			return (k, B.toJSON(x))
 		}))
 	}
 }
 
-public struct JDictionary<A, B: JSON where B.J == A> : JSON {
+public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	public typealias J = Dictionary<String, A>
 	
-	public static func fromJSON(x: JSONValue) -> J? {
+	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return map(dict: xs)({ (k: String, x: JSONValue) -> (String, A) in
+			return map(dict: xs)({ k, x in
 				return (k, B.fromJSON(x)!)
 			})
 		default: 
@@ -357,9 +394,31 @@ public struct JDictionary<A, B: JSON where B.J == A> : JSON {
 		}
 	}
 	
-	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ (k: String, x: A) -> (String, JSONValue) in
+	public static func toJSON(xs : J) -> JSONValue {
+		return JSONValue.JSONObject(map(dict: xs)({ k, x in
 			return (k, B.toJSON(x))
 		}))
 	}
 }
+
+
+/// MARK: Implementation Details
+
+private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypath) -> JSONValue? {
+	if rhs.path.isEmpty {
+		return .None
+	}
+	
+	if let o = lhs[rhs.path.first!] {
+		switch o {
+		case let .JSONObject(d) where rhs.path.count > 1:
+			let tail = Array(rhs.path[1..<rhs.path.count])
+			return resolveKeypath(d, JSONKeypath(tail))
+		default:
+			return o
+		}
+	}
+	
+	return .None
+}
+

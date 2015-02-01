@@ -30,6 +30,14 @@ infix operator |> {
 	precedence 0
 }
 
+/// MARK: Data.Monoid
+
+/// Append | Alias for a Semigroup's operation.
+infix operator <> {
+	associativity right
+	precedence 160
+}
+
 /// MARK: Control.*
 
 /// Fmap | Maps a function over the value encapsulated by a functor.
@@ -130,6 +138,27 @@ infix operator <+> {
 	associativity right
 }
 
+/// MARK: Data.JSON
+
+/// Retrieve | Retrieves a value from a dictionary of JSON values using a given keypath.
+///
+/// If the given keypath is not present or the retrieved value is not of the appropriate type, this
+/// function returns `.None`.
+infix operator <? {
+	precedence 150
+	associativity left
+}
+
+/// Force Retrieve | Retrieves a value from a dictionary of JSON values using a given keypath,
+/// forcing any Optionals it finds.
+///
+/// If the given keypath is not present or the retrieved value is not of the appropriate type, this
+/// function will terminate with a fatal error.  It is recommended that you use Force Retrieve's 
+/// total cousin `<?` (Retrieve).
+infix operator <! {
+	precedence 150
+	associativity left
+}
 
 /// MARK: Data.Result
 
