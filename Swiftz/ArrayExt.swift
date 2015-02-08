@@ -8,6 +8,52 @@
 
 /// MARK: Array extensions
 
+public enum ArrayMatcher<A> {
+	case Nil
+	case Cons(A, [A])
+}
+
+/// Destructures a list into its constituent parts.
+///
+/// If the given list is empty, this function returns .Empty.  If the list is non-empty, this
+/// function returns .Cons(hd, tl)
+public func match<T>(l : [T]) -> ArrayMatcher<T> {
+	if l.count == 0 {
+		return .Nil
+	} else if l.count == 1 {
+		return .Cons(l[0], [])
+	}
+	let hd = l[0]
+	let tl = Array<T>(l[1..<l.count])
+	return .Cons(hd, tl)
+}
+
+/// Returns the first element in the list, or None if the list is empty.
+public func head<A>(l : [A]) -> Optional<A> {
+	switch match(l) {
+	case .Nil:
+		return .None
+	case .Cons(let x, _):
+		return .Some(x)
+	}
+}
+
+/// Returns the tail of the list, or None if the list is empty.
+public func tail<A>(l : [A]) -> Optional<[A]> {
+	switch match(l) {
+	case .Nil:
+		return .None
+	case .Cons(_, let xs):
+		return .Some(xs)
+	}
+}
+
+/// Adds an element to the front of a list.
+public func cons<T>(lhs : T, var rhs : [T]) -> [T] {
+	rhs.insert(lhs, atIndex: 0)
+	return rhs
+}
+
 /// Safely indexes into an array by converting out of bounds errors to nils.
 public func safeIndex<T>(array : Array<T>)(i : Int) -> T? {
 	return indexArray(array, i)
