@@ -213,20 +213,21 @@ extension Set : ArrayLiteralConvertible {
 extension Set : SequenceType {
 	public func generate() -> SetGenerator<A> {
 		let items = self.toArray
-		return SetGenerator(items: items[0..<items.count])
+		return SetGenerator(items: items)
 	}
 }
 
 public struct SetGenerator<A> : GeneratorType {
-	var items : Slice<A>
+	var items : [A]
 
-	mutating public func next() -> A?	 {
-		if items.isEmpty {
+	mutating public func next() -> A? {
+		switch match(items) {
+		case .Nil:
 			return nil
+		case let .Cons(hd, tl):
+			self.items = tl
+			return hd
 		}
-		let ret = items[0]
-		items = items[1..<items.count]
-		return ret
 	}
 }
 
