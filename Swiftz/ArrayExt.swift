@@ -81,7 +81,7 @@ public func splitAt<T>(index : Int, list : [T]) -> ([T], [T]) {
         return (Array(list[0..<index]), Array(list[index..<list.count]))
     case list.count...Int.max:
         return (Array(list[0..<list.count]), [T]())
-    case _:
+    default:
         return ([T](), [T]())
     }
 }
