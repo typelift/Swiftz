@@ -15,8 +15,8 @@ public enum ArrayMatcher<A> {
 
 /// Destructures a list into its constituent parts.
 ///
-/// If the given list is empty, this function returns .Empty.  If the list is non-empty, this
-/// function returns .Cons(hd, tl)
+/// If the given list is empty, this function returns .Nil.  If the list is non-empty, this
+/// function returns .Cons(head, tail)
 public func match<T>(l : [T]) -> ArrayMatcher<T> {
 	if l.count == 0 {
 		return .Nil
@@ -46,6 +46,32 @@ public func tail<A>(l : [A]) -> Optional<[A]> {
 	case .Cons(_, let xs):
 		return .Some(xs)
 	}
+}
+
+/// Takes, at most, a specified number of elements from a list and returns that sublist.
+///
+///     take(3,  from: [1,2]) == [1,2]
+///     take(-1, from: [1,2]) == []
+///     take(0,  from: [1,2]) == []
+public func take<A>(n : Int, from list : [A]) -> [A] {
+	if n <= 0 {
+		return []
+	}
+
+	return Array(list[0 ..< min(n, list.count)])
+}
+
+/// Drops, at most, a specified number of elements from a list and returns that sublist.
+///
+///     drop(3,  from: [1,2]) == []
+///     drop(-1, from: [1,2]) == [1,2]
+///     drop(0,  from: [1,2]) == [1,2]
+public func drop<A>(n : Int, from list : [A]) -> [A] {
+	if n <= 0 {
+		return list
+	}
+	
+	return Array(list[min(n, list.count) ..< list.count])
 }
 
 /// Adds an element to the front of a list.
@@ -121,15 +147,8 @@ public func find<T>(list : [T], f : (T -> Bool)) -> T? {
 ///     splitAt(3, [1,2,3])     == ([1,2,3],[])
 ///     splitAt(4, [1,2,3])     == ([1,2,3],[])
 ///     splitAt(0, [1,2,3])     == ([],[1,2,3])
-public func splitAt<T>(index : Int, list : [T]) -> ([T], [T]) {
-	switch index {
-	case 0..<list.count:
-		return (Array(list[0..<index]), Array(list[index..<list.count]))
-	case list.count...Int.max:
-		return (list, [T]())
-	default:
-		return ([T](), [T]())
-	}
+public func splitAt<T>(n : Int, list : [T]) -> ([T], [T]) {
+	return (take(n, from: list), drop(n, from: list))
 }
 
 /// Takes a separator and a list and intersperses that element throughout the list.
@@ -151,7 +170,7 @@ public func intersperse<T>(item : T, list : [T]) -> [T] {
 		return list
 	} else {
 		var array = Array([list[0]])
-		array += prependAll(item, Array(list[1..<list.count]))
+		array += prependAll(item, tail(list)!)
 		return Array(array)
 	}
 }
@@ -275,32 +294,28 @@ public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 ///
 ///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
 public func span<A>(list : [A], p : (A -> Bool)) -> ([A], [A]) {
-	switch list.count {
-	case 0: 
-		return (list, list)
-	case 1...list.count where p(list.first!):
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p)
-		let f = concat(lhs: [first])(rhs: ys)
-		return (f,zs)
-	default: 
+	switch match(list) {
+	case .Nil:
+		return ([], [])
+	case .Cons(let x, let xs):
+		if p(x) {
+			let (ys, zs) = span(xs, p)
+			return (cons(x, ys), zs)
+		}
 		return ([], list)
 	}
 }
 
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
-public func groupBy<A>(list : [A], p : (A -> A -> Bool)) -> [[A]] {
-	switch list.count {
-	case 0: 
+public func groupBy<A>(list : [A], p : A -> A -> Bool) -> [[A]] {
+	switch match(list) {
+	case .Nil:
 		return []
-	case 1...list.count:
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p(first))
-		let x = [concat(lhs: [first])(rhs: ys)]
-		return concat(lhs: x)(rhs: groupBy(zs, p))
-	default: 
-		return []
+	case .Cons(let x, let xs):
+		let (ys, zs) = span(xs, p(x))
+		let l = cons(x, ys)
+		return cons(l, groupBy(zs, p))
 	}
 }
 
@@ -309,23 +324,24 @@ public func groupBy<A>(list : [A], p : (A -> A -> Bool)) -> [[A]] {
 /// other.
 ///
 ///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
-public func group<A:Equatable>(list : [A]) -> [[A]] {
+public func group<A : Equatable>(list : [A]) -> [[A]] {
 	return groupBy(list, { a in { b in a == b } })
 }
 
 /// Returns a list of the first elements that do not satisfy a predicate until that predicate
 /// returns false.
 ///
-///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3]){ <3 } == [3,4,5,1,2,3]
-///     dropWhile([1, 2, 3]){ <9 }                == []
-///     dropWhile([1, 2, 3]){ <0 }                == [1,2,3]
+///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3], <3) == [3,4,5,1,2,3]
+///     dropWhile([1, 2, 3], <9)                == []
+///     dropWhile([1, 2, 3], <0)                == [1,2,3]
 public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
-	switch list.count {
-	case 0: 
-		return list
-	case 1...list.count where p(list.first!):
-		return dropWhile(Array(list[1..<list.count]), p)
-	default: 
+	switch match(list) {
+	case .Nil:
+		return []
+	case .Cons(let x, let xs):
+		if p(x) {
+			return dropWhile(xs, p)
+		}
 		return list
 	}
 }
@@ -333,16 +349,17 @@ public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 /// Returns a list of the first elements that satisfy a predicate until that predicate returns
 /// false.
 ///
-///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4]){ <3 } == [1, 2]
-///     takeWhile([1,2,3]){ <9 }                  == [1, 2, 3]
-///     takeWhile([1,2,3]){ <0 }                  == []
-public func takeWhile<A>(list: [A], p: A -> Bool) -> [A] {
-	switch list.count {
-	case 0: 
-		return list
-	case 1...list.count where p(list.first!):
-		return concat(lhs: [list.first!])(rhs: takeWhile(Array(list[1..<list.count]), p))
-	default: 
+///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4], <3)  == [1, 2]
+///     takeWhile([1,2,3], <9)                  == [1, 2, 3]
+///     takeWhile([1,2,3], <0)                  == []
+public func takeWhile<A>(list : [A], p : A -> Bool) -> [A] {
+	switch match(list) {
+	case .Nil:
+		return []
+	case .Cons(let x, let xs):
+		if p(x) {
+			return cons(x, takeWhile(xs, p))
+		}
 		return []
 	}
 }
