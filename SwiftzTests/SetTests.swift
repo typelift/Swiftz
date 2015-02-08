@@ -73,6 +73,18 @@ class SetTests: XCTestCase {
 		XCTAssert(newSet == Set(array: [4,5,6]), "Should be equal")
 	}
 	
+	func testPartition() {
+		let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
+		let (s, n) = set.partition(>3)
+		XCTAssert(s == [4, 5], "Expected partitioned elements to be 4 and 5")
+		XCTAssert(n == [1, 2, 3], "Expected partitioned elements to be 1, 2, and 3")
+	}
+	
+	func testReduce() {
+		let set = Set<Int>(array: [1,2,3,4,5,5,4,4,5,5])
+		XCTAssert(set.reduce({ $0 + $1 }, initial: 0) == 15, "Expected reduction to yield sum.")
+	}
+	
 	func testIntersectsSet() {
 		let set = Set(array: [1,2,3,4,5,5,4,4,5,5])
 		XCTAssert(set.interectsSet(Set(arrayLiteral: 9,0,5)), "Should be true")

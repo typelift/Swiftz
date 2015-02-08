@@ -146,14 +146,20 @@ public struct Set<A : Hashable> {
 	}
 	
 	/// Returns the set of elements in the receiver that pass a given predicate.
-	public func filter(f : A -> Bool) -> Set<A> {
+	public func filter(p : A -> Bool) -> Set<A> {
 		var array = [A]()
 		for x in self {
-			if f(x) {
+			if p(x) {
 				array.append(x)
 			}
 		}
 		return Set(array: array)
+	}
+	
+	/// Partition the set into two sets, one with all elements that satisfy the predicate and one 
+	/// with all elements that don't satisfy the predicate.
+	public func partition(f : A -> Bool) -> (Set<A>, Set<A>) {
+		return (self.filter(f), self.filter({ !f($0) }))
 	}
 
 	/// Maps a function over the elements of the receiver and aggregates the result in a new set.
@@ -164,6 +170,16 @@ public struct Set<A : Hashable> {
 		}
 
 		return Set<B>(array: array)
+	}
+	
+	/// Applies a binary function to reduce the elements of the receiver to a single value.
+	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
+		return array.reduce(initial, combine: uncurry(f))
+	}
+	
+	/// Applies a binary operator to reduce the elements of the receiver to a single value.
+	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
+		return array.reduce(initial, combine: f)
 	}
 }
 
