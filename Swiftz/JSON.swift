@@ -409,19 +409,16 @@ private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypa
 		return .None
 	}
 	
-	switch match(rhs.path) {
-	case .Nil:
-		return .None
-	case let .Cons(hd, tl):
-		if let o = lhs[hd] {
-			switch o {
-			case let .JSONObject(d) where rhs.path.count > 1:
-				return resolveKeypath(d, JSONKeypath(tl))
-			default:
-				return o
-			}
+	if let o = lhs[rhs.path.first!] {
+		switch o {
+		case let .JSONObject(d) where rhs.path.count > 1:
+			let tail = Array(rhs.path[1..<rhs.path.count])
+			return resolveKeypath(d, JSONKeypath(tail))
+		default:
+			return o
 		}
-		return .None
 	}
+	
+	return .None
 }
 
