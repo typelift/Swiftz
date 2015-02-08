@@ -70,15 +70,19 @@ class ArrayExtSpec : XCTestCase {
 			XCTAssert(found == 4, "Should be found")
 		}
 	}
-
+	
 	func testSplitAt() {
 		let withArray = [1,2,3,4]
 
 		let tuple = splitAt(2,withArray)
-
 		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4], "Should be equal")
 
 		XCTAssert(splitAt(0,withArray).0 == Array() && splitAt(0, withArray).1 == [1,2,3,4], "Should be equal")
+		XCTAssert(splitAt(1,withArray).0 == [1] && splitAt(1, withArray).1 == [2,3,4], "Should be equal")
+		XCTAssert(splitAt(3,withArray).0 == [1,2,3] && splitAt(3, withArray).1 == [4], "Should be equal")
+		XCTAssert(splitAt(4,withArray).0 == [1,2,3,4] && splitAt(4, withArray).1 == Array(), "Should be equal")
+		XCTAssert(splitAt(5,withArray).0 == [1,2,3,4] && splitAt(5, withArray).1 == Array(), "Should be equal")
+		
 		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
 	}
 
