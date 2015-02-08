@@ -151,7 +151,7 @@ public func intersperse<T>(item : T, list : [T]) -> [T] {
 		return list
 	} else {
 		var array = Array([list[0]])
-		array += prependAll(item, Array(list[1..<list.count]))
+		array += prependAll(item, tail(list)!)
 		return Array(array)
 	}
 }
@@ -275,32 +275,28 @@ public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 ///
 ///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
 public func span<A>(list : [A], p : (A -> Bool)) -> ([A], [A]) {
-	switch list.count {
-	case 0: 
-		return (list, list)
-	case 1...list.count where p(list.first!):
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p)
-		let f = concat(lhs: [first])(rhs: ys)
-		return (f,zs)
-	default: 
+	switch match(list) {
+	case .Nil:
+		return ([], [])
+	case .Cons(let x, let xs):
+		if p(x) {
+			let (ys, zs) = span(xs, p)
+			return (cons(x, ys), zs)
+		}
 		return ([], list)
 	}
 }
 
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
-public func groupBy<A>(list : [A], p : (A -> A -> Bool)) -> [[A]] {
-	switch list.count {
-	case 0: 
+public func groupBy<A>(list : [A], p : A -> A -> Bool) -> [[A]] {
+	switch match(list) {
+	case .Nil:
 		return []
-	case 1...list.count:
-		let first = list.first!
-		let (ys,zs) = span(Array(list[1..<list.count]), p(first))
-		let x = [concat(lhs: [first])(rhs: ys)]
-		return concat(lhs: x)(rhs: groupBy(zs, p))
-	default: 
-		return []
+	case .Cons(let x, let xs):
+		let (ys, zs) = span(xs, p(x))
+		let l = cons(x, ys)
+		return cons(l, groupBy(zs, p))
 	}
 }
 
@@ -320,12 +316,13 @@ public func group<A:Equatable>(list : [A]) -> [[A]] {
 ///     dropWhile([1, 2, 3]){ <9 }                == []
 ///     dropWhile([1, 2, 3]){ <0 }                == [1,2,3]
 public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
-	switch list.count {
-	case 0: 
-		return list
-	case 1...list.count where p(list.first!):
-		return dropWhile(Array(list[1..<list.count]), p)
-	default: 
+	switch match(list) {
+	case .Nil:
+		return []
+	case .Cons(let x, let xs):
+		if p(x) {
+			return dropWhile(xs, p)
+		}
 		return list
 	}
 }
@@ -336,13 +333,14 @@ public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 ///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4]){ <3 } == [1, 2]
 ///     takeWhile([1,2,3]){ <9 }                  == [1, 2, 3]
 ///     takeWhile([1,2,3]){ <0 }                  == []
-public func takeWhile<A>(list: [A], p: A -> Bool) -> [A] {
-	switch list.count {
-	case 0: 
-		return list
-	case 1...list.count where p(list.first!):
-		return concat(lhs: [list.first!])(rhs: takeWhile(Array(list[1..<list.count]), p))
-	default: 
+public func takeWhile<A>(list : [A], p : A -> Bool) -> [A] {
+	switch match(list) {
+	case .Nil:
+		return []
+	case .Cons(let x, let xs):
+		if p(x) {
+			return cons(x, takeWhile(xs, p))
+		}
 		return []
 	}
 }
