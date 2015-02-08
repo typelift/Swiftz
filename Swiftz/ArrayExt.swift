@@ -76,14 +76,14 @@ public func find<T>(list : [T], f : (T -> Bool)) -> T? {
 ///     splitAt(4, [1,2,3])     == ([1,2,3],[])
 ///     splitAt(0, [1,2,3])     == ([],[1,2,3])
 public func splitAt<T>(index : Int, list : [T]) -> ([T], [T]) {
-    switch index {
-    case 0..<list.count:
-        return (Array(list[0..<index]), Array(list[index..<list.count]))
-    case list.count...Int.max:
-        return (list, [T]())
-    default:
-        return ([T](), [T]())
-    }
+	switch index {
+	case 0..<list.count:
+		return (Array(list[0..<index]), Array(list[index..<list.count]))
+	case list.count...Int.max:
+		return (list, [T]())
+	default:
+		return ([T](), [T]())
+	}
 }
 
 /// Takes a separator and a list and intersperses that element throughout the list.
