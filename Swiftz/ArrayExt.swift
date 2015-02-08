@@ -48,6 +48,34 @@ public func tail<A>(l : [A]) -> Optional<[A]> {
 	}
 }
 
+/// Takes, at most, a specified number of elements from a list and returns that sublist.
+///
+///     take(5)("Hello World!") == "Hello"
+///     take(3([1,2]) == [1,2]
+///     take(-1)([1,2]) == []
+///     take(0)([1,2]) == []
+public func take<A>(n : Int, from list : [A]) -> [A] {
+	if n <= 0 {
+		return []
+	}
+
+	return Array(list[0 ..< min(n, list.count)])
+}
+
+/// Drops, at most, a specified number of elements from a list and returns that sublist.
+///
+///     drop 6 "Hello World!" == "World!"
+///     drop 3 [1,2] == []
+///     drop (-1) [1,2] == [1,2]
+///     drop 0 [1,2] == [1,2]
+public func drop<A>(n : Int, from list : [A]) -> [A] {
+	if n <= 0 {
+		return list
+	}
+	
+	return Array(list[min(n, list.count) ..< list.count])
+}
+
 /// Adds an element to the front of a list.
 public func cons<T>(lhs : T, var rhs : [T]) -> [T] {
 	rhs.insert(lhs, atIndex: 0)

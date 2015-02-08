@@ -139,6 +139,19 @@ class ArrayExtSpec : XCTestCase {
 		XCTAssert(result == [[1],[2],[3,3],[4],[5],[6],[7,7],[8],[9,9],[0]], "Should be equal")
 	}
 
+	func testTakeDrop() {		
+		let array = [1,2,3,4,5,6,7,8,9,10]
+
+		XCTAssert(take(0, from: array) == [], "")
+		XCTAssert(drop(0, from: array) == array, "")
+		
+		XCTAssert(take(11, from: array) == array, "")
+		XCTAssert(drop(12, from: array) == [], "")
+		
+		XCTAssert(take(5, from: array) == [1, 2, 3, 4, 5], "")
+		XCTAssert(drop(5, from: array) == [6, 7, 8, 9, 10], "")
+	}
+	
 	func testDropWhile() {
 		let array = [1,2,3,4,5]
 
