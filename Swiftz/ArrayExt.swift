@@ -50,10 +50,9 @@ public func tail<A>(l : [A]) -> Optional<[A]> {
 
 /// Takes, at most, a specified number of elements from a list and returns that sublist.
 ///
-///     take(5)("Hello World!") == "Hello"
-///     take(3([1,2]) == [1,2]
-///     take(-1)([1,2]) == []
-///     take(0)([1,2]) == []
+///     take(3,  from: [1,2]) == [1,2]
+///     take(-1, from: [1,2]) == []
+///     take(0,  from: [1,2]) == []
 public func take<A>(n : Int, from list : [A]) -> [A] {
 	if n <= 0 {
 		return []
@@ -64,10 +63,9 @@ public func take<A>(n : Int, from list : [A]) -> [A] {
 
 /// Drops, at most, a specified number of elements from a list and returns that sublist.
 ///
-///     drop 6 "Hello World!" == "World!"
-///     drop 3 [1,2] == []
-///     drop (-1) [1,2] == [1,2]
-///     drop 0 [1,2] == [1,2]
+///     drop(3,  from: [1,2]) == []
+///     drop(-1, from: [1,2]) == [1,2]
+///     drop(0,  from: [1,2]) == [1,2]
 public func drop<A>(n : Int, from list : [A]) -> [A] {
 	if n <= 0 {
 		return list
@@ -326,16 +324,16 @@ public func groupBy<A>(list : [A], p : A -> A -> Bool) -> [[A]] {
 /// other.
 ///
 ///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
-public func group<A:Equatable>(list : [A]) -> [[A]] {
+public func group<A : Equatable>(list : [A]) -> [[A]] {
 	return groupBy(list, { a in { b in a == b } })
 }
 
 /// Returns a list of the first elements that do not satisfy a predicate until that predicate
 /// returns false.
 ///
-///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3]){ <3 } == [3,4,5,1,2,3]
-///     dropWhile([1, 2, 3]){ <9 }                == []
-///     dropWhile([1, 2, 3]){ <0 }                == [1,2,3]
+///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3], <3) == [3,4,5,1,2,3]
+///     dropWhile([1, 2, 3],  <9)               == []
+///     dropWhile([1, 2, 3],  <0)               == [1,2,3]
 public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 	switch match(list) {
 	case .Nil:
@@ -351,9 +349,9 @@ public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 /// Returns a list of the first elements that satisfy a predicate until that predicate returns
 /// false.
 ///
-///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4]){ <3 } == [1, 2]
-///     takeWhile([1,2,3]){ <9 }                  == [1, 2, 3]
-///     takeWhile([1,2,3]){ <0 }                  == []
+///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4], <3)  == [1, 2]
+///     takeWhile([1,2,3], <9)                  == [1, 2, 3]
+///     takeWhile([1,2,3], <0)                  == []
 public func takeWhile<A>(list : [A], p : A -> Bool) -> [A] {
 	switch match(list) {
 	case .Nil:
