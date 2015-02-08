@@ -158,8 +158,17 @@ public struct Set<A : Hashable> {
 	
 	/// Partition the set into two sets, one with all elements that satisfy the predicate and one 
 	/// with all elements that don't satisfy the predicate.
-	public func partition(f : A -> Bool) -> (Set<A>, Set<A>) {
-		return (self.filter(f), self.filter({ !f($0) }))
+	public func partition(p : A -> Bool) -> (Set<A>, Set<A>) {
+		var satis = [A]()
+		var non = [A]()
+		for x in self {
+			if p(x) {
+				satis.append(x)
+			} else {
+				non.append(x)
+			}
+		}
+		return (Set(array: satis), Set(array: non))
 	}
 
 	/// Maps a function over the elements of the receiver and aggregates the result in a new set.
