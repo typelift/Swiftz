@@ -190,6 +190,16 @@ public struct Set<A : Hashable> {
 	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
 		return array.reduce(initial, combine: f)
 	}
+	
+	/// Returns all elements of the receiver in a List in no particular order.
+	public func toList() -> List<A> {
+		return self.reduce(flip(List.cons), initial: List())
+	}
+	
+	/// Returns all elements of the receiver in an Array in no particular order.
+	public func toArray() -> Array<A> {
+		return self.reduce(flip(cons), initial: [])
+	}
 }
 
 extension Set : ArrayLiteralConvertible {
