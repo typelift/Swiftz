@@ -15,8 +15,8 @@ public enum ArrayMatcher<A> {
 
 /// Destructures a list into its constituent parts.
 ///
-/// If the given list is empty, this function returns .Empty.  If the list is non-empty, this
-/// function returns .Cons(hd, tl)
+/// If the given list is empty, this function returns .Nil.  If the list is non-empty, this
+/// function returns .Cons(head, tail)
 public func match<T>(l : [T]) -> ArrayMatcher<T> {
 	if l.count == 0 {
 		return .Nil
@@ -332,8 +332,8 @@ public func group<A : Equatable>(list : [A]) -> [[A]] {
 /// returns false.
 ///
 ///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3], <3) == [3,4,5,1,2,3]
-///     dropWhile([1, 2, 3],  <9)               == []
-///     dropWhile([1, 2, 3],  <0)               == [1,2,3]
+///     dropWhile([1, 2, 3], <9)                == []
+///     dropWhile([1, 2, 3], <0)                == [1,2,3]
 public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
 	switch match(list) {
 	case .Nil:
