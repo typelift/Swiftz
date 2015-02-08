@@ -134,6 +134,17 @@ public struct Set<A : Hashable> {
 		}
 	}
 
+	/// Removes an item from the set.
+	///
+	/// If the item is not a member the receiver is returned unaltered.
+	public func remove(item : A) -> Set<A> {
+		if !contains(item) {
+			return self
+		} else {
+			return Set(array: array.filter { $0.hashValue != item.hashValue })
+		}
+	}
+	
 	/// Returns the set of elements in the receiver that pass a given predicate.
 	public func filter(f : A -> Bool) -> Set<A> {
 		var array = [A]()

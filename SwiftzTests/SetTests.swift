@@ -18,6 +18,18 @@ class SetTests: XCTestCase {
 		XCTAssert(set.count == 5, "Should be 5 items")
 	}
 	
+	func testAdd() {
+		let set = Set(array:[1,2,3,4,4,4,5,5,5])
+		XCTAssert(set.add(5).count == 5, "Adding duplicate element changes nothing.")
+		XCTAssert(set.add(6).count == 6, "Adding unique element changes count")
+	}
+	
+	func testRemove() {
+		let set = Set(array:[1,2,3,4,4,4,5,5,5])
+		XCTAssert(set.remove(6).count == 5, "Removing unique element changes nothing.")
+		XCTAssert(set.remove(5).count == 4, "Removing member element changes count")
+	}
+	
 	func testEquality() {
 		var set1 = Set(array:[1,2,3,4,4,4,5,5,5])
 		var set2 = Set(array:[1,2,3,4,4,4,5,5,5])
