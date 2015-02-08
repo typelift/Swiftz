@@ -11,9 +11,10 @@ import Darwin
 /// An immutable unordered sequence of distinct values.  Values are checked for uniqueness using 
 /// their hashes.
 public struct Set<A : Hashable> {
-	let bucket : Dictionary<A, Bool> = Dictionary()
+	private let bucket : Dictionary<A, Bool> = Dictionary()
 
-	var array : [A] {
+	/// Returns all elements of the receiver in an Array in no particular order.
+	public var toArray : [A] {
 		var arr = [A]()
 		for (key, _) in bucket {
 			arr.append(key)
@@ -21,6 +22,15 @@ public struct Set<A : Hashable> {
 		return arr
 	}
 
+	/// Returns all elements of the receiver in a List in no particular order.
+	public var toList : List<A> {
+		var list : List<A> = []
+		for (key, _) in bucket {
+			list = List(key, list)
+		}
+		return list
+	}
+	
 	public var count : Int {
 		return bucket.count
 	}
@@ -42,7 +52,7 @@ public struct Set<A : Hashable> {
 	///
 	/// If the receiver has no values this function will return nil.
 	public func any() -> A? {
-		let ar = self.array
+		let ar = self.toArray
 		if ar.isEmpty {
 			return nil
 		} else {
@@ -116,8 +126,8 @@ public struct Set<A : Hashable> {
 
 	/// Computes and returns the union of the reicever and a given set.
 	public func union(set : Set<A>) -> Set<A> {
-		var current = self.array
-		current += set.array
+		var current = self.toArray
+		current += set.toArray
 		return Set(array: current)
 	}
 
@@ -128,21 +138,47 @@ public struct Set<A : Hashable> {
 		if contains(item) {
 			return self
 		} else {
-			var arr = array
+			var arr = toArray
 			arr.append(item)
 			return Set(array:arr)
 		}
 	}
 
+	/// Removes an item from the set.
+	///
+	/// If the item is not a member the receiver is returned unaltered.
+	public func remove(item : A) -> Set<A> {
+		if !contains(item) {
+			return self
+		} else {
+			return Set(array: toArray.filter { $0.hashValue != item.hashValue })
+		}
+	}
+	
 	/// Returns the set of elements in the receiver that pass a given predicate.
-	public func filter(f : A -> Bool) -> Set<A> {
+	public func filter(p : A -> Bool) -> Set<A> {
 		var array = [A]()
 		for x in self {
-			if f(x) {
+			if p(x) {
 				array.append(x)
 			}
 		}
 		return Set(array: array)
+	}
+	
+	/// Partition the set into two sets, one with all elements that satisfy the predicate and one 
+	/// with all elements that don't satisfy the predicate.
+	public func partition(p : A -> Bool) -> (Set<A>, Set<A>) {
+		var satis = [A]()
+		var non = [A]()
+		for x in self {
+			if p(x) {
+				satis.append(x)
+			} else {
+				non.append(x)
+			}
+		}
+		return (Set(array: satis), Set(array: non))
 	}
 
 	/// Maps a function over the elements of the receiver and aggregates the result in a new set.
@@ -153,6 +189,16 @@ public struct Set<A : Hashable> {
 		}
 
 		return Set<B>(array: array)
+	}
+	
+	/// Applies a binary function to reduce the elements of the receiver to a single value.
+	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
+		return toArray.reduce(initial, combine: uncurry(f))
+	}
+	
+	/// Applies a binary operator to reduce the elements of the receiver to a single value.
+	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
+		return toArray.reduce(initial, combine: f)
 	}
 }
 
@@ -166,7 +212,7 @@ extension Set : ArrayLiteralConvertible {
 
 extension Set : SequenceType {
 	public func generate() -> SetGenerator<A> {
-		let items = self.array
+		let items = self.toArray
 		return SetGenerator(items: items[0..<items.count])
 	}
 }
@@ -186,11 +232,11 @@ public struct SetGenerator<A> : GeneratorType {
 
 extension Set : Printable, DebugPrintable {
 	public var description: String {
-		return "\(self.array)"
+		return "\(self.toArray)"
 	}
 
 	public var debugDescription: String {
-		return "\(self.array)"
+		return "\(self.toArray)"
 	}
 }
 
