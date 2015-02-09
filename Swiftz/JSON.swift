@@ -21,7 +21,7 @@ public enum JSONValue : Printable {
 		case let JSONArray(xs): 
 			return NSArray(array: xs.map { $0.values() })
 		case let JSONObject(xs): 
-			return NSDictionary(dictionary: map(dict: xs)({ (k: String, v: JSONValue) -> (String, AnyObject) in
+			return NSDictionary(dictionary: map(dict: xs)({ k, v in
 				return (NSString(string: k), v.values())
 			}))
 		case let JSONNumber(n): 
@@ -39,10 +39,10 @@ public enum JSONValue : Printable {
 	private static func make(a : NSObject) -> JSONValue {
 		switch a {
 		case let xs as NSArray:
-			return .JSONArray(xs.mapToArray { self.make($0 as NSObject) })
+			return .JSONArray(xs.mapToArray { self.make($0 as! NSObject) })
 		case let xs as NSDictionary:
 			return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
-				return (String(k as NSString), self.make(v as NSObject))
+				return (String(k as! NSString), self.make(v as! NSObject))
 			})
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
@@ -69,7 +69,7 @@ public enum JSONValue : Printable {
 		let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
 		
 		if let json: AnyObject = r {
-			return make(json as NSObject)
+			return make(json as! NSObject)
 		} else {
 			return .None
 		}
@@ -195,12 +195,12 @@ public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 
 public protocol JSONDecodable {
 	typealias J = Self
-	class func fromJSON(x: JSONValue) -> J?
+	static func fromJSON(x: JSONValue) -> J?
 }
 
 public protocol JSONEncodable {
 	typealias J
-	class func toJSON(x: J) -> JSONValue
+	static func toJSON(x: J) -> JSONValue
 }
 
 // J mate

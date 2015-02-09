@@ -59,7 +59,6 @@
 		84A88F251A70C77B003D53CF /* Pointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DD81A70C2B5003D53CF /* Pointed.swift */; };
 		84A88F261A70C77B003D53CF /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DD91A70C2B5003D53CF /* Prism.swift */; };
 		84A88F281A70C77B003D53CF /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DDB1A70C2B5003D53CF /* Semigroup.swift */; };
-		84A88F291A70C77B003D53CF /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DDC1A70C2B5003D53CF /* Set.swift */; };
 		84A88F2A1A70C77B003D53CF /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DDD1A70C2B5003D53CF /* StringExt.swift */; };
 		84A88F2B1A70C77B003D53CF /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DDF1A70C2B5003D53CF /* SYB.swift */; };
 		84A88F2C1A70C77B003D53CF /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DE01A70C2B5003D53CF /* Those.swift */; };
@@ -80,7 +79,6 @@
 		84A88F731A70C7A0003D53CF /* OptionalExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED81A70C707003D53CF /* OptionalExtSpec.swift */; };
 		84A88F741A70C7A0003D53CF /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED91A70C707003D53CF /* PartyExample.swift */; };
 		84A88F751A70C7A0003D53CF /* ResultSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDA1A70C707003D53CF /* ResultSpec.swift */; };
-		84A88F761A70C7A0003D53CF /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDB1A70C707003D53CF /* SetTests.swift */; };
 		84A88F771A70C7A0003D53CF /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDC1A70C707003D53CF /* ShapeExample.swift */; };
 		84A88F781A70C7A0003D53CF /* StringExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDD1A70C707003D53CF /* StringExtSpec.swift */; };
 		84A88F791A70C7A0003D53CF /* ThoseSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDE1A70C707003D53CF /* ThoseSpec.swift */; };
@@ -161,7 +159,6 @@
 		84A88DD81A70C2B5003D53CF /* Pointed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pointed.swift; sourceTree = "<group>"; };
 		84A88DD91A70C2B5003D53CF /* Prism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prism.swift; sourceTree = "<group>"; };
 		84A88DDB1A70C2B5003D53CF /* Semigroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Semigroup.swift; sourceTree = "<group>"; };
-		84A88DDC1A70C2B5003D53CF /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		84A88DDD1A70C2B5003D53CF /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		84A88DDF1A70C2B5003D53CF /* SYB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYB.swift; sourceTree = "<group>"; };
 		84A88DE01A70C2B5003D53CF /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Those.swift; sourceTree = "<group>"; };
@@ -190,7 +187,6 @@
 		84A88ED81A70C707003D53CF /* OptionalExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OptionalExtSpec.swift; path = SwiftzTests/OptionalExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED91A70C707003D53CF /* PartyExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartyExample.swift; path = SwiftzTests/PartyExample.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDA1A70C707003D53CF /* ResultSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultSpec.swift; path = SwiftzTests/ResultSpec.swift; sourceTree = SOURCE_ROOT; };
-		84A88EDB1A70C707003D53CF /* SetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetTests.swift; path = SwiftzTests/SetTests.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDC1A70C707003D53CF /* ShapeExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeExample.swift; path = SwiftzTests/ShapeExample.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDD1A70C707003D53CF /* StringExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtSpec.swift; path = SwiftzTests/StringExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDE1A70C707003D53CF /* ThoseSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThoseSpec.swift; path = SwiftzTests/ThoseSpec.swift; sourceTree = SOURCE_ROOT; };
@@ -362,7 +358,6 @@
 				84A88DD51A70C2B5003D53CF /* Num.swift */,
 				84A88DD81A70C2B5003D53CF /* Pointed.swift */,
 				84A88DDB1A70C2B5003D53CF /* Semigroup.swift */,
-				84A88DDC1A70C2B5003D53CF /* Set.swift */,
 				84A88DDF1A70C2B5003D53CF /* SYB.swift */,
 				84A88DE01A70C2B5003D53CF /* Those.swift */,
 				84A88DE11A70C2B5003D53CF /* Tuple.swift */,
@@ -413,7 +408,6 @@
 				84A88ED51A70C707003D53CF /* MaybeSpec.swift */,
 				84A88ED61A70C707003D53CF /* MonoidSpec.swift */,
 				84A88EDA1A70C707003D53CF /* ResultSpec.swift */,
-				84A88EDB1A70C707003D53CF /* SetTests.swift */,
 				84A88EDE1A70C707003D53CF /* ThoseSpec.swift */,
 			);
 			name = Data;
@@ -542,7 +536,6 @@
 				84A88F731A70C7A0003D53CF /* OptionalExtSpec.swift in Sources */,
 				84A88F741A70C7A0003D53CF /* PartyExample.swift in Sources */,
 				84A88F751A70C7A0003D53CF /* ResultSpec.swift in Sources */,
-				84A88F761A70C7A0003D53CF /* SetTests.swift in Sources */,
 				84A88F771A70C7A0003D53CF /* ShapeExample.swift in Sources */,
 				84A88F781A70C7A0003D53CF /* StringExtSpec.swift in Sources */,
 				84A88F791A70C7A0003D53CF /* ThoseSpec.swift in Sources */,
@@ -605,7 +598,6 @@
 				84A88F251A70C77B003D53CF /* Pointed.swift in Sources */,
 				84A88F261A70C77B003D53CF /* Prism.swift in Sources */,
 				84A88F281A70C77B003D53CF /* Semigroup.swift in Sources */,
-				84A88F291A70C77B003D53CF /* Set.swift in Sources */,
 				84A88F2A1A70C77B003D53CF /* StringExt.swift in Sources */,
 				84A88F2B1A70C77B003D53CF /* SYB.swift in Sources */,
 				84A88F2C1A70C77B003D53CF /* Those.swift in Sources */,

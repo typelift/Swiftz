@@ -11,22 +11,21 @@ import Darwin
 /// Channels are unbounded FIFO streams of values with a read and write terminals.  Writing to a
 /// channel places a value at the tail end of the channel.  Reading from a channel pops a value from
 /// its head.  If no such value exists the read blocks until a value is placed in the channel.
-public final class Chan<A> : K1<A> {
+public final class Chan<A> {
 	var stream : [A]
 
-	let mutex : UnsafeMutablePointer<pthread_mutex_t> = nil
-	let cond : UnsafeMutablePointer<pthread_cond_t> = nil
-	let matt : UnsafeMutablePointer<pthread_mutexattr_t> = nil
+	var mutex : UnsafeMutablePointer<pthread_mutex_t> = nil
+	var cond : UnsafeMutablePointer<pthread_cond_t> = nil
+	var matt : UnsafeMutablePointer<pthread_mutexattr_t> = nil
 
-	public override init() {
+	public init() {
 		self.stream = []
-		super.init()
 		var mattr : UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
-		mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
-		cond = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
+		self.mutex = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
+		self.cond = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
 		pthread_mutexattr_init(mattr)
 		pthread_mutexattr_settype(mattr, PTHREAD_MUTEX_RECURSIVE)
-		matt = UnsafeMutablePointer(mattr)
+		self.matt = UnsafeMutablePointer(mattr)
 		pthread_mutex_init(mutex, matt)
 		pthread_cond_init(cond, nil)
 		stream = []

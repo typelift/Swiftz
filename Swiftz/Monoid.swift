@@ -9,7 +9,7 @@
 /// A `Monoid` is a `Semigroup` that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
-	class var mzero : Self { get }
+	static var mzero : Self { get }
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
@@ -18,9 +18,9 @@ public func mconcat<S : Monoid>(t : [S]) -> S {
 
 /// The `Monoid` of numeric types under addition.
 public struct Sum<N : Num> : Monoid {
-	public let value : () -> N
+	public let value : N
 
-	public init(_ x : @autoclosure () -> N) {
+	public init(_ x :  N) {
 		value = x
 	}
 
@@ -29,15 +29,15 @@ public struct Sum<N : Num> : Monoid {
 	}
 
 	public func op(other : Sum<N>) -> Sum<N> {
-		return Sum(value().plus(other.value()))
+		return Sum(value.plus(other.value))
 	}
 }
 
 /// The `Monoid` of numeric types under multiplication.
 public struct Product<N : Num> : Monoid {
-	public let value : () -> N
+	public let value : N
 
-	public init(_ x : @autoclosure () -> N) {
+	public init(_ x : N) {
 		value = x
 	}
 
@@ -46,15 +46,15 @@ public struct Product<N : Num> : Monoid {
 	}
 
 	public func op(other : Product<N>) -> Product<N> {
-		return Product(value().times(other.value()))
+		return Product(value.times(other.value))
 	}
 }
 
 /// The `Semigroup`-lifting `Maybe` `Monoid`
 public struct AdjoinNil<A : Semigroup> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : Maybe<A>
 
-	public init(_ x : @autoclosure () -> Maybe<A>) {
+	public init(_ x : Maybe<A>) {
 		value = x
 	}
 
@@ -63,8 +63,8 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 	}
 
 	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
-		if let x = value().value {
-			if let y = other.value().value {
+		if let x = value.value {
+			if let y = other.value.value {
 				return AdjoinNil(Maybe(x.op(y)))
 			} else {
 				return self
@@ -77,9 +77,9 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 
 /// The left-biased `Maybe` `Monoid`
 public struct First<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : Maybe<A>
 
-	public init(_ x : @autoclosure () -> Maybe<A>) {
+	public init(_ x : Maybe<A>) {
 		value = x
 	}
 
@@ -88,7 +88,7 @@ public struct First<A : Comparable> : Monoid {
 	}
 
 	public func op(other : First<A>) -> First<A> {
-		if value().isJust() {
+		if value.isJust() {
 			return self
 		} else {
 			return other
@@ -98,9 +98,9 @@ public struct First<A : Comparable> : Monoid {
 
 /// The right-biased `Maybe` `Monoid`.
 public struct Last<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : Maybe<A>
 
-	public init(_ x : @autoclosure () -> Maybe<A>) {
+	public init(_ x : Maybe<A>) {
 		value = x
 	}
 
@@ -109,7 +109,7 @@ public struct Last<A : Comparable> : Monoid {
 	}
 
 	public func op(other : Last<A>) -> Last<A> {
-		if other.value().isJust() {
+		if other.value.isJust() {
 			return other
 		} else {
 			return self
@@ -122,18 +122,19 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public let values : [Either<A, B>]
 
 	public init(_ vs : [Either<A, B>]) {
-		values = []
+		var vals = [Either<A, B>]()
 		for v in vs {
-			if let z = values.last {
+			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): values[values.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): values[values.endIndex - 1] = Either.right(x.value.op(y.value))
-				default: values.append(v)
+				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				default: vals.append(v)
 				}
 			} else {
-				values = [v]
+				vals = [v]
 			}
 		}
+		self.values = vals
 	}
 
 	public static func left(x: A) -> Dither<A, B> {

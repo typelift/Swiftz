@@ -23,14 +23,14 @@ public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
 
 /// The Semigroup of comparable values under MIN().
 public struct Min<A: Comparable>: Semigroup {
-	public let value: () -> A
+	public let value : A
 
-	public init(_ x: @autoclosure () -> A) {
+	public init(_ x : A) {
 		value = x
 	}
 
 	public func op(other : Min<A>) -> Min<A> {
-		if value() < other.value() {
+		if value < other.value {
 			return self
 		} else {
 			return other
@@ -40,14 +40,14 @@ public struct Min<A: Comparable>: Semigroup {
 
 /// The Semigroup of comparable values under MAX().
 public struct Max<A: Comparable> : Semigroup {
-	public let value: () -> A
+	public let value : A
 
-	public init(_ x: @autoclosure () -> A) {
+	public init(_ x : A) {
 		value = x
 	}
 
 	public func op(other : Max<A>) -> Max<A> {
-		if other.value() < value() {
+		if other.value < value {
 			return self
 		} else {
 			return other

@@ -86,7 +86,7 @@ public func safeIndex<T>(array : Array<T>)(i : Int) -> T? {
 }
 
 /// Returns the result of concatenating the values in the left and right arrays together.
-public func concat<T>(#lhs: [T])(#rhs : [T]) -> [T] {
+public func concat<T>(lhs: [T])(_ rhs : [T]) -> [T] {
 	return lhs + rhs
 }
 
@@ -267,14 +267,14 @@ public func all<A>(list : [A], f : (A -> Bool)) -> Bool {
 /// Concatenate a list of lists.
 public func concat<A>(list : [[A]]) -> [A] {
 	return list.reduce([]) { (start, l) -> [A] in
-		return concat(lhs: start)(rhs: l)
+		return concat(start)(l)
 	}
 }
 
 ///Map a function over a list and concatenate the results.
 public func concatMap<A,B>(list: [A], f: A -> [B]) -> [B] {
 	return list.reduce([]) { (start, l) -> [B] in
-		return concat(lhs: start)(rhs: f(l))
+		return concat(start)(f(l))
 	}
 }
 

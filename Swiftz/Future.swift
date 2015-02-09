@@ -27,14 +27,7 @@ public final class Future<A> : K1<A> {
 		execCtx = exec
 	}
 
-	public init(exec: ExecutionContext, _ a: () -> A) {
-		execCtx = exec
-		super.init()
-		dispatch_suspend(self.resultQueue)
-		exec.submit(self, work: a)
-	}
-
-	public init(exec: ExecutionContext, _ a: @autoclosure () -> A) {
+	public init(exec: ExecutionContext, _ a : () -> A) {
 		execCtx = exec
 		super.init()
 		dispatch_suspend(self.resultQueue)

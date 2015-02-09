@@ -10,8 +10,8 @@
 // Num 'typeclass'
 
 public protocol Num {
-	class var zero: Self { get }
-	class var one: Self { get }
+	static var zero: Self { get }
+	static var one: Self { get }
 	func plus(other: Self) -> Self
 	func times(other: Self) -> Self
 }
