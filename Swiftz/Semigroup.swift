@@ -60,7 +60,7 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	public let values : [Either<A, B>] // this array will never be empty
 
 	public init(_ vs : [Either<A, B>]) {
-		assert(!vs.isEmpty, "Cannot construct a \(Vacillate<A, B>.self) with no elements.")
+		if vs.isEmpty { self = error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") }
 		values = []
 		for v in vs {
 			if let z = values.last {
