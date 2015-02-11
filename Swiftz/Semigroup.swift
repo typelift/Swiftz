@@ -54,3 +54,40 @@ public struct Max<A: Comparable> : Semigroup {
 		}
 	}
 }
+
+/// The coproduct of `Semigroup`s
+public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
+	public let values : [Either<A, B>] // this array will never be empty
+
+	public init(_ vs : [Either<A, B>]) {
+		assert(!vs.isEmpty, "Cannot construct a \(Vacillate<A, B>.self) with no elements.")
+		values = []
+		for v in vs {
+			if let z = values.last {
+				switch (z, v) {
+				case let (.Left(x), .Left(y)): values[values.endIndex - 1] = Either.left(x.value.op(y.value))
+				case let (.Right(x), .Right(y)): values[values.endIndex - 1] = Either.right(x.value.op(y.value))
+				default: values.append(v)
+				}
+			} else {
+				values = [v]
+			}
+		}
+	}
+
+	public static func left(x: A) -> Vacillate<A, B> {
+		return Vacillate([Either.left(x)])
+	}
+
+	public static func right(y: B) -> Vacillate<A, B> {
+		return Vacillate([Either.right(y)])
+	}
+
+	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
+		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+	}
+
+	public func op(other : Vacillate<A, B>) -> Vacillate<A, B> {
+		return Vacillate(values + other.values)
+	}
+}
