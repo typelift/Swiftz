@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8480AB4C1A7B448300C6162D /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4B1A7B448300C6162D /* Sections.swift */; };
+		84961FB71A99917E004A186A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84961FB61A99917E004A186A /* State.swift */; };
 		84A88D9D1A70C280003D53CF /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A88D9C1A70C280003D53CF /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84A88EF61A70C763003D53CF /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A88D981A70C280003D53CF /* Swiftz.framework */; };
 		84A88EF71A70C77B003D53CF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88E8E1A70C649003D53CF /* Array.swift */; };
@@ -115,6 +116,7 @@
 
 /* Begin PBXFileReference section */
 		8480AB4B1A7B448300C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
+		84961FB61A99917E004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		84A88D5C1A70C23D003D53CF /* Swiftz-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftz-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A88D621A70C23D003D53CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A88D981A70C280003D53CF /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,6 +365,7 @@
 				84A88DD81A70C2B5003D53CF /* Pointed.swift */,
 				84A88DDB1A70C2B5003D53CF /* Semigroup.swift */,
 				84A88DDC1A70C2B5003D53CF /* Set.swift */,
+				84961FB61A99917E004A186A /* State.swift */,
 				84A88DDF1A70C2B5003D53CF /* SYB.swift */,
 				84A88DE01A70C2B5003D53CF /* Those.swift */,
 				84A88DE11A70C2B5003D53CF /* Tuple.swift */,
@@ -612,6 +615,7 @@
 				84A88F2D1A70C77B003D53CF /* Tuple.swift in Sources */,
 				84F2C4FC1A7AF34C00316E5F /* JSONKeypath.swift in Sources */,
 				84A88F2E1A70C77B003D53CF /* TupleExt.swift in Sources */,
+				84961FB71A99917E004A186A /* State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
