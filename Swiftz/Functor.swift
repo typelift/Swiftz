@@ -22,14 +22,14 @@ public protocol Functor {
 
 /// The Identity Functor holds a singular value.
 public struct Id<A> {
-	private let a : A
+	private let a : () -> A
 
-	public init(_ aa : A) {
+	public init(@autoclosure(escaping) _ aa : () -> A) {
 		a = aa
 	}
 
 	public var runId : A {
-		return a
+		return a()
 	}
 }
 
@@ -43,7 +43,7 @@ extension Id : Functor {
 
 extension Id : Copointed {
 	public func extract() -> A {
-		return self.a
+		return self.a()
 	}
 }
 
@@ -61,14 +61,14 @@ extension Id : Comonad {
 
 // The Constant Functor ignores fmap.
 public struct Const<A, B> {
-	private let a :  A
+	private let a :  () -> A
 
-	public init(_ aa : A) {
+	public init(@autoclosure(escaping) _ aa : () -> A) {
 		a = aa
 	}
 
 	public var runConst : A {
-		return a
+		return a()
 	}
 }
 

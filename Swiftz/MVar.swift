@@ -37,9 +37,9 @@ public final class MVar<A> : K1<A> {
 		pthread_cond_init(condRead, nil)
 	}
 
-	public convenience init(_ a : A) {
+	public convenience init(@autoclosure(escaping) _ a : () -> A) {
 		self.init()
-		value = .Some({ a })
+		value = .Some(a)
 	}
 
 	deinit {

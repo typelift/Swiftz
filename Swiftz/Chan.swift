@@ -14,9 +14,9 @@ import Darwin
 public final class Chan<A> {
 	var stream : [A]
 
-	var mutex : UnsafeMutablePointer<pthread_mutex_t> = nil
-	var cond : UnsafeMutablePointer<pthread_cond_t> = nil
-	var matt : UnsafeMutablePointer<pthread_mutexattr_t> = nil
+	let mutex : UnsafeMutablePointer<pthread_mutex_t>
+	let cond : UnsafeMutablePointer<pthread_cond_t>
+	let matt : UnsafeMutablePointer<pthread_mutexattr_t>
 
 	public init() {
 		self.stream = []

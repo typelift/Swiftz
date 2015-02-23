@@ -18,9 +18,9 @@ public func mconcat<S : Monoid>(t : [S]) -> S {
 
 /// The `Monoid` of numeric types under addition.
 public struct Sum<N : Num> : Monoid {
-	public let value : N
+	public let value : () -> N
 
-	public init(_ x :  N) {
+	public init(@autoclosure(escaping) _ x : () -> N) {
 		value = x
 	}
 
@@ -29,15 +29,15 @@ public struct Sum<N : Num> : Monoid {
 	}
 
 	public func op(other : Sum<N>) -> Sum<N> {
-		return Sum(value.plus(other.value))
+		return Sum(self.value().plus(other.value()))
 	}
 }
 
 /// The `Monoid` of numeric types under multiplication.
 public struct Product<N : Num> : Monoid {
-	public let value : N
+	public let value : () -> N
 
-	public init(_ x : N) {
+	public init(@autoclosure(escaping) _ x : () -> N) {
 		value = x
 	}
 
@@ -46,15 +46,15 @@ public struct Product<N : Num> : Monoid {
 	}
 
 	public func op(other : Product<N>) -> Product<N> {
-		return Product(value.times(other.value))
+		return Product(self.value().times(other.value()))
 	}
 }
 
 /// The `Semigroup`-lifting `Maybe` `Monoid`
 public struct AdjoinNil<A : Semigroup> : Monoid {
-	public let value : Maybe<A>
+	public let value : () -> Maybe<A>
 
-	public init(_ x : Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
 		value = x
 	}
 
@@ -63,8 +63,8 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 	}
 
 	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
-		if let x = value.value {
-			if let y = other.value.value {
+		if let x = self.value().value {
+			if let y = other.value().value {
 				return AdjoinNil(Maybe(x.op(y)))
 			} else {
 				return self
@@ -77,9 +77,9 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 
 /// The left-biased `Maybe` `Monoid`
 public struct First<A : Comparable> : Monoid {
-	public let value : Maybe<A>
+	public let value : () -> Maybe<A>
 
-	public init(_ x : Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
 		value = x
 	}
 
@@ -88,7 +88,7 @@ public struct First<A : Comparable> : Monoid {
 	}
 
 	public func op(other : First<A>) -> First<A> {
-		if value.isJust() {
+		if self.value().isJust() {
 			return self
 		} else {
 			return other
@@ -98,9 +98,9 @@ public struct First<A : Comparable> : Monoid {
 
 /// The right-biased `Maybe` `Monoid`.
 public struct Last<A : Comparable> : Monoid {
-	public let value : Maybe<A>
+	public let value : () -> Maybe<A>
 
-	public init(_ x : Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
 		value = x
 	}
 
@@ -109,7 +109,7 @@ public struct Last<A : Comparable> : Monoid {
 	}
 
 	public func op(other : Last<A>) -> Last<A> {
-		if other.value.isJust() {
+		if other.value().isJust() {
 			return other
 		} else {
 			return self
@@ -122,6 +122,9 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public let values : [Either<A, B>]
 
 	public init(_ vs : [Either<A, B>]) {
+		//	if vs.isEmpty { 
+		//		error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") 
+		//	}
 		var vals = [Either<A, B>]()
 		for v in vs {
 			if let z = vals.last {

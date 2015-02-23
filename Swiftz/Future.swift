@@ -27,7 +27,7 @@ public final class Future<A> : K1<A> {
 		execCtx = exec
 	}
 
-	public init(exec: ExecutionContext, _ a : () -> A) {
+	public init(exec : ExecutionContext, @autoclosure(escaping) _ a : () -> A) {
 		execCtx = exec
 		super.init()
 		dispatch_suspend(self.resultQueue)
@@ -52,10 +52,10 @@ public final class Future<A> : K1<A> {
 	/// Returns a future that maps the results of the receiver through a function in the same
 	/// execution context.
 	public func map<B>(f: A -> B) -> Future<B> {
-		return Future<B>(exec: execCtx, { f(self.result()) })
+		return Future<B>(exec: execCtx, f(self.result()))
 	}
 
 	public func flatMap<B>(f: A -> Future<B>) -> Future<B> {
-		return Future<B>(exec: execCtx, { f(self.result()).result() })
+		return Future<B>(exec: execCtx, f(self.result()).result())
 	}
 }
