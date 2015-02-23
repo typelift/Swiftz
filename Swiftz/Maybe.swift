@@ -15,10 +15,12 @@ public struct Maybe<A> {
 	let value: A?
 
 	public init(_ v : A) {
-		value = v
+		self.value = v
 	}
 
-	public init() { }
+	public init() {
+		self.value = nil
+	}
 
 	/// Constructs a Maybe holding a value.
 	public static func just(t : A) -> Maybe<A> {
