@@ -156,4 +156,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public func op(other : Dither<A, B>) -> Dither<A, B> {
 		return Dither(values + other.values)
 	}
+
+	public init(_ other: Vacillate<A, B>) {
+		self.init(other.values)
+	}
 }

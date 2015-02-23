@@ -148,7 +148,7 @@
 		84A88DCD1A70C2B5003D53CF /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		84A88DCE1A70C2B5003D53CF /* Maybe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maybe.swift; sourceTree = "<group>"; };
 		84A88DCF1A70C2B5003D53CF /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
-		84A88DD01A70C2B5003D53CF /* Monoid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monoid.swift; sourceTree = "<group>"; };
+		84A88DD01A70C2B5003D53CF /* Monoid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monoid.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88DD11A70C2B5003D53CF /* MVar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MVar.swift; sourceTree = "<group>"; };
 		84A88DD21A70C2B5003D53CF /* NonEmptyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyList.swift; sourceTree = "<group>"; };
 		84A88DD31A70C2B5003D53CF /* NSArrayExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArrayExt.swift; sourceTree = "<group>"; };
@@ -327,6 +327,7 @@
 		84A88F801A70C884003D53CF /* Ext */ = {
 			isa = PBXGroup;
 			children = (
+				84A88DB21A70C2B5003D53CF /* ArrayExt.swift */,
 				84A88DB91A70C2B5003D53CF /* CharacterExt.swift */,
 				84A88DBD1A70C2B5003D53CF /* DictionaryExt.swift */,
 				84A88DD31A70C2B5003D53CF /* NSArrayExt.swift */,
@@ -341,7 +342,6 @@
 		84A88F811A70C8BC003D53CF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				84A88DB21A70C2B5003D53CF /* ArrayExt.swift */,
 				84A88DB31A70C2B5003D53CF /* ArrayZipper.swift */,
 				84A88DB51A70C2B5003D53CF /* Bifunctor.swift */,
 				84A88DB61A70C2B5003D53CF /* Bounded.swift */,
