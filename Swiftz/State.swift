@@ -32,6 +32,11 @@ public struct State<S, A> {
 	public func withState(f : S -> S) -> State<S, A> {
 		return State(self.runState • f)
 	}
+	
+	/// Converts a State Monad to an Indexed State Monad.
+	public func toIndexedState() -> IxState<S, S, A> {
+		return IxState(runState)
+	}
 }
 
 extension State : Functor {

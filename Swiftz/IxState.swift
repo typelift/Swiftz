@@ -8,38 +8,44 @@
 
 
 public struct IxState<I, O, A> {
-	let run: I -> (A, O)
+	let run : I -> (A, O)
 
-	public init(_ run: I -> (A, O)) {
+	public init(_ run : I -> (A, O)) {
 		self.run = run
 	}
 
-	public func eval(s: I) -> A {
+	public func eval(s : I) -> A {
 		return run(s).0
 	}
 
-	public func exec(s: I) -> O {
+	public func exec(s : I) -> O {
 		return run(s).1
 	}
 
-	public func map<B>(f: A -> B) -> IxState<I, O, B> {
+	public func map<B>(f : A -> B) -> IxState<I, O, B> {
 		return f <^> self
 	}
 
-	public func contramap<H>(f: H -> I) -> IxState<H, O, A> {
+	public func contramap<H>(f : H -> I) -> IxState<H, O, A> {
 		return f <!> self
 	}
 
-	public func imap<P>(f: O -> P) -> IxState<I, P, A> {
+	public func imap<P>(f : O -> P) -> IxState<I, P, A> {
 		return f <^^> self
 	}
 
-	public func ap<E, B>(f: IxState<E, I, A -> B>) -> IxState<E, O, B> {
+	public func ap<E, B>(f : IxState<E, I, A -> B>) -> IxState<E, O, B> {
 		return f <*> self
 	}
 
-	public func flatMap<E, B>(f: A -> IxState<O, E, B>) -> IxState<I, E, B> {
+	public func flatMap<E, B>(f : A -> IxState<O, E, B>) -> IxState<I, E, B> {
 		return self >>- f
+	}
+	
+	/// Converts an Indexed State Monad to a plain State Monad.  Provide `identity` to the evidence
+	/// parameter.
+	public func toState(evidence : IxState<I, O, A> -> IxState<O, O, A>) -> State<O, A> {
+		return State<O, A>(evidence(self).run)
 	}
 }
 
