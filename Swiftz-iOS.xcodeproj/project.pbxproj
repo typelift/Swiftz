@@ -88,6 +88,7 @@
 		84A88F7A1A70C7A0003D53CF /* TupleExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDF1A70C707003D53CF /* TupleExtSpec.swift */; };
 		84A88F7B1A70C7A0003D53CF /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EE01A70C707003D53CF /* UserExample.swift */; };
 		84A8905C1A71E4C3003D53CF /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88D981A70C280003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84BB57671AA12E4300214BC5 /* StateSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB57651AA12E3F00214BC5 /* StateSpec.swift */; };
 		84F2C4FC1A7AF34C00316E5F /* JSONKeypath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2C4FB1A7AF34C00316E5F /* JSONKeypath.swift */; };
 /* End PBXBuildFile section */
 
@@ -198,6 +199,7 @@
 		84A88EDE1A70C707003D53CF /* ThoseSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThoseSpec.swift; path = SwiftzTests/ThoseSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDF1A70C707003D53CF /* TupleExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TupleExtSpec.swift; path = SwiftzTests/TupleExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88EE01A70C707003D53CF /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserExample.swift; path = SwiftzTests/UserExample.swift; sourceTree = SOURCE_ROOT; };
+		84BB57651AA12E3F00214BC5 /* StateSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateSpec.swift; path = SwiftzTests/StateSpec.swift; sourceTree = SOURCE_ROOT; };
 		84F2C4FB1A7AF34C00316E5F /* JSONKeypath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONKeypath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -417,6 +419,7 @@
 				84A88ED61A70C707003D53CF /* MonoidSpec.swift */,
 				84A88EDA1A70C707003D53CF /* ResultSpec.swift */,
 				84A88EDB1A70C707003D53CF /* SetTests.swift */,
+				84BB57651AA12E3F00214BC5 /* StateSpec.swift */,
 				84A88EDE1A70C707003D53CF /* ThoseSpec.swift */,
 			);
 			name = Data;
@@ -536,6 +539,7 @@
 				84A88F6A1A70C7A0003D53CF /* EitherSpec.swift in Sources */,
 				84A88F6B1A70C7A0003D53CF /* FunctorSpec.swift in Sources */,
 				84A88F6C1A70C7A0003D53CF /* FutureSpec.swift in Sources */,
+				84BB57671AA12E4300214BC5 /* StateSpec.swift in Sources */,
 				84A88F6D1A70C7A0003D53CF /* HListSpec.swift in Sources */,
 				84A88F6E1A70C7A0003D53CF /* JSONSpec.swift in Sources */,
 				84A88F6F1A70C7A0003D53CF /* ListSpec.swift in Sources */,
