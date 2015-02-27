@@ -39,9 +39,3 @@ extension Set : Pointed {
 		return Set(arrayLiteral: x)
 	}
 }
-
-extension State : Pointed {
-	public static func pure(x : A) -> State<S, A> {
-		return State({ s in (x, s) })
-	}
-}

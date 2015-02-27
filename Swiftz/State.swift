@@ -71,6 +71,12 @@ public func modify<S>(f : S -> S) -> State<S, ()> {
 	return State<S, ()> { s in ((), f(s)) }
 }
 
+extension State : Pointed {
+	public static func pure(x : A) -> State<S, A> {
+		return State({ s in (x, s) })
+	}
+}
+
 // Uncomment to crash Swiftc
 // - Fixed in 1.2; TODO: Uncomment in #181
 //extension State : Applicative {
