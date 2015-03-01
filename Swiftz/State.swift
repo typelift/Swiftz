@@ -77,25 +77,23 @@ extension State : Pointed {
 	}
 }
 
-// Uncomment to crash Swiftc
-// - Fixed in 1.2; TODO: Uncomment in #181
-//extension State : Applicative {
-//	typealias FAB = State<S, A -> B>
-//	
-//	public func ap<B>(stfn : State<S, A -> B>) -> State<S, B> {
-//		return stfn.bind({ f in
-//			return self.bind({ a in
-//				return State<S, B>.pure(f(a))
-//			})
-//		})
-//	}
-//}
-//
-//extension State : Monad {
-//	public func bind<B>(f : A -> State<S, B>) -> State<S, B> {
-//		return State<S, B>({ s in
-//			let (a, s2) = self.runState(s)
-//			return f(a).runState(s2)
-//		})
-//	}
-//}
+extension State : Applicative {
+	typealias FAB = State<S, A -> B>
+	
+	public func ap<B>(stfn : State<S, A -> B>) -> State<S, B> {
+		return stfn.bind({ f in
+			return self.bind({ a in
+				return State<S, B>.pure(f(a))
+			})
+		})
+	}
+}
+
+extension State : Monad {
+	public func bind<B>(f : A -> State<S, B>) -> State<S, B> {
+		return State<S, B>({ s in
+			let (a, s2) = self.runState(s)
+			return f(a).runState(s2)
+		})
+	}
+}
