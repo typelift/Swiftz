@@ -273,8 +273,8 @@ Operator | Name           | Type
 `<*>`    | apply          | `<*>  <A, B>(F<A -> B>, F<A>) -> F<B>`
 `>>-`    | bind           | `>>-  <A, B>(F<A>, A -> F<B>) -> F<B>`
 `->>`    | extend         | `->>  <A, B>(F<A>, F<A> -> B) -> F<B>`
-`<<<`    | r-t-l compose  | `>>>  <C, A, B, C>(C<A, B>, C<B, C>) -> C<A, C>` 
-`>>>`    | l-t-r compose  | `<<<  <C, A, B, C>(C<B, C>, C<A, B>) -> C<A, C>` 
+`<<<`    | r-t-l compose  | `<<<  <C, A, B, C>(C<B, C>, C<A, B>) -> C<A, C>` 
+`>>>`    | l-t-r compose  | `>>>  <C, A, B, C>(C<A, B>, C<B, C>) -> C<A, C>` 
 `&&&`    | split          | `&&&  <A, B, C, D>(A<B, C>, A<B, D>) -> A<B, (C, D)>` 
 `***`    | fanout         | `***  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<(B, D), (C, E)>` 
 `+++`    | splat          | `+++  <A, B, C, D, E>(A<B, C>, A<D, E>) -> A<Either<D, B>, Either<C, E>>`
