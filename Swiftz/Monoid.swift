@@ -149,7 +149,7 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return foldRight(values)(z: C.mzero) { v, acc in v.either(f, g).op(acc) }
 	}
 
 	public static var mzero : Dither<A, B> {

@@ -15,11 +15,11 @@ class FutureSpec : XCTestCase {
 		let x: Future<Int> = Future(exec: gcdExecutionContext, {
 			usleep(1)
 			return 4
-		})
+		}())
 		XCTAssert(x.result() == x.result(), "future")
 		XCTAssert(x.map({ $0.description }).result() == "4", "future map")
 		XCTAssert(x.flatMap({ (x: Int) -> Future<Int> in
-			return Future(exec: gcdExecutionContext, { usleep(1); return x + 1 })
+			return Future(exec: gcdExecutionContext, { usleep(1); return x + 1 }())
 		}).result() == 5, "future flatMap")
 
 		//    let x: Future<Int> = Future(exec: gcdExecutionContext, {
