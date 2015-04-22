@@ -20,12 +20,12 @@ class EitherSpec : XCTestCase {
 		}
 
 		// either
-		XCTAssert(Either.left("foo").either({ l in l+"!" }, { r in r+1 }) == "foo!")
-		XCTAssert(Either.right(1).either({ l in l+"!" }, { r in r+1 }) == 2)
+		XCTAssert(Either.left("foo").either(onLeft: { l in l+"!" }, onRight: { r in r+1 }) == "foo!")
+		XCTAssert(Either.right(1).either(onLeft: { l in l+"!" }, onRight: { r in r+1 }) == 2)
 
 		// fold
-		XCTAssert(Either.left("foo").fold(0, identity) == 0)
-		XCTAssert(Either<String, Int>.right(10).fold(0, identity) == 10)
+		XCTAssert(Either.left("foo").fold(0, f: identity) == 0)
+    XCTAssert(Either<String, Int>.right(10).fold(0, f: identity) == 10)
 
 		// TODO: test <^>, <*> and pure
 

@@ -41,9 +41,10 @@ class OptionalExtSpec : XCTestCase {
 		XCTAssert(maybe(x)(0)(+1) == 5, "maybe for Some works")
 		XCTAssert(maybe(y)(0)(+1) == 0, "maybe for None works")
 		
-		XCTAssert(coalesce(x, y) == 4, "coalesce some first")
-		XCTAssert(coalesce(y, x) == 4, "coalesce some second")
-		XCTAssert(coalesce({ n in n > 4 })(y, x) == nil, "filter coalesce")
+    /// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
+		// XCTAssert(coalesce(x, y) == 4, "coalesce some first")
+		// XCTAssert(coalesce(y, x) == 4, "coalesce some second")
+		// XCTAssert(coalesce({ n in n > 4 })(y, x) == nil, "filter coalesce")
 
 	}
 

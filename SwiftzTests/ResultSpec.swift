@@ -22,8 +22,8 @@ class ResultSpec : XCTestCase {
 		}
 
 		// fold
-		XCTAssert(Result.error(divisionError).fold(0, identity) == 0)
-		XCTAssert(Result.value(10).fold(0, identity) == 10)
+		XCTAssert(Result.error(divisionError).fold(0, f: identity) == 0)
+		XCTAssert(Result.value(10).fold(0, f: identity) == 10)
 
 		let start = 17
 		let first: Result<Int> = divTwoEvenly(start)
