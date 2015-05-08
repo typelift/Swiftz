@@ -116,7 +116,7 @@ public func foldRight<T, U>(array : Array<T>)(z : U, f : (T, U) -> U) -> U {
 ///     scanl(z, [x1, x2, ...], f) == [z, f(z, x1), f(f(z, x1), x2), ...]
 public func scanl<B, T>(start : B, list : [T], r : (B, T) -> B) -> [B] {
 	if list.isEmpty {
-		return []
+		return [start]
 	}
 	var arr = [B]()
 	arr.append(start)

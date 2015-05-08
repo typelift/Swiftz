@@ -44,12 +44,11 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property["scanl behaves"] = forAll { (withArray : ArrayOf<Int>) in
-			if withArray.getArray.isEmpty {
-				return true // discard
-			}
 			let scanned = scanl(0, withArray.getArray, +)
-			let check = Array(SequenceOf(Zip2(withArray.getArray + [0], [0] + withArray.getArray)))
-			return scanned == ([0] + check.map(+))
+			if withArray.getArray.isEmpty {
+				return scanned == [0]
+			}
+			return scanned == [0] + scanl(0 + withArray.getArray.first!, [Int](withArray.getArray[1..<withArray.getArray.count]), +)
 		}
 
 		property["intersperse behaves"] = forAll { (withArray : ArrayOf<Int>) in
