@@ -12,20 +12,37 @@ import SwiftCheck
 
 class MonoidSpec : XCTestCase {
 	func testProperties() {
-		property["sconcat works"] = forAll { (xs : ArrayOf<UInt>) in
-			return sconcat(Min(2), (xs.getArray + [0]).map { Min($0) }).value() == 0
+		property["Sum obeys left identity"] = forAll { (i : Int) in
+			return (Sum.mzero <> Sum(i)).value() == i
 		}
 
-		// TODO: Overflow...?
-//		property["monoid sum works"] = forAll { (xs : ArrayOf<Int8>) in
-//			let arr = take(2, from: xs.getArray) // Guard against overflow
-//			return mconcat(arr.map { Sum($0) }).value() == arr.reduce(0, combine: +)
-//		}
-//
-//		property["monoid product works"] = forAll { (xs : ArrayOf<Int8>) in
-//			let arr = take(2, from: xs.getArray) // Guard against overflow
-//			return mconcat(arr.map { Product($0) }).value() == arr.reduce(1, combine: *)
-//		}
+		property["Sum obeys right identity"] = forAll { (i : Int) in
+			return (Sum(i) <> Sum.mzero).value() == i
+		}
+
+		property["Product obeys left identity"] = forAll { (i : Int) in
+			return (Product.mzero <> Product(i)).value() == i
+		}
+
+		property["Product obeys right identity"] = forAll { (i : Int) in
+			return (Product(i) <> Product.mzero).value() == i
+		}
+
+		property["First obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+			return (First.mzero <> First(i.getMaybe)).value() == i.getMaybe
+		}
+
+		property["First obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+			return (First(i.getMaybe) <> First.mzero).value() == i.getMaybe
+		}
+
+		property["Last obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+			return (Last.mzero <> Last(i.getMaybe)).value() == i.getMaybe
+		}
+
+		property["Last obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+			return (Last(i.getMaybe) <> Last.mzero).value() == i.getMaybe
+		}
 	}
 
 	func testDither() {

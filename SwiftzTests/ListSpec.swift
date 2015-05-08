@@ -127,26 +127,44 @@ class ListSpec : XCTestCase {
 			}
 			return true
 		}
-	}
 
-	
-	func testListCombinators() {
-		let t : List<Int> = [1, 2, 3]
-		let u : List<Int> = [4, 5, 6]
-		XCTAssert(t + u == [1, 2, 3, 4, 5, 6], "")
+		property["isEmpty behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.isEmpty() == (xs.getList.length() == 0)
+		}
 
-		let l : List<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-		XCTAssert(!l.isEmpty(), "")
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.map(+1) == xs.getList.fmap(+1)
+		}
 
-		XCTAssert(l.map(+1) == [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "")
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.map(+1) == xs.getList.fmap(+1)
+		}
 
-		XCTAssert(l.concatMap({ List<Int>.replicate(2, value: $0) }) == [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10], "")
-		XCTAssert(l.filter((==0) • (%2)) == [2, 4, 6, 8, 10], "")
-		XCTAssert(l.reduce(curry(+), initial: 0) == 55, "")
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			let fs = { List<Int>.replicate(2, value: $0) }
+			return (xs.getList >>- fs) == xs.getList.map(fs).reduce(+, initial: List())
+		}
 
-		XCTAssert(u.scanl(curry(+), initial: 0) == [0, 4, 9, 15], "")
-		XCTAssert(u.scanl1(curry(+)) == [4, 9, 15], "")
-		XCTAssert(l.take(5) == [1, 2, 3, 4, 5], "")
-		XCTAssert(l.drop(5) == [6, 7, 8, 9, 10], "")
+		property["filter behaves"] = forAll { (xs : ListOf<Int>, pred : ArrowOf<Int, Bool>) in
+			return xs.getList.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
+		}
+
+		property["take behaves"] = forAll { (xs : ListOf<Int>, limit : UInt) in
+			return xs.getList.take(limit).length() <= limit
+		}
+
+		property["drop behaves"] = forAll { (xs : ListOf<Int>, limit : UInt) in
+			return xs.getList.drop(limit).length() == max(0, xs.getList.length() - limit)
+		}
+
+		property["scanl behaves"] = forAll { (withArray : ListOf<Int>) in
+			let scanned = withArray.getList.scanl(curry(+), initial: 0)
+			switch withArray.getList.match() {
+			case .Nil:
+				return scanned == [0]
+			case let .Cons(x, xs):
+				return scanned == (List.pure(0) + xs.scanl(curry(+), initial: 0 + x))
+			}
+		}
 	}
 }
