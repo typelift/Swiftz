@@ -14,6 +14,10 @@
 public struct Maybe<A> {
 	let value: A?
 
+	var description : String {
+		return "\(self.value)"
+	}
+
 	public init(_ v : A) {
 		self.value = v
 	}
@@ -52,6 +56,26 @@ public struct Maybe<A> {
 	/// If the receiver contains no value this function will throw an exception.
 	public func fromJust() -> A {
 		return self.value!
+	}
+
+	/// Takes a default value and a maybe.  If the maybe is empty, the default value is returned.
+	/// If the maybe contains a value, that value is returned.
+	///
+	/// This function is a safer form of fromJust().
+	public func fromMaybe(def : A) -> A {
+		if self.isNone() {
+			return def
+		}
+		return self.fromJust()
+	}
+
+	/// Takes a default value, a function, and a maybe.  If the maybe is Nothing, the default value
+	/// is returned.  If the maybe is Just, the function is applied to the value inside.
+	public func maybe<B>(def : B, onVal : (A -> B)) -> B {
+		if self.isNone() {
+			return def
+		}
+		return onVal(self.fromJust())
 	}
 }
 
@@ -95,6 +119,10 @@ extension Maybe : Functor {
 	}
 }
 
+public func <^> <A, B>(f : A -> B, l : Maybe<A>) -> Maybe<B> {
+	return l.fmap(f)
+}
+
 extension Maybe : Pointed {
 	public static func pure(x : A) -> Maybe<A> {
 		return Maybe.just(x)
@@ -113,4 +141,22 @@ extension Maybe : Applicative {
 			return Maybe<B>.none()
 		}
 	}
+}
+
+public func <*> <A, B>(f : Maybe<(A -> B)>, l : Maybe<A>) -> Maybe<B> {
+	return l.ap(f)
+}
+
+extension Maybe : Monad {
+	public func bind<B>(f : A -> Maybe<B>) -> Maybe<B> {
+		if self.isNone() {
+			return Maybe<B>.none()
+		}
+		return f(self.fromJust())
+	}
+}
+
+
+public func >>- <A, B>(l : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
+	return l.bind(f)
 }
