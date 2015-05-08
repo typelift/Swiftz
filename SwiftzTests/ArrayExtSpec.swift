@@ -44,6 +44,9 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property["scanl behaves"] = forAll { (withArray : ArrayOf<Int>) in
+			if withArray.getArray.isEmpty {
+				return true // discard
+			}
 			let scanned = scanl(0, withArray.getArray, +)
 			let check = Array(SequenceOf(Zip2(withArray.getArray + [0], [0] + withArray.getArray)))
 			return scanned == ([0] + check.map(+))
@@ -78,12 +81,12 @@ class ArrayExtSpec : XCTestCase {
 			return !or(withArray.getArray)
 		}
 
-		property["take behaves"] = forAll { (array : ArrayOf<Int>, limit : Int) in
-			return take(limit, from: array.getArray).count <= limit
+		property["take behaves"] = forAll { (array : ArrayOf<Int>, limit : Positive<Int>) in
+			return take(limit.getPositive, from: array.getArray).count <= limit.getPositive
 		}
 
-		property["drop behaves"] = forAll { (array : ArrayOf<Int>, limit : Int) in
-			return drop(limit, from: array.getArray).count == max(0, array.getArray.count - limit)
+		property["drop behaves"] = forAll { (array : ArrayOf<Int>, limit : Positive<Int>) in
+			return drop(limit.getPositive, from: array.getArray).count == max(0, array.getArray.count - limit.getPositive)
 		}
 	}
 
