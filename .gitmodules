@@ -1,3 +1,6 @@
 [submodule "Carthage/Checkouts/Swiftx"]
 	path = Carthage/Checkouts/Swiftx
 	url = https://github.com/typelift/Swiftx.git
+[submodule "Carthage/Checkouts/SwiftCheck"]
+	path = Carthage/Checkouts/SwiftCheck
+	url = https://github.com/typelift/SwiftCheck.git
