@@ -12,8 +12,10 @@ import SwiftCheck
 
 class StringExtSpec : XCTestCase {
 	func testProperties() {
-		property["unlines • lines === id"] = forAll { (x : String) in
-			return String.unlines(x.lines()) == x
+		property["unlines • lines === ('\n' • id)"] = forAll { (x : String) in
+			let l = x.lines()
+			let u = String.unlines(l)
+			return u == (x + "\n")
 		}
 	}
 }

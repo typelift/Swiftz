@@ -9,27 +9,13 @@
 extension String {
 	/// Returns an array of strings at newlines.
 	public func lines() -> [String] {
-		var xs: [String] = []
-		var line: String = ""
-		// loop school
-		for x in self {
-			if x == "\n" {
-				xs.append(line)
-				line = ""
-			} else {
-				line.append(x)
-			}
-		}
-		if line != "" {
-			xs.append(line)
-		}
-		return xs
+		return self.componentsSeparatedByString("\n")
 	}
 
 	/// Concatenates an array of strings into a single string containing newlines between each
 	/// element.
-	public static func unlines(xs: [String]) -> String {
-		return xs.reduce("", combine: { "\($0)\($1)\n" } )
+	public static func unlines(xs : [String]) -> String {
+		return xs.reduce("", combine: { "\($0)\($1)\n" })
 	}
 
 	/// Returns a Lens that targets the newline-seperated sections of a String
