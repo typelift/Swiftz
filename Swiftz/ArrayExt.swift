@@ -306,6 +306,12 @@ public func span<A>(list : [A], p : (A -> Bool)) -> ([A], [A]) {
 	}
 }
 
+/// Returns a tuple with the first elements that do not satisfy a predicate until that predicate
+/// returns false first, and a the rest of the elements second.
+public func extreme<A>(l : [A], p : A -> Bool) -> ([A], [A]) {
+	return span(l, { ((!) • p)($0) })
+}
+
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
 public func groupBy<A>(list : [A], p : A -> A -> Bool) -> [[A]] {
