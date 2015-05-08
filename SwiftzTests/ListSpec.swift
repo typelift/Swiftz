@@ -154,7 +154,11 @@ class ListSpec : XCTestCase {
 		}
 
 		property["drop behaves"] = forAll { (xs : ListOf<Int>, limit : UInt) in
-			return xs.getList.drop(limit).length() == max(0, xs.getList.length() - limit)
+			let l = xs.getList.drop(limit)
+			if xs.getList.length() >= limit {
+				return l.length() == (xs.getList.length() - limit)
+			}
+			return l == []
 		}
 
 		property["scanl behaves"] = forAll { (withArray : ListOf<Int>) in
