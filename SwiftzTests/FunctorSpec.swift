@@ -21,18 +21,16 @@ class FunctorSpec : XCTestCase {
 			let x = Const<Int, Int>(5)
 			return (x.fmap(f.getArrow • g.getArrow)).runConst == (x.fmap(g.getArrow).fmap(f.getArrow)).runConst
 		}
-	}
 
-	func testConstBifunctor() {
-		let x : Const<String, String> = Const("Hello!")
-		let y : Const<String, String>  = x.bimap({ "Why, " + $0 }, identity)
-		XCTAssert(x.runConst != y.runConst)
-	}
+		property["Const obeys the Bifunctor identity law"] = forAll { (s : String) in
+			let x = Const<String, String>(s)
+			let t : Const<String, String> = x.bimap(identity, identity)
+			return t.runConst == identity(x).runConst
+		}
 
-	func testTupleBifunctor() {
-		let t : (Int, String) = (20, "Bottles of beer on the wall.")
-		let y = TupleBF(t).bimap({ $0 - 1 }, identity)
-		XCTAssert(y.0 != t.0)
-		XCTAssert(y.1 == t.1)
+		property["Const obeys the Biunctor composition law"] = forAll { (f1 : ArrowOf<Int, Int>, g1 : ArrowOf<Int, Int>, f2 : ArrowOf<Int, Int>, g2 : ArrowOf<Int, Int>) in
+			let x = Const<Int, Int>(5)
+			return x.bimap(f1.getArrow, g1.getArrow).bimap(f2.getArrow, g2.getArrow).runConst == (x.bimap(f2.getArrow • f1.getArrow, g1.getArrow • g2.getArrow)).runConst
+		}
 	}
 }
