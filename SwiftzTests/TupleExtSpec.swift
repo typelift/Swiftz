@@ -8,11 +8,17 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class TupleExtSpec : XCTestCase {
-	func testTupleExt() {
-		XCTAssert(fst((1,2)) == 1, "tuple fst")
-		XCTAssert(snd((1,2)) == 2, "tuple snd")
+	func testProperties() {
+		property["fst behaves"] = forAll { (x : Int, y : Int) in
+			return fst((x, y)) == x
+		}
+
+		property["snd behaves"] = forAll { (x : Int, y : Int) in
+			return snd((x, y)) == y
+		}
 	}
 
 	func testTupleEquality() {

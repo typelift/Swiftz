@@ -8,92 +8,95 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class ArrayExtSpec : XCTestCase {
-	func testArrayExt() {
-		let xsO: [Optional<Int>] = [Optional.Some(1), .Some(2), .None]
-		let exO: [Int] = mapFlatten(xsO)
-
-		XCTAssert(exO == [1, 2], "mapflatten option")
-
-		let exJ = concat([[1, 2], [3, 4]])
-
-		XCTAssert(exJ == [1, 2, 3, 4], "mapflatten option")
-
-		XCTAssert(indexArray([1], 0) == 1, "index array 0")
-		XCTAssert(indexArray([Int](), 0) == nil, "index array empty")
-	}
-
-	func testArray() {
-		let xs = [1, 2, 3]
-		let y = Optional<Int>.None
-		let incedXs = (+1 <^> xs)
-
-		XCTAssert(incedXs == [2, 3, 4], "array fmap")
-		XCTAssert(xs == [1, 2, 3], "fmap isn't destructive")
-
-		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "array apply")
-
-		func fs(x : Int) -> [Int] {
-			return [x, x+1, x+2]
+	func testProperties() {
+		property["mapFlatten is the same as removing the optionals from an array and forcing"] = forAll { (xs0 : ArrayOf<OptionalOf<Int>>) in
+			return mapFlatten(xs0.getArray.map({ $0.getOptional })) == xs0.getArray.filter({ $0.getOptional != nil }).map({ $0.getOptional! })
 		}
 
-		let rs = xs >>- fs
+		property["concat works like Swift's append operator"] = forAll { (l : ArrayOf<Int>, r : ArrayOf<Int>) in
+			return concat(l.getArray)(r.getArray) == l.getArray + r.getArray
+		}
 
-		XCTAssert(rs == [1, 2, 3, 2, 3, 4, 3, 4, 5], "array bind")
+		property["indexArray is safe"] = forAll { (l : ArrayOf<Int>) in
+			if l.getArray.isEmpty {
+				return indexArray(l.getArray, 0) == nil
+			}
+			return indexArray(l.getArray, 0) != nil
+		}
 
-		XCTAssert(pure(1) == [1], "array pure")
-	}
+		property["array fmap is the same as map"] = forAll { (xs : ArrayOf<Int>) in
+			return (+1 <^> xs.getArray) == xs.getArray.map(+1)
+		}
 
-	func testScanl() {
-		let withArray = [1,2,3,4]
-		let scanned = scanl(0, withArray, +)
+		property["array pure give a singleton array"] = forAll { (x : Int) in
+			return pure(x) == [x]
+		}
 
-		XCTAssert(scanned == [0,1,3,6,10], "Should be equal")
-		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
-	}
+		property["array bind works like a map then a concat"] = forAll { (xs : ArrayOf<Int>) in
+			func fs(x : Int) -> [Int] {
+				return [x, x+1, x+2]
+			}
 
-	func testIntersperse() {
-		let withArray = [1,2,3,4]
-		let inter = intersperse(1, withArray)
+			return (xs.getArray >>- fs) == xs.getArray.map(fs).reduce([], combine: +)
+		}
 
-		XCTAssert(inter == [1,1,2,1,3,1,4], "Should be equal")
-		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
+		property["scanl behaves"] = forAll { (withArray : ArrayOf<Int>) in
+			let scanned = scanl(0, withArray.getArray, +)
+			let check = Array(SequenceOf(Zip2(withArray.getArray + [0], [0] + withArray.getArray)))
+			return scanned == ([0] + check.map(+))
+		}
 
-		let single = [1]
-		XCTAssert(intersperse(1, single) == [1], "Should be equal")
-	}
+		property["intersperse behaves"] = forAll { (withArray : ArrayOf<Int>) in
+			let inter = intersperse(1, withArray.getArray)
+			if withArray.getArray.isEmpty {
+				return inter.isEmpty
+			}
+			return succeeded() // TODO: Test non-empty case
+		}
 
-	func testFind() {
-		let withArray = [1,2,3,4]
-		if let found = find(withArray, ==4) {
-			XCTAssert(found == 4, "Should be found")
+		property["find either finds or nils"] = forAll { (withArray : ArrayOf<Int>) in
+			if let found = find(withArray.getArray, ==4) {
+				return found == 4
+			}
+			return true
+		}
+
+		property["and behaves"] = forAll { (withArray : ArrayOf<Bool>) in
+			if let found = find(withArray.getArray, ==false) {
+				return !and(withArray.getArray)
+			}
+			return and(withArray.getArray)
+		}
+
+		property["or behaves"] = forAll { (withArray : ArrayOf<Bool>) in
+			if let found = find(withArray.getArray, ==true) {
+				return or(withArray.getArray)
+			}
+			return !or(withArray.getArray)
+		}
+
+		property["take behaves"] = forAll { (array : ArrayOf<Int>, limit : Int) in
+			return take(limit, from: array.getArray).count <= limit
+		}
+
+		property["drop behaves"] = forAll { (array : ArrayOf<Int>, limit : Int) in
+			return drop(limit, from: array.getArray).count == max(0, array.getArray.count - limit)
 		}
 	}
-	
-	func testSplitAt() {
-		let withArray = [1,2,3,4]
 
-		let tuple = splitAt(2,withArray)
-		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4], "Should be equal")
+	func testDropWhile() {
+		let array = [1,2,3,4,5]
 
-		XCTAssert(splitAt(0,withArray).0 == Array() && splitAt(0, withArray).1 == [1,2,3,4], "Should be equal")
-		XCTAssert(splitAt(1,withArray).0 == [1] && splitAt(1, withArray).1 == [2,3,4], "Should be equal")
-		XCTAssert(splitAt(3,withArray).0 == [1,2,3] && splitAt(3, withArray).1 == [4], "Should be equal")
-		XCTAssert(splitAt(4,withArray).0 == [1,2,3,4] && splitAt(4, withArray).1 == Array(), "Should be equal")
-		XCTAssert(splitAt(5,withArray).0 == [1,2,3,4] && splitAt(5, withArray).1 == Array(), "Should be equal")
-		
-		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
+		XCTAssert(dropWhile(array, <=3) == [4,5], "Should be equal")
 	}
 
-	func testAnd() {
-		let withArray = [true, true, false, true]
-		XCTAssertFalse(and(withArray), "Should be false")
-	}
+	func testTakeWhile() {
+		let array = [1,2,3,4,5]
 
-	func testOr() {
-		let withArray = [true, true, false, true]
-		XCTAssert(or(withArray), "Should be true")
+		XCTAssert(takeWhile(array, <=3) == [1,2,3], "Should be equal")
 	}
 
 	func testAny() {
@@ -105,19 +108,6 @@ class ArrayExtSpec : XCTestCase {
 		let array = [1,3,24,5]
 		XCTAssert(all(array, <=24), "Should be true")
 	}
-
-	func testConcat() {
-		let array = [[1,2,3],[4,5,6],[7],[8,9]]
-
-		XCTAssert(concat(array) == [1,2,3,4,5,6,7,8,9], "Should be equal")
-	}
-
-	func testConcatMap() {
-		let array = [1,2,3,4,5,6,7,8,9]
-
-		XCTAssert(concatMap(array) { a in [a + 1] } == [2,3,4,5,6,7,8,9,10], "Should be equal")
-	}
-
 
 	func testIntercalate() {
 		let result = intercalate([1,2,3], [[4,5],[6,7]])
@@ -139,28 +129,18 @@ class ArrayExtSpec : XCTestCase {
 		XCTAssert(result == [[1],[2],[3,3],[4],[5],[6],[7,7],[8],[9,9],[0]], "Should be equal")
 	}
 
-	func testTakeDrop() {		
-		let array = [1,2,3,4,5,6,7,8,9,10]
+	func testSplitAt() {
+		let withArray = [1,2,3,4]
 
-		XCTAssert(take(0, from: array) == [], "")
-		XCTAssert(drop(0, from: array) == array, "")
-		
-		XCTAssert(take(11, from: array) == array, "")
-		XCTAssert(drop(12, from: array) == [], "")
-		
-		XCTAssert(take(5, from: array) == [1, 2, 3, 4, 5], "")
-		XCTAssert(drop(5, from: array) == [6, 7, 8, 9, 10], "")
-	}
-	
-	func testDropWhile() {
-		let array = [1,2,3,4,5]
+		let tuple = splitAt(2,withArray)
+		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4], "Should be equal")
 
-		XCTAssert(dropWhile(array, <=3) == [4,5], "Should be equal")
-	}
+		XCTAssert(splitAt(0,withArray).0 == Array() && splitAt(0, withArray).1 == [1,2,3,4], "Should be equal")
+		XCTAssert(splitAt(1,withArray).0 == [1] && splitAt(1, withArray).1 == [2,3,4], "Should be equal")
+		XCTAssert(splitAt(3,withArray).0 == [1,2,3] && splitAt(3, withArray).1 == [4], "Should be equal")
+		XCTAssert(splitAt(4,withArray).0 == [1,2,3,4] && splitAt(4, withArray).1 == Array(), "Should be equal")
+		XCTAssert(splitAt(5,withArray).0 == [1,2,3,4] && splitAt(5, withArray).1 == Array(), "Should be equal")
 
-	func testTakeWhile() {
-		let array = [1,2,3,4,5]
-
-		XCTAssert(takeWhile(array, <=3) == [1,2,3], "Should be equal")
+		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
 	}
 }

@@ -8,17 +8,21 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class MonoidSpec : XCTestCase {
-	func testDataSemigroup() {
-		let xs = [1, 2, 0, 3, 4]
-		XCTAssert(sconcat(Min(2), xs.map { Min($0) }).value() == 0, "sconcat works")
-	}
+	func testProperties() {
+		property["sconcat works"] = forAll { (xs : ArrayOf<UInt>) in
+			return sconcat(Min(2), (xs.getArray + [0]).map { Min($0) }).value() == 0
+		}
 
-	func testDataMonoid() {
-		let xs : [Int8] = [1, 2, 0, 3, 4]
-		XCTAssert(mconcat(xs.map { Sum($0) }).value() == 10, "monoid sum works")
-		XCTAssert(mconcat(xs.map { Product($0) }).value() == 0, "monoid product works")
+		property["monoid sum works"] = forAll { (xs : ArrayOf<Int8>) in
+			return mconcat(xs.getArray.map { Sum($0) }).value() == xs.getArray.reduce(0, combine: +)
+		}
+
+		property["monoid product works"] = forAll { (xs : ArrayOf<Int8>) in
+			return mconcat(xs.getArray.map { Sum($0) }).value() == xs.getArray.reduce(1, combine: *)
+		}
 	}
 
 	func testDither() {

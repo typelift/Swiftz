@@ -8,10 +8,12 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class StringExtSpec : XCTestCase {
-	func testStringExt() {
-		// some testing is done with properties in TestTests.swift
-		XCTAssert(String.unlines("foo\nbar\n".lines()) == "foo\nbar\n", "lines / unlines a string")
+	func testProperties() {
+		property["unlines • lines === id"] = forAll { (x : String) in
+			return String.unlines(x.lines()) == x
+		}
 	}
 }
