@@ -375,9 +375,9 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 extension List : ArrayLiteralConvertible {
 	typealias Element = A
 
-	public init(arrayLiteral s: Element...) {
+	public init(fromArray arr : [Element]) {
 		var xs : [A] = []
-		var g = s.generate()
+		var g = arr.generate()
 		while let x : A = g.next() {
 			xs.append(x)
 		}
@@ -387,6 +387,10 @@ extension List : ArrayLiteralConvertible {
 			l = List(x, l)
 		}
 		self = l
+	}
+
+	public init(arrayLiteral s : Element...) {
+		self.init(fromArray: s)
 	}
 }
 
@@ -444,6 +448,10 @@ extension List : Functor {
 	}
 }
 
+public func <^> <A, B>(f : A -> B, l : List<A>) -> List<B> {
+	return l.fmap(f)
+}
+
 extension List : Pointed {
 	public static func pure(a: A) -> List<A> {
 		return List(a, [])
@@ -459,8 +467,16 @@ extension List : Applicative {
 	}
 }
 
+public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
+	return l.ap(f)
+}
+
 extension List : Monad {
 	public func bind<B>(f: A -> List<B>) -> List<B> {
 		return self.concatMap(f)
 	}
+}
+
+public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
+	return l.bind(f)
 }
