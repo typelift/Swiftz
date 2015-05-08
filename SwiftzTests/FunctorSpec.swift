@@ -8,15 +8,19 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class FunctorSpec : XCTestCase {
-	func testConst() {
-		let s = "Goodbye!"
-		let x : Const<String, String> = Const(s)
-		XCTAssert(x.runConst == s)
+	func testProperties() {
+		property["Const obeys the Functor identity law"] = forAll { (s : String) in
+			let x = Const<String, String>(s)
+			return (x.fmap(identity)).runConst == identity(x).runConst
+		}
 
-		let b : Const<String, String> = x.fmap({ "I don't know why you say " + $0 })
-		XCTAssert(b.runConst == s)
+		property["Const obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+			let x = Const<Int, Int>(5)
+			return (x.fmap(f.getArrow • g.getArrow)).runConst == (x.fmap(g.getArrow).fmap(f.getArrow)).runConst
+		}
 	}
 
 	func testConstBifunctor() {
