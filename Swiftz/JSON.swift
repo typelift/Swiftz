@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
+import class Foundation.NSData
 
 public enum JSONValue : Printable {
 	case JSONArray([JSONValue])
