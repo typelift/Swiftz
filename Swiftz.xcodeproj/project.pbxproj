@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84152B731A818A5C006387D5 /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88F981A71DF7F003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8450D2831AFC3D1100095EF6 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8450D2721AFC3CDF00095EF6 /* SwiftCheck.framework */; };
 		8480AB4E1A7B448A00C6162D /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4D1A7B448A00C6162D /* Sections.swift */; };
 		84961FB51A998976004A186A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84961FB41A998976004A186A /* State.swift */; };
 		84A88F9E1A71DF7F003D53CF /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A88F9D1A71DF7F003D53CF /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -27,7 +28,6 @@
 		84A88FD51A71DFA0003D53CF /* OptionalExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */; };
 		84A88FD61A71DFA0003D53CF /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC11A71DFA0003D53CF /* PartyExample.swift */; };
 		84A88FD71A71DFA0003D53CF /* ResultSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC21A71DFA0003D53CF /* ResultSpec.swift */; };
-		84A88FD81A71DFA0003D53CF /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC31A71DFA0003D53CF /* SetTests.swift */; };
 		84A88FD91A71DFA0003D53CF /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC41A71DFA0003D53CF /* ShapeExample.swift */; };
 		84A88FDA1A71DFA0003D53CF /* StringExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */; };
 		84A88FDB1A71DFA0003D53CF /* ThoseSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */; };
@@ -74,7 +74,6 @@
 		84A890341A71DFC5003D53CF /* Pointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890041A71DFC5003D53CF /* Pointed.swift */; };
 		84A890351A71DFC5003D53CF /* Prism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890051A71DFC5003D53CF /* Prism.swift */; };
 		84A890371A71DFC5003D53CF /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890071A71DFC5003D53CF /* Semigroup.swift */; };
-		84A890381A71DFC5003D53CF /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890081A71DFC5003D53CF /* Set.swift */; };
 		84A890391A71DFC5003D53CF /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890091A71DFC5003D53CF /* StringExt.swift */; };
 		84A8903A1A71DFC5003D53CF /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900A1A71DFC5003D53CF /* SYB.swift */; };
 		84A8903B1A71DFC5003D53CF /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900B1A71DFC5003D53CF /* Those.swift */; };
@@ -93,6 +92,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8450D2711AFC3CDF00095EF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 844FCC8D198B320500EB242A;
+			remoteInfo = SwiftCheck;
+		};
+		8450D2731AFC3CDF00095EF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 844FCC98198B320500EB242A;
+			remoteInfo = SwiftCheckTests;
+		};
+		8450D2811AFC3D0B00095EF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 844FCC8C198B320500EB242A;
+			remoteInfo = SwiftCheck;
+		};
 		84A88FA51A71DF7F003D53CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 84A88F8F1A71DF7F003D53CF /* Project object */;
@@ -116,6 +136,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftCheck.xcodeproj; path = Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		84A88F981A71DF7F003D53CF /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,7 +159,6 @@
 		84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExtSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC11A71DFA0003D53CF /* PartyExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyExample.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC21A71DFA0003D53CF /* ResultSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
-		84A88FC31A71DFA0003D53CF /* SetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetTests.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC41A71DFA0003D53CF /* ShapeExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeExample.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThoseSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -185,7 +205,6 @@
 		84A890041A71DFC5003D53CF /* Pointed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pointed.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A890051A71DFC5003D53CF /* Prism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prism.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A890071A71DFC5003D53CF /* Semigroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Semigroup.swift; sourceTree = "<group>"; usesTabs = 1; };
-		84A890081A71DFC5003D53CF /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A890091A71DFC5003D53CF /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A8900A1A71DFC5003D53CF /* SYB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYB.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A8900B1A71DFC5003D53CF /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Those.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -215,6 +234,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8450D2831AFC3D1100095EF6 /* SwiftCheck.framework in Frameworks */,
 				84A88FA41A71DF7F003D53CF /* Swiftz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,6 +242,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8450D26D1AFC3CDF00095EF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8450D2721AFC3CDF00095EF6 /* SwiftCheck.framework */,
+				8450D2741AFC3CDF00095EF6 /* SwiftCheckTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		84A88F8E1A71DF7F003D53CF = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +308,7 @@
 		84A88FA81A71DF7F003D53CF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */,
 				84A88FA91A71DF7F003D53CF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -366,7 +396,6 @@
 				84A890011A71DFC5003D53CF /* Num.swift */,
 				84A890041A71DFC5003D53CF /* Pointed.swift */,
 				84A890071A71DFC5003D53CF /* Semigroup.swift */,
-				84A890081A71DFC5003D53CF /* Set.swift */,
 				84961FB41A998976004A186A /* State.swift */,
 				84A8900A1A71DFC5003D53CF /* SYB.swift */,
 				84A8900B1A71DFC5003D53CF /* Those.swift */,
@@ -418,7 +447,6 @@
 				84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */,
 				84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */,
 				84A88FC21A71DFA0003D53CF /* ResultSpec.swift */,
-				84A88FC31A71DFA0003D53CF /* SetTests.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
 			);
@@ -469,6 +497,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8450D2821AFC3D0B00095EF6 /* PBXTargetDependency */,
 				84A88FA61A71DF7F003D53CF /* PBXTargetDependency */,
 			);
 			name = SwiftzTests;
@@ -503,6 +532,12 @@
 			mainGroup = 84A88F8E1A71DF7F003D53CF;
 			productRefGroup = 84A88F991A71DF7F003D53CF /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8450D26D1AFC3CDF00095EF6 /* Products */;
+					ProjectRef = 8450D26C1AFC3CDF00095EF6 /* SwiftCheck.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				84A88F971A71DF7F003D53CF /* Swiftz */,
@@ -510,6 +545,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8450D2721AFC3CDF00095EF6 /* SwiftCheck.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftCheck.framework;
+			remoteRef = 8450D2711AFC3CDF00095EF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8450D2741AFC3CDF00095EF6 /* SwiftCheckTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftCheckTests.xctest;
+			remoteRef = 8450D2731AFC3CDF00095EF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		84A88F961A71DF7F003D53CF /* Resources */ = {
@@ -537,7 +589,6 @@
 				8480AB4E1A7B448A00C6162D /* Sections.swift in Sources */,
 				84A8902B1A71DFC5003D53CF /* Monad.swift in Sources */,
 				84A890221A71DFC5003D53CF /* IxCont.swift in Sources */,
-				84A890381A71DFC5003D53CF /* Set.swift in Sources */,
 				84A890371A71DFC5003D53CF /* Semigroup.swift in Sources */,
 				84A890331A71DFC5003D53CF /* OptionalExt.swift in Sources */,
 				84A8903A1A71DFC5003D53CF /* SYB.swift in Sources */,
@@ -611,7 +662,6 @@
 				84A88FC91A71DFA0003D53CF /* ArrayExtSpec.swift in Sources */,
 				84A88FCE1A71DFA0003D53CF /* FutureSpec.swift in Sources */,
 				84A88FD51A71DFA0003D53CF /* OptionalExtSpec.swift in Sources */,
-				84A88FD81A71DFA0003D53CF /* SetTests.swift in Sources */,
 				84A88FCD1A71DFA0003D53CF /* FunctorSpec.swift in Sources */,
 				84A88FD11A71DFA0003D53CF /* ListSpec.swift in Sources */,
 				84A88FD01A71DFA0003D53CF /* JSONSpec.swift in Sources */,
@@ -626,6 +676,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8450D2821AFC3D0B00095EF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftCheck;
+			targetProxy = 8450D2811AFC3D0B00095EF6 /* PBXContainerItemProxy */;
+		};
 		84A88FA61A71DF7F003D53CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84A88F971A71DF7F003D53CF /* Swiftz */;
@@ -730,6 +785,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -749,6 +806,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 			};
 			name = Release;
 		};

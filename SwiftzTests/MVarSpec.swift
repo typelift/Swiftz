@@ -15,8 +15,8 @@ class MVarSpec {
 		var pongvar: MVar<String> = MVar()
 		var done: MVar<()> = MVar()
 
-		let ping = Future<Void>(exec: gcdExecutionContext, { pingvar.put("hello"); XCTAssert(pongvar.take() == "max", "mvar read"); done.put(()) })
-		let pong = Future<Void>(exec: gcdExecutionContext, { XCTAssert(pingvar.take() == "hello", "mvar read"); pongvar.put("max") })
+		let ping = Future<Void>(exec: gcdExecutionContext, { pingvar.put("hello"); XCTAssert(pongvar.take() == "max", "mvar read"); done.put(()) }())
+		let pong = Future<Void>(exec: gcdExecutionContext, { XCTAssert(pingvar.take() == "hello", "mvar read"); pongvar.put("max") }())
 
 		XCTAssert(done.take() == (), "mvar read finished")
 		XCTAssert(pingvar.isEmpty() && pongvar.isEmpty(), "mvar empty")

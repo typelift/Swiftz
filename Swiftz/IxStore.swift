@@ -20,15 +20,15 @@ public struct IxStore<O, I, A> {
 		self.set = set
 	}
 
-	public func map<B>(f: A -> B) -> IxStore<O, I, B> {
+	public func map<B>(f : A -> B) -> IxStore<O, I, B> {
 		return f <^> self
 	}
 
-	public func imap<P>(f: O -> P) -> IxStore<P, I, A> {
+	public func imap<P>(f : O -> P) -> IxStore<P, I, A> {
 		return f <^^> self
 	}
 
-	public func contramap<H>(f: H -> I) -> IxStore<O, H, A> {
+	public func contramap<H>(f : H -> I) -> IxStore<O, H, A> {
 		return f <!> self
 	}
 
@@ -36,59 +36,59 @@ public struct IxStore<O, I, A> {
 		return duplicate(self)
 	}
 
-	public func extend<E, B>(f: IxStore<E, I, A> -> B) -> IxStore<O, E, B> {
+	public func extend<E, B>(f : IxStore<E, I, A> -> B) -> IxStore<O, E, B> {
 		return self ->> f
 	}
 
-	public func put(x: I) -> A {
+	public func put(x : I) -> A {
 		return set(x)
 	}
 
-	public func puts(f: O -> I) -> A {
+	public func puts(f : O -> I) -> A {
 		return set(f(pos))
 	}
 
-	public func peek(x: I) -> A {
+	public func peek(x : I) -> A {
 		return set(x)
 	}
 
-	public func peeks(f: O -> I) -> A {
+	public func peeks(f : O -> I) -> A {
 		return set(f(pos))
 	}
 }
 
-public func trivial<A>(x: A) -> IxStore<A, A, A> {
+public func trivial<A>(x : A) -> IxStore<A, A, A> {
 	return IxStore(x, identity)
 }
 
-public func extract<I, A>(a: IxStore<I, I, A>) -> A {
+public func extract<I, A>(a : IxStore<I, I, A>) -> A {
 	return a.set(a.pos)
 }
 
-public func <^> <O, I, A, B>(f: A -> B, a: IxStore<O, I, A>) -> IxStore<O, I, B> {
+public func <^> <O, I, A, B>(f : A -> B, a : IxStore<O, I, A>) -> IxStore<O, I, B> {
 	return IxStore(a.pos) { f(a.set($0)) }
 }
 
-public func<^^><O, P, I, A>(f: O -> P, a: IxStore<O, I, A>) -> IxStore<P, I, A> {
+public func<^^><O, P, I, A>(f : O -> P, a : IxStore<O, I, A>) -> IxStore<P, I, A> {
 	return IxStore(f(a.pos), a.set)
 }
 
-public func <!> <O, H, I, A>(f: H -> I, a: IxStore<O, I, A>) -> IxStore<O, H, A> {
+public func <!> <O, H, I, A>(f : H -> I, a : IxStore<O, I, A>) -> IxStore<O, H, A> {
 	return IxStore(a.pos) { a.set(f($0)) }
 }
 
-public func duplicate<O, J, I, A>(a: IxStore<O, I, A>) -> IxStore<O, J, IxStore<J, I, A>> {
+public func duplicate<O, J, I, A>(a : IxStore<O, I, A>) -> IxStore<O, J, IxStore<J, I, A>> {
 	return IxStore(a.pos) { IxStore($0, a.set) }
 }
 
-public func ->> <O, J, I, A, B>(a: IxStore<O, I, A>, f: IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
+public func ->> <O, J, I, A, B>(a : IxStore<O, I, A>, f : IxStore<J, I, A> -> B) -> IxStore<O, J, B> {
 	return IxStore(a.pos) { f(IxStore($0, a.set)) }
 }
 
-public func seek<O, P, I, A>(a: IxStore<O, I, A>)(x: P) -> IxStore<P, I, A> {
+public func seek<O, P, I, A>(a : IxStore<O, I, A>)(x : P) -> IxStore<P, I, A> {
 	return IxStore(x, a.set)
 }
 
-public func seeks<O, P, I, A>(a: IxStore<O, I, A>)(f: O -> P) -> IxStore<P, I, A> {
+public func seeks<O, P, I, A>(a : IxStore<O, I, A>)(f : O -> P) -> IxStore<P, I, A> {
 	return IxStore(f(a.pos), a.set)
 }

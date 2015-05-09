@@ -63,18 +63,18 @@ To illustrate use of these abstractions, take these few examples:
 ```swift
 import struct Swiftz.List
 
-/// Cycles a finite list of numbers into an infinite list.
+//: Cycles a finite list of numbers into an infinite list.
 let finite : List<UInt> = [1, 2, 3, 4, 5]
 let infiniteCycle = finite.cycle()
 
-/// Lists also support the standard map, filter, and reduce operators.
+//: Lists also support the standard map, filter, and reduce operators.
 let l : List<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 let twoToEleven = l.map(+1) // [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 let even = l.filter((==0) • (%2)) // [2, 4, 6, 8, 10]
 let sum = l.reduce(curry(+), initial: 0) // 55
 
-/// Plus a few more.
+//: Plus a few more.
 let partialSums = l.scanl(curry(+), initial: 0) // [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55]
 let firstHalf = l.take(5) // [1, 2, 3, 4, 5]
 let lastHalf = l.drop(5) // [6, 7, 8, 9, 10]
@@ -125,8 +125,8 @@ public func ==(lhs : User, rhs : User) -> Bool {
 
 let userjs = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\": {\"one\": \"1\"}}"
 
-/// The JSON we've decoded works perfectly with the User structure we defined above.  In case it didn't,
-/// the user would be nil.
+//: The JSON we've decoded works perfectly with the User structure we defined above.  In case it didn't,
+//: the user would be nil.
 let user : User? = JSONValue.decode(userjs) >>- User.fromJSON // .Some( User("max", 10, ["hello"], "1") )
 ```
 
@@ -136,7 +136,7 @@ let user : User? = JSONValue.decode(userjs) >>- User.fromJSON // .Some( User("ma
 import struct Swiftz.Lens
 import struct Swiftz.IxStore
 
-/// A party has a host, who is a user.
+//: A party has a host, who is a user.
 final class Party {
     let host : User
 
@@ -157,23 +157,23 @@ final class Party {
     }
 }
 
-/// A Lens for the User's name.
+//: A Lens for the User's name.
 extension User {
     public class func luserName() -> Lens<User, User, String, String> {
         return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
     }
 }
 
-/// Let's throw a party now.
+//: Let's throw a party now.
 let party = Party(h: User("max", 1, [], Dictionary()))
 
-/// A lens for a party host's name.
+//: A lens for a party host's name.
 let hostnameLens = Party.lpartyHost() • User.luserName()
 
-/// Retrieve our gracious host's name.
+//: Retrieve our gracious host's name.
 let name = hostnameLens.get(party) // "max"
 
-/// Our party seems to be lacking in proper nouns. 
+//: Our party seems to be lacking in proper nouns. 
 let updatedParty = (Party.lpartyHost() • User.luserName()).set(party, "Max")
 let properName = hostnameLens.get(updatedParty) // "Max"
 ```
@@ -187,19 +187,19 @@ import protocol Swiftz.Semigroup
 import func Swiftz.sconcat
 import struct Swiftz.Min
 
-/// The least element of a list can be had with the Min Semigroup.
+//: The least element of a list can be had with the Min Semigroup.
 let smallestElement = sconcat(Min(2), xs.map { Min($0) }).value() // 0
 
 import protocol Swiftz.Monoid
 import func Swiftz.mconcat
 import struct Swiftz.Sum
 
-/// Or the sum of a list with the Sum Monoid.
+//: Or the sum of a list with the Sum Monoid.
 let sum = mconcat(xs.map { Sum($0) }).value() // 10
 
 import struct Swiftz.Product
 
-/// Or the product of a list with the Product Monoid.
+//: Or the product of a list with the Product Monoid.
 let product = mconcat(xs.map { Product($0) }).value() // 0
 ```
 
@@ -209,19 +209,19 @@ let product = mconcat(xs.map { Product($0) }).value() // 0
 import struct Swiftz.Function
 import struct Swiftz.Either
 
-/// An Arrow is a function just like any other.  Only this time around we
-/// can treat them like a full algebraic structure and introduce a number
-/// of operators to augment them.
+//: An Arrow is a function just like any other.  Only this time around we
+//: can treat them like a full algebraic structure and introduce a number
+//: of operators to augment them.
 let comp = Function.arr(+3) • Function.arr(*6) • Function.arr(/2)
 let both = comp.apply(10) // 33
 
-/// An Arrow that runs both operations on its input and combines both
-/// results into a tuple.
+//: An Arrow that runs both operations on its input and combines both
+//: results into a tuple.
 let add5AndMultiply2 = Function.arr(+5) &&& Function.arr(*2)
 let both = add5AndMultiply2.apply(10) // (15, 20)
 
-/// Produces an Arrow that chooses a particular function to apply
-/// when presented with the side of an Either.
+//: Produces an Arrow that chooses a particular function to apply
+//: when presented with the side of an Either.
 let divideLeftMultiplyRight = Function.arr(/2) ||| Function.arr(*2)
 let left = divideLeftMultiplyRight.apply(Either.left(4)) // 2
 let right = divideLeftMultiplyRight.apply(Either.right(7)) // 14
@@ -232,17 +232,17 @@ let right = divideLeftMultiplyRight.apply(Either.right(7)) // 14
 ```swift
 import class Swiftz.Chan
 
-/// A Channel is an unbounded FIFO stream of values with special semantics
-/// for reads and writes.
+//: A Channel is an unbounded FIFO stream of values with special semantics
+//: for reads and writes.
 let chan : Chan<Int> = Chan()
 
-/// All writes to the Channel always succeed.  The Channel now contains `1`.
+//: All writes to the Channel always succeed.  The Channel now contains `1`.
 chan.write(1) // happens immediately
 
-/// Reads to non-empty Channels occur immediately.  The Channel is now empty.
+//: Reads to non-empty Channels occur immediately.  The Channel is now empty.
 let x1 = chan.read()
 
-/// But if we read from an empty Channel the read blocks until we write to the Channel again.
+//: But if we read from an empty Channel the read blocks until we write to the Channel again.
 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * Double(NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
     chan.write(2) // Causes the read to suceed and unblocks the reading thread.
 })

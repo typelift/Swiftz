@@ -8,19 +8,48 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class OptionalExtSpec : XCTestCase {
-	func testOptional() {
-		let x = Optional<Int>.Some(0)
-		let y = Optional<Int>.None
-		XCTAssert((+1 <^> x) == 1, "optional map some")
-		XCTAssert((+1 <^> y) == .None, "optional map none")
+	func testProperties() {
+		property["optional map behaves"] = forAll { (x : OptionalOf<Int>) in
+			if let r = (+1 <^> x.getOptional) {
+				return r == (x.getOptional! + 1)
+			}
+			return succeeded()
+		}
 
-		XCTAssert((.Some(+1) <*> .Some(1)) == 2, "apply some")
+		property["optional ap behaves"] = forAll { (x : OptionalOf<Int>) in
+			if let r = (.Some(+1) <*> x.getOptional) {
+				return r == (x.getOptional! + 1)
+			}
+			return succeeded()
+		}
 
-		XCTAssert((x >>- (pure • (+1))) == Optional<Int>.Some(1), "bind some")
+		property["optional bind behaves"] = forAll { (x : OptionalOf<Int>) in
+			if let r = (x.getOptional  >>- (pure • (+1))) {
+				return r == (x.getOptional! + 1)
+			}
+			return succeeded()
+		}
 
-		XCTAssert(pure(1) == .Some(1), "pure some")
+		property["pure creates a .Some"] = forAll { (x : Int) in
+			return pure(x) == .Some(x)
+		}
+
+		property["getOrElse behaves"] = forAll { (x : OptionalOf<Int>) in
+			if let y = x.getOptional {
+				return getOrElse(x.getOptional)(1) == y
+			}
+			return getOrElse(x.getOptional)(1) == 1
+		}
+
+		property["case analysis for Optionals behaves"] = forAll { (x : OptionalOf<Int>) in
+			if let y = x.getOptional {
+				return maybe(x.getOptional)(0)(+1) == (y + 1)
+			}
+			return maybe(x.getOptional)(0)(+1) == 0
+		}
 	}
 
 	func testOptionalExt() {
@@ -35,15 +64,10 @@ class OptionalExtSpec : XCTestCase {
 			}
 		}) == Optional.Some(2), "optional flatMap")
 
-		//    maybe(...)
-		XCTAssert(getOrElse(Optional.None)(1) == 1, "optional getOrElse")
-
-		XCTAssert(maybe(x)(0)(+1) == 5, "maybe for Some works")
-		XCTAssert(maybe(y)(0)(+1) == 0, "maybe for None works")
-		
-		XCTAssert(coalesce(x, y) == 4, "coalesce some first")
-		XCTAssert(coalesce(y, x) == 4, "coalesce some second")
-		XCTAssert(coalesce({ n in n > 4 })(y, x) == nil, "filter coalesce")
+		/// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
+		// XCTAssert(coalesce(x, y) == 4, "coalesce some first")
+		// XCTAssert(coalesce(y, x) == 4, "coalesce some second")
+		// XCTAssert(coalesce({ n in n > 4 })(y, x) == nil, "filter coalesce")
 
 	}
 

@@ -23,14 +23,14 @@ public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
 
 /// The Semigroup of comparable values under MIN().
 public struct Min<A: Comparable>: Semigroup {
-	public let value: () -> A
+	public let value : () -> A
 
-	public init(_ x: @autoclosure () -> A) {
+	public init(@autoclosure(escaping) _ x : () -> A) {
 		value = x
 	}
 
 	public func op(other : Min<A>) -> Min<A> {
-		if value() < other.value() {
+		if self.value() < other.value() {
 			return self
 		} else {
 			return other
@@ -40,14 +40,14 @@ public struct Min<A: Comparable>: Semigroup {
 
 /// The Semigroup of comparable values under MAX().
 public struct Max<A: Comparable> : Semigroup {
-	public let value: () -> A
+	public let value : () -> A
 
-	public init(_ x: @autoclosure () -> A) {
+	public init(@autoclosure(escaping) _ x : () -> A) {
 		value = x
 	}
 
 	public func op(other : Max<A>) -> Max<A> {
-		if other.value() < value() {
+		if other.value() < self.value() {
 			return self
 		} else {
 			return other
@@ -60,19 +60,22 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	public let values : [Either<A, B>] // this array will never be empty
 
 	public init(_ vs : [Either<A, B>]) {
-		if vs.isEmpty { self = error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") }
-		values = []
+//		if vs.isEmpty { 
+//			error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") 
+//		}
+		var vals = [Either<A, B>]()
 		for v in vs {
-			if let z = values.last {
+			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): values[values.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): values[values.endIndex - 1] = Either.right(x.value.op(y.value))
-				default: values.append(v)
+				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				default: vals.append(v)
 				}
 			} else {
-				values = [v]
+				vals = [v]
 			}
 		}
+		self.values = vals
 	}
 
 	public static func left(x: A) -> Vacillate<A, B> {

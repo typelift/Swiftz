@@ -102,7 +102,7 @@ public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<
 }
 
 public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
-	return Function.arr({ e in e.either({ f.apply($0) }, { g.apply($0) }) })
+	return Function.arr({ e in e.either(onLeft: { f.apply($0) }, onRight: { g.apply($0) }) })
 }
 
 extension Function : ArrowApply {
