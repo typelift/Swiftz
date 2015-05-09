@@ -15,5 +15,6 @@ public protocol ExecutionContext {
 	/// Computes a value for a Future given a work block.
 	///
 	/// When work concludes this function must execute Future.sig(_:) to fulfill the Future.
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	func submit<A>(x: Future<A>, work: () -> A)
 }

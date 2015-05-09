@@ -16,6 +16,7 @@ import Darwin
 /// advertise an MVar and spark a computation that depends on a value computed in another thread.
 /// The first thread blocks waiting for the second to finish, then immediatly continues its work
 /// once a value has been put into the MVar.
+@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 public final class MVar<A> : K1<A> {
 	var value : Optional<(() -> A)>
 
