@@ -9,7 +9,7 @@
 /// Functors equipped with a point taking values to instances of themselves.
 public protocol Pointed {
 	typealias A
-	class func pure(A) -> Self
+	static func pure(A) -> Self
 }
 
 extension Box : Pointed {
@@ -31,11 +31,5 @@ extension Either : Pointed {
 
 	public static func pure(r : R) -> Either<L, R> {
 		return Either.right(r)
-	}
-}
-
-extension Set : Pointed {
-	public static func pure(x : A) -> Set<A> {
-		return Set(arrayLiteral: x)
 	}
 }

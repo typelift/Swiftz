@@ -20,16 +20,11 @@ public protocol Functor {
 	func fmap(f : A -> B) -> FB
 }
 
-// TODO: instance Functor ((->) r)
-//class Function1<A, B>: F<A> {
-//
-//}
-
 /// The Identity Functor holds a singular value.
 public struct Id<A> {
-	private let a : @autoclosure () -> A
+	private let a : () -> A
 
-	public init(_ aa : A) {
+	public init(@autoclosure(escaping) _ aa : () -> A) {
 		a = aa
 	}
 
@@ -66,9 +61,9 @@ extension Id : Comonad {
 
 // The Constant Functor ignores fmap.
 public struct Const<A, B> {
-	private let a : @autoclosure () -> A
+	private let a :  () -> A
 
-	public init(_ aa : A) {
+	public init(@autoclosure(escaping) _ aa : () -> A) {
 		a = aa
 	}
 
@@ -100,7 +95,6 @@ extension Const : Bifunctor {
 		return self.bimap(identity, g)
 	}
 }
-
 
 extension Const : Functor {
 	typealias FB = Const<A, B>

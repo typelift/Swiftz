@@ -20,7 +20,7 @@ class ConcurrentTests: XCTestCase {
 			(n:Int) -> CDouble in
 			let ch = Chan<CDouble>()
 			for k in (0..<n) {
-				Future<Void>(exec: gcdExecutionContext, { return term(ch, CDouble(k)) })
+				Future<Void>(exec: gcdExecutionContext, { return term(ch, CDouble(k)) }())
 			}
 			var f = 0.0
 			for k in (0..<n) {

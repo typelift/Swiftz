@@ -10,10 +10,17 @@
 // Num 'typeclass'
 
 public protocol Num {
-	class var zero: Self { get }
-	class var one: Self { get }
+	static var zero: Self { get }
+	static var one: Self { get }
 	func plus(other: Self) -> Self
 	func times(other: Self) -> Self
+}
+
+extension Int : Num {
+	public static var zero: Int { return 0 }
+	public static var one: Int { return 1 }
+	public func plus(other: Int) -> Int { return self + other }
+	public func times(other: Int) -> Int { return self * other }
 }
 
 extension Int8 : Num {
@@ -42,6 +49,13 @@ extension Int64 : Num {
 	public static var one: Int64 { return 1 }
 	public func plus(other: Int64) -> Int64 { return self + other }
 	public func times(other: Int64) -> Int64 { return self * other }
+}
+
+extension UInt : Num {
+	public static var zero: UInt { return 0 }
+	public static var one: UInt { return 1 }
+	public func plus(other: UInt) -> UInt { return self + other }
+	public func times(other: UInt) -> UInt { return self * other }
 }
 
 extension UInt8 : Num {

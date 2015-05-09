@@ -8,7 +8,7 @@
 
 /// A list that may not ever be empty.
 ///
-/// Traditionally partial operations on regular lists are total with non-empty lilsts.
+/// Traditionally partial operations on regular lists are total with non-empty lists.
 public struct NonEmptyList<A> {
 	public let head : Box<A>
 	public let tail : List<A>

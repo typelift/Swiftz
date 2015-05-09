@@ -8,17 +8,41 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class MonoidSpec : XCTestCase {
-	func testDataSemigroup() {
-		let xs = [1, 2, 0, 3, 4]
-		XCTAssert(sconcat(Min(2), xs.map { Min($0) }).value() == 0, "sconcat works")
-	}
+	func testProperties() {
+		property["Sum obeys left identity"] = forAll { (i : Int) in
+			return (Sum.mzero <> Sum(i)).value() == i
+		}
 
-	func testDataMonoid() {
-		let xs : [Int8] = [1, 2, 0, 3, 4]
-		XCTAssert(mconcat(xs.map { Sum($0) }).value() == 10, "monoid sum works")
-		XCTAssert(mconcat(xs.map { Product($0) }).value() == 0, "monoid product works")
+		property["Sum obeys right identity"] = forAll { (i : Int) in
+			return (Sum(i) <> Sum.mzero).value() == i
+		}
+
+		property["Product obeys left identity"] = forAll { (i : Int) in
+			return (Product.mzero <> Product(i)).value() == i
+		}
+
+		property["Product obeys right identity"] = forAll { (i : Int) in
+			return (Product(i) <> Product.mzero).value() == i
+		}
+
+		property["First obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+			return (First.mzero <> First(i.getMaybe)).value() == i.getMaybe
+		}
+
+		property["First obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+			return (First(i.getMaybe) <> First.mzero).value() == i.getMaybe
+		}
+
+		property["Last obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+			return (Last.mzero <> Last(i.getMaybe)).value() == i.getMaybe
+		}
+
+		property["Last obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+			return (Last(i.getMaybe) <> Last.mzero).value() == i.getMaybe
+		}
 	}
 
 	func testDither() {

@@ -8,69 +8,167 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
+
+/// Generates an array of arbitrary values of type A.
+struct ListOf<A : Arbitrary> : Arbitrary, Printable {
+	let getList : List<A>
+
+	init(_ array : List<A>) {
+		self.getList = array
+	}
+
+	var description : String {
+		return "\(self.getList)"
+	}
+
+	private static func create(array : List<A>) -> ListOf<A> {
+		return ListOf(array)
+	}
+
+	static func arbitrary() -> Gen<ListOf<A>> {
+		return sized { n in
+			return choose((0, n)).bind { k in
+				if k == 0 {
+					return Gen.pure(ListOf([]))
+				}
+
+				return sequence(Array((0...k)).map { _ in A.arbitrary() }).fmap({ ListOf.create(List(fromArray: $0)) })
+			}
+		}
+	}
+
+	static func shrink(bl : ListOf<A>) -> [ListOf<A>] {
+		switch bl.getList.match() {
+		case .Nil:
+			return []
+		case let .Cons(x, xs):
+			return [ ListOf<A>(xs) ] + ListOf<A>.shrink(ListOf<A>(xs)) + ListOf<A>.shrink(ListOf<A>(List(fromArray: A.shrink(x)) + xs))
+		}
+	}
+}
+
+func == <T : protocol<Arbitrary, Equatable>>(lhs : ListOf<T>, rhs : ListOf<T>) -> Bool {
+	return lhs.getList == rhs.getList
+}
+
+func != <T : protocol<Arbitrary, Equatable>>(lhs : ListOf<T>, rhs : ListOf<T>) -> Bool {
+	return !(lhs == rhs)
+}
 
 class ListSpec : XCTestCase {
-	func testList() {
-		let xs: List<(Int, String)> = [(1, "one"), (2, "two"), (3, "three")]
-		let one: (Int, String) = xs.find({ (tp: (Int, String)) -> Bool in return (tp.0 == 1) })!
-		XCTAssert(one.0 == 1 && one.1 == "one")
+	func testProperties() {
+		property["Lists of Equatable elements obey reflexivity"] = forAll { (l : ListOf<Int>) in
+			return l == l
+		}
 
-		let re: String? = xs.lookup(identity, key: 1)
-		XCTAssert(re! == "one")
+		property["Lists of Equatable elements obey symmetry"] = forAll { (x : ListOf<Int>, y : ListOf<Int>) in
+			return (x == y) == (y == x)
+		}
 
-		self.measureBlock() {
-			var lst: List<Int> = List()
-			for x : Int in (0..<2600) {
-				lst = List(x, lst)
+		property["Lists of Equatable elements obey transitivity"] = forAll { (x : ListOf<Int>, y : ListOf<Int>, z : ListOf<Int>) in
+			if (x == y) && (y == z) {
+				return x == z
 			}
-			XCTAssert(lst.length() == 2600)
+			return true // discard
 		}
 
-		let nats = List.iterate(+1, initial: 0)
-		XCTAssertTrue(nats[0] == 0)
-		XCTAssertTrue(nats[1] == 1)
-		XCTAssertTrue(nats[2] == 2)
-
-		let finite : List<UInt> = [1, 2, 3, 4, 5]
-		let cycle = finite.cycle()
-		for i : UInt in (0...100) {
-			XCTAssertTrue(cycle[i] == finite[(i % 5)])
+		property["Lists of Equatable elements obey negation"] = forAll { (x : ListOf<Int>, y : ListOf<Int>) in
+			return (x != y) == !(x == y)
 		}
 
-		for i in finite {
-			XCTAssertTrue(finite[i - 1] == i)
+		property["Lists of Comparable elements obey reflexivity"] = forAll { (l : ListOf<Int>) in
+			return l == l
 		}
-	}
-	
-	func testListCombinators() {
-		let t : List<Int> = [1, 2, 3]
-		let u : List<Int> = [4, 5, 6]
-		XCTAssert(t + u == [1, 2, 3, 4, 5, 6], "")
 
-		let l : List<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-		XCTAssert(!l.isEmpty(), "")
+		property["List obeys the Functor identity law"] = forAll { (x : ListOf<Int>) in
+			return (x.getList.fmap(identity)) == identity(x.getList)
+		}
 
-		XCTAssert(l.map(+1) == [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "")
+		property["List obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ListOf<Int>) in
+			return ((f.getArrow • g.getArrow) <^> x.getList) == (x.getList.fmap(f.getArrow).fmap(g.getArrow))
+		}
 
-		XCTAssert(l.concatMap({ List<Int>.replicate(2, value: $0) }) == [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10], "")
-		XCTAssert(l.filter((==0) • (%2)) == [2, 4, 6, 8, 10], "")
-		XCTAssert(l.reduce(curry(+), initial: 0) == 55, "")
+		property["List obeys the Applicative identity law"] = forAll { (x : ListOf<Int>) in
+			return (List.pure(identity) <*> x.getList) == x.getList
+		}
 
-		XCTAssert(u.scanl(curry(+), initial: 0) == [0, 4, 9, 15], "")
-		XCTAssert(u.scanl1(curry(+)) == [4, 9, 15], "")
-		XCTAssert(l.take(5) == [1, 2, 3, 4, 5], "")
-		XCTAssert(l.drop(5) == [6, 7, 8, 9, 10], "")
-	}
+		property["List obeys the first Applicative composition law"] = forAll { (fl : ListOf<ArrowOf<Int8, Int8>>, gl : ListOf<ArrowOf<Int8, Int8>>, x : ListOf<Int8>) in
+			let f = fl.getList.fmap({ $0.getArrow })
+			let g = gl.getList.fmap({ $0.getArrow })
+			return (curry(•) <^> f <*> g <*> x.getList) == (f <*> (g <*> x.getList))
+		}
 
-	func testListFunctor() {
-		let x : List<Int> = [1, 2, 3]
-		let y = x.fmap({ Double($0 * 2) })
-		XCTAssert(y == [2.0, 4.0, 6.0])
-	}
+		property["List obeys the second Applicative composition law"] = forAll { (fl : ListOf<ArrowOf<Int8, Int8>>, gl : ListOf<ArrowOf<Int8, Int8>>, x : ListOf<Int8>) in
+			let f = fl.getList.fmap({ $0.getArrow })
+			let g = gl.getList.fmap({ $0.getArrow })
+			return (List.pure(curry(•)) <*> f <*> g <*> x.getList) == (f <*> (g <*> x.getList))
+		}
 
-	func testNonEmptyListFunctor() {
-		let x : NonEmptyList<Int> = [1, 2, 3]
-		let y = x.fmap({ Double($0 * 2) })
-		XCTAssert(y == [2.0, 4.0, 6.0])
+		property["List obeys the Monoidal left identity law"] = forAll { (x : ListOf<Int8>) in
+			return (x.getList + List()) == x.getList
+		}
+
+		property["List obeys the Monoidal right identity law"] = forAll { (x : ListOf<Int8>) in
+			return (List() + x.getList) == x.getList
+		}
+
+		property["List can cycle into an infinite list"] = forAll { (x : ListOf<Int8>) in
+			if x.getList.isEmpty() {
+				return rejected()
+			}
+
+			let finite = x.getList
+			let cycle = finite.cycle()
+			for i : UInt in (0...100) {
+				if cycle[i] != finite[(i % finite.length())] {
+					return false
+				}
+			}
+			return true
+		}
+
+		property["isEmpty behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.isEmpty() == (xs.getList.length() == 0)
+		}
+
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.map(+1) == xs.getList.fmap(+1)
+		}
+
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			return xs.getList.map(+1) == xs.getList.fmap(+1)
+		}
+
+		property["map behaves"] = forAll { (xs : ListOf<Int>) in
+			let fs = { List<Int>.replicate(2, value: $0) }
+			return (xs.getList >>- fs) == xs.getList.map(fs).reduce(+, initial: List())
+		}
+
+		property["filter behaves"] = forAll { (xs : ListOf<Int>, pred : ArrowOf<Int, Bool>) in
+			return xs.getList.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
+		}
+
+		property["take behaves"] = forAll { (xs : ListOf<Int>, limit : UInt) in
+			return xs.getList.take(limit).length() <= limit
+		}
+
+		property["drop behaves"] = forAll { (xs : ListOf<Int>, limit : UInt) in
+			let l = xs.getList.drop(limit)
+			if xs.getList.length() >= limit {
+				return l.length() == (xs.getList.length() - limit)
+			}
+			return l == []
+		}
+
+		property["scanl behaves"] = forAll { (withArray : ListOf<Int>) in
+			let scanned = withArray.getList.scanl(curry(+), initial: 0)
+			switch withArray.getList.match() {
+			case .Nil:
+				return scanned == [0]
+			case let .Cons(x, xs):
+				return scanned == (List.pure(0) + xs.scanl(curry(+), initial: 0 + x))
+			}
+		}
 	}
 }

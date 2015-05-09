@@ -37,3 +37,27 @@ public func getOrElse<T>(m : Optional<T>) -> T -> T {
 		}
 	}
 }
+
+/// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
+/// Given one or more Optional values, returns the first Optional value that is not nil
+/// when evaulated from left to right
+// public func coalesce<T>(all : @autoclosure () -> T? ...) -> T? {
+// 	for f : () -> T? in all {
+// 		if let x = f() { return x }
+// 	}
+// 	return nil
+// }
+
+/// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
+/// Given one or more Optional values, returns the first Optional value that is not nil
+/// and satisfies the approve function when evaulated from left to right
+// public func coalesce<T>(approve : T -> Bool) -> (@autoclosure () -> T? ...) -> T? {
+// 	return { all in
+// 		for f : () -> T? in all {
+// 			if let x = f() {
+// 				if approve(x) { return x }
+// 			}
+// 		}
+// 		return nil
+// 	}
+// }
