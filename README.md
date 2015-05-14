@@ -227,29 +227,6 @@ let left = divideLeftMultiplyRight.apply(Either.left(4)) // 2
 let right = divideLeftMultiplyRight.apply(Either.right(7)) // 14
 ```
 
-**Concurrency**
-
-```swift
-import class Swiftz.Chan
-
-//: A Channel is an unbounded FIFO stream of values with special semantics
-//: for reads and writes.
-let chan : Chan<Int> = Chan()
-
-//: All writes to the Channel always succeed.  The Channel now contains `1`.
-chan.write(1) // happens immediately
-
-//: Reads to non-empty Channels occur immediately.  The Channel is now empty.
-let x1 = chan.read()
-
-//: But if we read from an empty Channel the read blocks until we write to the Channel again.
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * Double(NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-    chan.write(2) // Causes the read to suceed and unblocks the reading thread.
-})
-
-let x2 = chan.read() // Blocks until the dispatch block is executed and the Channel becomes non-empty.
-```
-
 Operators
 ---------
 

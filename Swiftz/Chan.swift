@@ -18,6 +18,7 @@ public final class Chan<A> {
 	let cond : UnsafeMutablePointer<pthread_cond_t>
 	let matt : UnsafeMutablePointer<pthread_mutexattr_t>
 
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public init() {
 		self.stream = []
 		var mattr : UnsafeMutablePointer<pthread_mutexattr_t> = UnsafeMutablePointer.alloc(sizeof(pthread_mutexattr_t))
@@ -38,6 +39,7 @@ public final class Chan<A> {
 	}
 
 	/// Writes a value to a channel.
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public func write(a : A) {
 		pthread_mutex_lock(mutex)
 		stream.append(a)
@@ -46,6 +48,7 @@ public final class Chan<A> {
 	}
 
 	/// Reads a value from the channel.
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public func read() -> A {
 		pthread_mutex_lock(mutex)
 		while (stream.isEmpty) {
@@ -58,11 +61,13 @@ public final class Chan<A> {
 }
 
 /// Write | Writes a value to a channel.
+@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 public func <-<A>(chan : Chan<A>, value : A) -> Void {
 	chan.write(value)
 }
 
 /// Read | Reads a value from the channel.
+@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 public prefix func <-<A>(chan : Chan<A>) -> A {
 	return chan.read()
 }
