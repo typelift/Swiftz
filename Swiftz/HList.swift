@@ -13,25 +13,27 @@ import Darwin
 public protocol HList {
 	typealias Head
 	typealias Tail // : HList can't show Nothing is in HList, recursive defn.
-	static func isNil() -> Bool
+
+	static var isNil : Bool { get }
+	static var length : Int { get }
+
 	static func makeNil() -> Self
-	static func makeCons(h: Head, t: Tail) -> Self
-	static func length() -> Int
+	static func makeCons(h : Head, t : Tail) -> Self
 }
 
-public struct HCons<H, T: HList> : HList {
+public struct HCons<H, T : HList> : HList {
 	public typealias Head = H
 	public typealias Tail = T
 
-	public let head: H
-	public let tail: T
+	public let head : H
+	public let tail : T
 
-	public init(h: H, t: T) {
+	public init(h : H, t : T) {
 		head = h
 		tail = t
 	}
 
-	public static func isNil() -> Bool {
+	public static var isNil : Bool {
 		return false
 	}
 
@@ -39,12 +41,12 @@ public struct HCons<H, T: HList> : HList {
 		return undefined() // impossible
 	}
 
-	public static func makeCons(h: Head, t: Tail) -> HCons<H, T> {
-		return HCons<H, T>(h: h, t: t)
+	public static func makeCons(h : Head, t : Tail) -> HCons<H, T> {
+		return HCons<H, T>(h : h, t : t)
 	}
 
-	public static func length() -> Int {
-		return (1 + Tail.length())
+	public static var length : Int {
+		return (1 + Tail.length)
 	}
 }
 
@@ -54,7 +56,7 @@ public struct HNil : HList {
 
 	public init() {}
 
-	public static func isNil() -> Bool {
+	public static var isNil : Bool {
 		return true
 	}
 
@@ -62,13 +64,13 @@ public struct HNil : HList {
 		return HNil()
 	}
 
-	public static func makeCons(h: Head, t: Tail) -> HNil {
+	public static func makeCons(h : Head, t : Tail) -> HNil {
 		return undefined() // impossible
 	}
 
-	public static func length() -> Int {
+	public static var length : Int {
 		return 0
 	}
 }
 
-// TODO: map and reverse
+// TODO : map and reverse
