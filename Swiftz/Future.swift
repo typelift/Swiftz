@@ -21,8 +21,9 @@ public final class Future<A> : K1<A> {
 	// FIXME: Would like to add a uniqueid to the label
 	let resultQueue = dispatch_queue_create("com.typelift.swift.future.resultQueue", DISPATCH_QUEUE_CONCURRENT)
 
-	let execCtx: ExecutionContext // for map
-	public init(exec: ExecutionContext) {
+	let execCtx : ExecutionContext // for map
+
+	public init(exec : ExecutionContext) {
 		dispatch_suspend(self.resultQueue)
 		execCtx = exec
 	}
@@ -34,7 +35,8 @@ public final class Future<A> : K1<A> {
 		exec.submit(self, work: a)
 	}
 
-	/// Forces a value to be computed 
+	/// Forces a value to be computed
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public func result() -> A {
 		var result : A? = nil
 		dispatch_sync(resultQueue, {
@@ -43,7 +45,7 @@ public final class Future<A> : K1<A> {
 		return result!
 	}
 
-	internal func sig(x: A) {
+	internal func sig(x : A) {
 		assert(self.value == nil, "Future cannot complete more than once")
 		self.value = x
 		dispatch_resume(self.resultQueue)
@@ -51,10 +53,12 @@ public final class Future<A> : K1<A> {
 
 	/// Returns a future that maps the results of the receiver through a function in the same
 	/// execution context.
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public func map<B>(f: A -> B) -> Future<B> {
 		return Future<B>(exec: execCtx, f(self.result()))
 	}
 
+	@availability(*, deprecated=2.1, message="Concurrency primitives are being moved to Concurrent.framework")
 	public func flatMap<B>(f: A -> Future<B>) -> Future<B> {
 		return Future<B>(exec: execCtx, f(self.result()).result())
 	}

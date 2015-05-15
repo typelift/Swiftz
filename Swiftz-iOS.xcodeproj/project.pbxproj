@@ -67,17 +67,13 @@
 		84A88F2D1A70C77B003D53CF /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DE11A70C2B5003D53CF /* Tuple.swift */; };
 		84A88F2E1A70C77B003D53CF /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88DE21A70C2B5003D53CF /* TupleExt.swift */; };
 		84A88F671A70C7A0003D53CF /* ArrayExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ECC1A70C707003D53CF /* ArrayExtSpec.swift */; };
-		84A88F681A70C7A0003D53CF /* ChanSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ECD1A70C707003D53CF /* ChanSpec.swift */; };
-		84A88F691A70C7A0003D53CF /* ConcurrentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ECE1A70C707003D53CF /* ConcurrentTests.swift */; };
 		84A88F6A1A70C7A0003D53CF /* EitherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ECF1A70C707003D53CF /* EitherSpec.swift */; };
 		84A88F6B1A70C7A0003D53CF /* FunctorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED01A70C707003D53CF /* FunctorSpec.swift */; };
-		84A88F6C1A70C7A0003D53CF /* FutureSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED11A70C707003D53CF /* FutureSpec.swift */; };
 		84A88F6D1A70C7A0003D53CF /* HListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED21A70C707003D53CF /* HListSpec.swift */; };
 		84A88F6E1A70C7A0003D53CF /* JSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED31A70C707003D53CF /* JSONSpec.swift */; };
 		84A88F6F1A70C7A0003D53CF /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED41A70C707003D53CF /* ListSpec.swift */; };
 		84A88F701A70C7A0003D53CF /* MaybeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED51A70C707003D53CF /* MaybeSpec.swift */; };
 		84A88F711A70C7A0003D53CF /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED61A70C707003D53CF /* MonoidSpec.swift */; };
-		84A88F721A70C7A0003D53CF /* MVarSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED71A70C707003D53CF /* MVarSpec.swift */; };
 		84A88F731A70C7A0003D53CF /* OptionalExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED81A70C707003D53CF /* OptionalExtSpec.swift */; };
 		84A88F741A70C7A0003D53CF /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88ED91A70C707003D53CF /* PartyExample.swift */; };
 		84A88F751A70C7A0003D53CF /* ResultSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88EDA1A70C707003D53CF /* ResultSpec.swift */; };
@@ -198,17 +194,13 @@
 		84A88E951A70C649003D53CF /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Optional.swift; path = ../Carthage/Checkouts/Swiftx/Swiftx/Optional.swift; sourceTree = "<group>"; };
 		84A88E961A70C649003D53CF /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = ../Carthage/Checkouts/Swiftx/Swiftx/Result.swift; sourceTree = "<group>"; };
 		84A88ECC1A70C707003D53CF /* ArrayExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArrayExtSpec.swift; path = SwiftzTests/ArrayExtSpec.swift; sourceTree = SOURCE_ROOT; };
-		84A88ECD1A70C707003D53CF /* ChanSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChanSpec.swift; path = SwiftzTests/ChanSpec.swift; sourceTree = SOURCE_ROOT; };
-		84A88ECE1A70C707003D53CF /* ConcurrentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConcurrentTests.swift; path = SwiftzTests/ConcurrentTests.swift; sourceTree = SOURCE_ROOT; };
 		84A88ECF1A70C707003D53CF /* EitherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EitherSpec.swift; path = SwiftzTests/EitherSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED01A70C707003D53CF /* FunctorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FunctorSpec.swift; path = SwiftzTests/FunctorSpec.swift; sourceTree = SOURCE_ROOT; };
-		84A88ED11A70C707003D53CF /* FutureSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FutureSpec.swift; path = SwiftzTests/FutureSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED21A70C707003D53CF /* HListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HListSpec.swift; path = SwiftzTests/HListSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED31A70C707003D53CF /* JSONSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSpec.swift; path = SwiftzTests/JSONSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED41A70C707003D53CF /* ListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListSpec.swift; path = SwiftzTests/ListSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED51A70C707003D53CF /* MaybeSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MaybeSpec.swift; path = SwiftzTests/MaybeSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED61A70C707003D53CF /* MonoidSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MonoidSpec.swift; path = SwiftzTests/MonoidSpec.swift; sourceTree = SOURCE_ROOT; };
-		84A88ED71A70C707003D53CF /* MVarSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MVarSpec.swift; path = SwiftzTests/MVarSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED81A70C707003D53CF /* OptionalExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OptionalExtSpec.swift; path = SwiftzTests/OptionalExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		84A88ED91A70C707003D53CF /* PartyExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartyExample.swift; path = SwiftzTests/PartyExample.swift; sourceTree = SOURCE_ROOT; };
 		84A88EDA1A70C707003D53CF /* ResultSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultSpec.swift; path = SwiftzTests/ResultSpec.swift; sourceTree = SOURCE_ROOT; };
@@ -273,7 +265,6 @@
 			isa = PBXGroup;
 			children = (
 				84A88F871A70C953003D53CF /* Examples */,
-				84A88F881A70C967003D53CF /* Concurrent */,
 				84A88F8A1A70C982003D53CF /* Data */,
 				84A88F891A70C97C003D53CF /* Ext */,
 				84A88D611A70C23D003D53CF /* Supporting Files */,
@@ -410,17 +401,6 @@
 				84A88EE01A70C707003D53CF /* UserExample.swift */,
 			);
 			name = Examples;
-			sourceTree = "<group>";
-		};
-		84A88F881A70C967003D53CF /* Concurrent */ = {
-			isa = PBXGroup;
-			children = (
-				84A88ECD1A70C707003D53CF /* ChanSpec.swift */,
-				84A88ECE1A70C707003D53CF /* ConcurrentTests.swift */,
-				84A88ED11A70C707003D53CF /* FutureSpec.swift */,
-				84A88ED71A70C707003D53CF /* MVarSpec.swift */,
-			);
-			name = Concurrent;
 			sourceTree = "<group>";
 		};
 		84A88F891A70C97C003D53CF /* Ext */ = {
@@ -584,18 +564,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A88F671A70C7A0003D53CF /* ArrayExtSpec.swift in Sources */,
-				84A88F681A70C7A0003D53CF /* ChanSpec.swift in Sources */,
-				84A88F691A70C7A0003D53CF /* ConcurrentTests.swift in Sources */,
 				84A88F6A1A70C7A0003D53CF /* EitherSpec.swift in Sources */,
 				84A88F6B1A70C7A0003D53CF /* FunctorSpec.swift in Sources */,
-				84A88F6C1A70C7A0003D53CF /* FutureSpec.swift in Sources */,
 				84BB57671AA12E4300214BC5 /* StateSpec.swift in Sources */,
 				84A88F6D1A70C7A0003D53CF /* HListSpec.swift in Sources */,
 				84A88F6E1A70C7A0003D53CF /* JSONSpec.swift in Sources */,
 				84A88F6F1A70C7A0003D53CF /* ListSpec.swift in Sources */,
 				84A88F701A70C7A0003D53CF /* MaybeSpec.swift in Sources */,
 				84A88F711A70C7A0003D53CF /* MonoidSpec.swift in Sources */,
-				84A88F721A70C7A0003D53CF /* MVarSpec.swift in Sources */,
 				84A88F731A70C7A0003D53CF /* OptionalExtSpec.swift in Sources */,
 				84A88F741A70C7A0003D53CF /* PartyExample.swift in Sources */,
 				84A88F751A70C7A0003D53CF /* ResultSpec.swift in Sources */,
