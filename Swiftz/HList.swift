@@ -8,8 +8,13 @@
 
 import Darwin
 
-// A HList can be thought of like a tuple, but with list-like operations on the types.
-
+/// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
+/// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
+/// in convenience they gain in flexibility.
+///
+/// An HList is a purely static entity.  All its attributes including its length, the type of each 
+/// element, and compatible operations on said elements exist fully at compile time.  HLists, like
+/// regular lists, support folds, maps, and appends, only at the type rather than term level.
 public protocol HList {
 	typealias Head
 	typealias Tail
@@ -18,6 +23,7 @@ public protocol HList {
 	static var length : Int { get }
 }
 
+/// The cons HList node.
 public struct HCons<H, T : HList> : HList {
 	public typealias Head = H
 	public typealias Tail = T
@@ -34,19 +40,12 @@ public struct HCons<H, T : HList> : HList {
 		return false
 	}
 
-	public static func makeNil() -> HCons<H, T> {
-		return undefined() // impossible
-	}
-
-	public static func makeCons(h : Head, t : Tail) -> HCons<H, T> {
-		return HCons<H, T>(h : h, t : t)
-	}
-
 	public static var length : Int {
 		return (1 + Tail.length)
 	}
 }
 
+/// The Nil HList node.
 public struct HNil : HList {
 	public typealias Head = Nothing
 	public typealias Tail = Nothing
@@ -57,8 +56,8 @@ public struct HNil : HList {
 		return true
 	}
 
-	public static func makeNil() -> HNil {
-		return HNil()
+	public static var length : Int {
+		return 0
 	}
 }
 
