@@ -12,13 +12,10 @@ import Darwin
 
 public protocol HList {
 	typealias Head
-	typealias Tail // : HList can't show Nothing is in HList, recursive defn.
+	typealias Tail
 
 	static var isNil : Bool { get }
 	static var length : Int { get }
-
-	static func makeNil() -> Self
-	static func makeCons(h : Head, t : Tail) -> Self
 }
 
 public struct HCons<H, T : HList> : HList {
