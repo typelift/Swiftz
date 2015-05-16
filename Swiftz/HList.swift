@@ -60,13 +60,31 @@ public struct HNil : HList {
 	public static func makeNil() -> HNil {
 		return HNil()
 	}
+}
 
-	public static func makeCons(h : Head, t : Tail) -> HNil {
-		return undefined() // impossible
+/// `HAppend` is a type-level append of two `HList`s.  They are instantiated with the type of the
+/// first list (XS), the type of the second list (YS) and the type of the result (XYS).  When 
+/// constructed, `HAppend` provides a safe append operation that yields the appropriate HList for 
+/// the given types.
+public struct HAppend<XS, YS, XYS> {
+	public let append : (XS, YS) -> XYS
+
+	private init(_ append : (XS, YS) -> XYS) {
+		self.append = append
 	}
 
-	public static var length : Int {
-		return 0
+	/// Creates an HAppend that appends Nil to a List.
+	public static func makeAppend<L : HList>() -> HAppend<HNil, L, L> {
+		return HAppend<HNil, L, L> { (_, l) in return l }
+	}
+
+	/// Creates an HAppend that appends two non-HNil HLists.
+	public static func makeAppend<T, A : HList, B : HList, C : HList>(h : HAppend<A, B, C>) -> HAppend<HCons<T, A>, B, HCons<T, C>> {
+		return HAppend<HCons<T, A>, B, HCons<T, C>> { (c, l) in
+			return HCons(h: c.head, t: h.append(c.tail, l))
+		}
+	}
+}
 	}
 }
 
