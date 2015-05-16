@@ -85,6 +85,54 @@ public struct HAppend<XS, YS, XYS> {
 		}
 	}
 }
+
+/// `HMap` is a type-level map of a function (F) over an `HList`.  An `HMap` must, at the very least,
+/// takes values of its input type (A) to values of its output type (R).  The function parameter (F)
+/// does not necessarily have to be a function, and can be used as an index for extra information
+/// that the map function may need in its computation.
+public struct HMap<F, A, R> {
+	public let map : (F, A) -> R
+
+	public init(_ map : (F, A) -> R) {
+		self.map = map
+	}
+
+	/// Returns an `HMap` that leaves all elements in the HList unchanged.
+	public static func identity<T>() -> HMap<(), T, T> {
+		return HMap<(), T, T> { (_, x) in
+			return x
+		}
+	}
+
+	/// Returns an `HMap` that applies a function to the elements of an HList.
+	public static func apply<T, U>() -> HMap<T -> U, T, U> {
+		return HMap<T -> U, T, U> { (f, x) in
+			return f(x)
+		}
+	}
+
+	/// Returns an `HMap` that composes two functions, then applies the new function to elements of
+	/// an `HList`.
+	public static func compose<X, Y, Z>() -> HMap<(), (X -> Y, Y -> Z), X -> Z> {
+		return HMap<(), (X -> Y, Y -> Z), X -> Z> { (_, fs) in
+			return fs.1 • fs.0
+		}
+	}
+
+	/// Returns an `HMap` that creates an `HCons` node out of a tuple of the head and tail of an `HList`.
+	public static func hcons<H, T : HList>() -> HMap<(), (H, T), HCons<H, T>> {
+		return HMap<(), (H, T), HCons<H, T>> { (_, p) in
+			return HCons(h: p.0, t: p.1)
+		}
+	}
+
+	/// Returns an `HMap` that uses an `HAppend` operation to append two `HList`s together.
+	public static func happend<A, B, C>() -> HMap<HAppend<A, B, C>, (A, B), C> {
+		return HMap<HAppend<A, B, C>, (A, B), C> { (f, p) in
+			return f.append(p.0, p.1)
+		}
+	}
+}
 	}
 }
 
