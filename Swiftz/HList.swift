@@ -71,3 +71,36 @@ public struct HNil : HList {
 }
 
 // TODO : map and reverse
+/// Uncomment if Swift decides to allow tuple patterns.
+///// HCons<HCons<...>> Matcher (Induction Step):  If we've hit this overloading, we should have a cons
+///// node, or at least something that matches HCons<HNil>
+//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList, H.Tail.Head : Equatable, H.Tail.Tail : HList>(pattern : H, predicate : (H.Head, H.Tail)) -> Bool {
+//	if H.isNil {
+//		return false
+//	}
+//
+//	if let p = (pattern as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HCons<H.Tail.Head, H.Tail.Tail>), let pt = (predicate.1 as? HCons<H.Tail.Head, H.Tail.Tail>) {
+//		return (p.head == predicate.0) && (pt ~= (ps.head, ps.tail))
+//	} else if let p = (pattern as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HNil) {
+//		return (p.head == predicate.0)
+//	}
+//	return error("Pattern match on HList expected HCons<HSCons<...>> or HCons<HNil> but got neither.")
+//}
+//
+///// HCons<HNil> or HNil Matcher
+//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList>(pattern : H, predicate : (H.Head, H.Tail)) -> Bool {
+//	if H.isNil {
+//		return false
+//	}
+//	if let p = (pattern as? HCons<H.Head, H.Tail>) {
+//		return (p.head == predicate.0)
+//	} else 	if let p = (pattern as? HNil) {
+//		return false
+//	}
+//	return error("Pattern match on HList expected HCons<HNil> or HNil but got neither.")
+//}
+//
+///// HNil matcher.
+//public func ~=<H : HList>(pattern : H, predicate : ()) -> Bool {
+//	return H.isNil
+//}
