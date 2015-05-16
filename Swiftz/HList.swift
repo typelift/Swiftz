@@ -133,10 +133,46 @@ public struct HMap<F, A, R> {
 		}
 	}
 }
+
+/// `HFold` is a type-level right fold over the values in an `HList`.  Like an `HMap`, an HFold
+/// carries a context (of type G).  The actual fold takes values of type V and an accumulator A to 
+/// values of type R.  
+///
+/// Using an `HFold` necessitates defining the type of its starting and ending data.  For example, a
+/// fold that reduces `HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>` to `Int -> Int`
+/// through composition will define two `typealias`es:
+///
+///     typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
+///
+///     typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
+///     typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+///
+/// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained 
+/// in a list of type `FList`, to an `HNil` node and an ending value of type `Int -> Int`.
+public struct HFold<G, V, A, R> {
+	public let fold : (G, V, A) -> R
+
+	private init(fold : (G, V, A) -> R) {
+		self.fold = fold
+	}
+
+	/// Creates an `HFold` object that folds a function over an `HNil` node.
+	///
+	/// This operation returns the starting value of the fold.
+	public static func makeFold<G, V>() -> HFold<G, V, HNil, V> {
+		return HFold<G, V, HNil, V> { (f, v, n) in
+			return v
+		}
+	}
+
+	/// Creates an `HFold` object that folds a function over an `HCons` node.
+	public static func makeFold<H, G, V, T : HList, R, RR>(p : HMap<G, (H, R), RR>, h : HFold<G, V, T, R>) -> HFold<G, V, HCons<H, T>, RR> {
+		return HFold<G, V, HCons<H, T>, RR> { (f, v, c) in
+			return p.map(f, (c.head, h.fold(f, v, c.tail)))
+		}
 	}
 }
 
-// TODO : map and reverse
 /// Uncomment if Swift decides to allow tuple patterns.
 ///// HCons<HCons<...>> Matcher (Induction Step):  If we've hit this overloading, we should have a cons
 ///// node, or at least something that matches HCons<HNil>
