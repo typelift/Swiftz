@@ -172,36 +172,36 @@ public struct HFold<G, V, A, R> {
 	}
 }
 
-/// Uncomment if Swift decides to allow tuple patterns.
+/// Uncomment if Swift decides to allow tuple patterns. rdar://20989362
 ///// HCons<HCons<...>> Matcher (Induction Step):  If we've hit this overloading, we should have a cons
 ///// node, or at least something that matches HCons<HNil>
-//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList, H.Tail.Head : Equatable, H.Tail.Tail : HList>(pattern : H, predicate : (H.Head, H.Tail)) -> Bool {
+//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList, H.Tail.Head : Equatable, H.Tail.Tail : HList>(pattern : (H.Head, H.Tail), predicate : H) -> Bool {
 //	if H.isNil {
 //		return false
 //	}
 //
-//	if let p = (pattern as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HCons<H.Tail.Head, H.Tail.Tail>), let pt = (predicate.1 as? HCons<H.Tail.Head, H.Tail.Tail>) {
-//		return (p.head == predicate.0) && (pt ~= (ps.head, ps.tail))
-//	} else if let p = (pattern as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HNil) {
-//		return (p.head == predicate.0)
+//	if let p = (predicate as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HCons<H.Tail.Head, H.Tail.Tail>), let pt = (pattern.1 as? HCons<H.Tail.Head, H.Tail.Tail>) {
+//		return (p.head == predicate.0) && ((ps.head, ps.tail) ~= pt)
+//	} else if let p = (predicate as? HCons<H.Head, H.Tail>), let ps = (p.tail as? HNil) {
+//		return (p.head == pattern.0)
 //	}
 //	return error("Pattern match on HList expected HCons<HSCons<...>> or HCons<HNil> but got neither.")
 //}
 //
 ///// HCons<HNil> or HNil Matcher
-//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList>(pattern : H, predicate : (H.Head, H.Tail)) -> Bool {
+//public func ~=<H : HList where H.Head : Equatable, H.Tail : HList>(pattern : (H.Head, H.Tail), predicate : H) -> Bool {
 //	if H.isNil {
 //		return false
 //	}
-//	if let p = (pattern as? HCons<H.Head, H.Tail>) {
-//		return (p.head == predicate.0)
-//	} else 	if let p = (pattern as? HNil) {
+//	if let p = (predicate as? HCons<H.Head, H.Tail>) {
+//		return (p.head == pattern.0)
+//	} else 	if let p = (predicate as? HNil) {
 //		return false
 //	}
 //	return error("Pattern match on HList expected HCons<HNil> or HNil but got neither.")
 //}
 //
 ///// HNil matcher.
-//public func ~=<H : HList>(pattern : H, predicate : ()) -> Bool {
+//public func ~=<H : HList>(pattern : (), predicate : H) -> Bool {
 //	return H.isNil
 //}
