@@ -17,7 +17,7 @@ class FunctorSpec : XCTestCase {
 			return (x.fmap(identity)).runConst == identity(x).runConst
 		}
 
-		property["Const obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		reportProperty["Const obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			let x = Const<Int, Int>(5)
 			return (x.fmap(f.getArrow • g.getArrow)).runConst == (x.fmap(g.getArrow).fmap(f.getArrow)).runConst
 		}
@@ -28,7 +28,7 @@ class FunctorSpec : XCTestCase {
 			return t.runConst == identity(x).runConst
 		}
 
-		property["Const obeys the Biunctor composition law"] = forAll { (f1 : ArrowOf<Int, Int>, g1 : ArrowOf<Int, Int>, f2 : ArrowOf<Int, Int>, g2 : ArrowOf<Int, Int>) in
+		reportProperty["Const obeys the Biunctor composition law"] = forAll { (f1 : ArrowOf<Int, Int>, g1 : ArrowOf<Int, Int>, f2 : ArrowOf<Int, Int>, g2 : ArrowOf<Int, Int>) in
 			let x = Const<Int, Int>(5)
 			return x.bimap(f1.getArrow, g1.getArrow).bimap(f2.getArrow, g2.getArrow).runConst == (x.bimap(f2.getArrow • f1.getArrow, g1.getArrow • g2.getArrow)).runConst
 		}
