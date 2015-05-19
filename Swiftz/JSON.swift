@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import class Foundation.NSData
+import Foundation
 
 public enum JSONValue : Printable {
 	case JSONArray([JSONValue])
@@ -39,11 +39,11 @@ public enum JSONValue : Printable {
 	private static func make(a : NSObject) -> JSONValue {
 		switch a {
 		case let xs as NSArray:
-			return .JSONArray(xs.mapToArray { self.make($0 as! NSObject) })
+			return .JSONArray((xs as [AnyObject]).map { self.make($0 as! NSObject) })
 		case let xs as NSDictionary:
-			return JSONValue.JSONObject(xs.mapValuesToDictionary { (k: AnyObject, v: AnyObject) in
+			return JSONValue.JSONObject(map(dict: xs as [NSObject: AnyObject])({ (k: NSObject, v: AnyObject) in
 				return (String(k as! NSString), self.make(v as! NSObject))
-			})
+			}))
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
 		case let xs as NSString: 
