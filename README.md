@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/typelift/Swiftz.svg)](https://travis-ci.org/typelift/Swiftz)
-
 Swiftz
 ======
 
