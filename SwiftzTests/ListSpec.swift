@@ -137,10 +137,6 @@ class ListSpec : XCTestCase {
 		}
 
 		property["map behaves"] = forAll { (xs : ListOf<Int>) in
-			return xs.getList.map(+1) == xs.getList.fmap(+1)
-		}
-
-		property["map behaves"] = forAll { (xs : ListOf<Int>) in
 			let fs = { List<Int>.replicate(2, value: $0) }
 			return (xs.getList >>- fs) == xs.getList.map(fs).reduce(+, initial: List())
 		}
