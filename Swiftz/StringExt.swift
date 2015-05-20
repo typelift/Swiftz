@@ -150,4 +150,60 @@ extension String {
 	}
 }
 
+extension String : Monoid {
+	typealias M = String
 
+	public static var mzero : String {
+		return ""
+	}
+
+	public func op(other : String) -> String {
+		return self + other
+	}
+}
+
+public func <>(l : String, r : String) -> String {
+	return l + r
+}
+
+extension String : Functor {
+	typealias A = Character
+	typealias B = Character
+	typealias FB = String
+
+	public func fmap(f : Character -> Character) -> String {
+		return self.map(f)
+	}
+}
+
+public func <^> (f : Character -> Character, l : String) -> String {
+	return l.fmap(f)
+}
+
+extension String : Pointed {
+	public static func pure(x : Character) -> String {
+		return String(x)
+	}
+}
+
+extension String : Applicative {
+	typealias FAB = [Character -> Character]
+
+	public func ap(a : [Character -> Character]) -> String {
+		return a.map({ return self.map($0) }).reduce("", combine: +)
+	}
+}
+
+public func <*> (f : Array<(Character -> Character)>, l : String) -> String {
+	return l.ap(f)
+}
+
+extension String : Monad {
+	public func bind(f : Character -> String) -> String {
+		return Array(self).map(f).reduce("", combine: +)
+	}
+}
+
+public func >>- (l : String, f : Character -> String) -> String {
+	return l.bind(f)
+}
