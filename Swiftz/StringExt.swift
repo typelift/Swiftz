@@ -132,21 +132,21 @@ extension String {
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
-	public func stripPrefix(r : String) -> Maybe<String> {
+	public func stripPrefix(r : String) -> Optional<String> {
 		switch (self.match(), r.match()) {
 		case (.Nil, _):
-			return Maybe.just(r)
+			return .Some(r)
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
 			return xs.stripPrefix(xs)
 		default:
-			return Maybe.none()
+			return .None
 		}
 	}
 
 	/// Takes two strings and drops items in the first from the end of the second.  If the first 
 	/// string is not a suffix of the second string this function returns nothing.
-	public func stripSuffix(r : String) -> Maybe<String> {
-		return self.reverse().stripPrefix(r.reverse()).fmap({ $0.reverse() })
+	public func stripSuffix(r : String) -> Optional<String> {
+		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}
 }
 
