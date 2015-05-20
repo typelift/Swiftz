@@ -73,6 +73,14 @@ class StringExtSpec : XCTestCase {
 			return (String.mzero + x) == x
 		}
 
+		property["cons behaves"] = forAll { (c : Character, s : String) in
+			return String.cons(c, tail: s) == String(c) + s
+		}
+
+		property["replicate behaves"] = forAll { (n : UInt, x : Character) in
+			return String.replicate(n, value: x) == List.replicate(n, value: String(x)).reduce({ $0 + $1 }, initial: "")
+		}
+
 		property["map behaves"] = forAll { (xs : String) in
 			return xs.map(identity) == xs.fmap(identity)
 		}

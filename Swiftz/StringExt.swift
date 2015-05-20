@@ -31,7 +31,7 @@ extension String {
 		return Iso(get: { $0.lines() }, inject: unlines)
 	}
 
-	/// Appends an element onto the front of a list.
+	/// Appends a character onto the front of a string.
 	public static func cons(head : Character, tail : String) -> String {
 		return String(head) + tail
 	}
