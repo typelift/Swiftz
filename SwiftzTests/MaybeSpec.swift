@@ -26,7 +26,10 @@ struct MaybeOf<A : Arbitrary> : Arbitrary, Printable {
 	}
 
 	static func arbitrary() -> Gen<MaybeOf<A>> {
-		return frequency([(1, Gen.pure(MaybeOf(Maybe<A>.none()))), (3, liftM({ MaybeOf(Maybe<A>.just($0)) })(m1: A.arbitrary()))])
+		return Gen.frequency([
+			(1, Gen.pure(MaybeOf(Maybe<A>.none()))),
+			(3, liftM({ MaybeOf(Maybe<A>.just($0)) })(m1: A.arbitrary()))
+		])
 	}
 
 	static func shrink(bl : MaybeOf<A>) -> [MaybeOf<A>] {
