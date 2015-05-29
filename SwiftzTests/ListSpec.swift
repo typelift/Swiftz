@@ -27,8 +27,8 @@ struct ListOf<A : Arbitrary> : Arbitrary, Printable {
 	}
 
 	static func arbitrary() -> Gen<ListOf<A>> {
-		return sized { n in
-			return choose((0, n)).bind { k in
+		return Gen.sized { n in
+			return Gen<Int>.choose((0, n)).bind { k in
 				if k == 0 {
 					return Gen.pure(ListOf([]))
 				}
@@ -39,12 +39,7 @@ struct ListOf<A : Arbitrary> : Arbitrary, Printable {
 	}
 
 	static func shrink(bl : ListOf<A>) -> [ListOf<A>] {
-		switch bl.getList.match() {
-		case .Nil:
-			return []
-		case let .Cons(x, xs):
-			return [ ListOf<A>(xs) ] + ListOf<A>.shrink(ListOf<A>(xs)) + ListOf<A>.shrink(ListOf<A>(List(fromArray: A.shrink(x)) + xs))
-		}
+		return ArrayOf.shrink(ArrayOf([A](bl.getList))).map({ ListOf(List(fromArray: $0.getArray)) })
 	}
 }
 

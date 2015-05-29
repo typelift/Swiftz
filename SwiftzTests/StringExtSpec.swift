@@ -45,25 +45,25 @@ class StringExtSpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-//		reportProperty["String obeys the Functor composition law"] = forAll { (f : ArrowOf<Character, Character>, g : ArrowOf<Character, Character>, x : String) in
-//			return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(f.getArrow).fmap(g.getArrow))
-//		}
+		reportProperty["String obeys the Functor composition law"] = forAll { (f : ArrowOf<Character, Character>, g : ArrowOf<Character, Character>, x : String) in
+			return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(f.getArrow).fmap(g.getArrow))
+		}
 
 		property["String obeys the Applicative identity law"] = forAll { (x : String) in
 			return (pure(identity) <*> x) == x
 		}
 
-//		reportProperty["String obeys the first Applicative composition law"] = forAll { (fl : ListOf<ArrowOf<Character, Character>>, gl : ListOf<ArrowOf<Character, Character>>, x : String) in
-//			let f = fl.fmap({ $0.getArrow })
-//			let g = gl.fmap({ $0.getArrow })
-//			return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
-//		}
+		reportProperty["String obeys the first Applicative composition law"] = forAll { (fl : ArrayOf<ArrowOf<Character, Character>>, gl : ArrayOf<ArrowOf<Character, Character>>, x : String) in
+			let f = fl.getArray.map({ $0.getArrow })
+			let g = gl.getArray.map({ $0.getArrow })
+			return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
+		}
 
-//		reportProperty["String obeys the second Applicative composition law"] = forAll { (fl : ListOf<ArrowOf<Character, Character>>, gl : ListOf<ArrowOf<Character, Character>>, x : String) in
-//			let f = fl.fmap({ $0.getArrow })
-//			let g = gl.fmap({ $0.getArrow })
-//			return (pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
-//		}
+		reportProperty["String obeys the second Applicative composition law"] = forAll { (fl : ArrayOf<ArrowOf<Character, Character>>, gl : ArrayOf<ArrowOf<Character, Character>>, x : String) in
+			let f = fl.getArray.map({ $0.getArrow })
+			let g = gl.getArray.map({ $0.getArrow })
+			return (pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+		}
 
 		property["String obeys the Monoidal left identity law"] = forAll { (x : String) in
 			return (x + String.mzero) == x
@@ -90,9 +90,9 @@ class StringExtSpec : XCTestCase {
 			return (xs >>- fs) == Array(xs).map(fs).reduce("", combine: +)
 		}
 
-//		reportProperty["filter behaves"] = forAll { (xs : String, pred : ArrowOf<Character, Bool>) in
-//			return xs.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
-//		}
+		reportProperty["filter behaves"] = forAll { (xs : String, pred : ArrowOf<Character, Bool>) in
+			return xs.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
+		}
 
 		property["isPrefixOf behaves"] = forAll { (s1 : String, s2 : String) in
 			if s1.isPrefixOf(s2) {
