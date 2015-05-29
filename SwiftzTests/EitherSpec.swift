@@ -26,7 +26,7 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 	}
 
 	static func arbitrary() -> Gen<EitherOf<A, B>> {
-		return oneOf([ liftM(Either.left)(m1: A.arbitrary()), liftM(Either.right)(m1: B.arbitrary()) ]).fmap(EitherOf.create)
+		return Gen.oneOf([ liftM(Either.left)(m1: A.arbitrary()), liftM(Either.right)(m1: B.arbitrary()) ]).fmap(EitherOf.create)
 	}
 
 	static func shrink(bl : EitherOf<A, B>) -> [EitherOf<A, B>] {

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "Swiftz"
-  s.version     = "0.2.1"
+  s.version     = "0.2.2"
   s.summary     = "Swiftz is a Swift library for functional programming."
   s.homepage    = "https://github.com/typelift/Swiftz"
   s.license     = { :type => "BSD" }
