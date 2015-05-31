@@ -1,0 +1,10 @@
+language: objective-c
+osx_image: beta-xcode6.3
+
+install: 
+    - git submodule update -i --recursive
+
+script:
+    - xctool -project Swiftz.xcodeproj -scheme Swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
+    - xctool -project Swiftz.xcodeproj -scheme Swiftz-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test
+
