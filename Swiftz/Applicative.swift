@@ -15,6 +15,6 @@ public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 
-	/// Applies the function encapsulated by the Functor to the encapsulated by the receiver.
+	/// Applies the function encapsulated by the Functor to the value encapsulated by the receiver.
 	func ap(f : FAB) -> FB
 }

@@ -32,9 +32,9 @@ class ResultSpec : XCTestCase {
 		XCTAssert(prettyPrinted == Result.value("8"))
 		XCTAssert(snd == .Error(divisionError))
 
-		let startResult: Result<Int> = pure(start)
+		let startResult: Result<Int> = Result.pure(start)
 		XCTAssert(startResult == Result.value(17))
-		let doubleResult: Result<Int -> Int> = pure({$0 * 2})
+		let doubleResult: Result<Int -> Int> = Result.pure({$0 * 2})
 		XCTAssert((doubleResult <*> startResult) == Result.value(34), "test ap: (result, result)")
 		let noF: Result<Int -> Int> = .Error(divisionError)
 		let noX: Result<Int> = snd
