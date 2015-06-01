@@ -96,5 +96,20 @@ class MaybeSpec : XCTestCase {
 			let g = gl.getMaybe.fmap({ $0.getArrow })
 			return (Maybe.pure(curry(•)) <*> f <*> g <*> x.getMaybe) == (f <*> (g <*> x.getMaybe))
 		}
+
+		property["Maybe obeys the Monad left identity law"] = forAll { (a : Int, fa : ArrowOf<Int, MaybeOf<Int>>) in
+			let f = { $0.getMaybe } • fa.getArrow
+			return (Maybe.pure(a) >>- f) == f(a)
+		}
+
+		property["Maybe obeys the Monad right identity law"] = forAll { (m : MaybeOf<Int>) in
+			return (m.getMaybe >>- Maybe.pure) == m.getMaybe
+		}
+
+		property["Maybe obeys the Monad associativity law"] = forAll { (fa : ArrowOf<Int, MaybeOf<Int>>, ga : ArrowOf<Int, MaybeOf<Int>>, m : MaybeOf<Int>) in
+			let f = { $0.getMaybe } • fa.getArrow
+			let g = { $0.getMaybe } • ga.getArrow
+			return ((m.getMaybe >>- f) >>- g) == (m.getMaybe >>- { x in f(x) >>- g })
+		}
 	}
 }

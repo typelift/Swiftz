@@ -67,6 +67,21 @@ class ArrayExtSpec : XCTestCase {
 			return (pure(curry(•)) <*> f <*> g <*> x.getArray) == (f <*> (g <*> x.getArray))
 		}
 
+		property["Array obeys the Monad left identity law"] = forAll { (a : Int, fa : ArrowOf<Int, ArrayOf<Int>>) in
+			let f = { $0.getArray } • fa.getArrow
+			return (pure(a) >>- f) == f(a)
+		}
+
+		property["Array obeys the Monad right identity law"] = forAll { (m : ArrayOf<Int>) in
+			return (m.getArray >>- pure) == m.getArray
+		}
+
+		property["Array obeys the Monad associativity law"] = forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>, m : ArrayOf<Int>) in
+			let f = { $0.getArray } • fa.getArrow
+			let g = { $0.getArray } • ga.getArrow
+			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
+		}
+
 		property["scanl behaves"] = forAll { (withArray : ArrayOf<Int>) in
 			let scanned = scanl(0, withArray.getArray, +)
 			if withArray.getArray.isEmpty {
