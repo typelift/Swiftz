@@ -30,7 +30,7 @@ struct ResultOf<A : Arbitrary> : Arbitrary, Printable {
 	static func arbitrary() -> Gen<ResultOf<A>> {
 		return Gen.frequency([
 			(1, Gen.pure(ResultOf(.Error(defaultError)))),
-			(3, liftM({ ResultOf(.Value(Box($0))) })(m1: A.arbitrary()))
+			(3, liftM({ ResultOf(pure($0)) })(m1: A.arbitrary()))
 		])
 	}
 
@@ -39,7 +39,7 @@ struct ResultOf<A : Arbitrary> : Arbitrary, Printable {
 		case .Error(_):
 			return []
 		case let .Value(v):
-			return [ResultOf(.Error(defaultError))] + A.shrink(v.value).map({ ResultOf(.Value(Box($0))) })
+			return [ResultOf(.Error(defaultError))] + A.shrink(v.value).map({ ResultOf(pure($0)) })
 		}
 	}
 }
@@ -75,36 +75,36 @@ class ResultSpec : XCTestCase {
 		}
 
 		property["Result obeys the Functor identity law"] = forAll { (x : ResultOf<Int>) in
-			return (x.getResult.fmap(identity)) == identity(x.getResult)
+			return (identity <^> x.getResult) == identity(x.getResult)
 		}
 
 		property["Result obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ResultOf<Int>) in
-			return ((f.getArrow • g.getArrow) <^> x.getResult) == (x.getResult.fmap(g.getArrow).fmap(f.getArrow))
+			return ((f.getArrow • g.getArrow) <^> x.getResult) == (g.getArrow <^> (f.getArrow <^> x.getResult))
 		}
 
 		property["Result obeys the Applicative identity law"] = forAll { (x : ResultOf<Int>) in
-			return (Result.pure(identity) <*> x.getResult) == x.getResult
+			return (pure(identity) <*> x.getResult) == x.getResult
 		}
 
 		property["Result obeys the first Applicative composition law"] = forAll { (fl : ResultOf<ArrowOf<Int8, Int8>>, gl : ResultOf<ArrowOf<Int8, Int8>>, x : ResultOf<Int8>) in
-			let f = fl.getResult.fmap({ $0.getArrow })
-			let g = gl.getResult.fmap({ $0.getArrow })
+			let f = { $0.getArrow } <^> fl.getResult
+			let g = { $0.getArrow } <^> gl.getResult
 			return (curry(•) <^> f <*> g <*> x.getResult) == (f <*> (g <*> x.getResult))
 		}
 
 		property["Result obeys the second Applicative composition law"] = forAll { (fl : ResultOf<ArrowOf<Int8, Int8>>, gl : ResultOf<ArrowOf<Int8, Int8>>, x : ResultOf<Int8>) in
-			let f = fl.getResult.fmap({ $0.getArrow })
-			let g = gl.getResult.fmap({ $0.getArrow })
-			return (Result.pure(curry(•)) <*> f <*> g <*> x.getResult) == (f <*> (g <*> x.getResult))
+			let f = { $0.getArrow } <^> fl.getResult
+			let g = { $0.getArrow } <^> gl.getResult
+			return (pure(curry(•)) <*> f <*> g <*> x.getResult) == (f <*> (g <*> x.getResult))
 		}
 
 		property["Result obeys the Monad left identity law"] = forAll { (a : Int, fa : ArrowOf<Int, ResultOf<Int>>) in
 			let f = { $0.getResult } • fa.getArrow
-			return (Result.pure(a) >>- f) == f(a)
+			return (pure(a) >>- f) == f(a)
 		}
 
 		property["Result obeys the Monad right identity law"] = forAll { (m : ResultOf<Int>) in
-			return (m.getResult >>- Result.pure) == m.getResult
+			return (m.getResult >>- pure) == m.getResult
 		}
 
 		property["Result obeys the Monad associativity law"] = forAll { (fa : ArrowOf<Int, ResultOf<Int>>, ga : ArrowOf<Int, ResultOf<Int>>, m : ResultOf<Int>) in
