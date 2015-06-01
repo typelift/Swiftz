@@ -77,21 +77,21 @@ class MaybeSpec : XCTestCase {
 			return (x.getMaybe.fmap(identity)) == identity(x.getMaybe)
 		}
 
-		reportProperty["Maybe obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : MaybeOf<Int>) in
-			return ((f.getArrow • g.getArrow) <^> x.getMaybe) == (x.getMaybe.fmap(f.getArrow).fmap(g.getArrow))
+		property["Maybe obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : MaybeOf<Int>) in
+			return ((f.getArrow • g.getArrow) <^> x.getMaybe) == (x.getMaybe.fmap(g.getArrow).fmap(f.getArrow))
 		}
 
 		property["Maybe obeys the Applicative identity law"] = forAll { (x : MaybeOf<Int>) in
 			return (Maybe.pure(identity) <*> x.getMaybe) == x.getMaybe
 		}
 
-		reportProperty["Maybe obeys the first Applicative composition law"] = forAll { (fl : MaybeOf<ArrowOf<Int8, Int8>>, gl : MaybeOf<ArrowOf<Int8, Int8>>, x : MaybeOf<Int8>) in
+		property["Maybe obeys the first Applicative composition law"] = forAll { (fl : MaybeOf<ArrowOf<Int8, Int8>>, gl : MaybeOf<ArrowOf<Int8, Int8>>, x : MaybeOf<Int8>) in
 			let f = fl.getMaybe.fmap({ $0.getArrow })
 			let g = gl.getMaybe.fmap({ $0.getArrow })
 			return (curry(•) <^> f <*> g <*> x.getMaybe) == (f <*> (g <*> x.getMaybe))
 		}
 
-		reportProperty["Maybe obeys the second Applicative composition law"] = forAll { (fl : MaybeOf<ArrowOf<Int8, Int8>>, gl : MaybeOf<ArrowOf<Int8, Int8>>, x : MaybeOf<Int8>) in
+		property["Maybe obeys the second Applicative composition law"] = forAll { (fl : MaybeOf<ArrowOf<Int8, Int8>>, gl : MaybeOf<ArrowOf<Int8, Int8>>, x : MaybeOf<Int8>) in
 			let f = fl.getMaybe.fmap({ $0.getArrow })
 			let g = gl.getMaybe.fmap({ $0.getArrow })
 			return (Maybe.pure(curry(•)) <*> f <*> g <*> x.getMaybe) == (f <*> (g <*> x.getMaybe))
