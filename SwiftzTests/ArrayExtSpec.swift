@@ -27,20 +27,59 @@ class ArrayExtSpec : XCTestCase {
 			return indexArray(l.getArray, 0) != nil
 		}
 
-		property["array fmap is the same as map"] = forAll { (xs : ArrayOf<Int>) in
+		property["Array fmap is the same as map"] = forAll { (xs : ArrayOf<Int>) in
 			return (+1 <^> xs.getArray) == xs.getArray.map(+1)
 		}
 
-		property["array pure give a singleton array"] = forAll { (x : Int) in
+		property["Array pure give a singleton array"] = forAll { (x : Int) in
 			return pure(x) == [x]
 		}
 
-		property["array bind works like a map then a concat"] = forAll { (xs : ArrayOf<Int>) in
+		property["Array bind works like a map then a concat"] = forAll { (xs : ArrayOf<Int>) in
 			func fs(x : Int) -> [Int] {
 				return [x, x+1, x+2]
 			}
 
 			return (xs.getArray >>- fs) == xs.getArray.map(fs).reduce([], combine: +)
+		}
+
+		property["Array obeys the Functor identity law"] = forAll { (x : ArrayOf<Int>) in
+			return (x.getArray.map(identity)) == identity(x.getArray)
+		}
+
+		property["Array obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ArrayOf<Int>) in
+			return ((f.getArrow • g.getArrow) <^> x.getArray) == (x.getArray.map(g.getArrow).map(f.getArrow))
+		}
+
+		property["Array obeys the Applicative identity law"] = forAll { (x : ArrayOf<Int>) in
+			return (pure(identity) <*> x.getArray) == x.getArray
+		}
+
+		reportProperty["Array obeys the first Applicative composition law"] = forAll { (fl : ArrayOf<ArrowOf<Int8, Int8>>, gl : ArrayOf<ArrowOf<Int8, Int8>>, x : ArrayOf<Int8>) in
+			let f = fl.getArray.map({ $0.getArrow })
+			let g = gl.getArray.map({ $0.getArrow })
+			return (curry(•) <^> f <*> g <*> x.getArray) == (f <*> (g <*> x.getArray))
+		}
+
+		reportProperty["Array obeys the second Applicative composition law"] = forAll { (fl : ArrayOf<ArrowOf<Int8, Int8>>, gl : ArrayOf<ArrowOf<Int8, Int8>>, x : ArrayOf<Int8>) in
+			let f = fl.getArray.map({ $0.getArrow })
+			let g = gl.getArray.map({ $0.getArrow })
+			return (pure(curry(•)) <*> f <*> g <*> x.getArray) == (f <*> (g <*> x.getArray))
+		}
+
+		property["Array obeys the Monad left identity law"] = forAll { (a : Int, fa : ArrowOf<Int, ArrayOf<Int>>) in
+			let f = { $0.getArray } • fa.getArrow
+			return (pure(a) >>- f) == f(a)
+		}
+
+		property["Array obeys the Monad right identity law"] = forAll { (m : ArrayOf<Int>) in
+			return (m.getArray >>- pure) == m.getArray
+		}
+
+		property["Array obeys the Monad associativity law"] = forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>, m : ArrayOf<Int>) in
+			let f = { $0.getArray } • fa.getArrow
+			let g = { $0.getArray } • ga.getArrow
+			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
 		}
 
 		property["scanl behaves"] = forAll { (withArray : ArrayOf<Int>) in
