@@ -58,11 +58,7 @@ class EitherSpec : XCTestCase {
 		}
 
 		property["fold returns its default on .Left"] = forAll { (e : EitherOf<String, Int>) in
-			if e.getEither.isLeft() {
-				return e.getEither.fold(0, f: identity) == 0
-			} else {
-				return true // discard
-			}
+			return e.getEither.isLeft() ==> (e.getEither.fold(0, f: identity) == 0)
 		}
 
 		property["Either is a bifunctor"] = forAll { (e : EitherOf<String, Int>) in
