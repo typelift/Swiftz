@@ -79,7 +79,7 @@ class ResultSpec : XCTestCase {
 		}
 
 		property["Result obeys the Functor composition law"] = forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ResultOf<Int>) in
-			return ((f.getArrow • g.getArrow) <^> x.getResult) == (g.getArrow <^> (f.getArrow <^> x.getResult))
+			return ((f.getArrow • g.getArrow) <^> x.getResult) == (f.getArrow <^> (g.getArrow <^> x.getResult))
 		}
 
 		property["Result obeys the Applicative identity law"] = forAll { (x : ResultOf<Int>) in
