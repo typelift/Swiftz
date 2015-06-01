@@ -19,8 +19,6 @@ extension Box : Pointed {
 }
 
 extension Result : Pointed {
-	typealias A = V
-
 	public static func pure(x : V) -> Result<V> {
 		return Result.value(x)
 	}
