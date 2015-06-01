@@ -62,10 +62,7 @@ class ListSpec : XCTestCase {
 		}
 
 		property["Lists of Equatable elements obey transitivity"] = forAll { (x : ListOf<Int>, y : ListOf<Int>, z : ListOf<Int>) in
-			if (x == y) && (y == z) {
-				return x == z
-			}
-			return true // discard
+			return (x == y) && (y == z) ==> (x == z)
 		}
 
 		property["Lists of Equatable elements obey negation"] = forAll { (x : ListOf<Int>, y : ListOf<Int>) in
@@ -110,18 +107,14 @@ class ListSpec : XCTestCase {
 		}
 
 		property["List can cycle into an infinite list"] = forAll { (x : ListOf<Int8>) in
-			if x.getList.isEmpty() {
-				return rejected()
-			}
+			return !x.getList.isEmpty() ==> {
+				let finite = x.getList
+				let cycle = finite.cycle()
 
-			let finite = x.getList
-			let cycle = finite.cycle()
-			for i : UInt in (0...100) {
-				if cycle[i] != finite[(i % finite.length())] {
-					return false
+				return forAll { (n : Positive<Int>) in
+					return (0...UInt(n.getPositive)).map({ i in cycle[i] == finite[(i % finite.length())] }).filter(==false).isEmpty
 				}
 			}
-			return true
 		}
 
 		property["isEmpty behaves"] = forAll { (xs : ListOf<Int>) in

@@ -59,10 +59,7 @@ class MaybeSpec : XCTestCase {
 		}
 
 		property["Maybes of Equatable elements obey transitivity"] = forAll { (x : MaybeOf<Int>, y : MaybeOf<Int>, z : MaybeOf<Int>) in
-			if (x == y) && (y == z) {
-				return x == z
-			}
-			return true // discard
+			return (x == y) && (y == z) ==> (x == z)
 		}
 
 		property["Maybes of Equatable elements obey negation"] = forAll { (x : MaybeOf<Int>, y : MaybeOf<Int>) in
