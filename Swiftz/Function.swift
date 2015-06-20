@@ -98,7 +98,7 @@ extension Function : ArrowChoice {
 }
 
 public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
-	return Function.arr({ Either.left(f.apply($0)) }) ||| Function.arr({ Either.right(g.apply($0)) })
+	return Function.arr({ Either.Left(f.apply($0)) }) ||| Function.arr({ Either.Right(g.apply($0)) })
 }
 
 public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {

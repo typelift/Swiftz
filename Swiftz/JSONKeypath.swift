@@ -43,6 +43,6 @@ extension JSONKeypath : Monoid {
 
 extension JSONKeypath : CustomStringConvertible {
 	public var description : String {
-		return intersperse(".", list: self.path).reduce("", combine: +)
+		return self.path.intersperse(".").reduce("", combine: +)
 	}
 }

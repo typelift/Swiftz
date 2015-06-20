@@ -46,7 +46,7 @@ class MonoidSpec : XCTestCase {
 	}
 
 	func testDither() {
-		let v : Dither<Product<Int8>, Sum<Int16>> = Dither([Either.left(Product(2)), Either.left(Product(3)), Either.right(Sum(5)), Either.left(Product(7))])
+		let v : Dither<Product<Int8>, Sum<Int16>> = Dither([Either.Left(Product(2)), Either.Left(Product(3)), Either.Right(Sum(5)), Either.Left(Product(7))])
 		XCTAssert(v.fold(onLeft: { n in Sum(Int16(n.value())) }, onRight: identity).value() == 18, "Dither works")
 	}
 }
