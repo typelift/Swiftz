@@ -21,6 +21,12 @@ public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
 	return t.reduce(h) { $0.op($1) }
 }
 
+extension Array : Semigroup {
+	public func op(other : [T]) -> [T] {
+		return self + other
+	}
+}
+
 /// The Semigroup of comparable values under MIN().
 public struct Min<A: Comparable>: Semigroup {
 	public let value : () -> A
@@ -87,7 +93,7 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
 	public func op(other : Vacillate<A, B>) -> Vacillate<A, B> {

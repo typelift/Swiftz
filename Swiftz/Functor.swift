@@ -34,10 +34,10 @@ public struct Id<A> {
 }
 
 extension Id : Functor {
-	public typealias B = Any
+	typealias B = Any
 
 	public func fmap<B>(f : A -> B) -> Id<B> {
-		return (Id<B>(f(self.runId)))
+		return Id<B>(f(self.runId))
 	}
 }
 

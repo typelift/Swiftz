@@ -13,7 +13,11 @@ public protocol Monoid : Semigroup {
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mzero, t)
+	return sconcat(S.mzero, t: t)
+}
+
+extension Array : Monoid {
+	public static var mzero : [T] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
@@ -149,7 +153,7 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
 	public static var mzero : Dither<A, B> {
