@@ -10,7 +10,7 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-struct MaybeOf<A : Arbitrary> : Arbitrary, Printable {
+struct MaybeOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	let getMaybe : Maybe<A>
 
 	init(_ maybe : Maybe<A>) {

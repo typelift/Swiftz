@@ -383,7 +383,7 @@ extension List : ArrayLiteralConvertible {
 		}
 
 		var l = List()
-		for x in xs.reverse() {
+		for x in Array(xs.reverse()) {
 			l = List(x, l)
 		}
 		self = l
@@ -430,9 +430,9 @@ extension List : CollectionType {
 	}
 }
 
-extension List : Printable {
+extension List : CustomStringConvertible {
 	public var description : String {
-		var x = ", ".join(self.fmap({ "\($0)" }))
+		let x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }

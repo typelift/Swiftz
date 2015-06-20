@@ -11,7 +11,7 @@ import Swiftz
 import SwiftCheck
 
 /// Generates an array of arbitrary values of type A.
-struct ListOf<A : Arbitrary> : Arbitrary, Printable {
+struct ListOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	let getList : List<A>
 
 	init(_ array : List<A>) {

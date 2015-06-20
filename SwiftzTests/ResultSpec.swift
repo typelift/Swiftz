@@ -12,7 +12,7 @@ import SwiftCheck
 
 let defaultError = NSError(domain: "Swiftz", code: -1, userInfo: nil)
 
-struct ResultOf<A : Arbitrary> : Arbitrary, Printable {
+struct ResultOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	let getResult : Result<A>
 
 	init(_ maybe : Result<A>) {

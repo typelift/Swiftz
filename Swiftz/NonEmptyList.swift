@@ -55,7 +55,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
 			xs.append(x)
 		}
 		var l = List<A>()
-		for x in xs.reverse() {
+		for x in Array(xs.reverse()) {
 			l = List(x, l)
 		}
 		self = NonEmptyList(h!, l)
@@ -70,7 +70,7 @@ public final class NonEmptyListGenerator<A> : K1<A>, GeneratorType {
 			head = nil
 			return h
 		} else {
-			var r = l?.head()
+			let r = l?.head()
 			l = self.l?.tail()
 			return r
 		}
@@ -87,9 +87,9 @@ extension NonEmptyList : SequenceType {
 	}
 }
 
-extension NonEmptyList : Printable {
+extension NonEmptyList : CustomStringConvertible {
 	public var description : String {
-		var x = ", ".join(self.fmap({ "\($0)" }))
+		let x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }
