@@ -73,8 +73,8 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -85,11 +85,11 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	}
 
 	public static func left(x: A) -> Vacillate<A, B> {
-		return Vacillate([Either.left(x)])
+		return Vacillate([Either.Left(x)])
 	}
 
 	public static func right(y: B) -> Vacillate<A, B> {
-		return Vacillate([Either.right(y)])
+		return Vacillate([Either.Right(y)])
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
