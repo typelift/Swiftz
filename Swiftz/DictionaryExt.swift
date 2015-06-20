@@ -7,34 +7,77 @@
 //
 
 extension Dictionary {
-
-	/// Returns a dictionary consisting of all the key-value pairs satisfying a predicate.
-	public func filter<K, V>(dict dict : Dictionary<K, V>) -> ((K, V) -> Bool) -> Dictionary<K, V> {
-		return { pred in
-			var f = Dictionary<K, V>()
-			for (k, v) in dict {
-				if pred(k, v) {
-					f[k] = v
-				}
-			}
-			return f
+	static func fromList(l : [(Key, Value)]) -> Dictionary<Key, Value> {
+		var d = Dictionary<Key, Value>()
+		for (k, v) in l {
+			d[k] = v
 		}
+		return d
 	}
 
-	/// Folds a reducing function over all the key-value pairs in a dictionary.
-	public func reduce<K, V, A>(dict dict : Dictionary<K, V>) -> A -> ((key : K, val : V, start : A) -> A) -> A {
-		return { start in { reduce in
-			var reduced:A?
-			for (k,v) in dict {
-				reduced = reduce(key:k, val:v, start:start)
-			}
-			switch reduced {
-			case let .Some(a):
-				return a
-			case .None:
-				return start
-			}
-		} }
+	public func map<Value2>(f : Value -> Value2) -> Dictionary<Key, Value2> {
+		var d = Dictionary<Key, Value2>()
+		for (k, v) in self {
+			d[k] = f(v)
+		}
+		return d
 	}
 
+	public func mapWithKey<Value2>(f : Key -> Value -> Value2) -> Dictionary<Key, Value2> {
+		var d = Dictionary<Key, Value2>()
+		for (k, v) in self {
+			d[k] = f(k)(v)
+		}
+		return d
+	}
+
+	public func mapWithKey<Value2>(f : (Key, Value) -> Value2) -> Dictionary<Key, Value2> {
+		var d = Dictionary<Key, Value2>()
+		for (k, v) in self {
+			d[k] = f(k, v)
+		}
+		return d
+	}
+
+
+	public func mapKeys<Key2 : Hashable>(f : Key -> Key2) -> Dictionary<Key2, Value> {
+		var d = Dictionary<Key2, Value>()
+		for (k, v) in self {
+			d[f(k)] = v
+		}
+		return d
+	}
+
+	public func filter(pred : Value -> Bool) -> Dictionary<Key, Value> {
+		var d = Dictionary<Key, Value>()
+		for (k, v) in self {
+			if pred(v) {
+				d[k] = v
+			}
+		}
+
+		return d
+	}
+
+	public func filterWithKey(pred : Key -> Value -> Bool) -> Dictionary<Key, Value> {
+		var d = Dictionary<Key, Value>()
+		for (k, v) in self {
+			if pred(k)(v) {
+				d[k] = v
+			}
+		}
+
+		return d
+	}
+
+	public func filterWithKey(pred : (Key, Value) -> Bool) -> Dictionary<Key, Value> {
+		var d = Dictionary<Key, Value>()
+		for (k, v) in self {
+			if pred(k, v) {
+				d[k] = v
+			}
+		}
+
+		return d
+	}
 }
