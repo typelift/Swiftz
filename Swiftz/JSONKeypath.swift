@@ -41,8 +41,8 @@ extension JSONKeypath : Monoid {
 	}
 }
 
-extension JSONKeypath : Printable {
+extension JSONKeypath : CustomStringConvertible {
 	public var description : String {
-		return intersperse(".", self.path).reduce("", combine: +)
+		return intersperse(".", list: self.path).reduce("", combine: +)
 	}
 }
