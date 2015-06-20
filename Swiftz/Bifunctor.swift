@@ -45,12 +45,12 @@ public struct EitherBF<A, C> : Bifunctor {
 		self.e = e
 	}
 
-	public func bimap<B, D>(f: (A -> B), _ g: (C -> D)) -> Either<B, D> {
+	public func bimap<B, D>(f : (A -> B), _ g : (C -> D)) -> Either<B, D> {
 		switch e {
 		case .Left(let bx):
-			return Either.Left(Box<B>(f(bx.value)))
+			return Either.Left(f(bx))
 		case .Right(let bx):
-			return Either.Right(Box<D>(g(bx.value)))
+			return Either.Right(g(bx))
 		}
 	}
 
