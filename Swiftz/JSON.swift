@@ -21,7 +21,7 @@ public enum JSONValue : CustomStringConvertible {
 		case let .JSONArray(xs):
 			return NSArray(array: xs.map { $0.values() })
 		case let .JSONObject(xs):
-			return NSDictionary(dictionary: xs.map({ k, v in
+			return Dictionary.fromList(xs.map({ k, v in
 				return (NSString(string: k), v.values())
 			}))
 		case let .JSONNumber(n):
@@ -41,14 +41,14 @@ public enum JSONValue : CustomStringConvertible {
 		case let xs as NSArray:
 			return .JSONArray((xs as [AnyObject]).map { self.make($0 as! NSObject) })
 		case let xs as NSDictionary:
-			return JSONValue.JSONObject((xs as [NSObject: AnyObject]).map({ (k: NSObject, v: AnyObject) in
+			return JSONValue.JSONObject(Dictionary.fromList((xs as [NSObject: AnyObject]).map({ (k: NSObject, v: AnyObject) in
 				return (String(k as! NSString), self.make(v as! NSObject))
-			}))
+			})))
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
 		case let xs as NSString: 
 			return .JSONString(String(xs))
-		case let _ as NSNull:
+		case _ as NSNull:
 			return .JSONNull()
 		default:
 			return error("Non-exhaustive pattern match performed.");
@@ -58,7 +58,7 @@ public enum JSONValue : CustomStringConvertible {
 	public func encode() -> NSData? {
 		do {
 			// TODO: check s is a dict or array
-			return try NSJSONSerialization.dataWithJSONObject(self.values(), options: 0)
+			return try NSJSONSerialization.dataWithJSONObject(self.values(), options: NSJSONWritingOptions(rawValue: 0))
 		} catch _ {
 			return nil
 		}
@@ -68,7 +68,7 @@ public enum JSONValue : CustomStringConvertible {
 	public static func decode(s : NSData) -> JSONValue? {
 		let r : AnyObject?
 		do {
-			r = try NSJSONSerialization.JSONObjectWithData(s, options: 0)
+			r = try NSJSONSerialization.JSONObjectWithData(s, options: NSJSONReadingOptions(rawValue: 0))
 		} catch _ {
 			r = nil
 		}
@@ -366,9 +366,9 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return xs.map({ k, x in
+			return Dictionary.fromList(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
-			})
+			}))
 		default: 
 			return Optional.None
 		}
@@ -379,9 +379,9 @@ public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable
 	public typealias J = Dictionary<String, A>
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(xs.map({ k, x -> (String, JSONValue) in
+		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x -> (String, JSONValue) in
 			return (k, B.toJSON(x))
-		}))
+		})))
 	}
 }
 
@@ -391,7 +391,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs):
-			return Dictionary<String, A>(dictionaryLiteral: xs.map({ k, x in
+			return Dictionary<String, A>.fromList(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
 			}))
 		default: 
@@ -400,9 +400,9 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	}
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(dictionaryLiteral: xs.map({ k, x in
+		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x in
 			return (k, B.toJSON(x))
-		}))
+		})))
 	}
 }
 

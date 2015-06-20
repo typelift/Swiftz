@@ -79,9 +79,9 @@ public struct List<A> {
 		switch self.match() {
 		case .Nil:
 			return error("Cannot extract an element from an empty list.")
-		case let .Cons(x, xs) where n == 0:
+		case let .Cons(x, _) where n == 0:
 			return x
-		case let .Cons(x, xs):
+		case let .Cons(_, xs):
 			return xs[n - 1]
 		}
 	}
@@ -270,7 +270,7 @@ public struct List<A> {
 		switch self.match() {
 		case .Nil:
 			return []
-		case let .Cons(x, xs):
+		case let .Cons(_, xs):
 			return xs.drop(n - 1)
 		}
 	}
