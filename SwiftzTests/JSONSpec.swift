@@ -36,7 +36,6 @@ class JSONSpec : XCTestCase {
 	}
 	
 	func testJSONKeypath() {
-		let JSON = "{\"this\":{\"is\":{\"a\":{\"deeply\":{\"nested\":{\"bit\":{\"of\":{\"json\":{\"mkay\":true}}}}}}}}}"
 		let keypath : JSONKeypath = "this" <> "is" <> "a" <> "deeply" <> "nested" <> "bit" <> "of" <> "json" <> "mkay"
 		let path = ["this", "is", "a", "deeply", "nested", "bit", "of", "json", "mkay"]
 		

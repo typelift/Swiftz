@@ -12,35 +12,35 @@ import SwiftCheck
 
 class MonoidSpec : XCTestCase {
 	func testProperties() {
-		property["Sum obeys left identity"] = forAll { (i : Int) in
+		property("Sum obeys left identity") <- forAll { (i : Int) in
 			return (Sum.mzero <> Sum(i)).value() == i
 		}
 
-		property["Sum obeys right identity"] = forAll { (i : Int) in
+		property("Sum obeys right identity") <- forAll { (i : Int) in
 			return (Sum(i) <> Sum.mzero).value() == i
 		}
 
-		property["Product obeys left identity"] = forAll { (i : Int) in
+		property("Product obeys left identity") <- forAll { (i : Int) in
 			return (Product.mzero <> Product(i)).value() == i
 		}
 
-		property["Product obeys right identity"] = forAll { (i : Int) in
+		property("Product obeys right identity") <- forAll { (i : Int) in
 			return (Product(i) <> Product.mzero).value() == i
 		}
 
-		property["First obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+		property("First obeys left identity") <- forAll { (i : MaybeOf<Int>) in
 			return (First.mzero <> First(i.getMaybe)).value() == i.getMaybe
 		}
 
-		property["First obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+		property("First obeys right identity") <- forAll { (i : MaybeOf<Int>) in
 			return (First(i.getMaybe) <> First.mzero).value() == i.getMaybe
 		}
 
-		property["Last obeys left identity"] = forAll { (i : MaybeOf<Int>) in
+		property("Last obeys left identity") <- forAll { (i : MaybeOf<Int>) in
 			return (Last.mzero <> Last(i.getMaybe)).value() == i.getMaybe
 		}
 
-		property["Last obeys right identity"] = forAll { (i : MaybeOf<Int>) in
+		property("Last obeys right identity") <- forAll { (i : MaybeOf<Int>) in
 			return (Last(i.getMaybe) <> Last.mzero).value() == i.getMaybe
 		}
 	}
