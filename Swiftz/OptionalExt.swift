@@ -75,10 +75,30 @@ extension Optional : Monad {
 	}
 }
 
-
 public func >>- <A, B>(l : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
 	return l.bind(f)
 }
+
+extension Optional : Foldable {
+	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
+		if let v = self {
+			return k(v)(i)
+		}
+		return i
+	}
+
+	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
+		if let v = self {
+			return k(i)(v)
+		}
+		return i
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mzero)
+	}
+}
+
 
 /// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
 /// Given one or more Optional values, returns the first Optional value that is not nil

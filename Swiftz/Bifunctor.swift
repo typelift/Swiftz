@@ -35,32 +35,6 @@ public protocol Bifunctor {
 	func rightMap(g : R -> D) -> PAD
 }
 
-extension Either : Bifunctor {
-	typealias B = Any
-	typealias D = Any
-	typealias PAC = Either<L, R>
-	typealias PAD = Either<L, D>
-	typealias PBC = Either<B, R>
-	typealias PBD = Either<B, D>
-
-	public func bimap<B, D>(f : L -> B, _ g : (R -> D)) -> Either<B, D> {
-		switch self {
-		case let .Left(bx):
-			return Either<B, D>.Left(f(bx))
-		case let .Right(bx):
-			return Either<B, D>.Right(g(bx))
-		}
-	}
-
-	public func leftMap<B>(f : L -> B) -> Either<B, R> {
-		return self.bimap(f, identity)
-	}
-
-	public func rightMap<D>(g : R -> D) -> Either<L, D> {
-		return self.bimap(identity, g)
-	}
-}
-
 public struct TupleBF<L, R> : Bifunctor {
 	typealias B = Any
 	typealias D = Any

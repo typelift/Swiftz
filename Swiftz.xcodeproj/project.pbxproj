@@ -12,6 +12,10 @@
 		84152B731A818A5C006387D5 /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88F981A71DF7F003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8480AB4E1A7B448A00C6162D /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4D1A7B448A00C6162D /* Sections.swift */; };
 		84961FB51A998976004A186A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84961FB41A998976004A186A /* State.swift */; };
+		8496F0E71B37571F00896D26 /* Foldable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E61B37571F00896D26 /* Foldable.swift */; };
+		8496F0E81B37571F00896D26 /* Foldable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E61B37571F00896D26 /* Foldable.swift */; };
+		8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E91B375BD400896D26 /* EitherExt.swift */; };
+		8496F0EB1B375BD400896D26 /* EitherExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E91B375BD400896D26 /* EitherExt.swift */; };
 		84A53D711B1A900900E8A107 /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC11A71DFA0003D53CF /* PartyExample.swift */; };
 		84A53D721B1A900900E8A107 /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC41A71DFA0003D53CF /* ShapeExample.swift */; };
 		84A53D731B1A900900E8A107 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC81A71DFA0003D53CF /* UserExample.swift */; };
@@ -234,6 +238,8 @@
 /* Begin PBXFileReference section */
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		8496F0E61B37571F00896D26 /* Foldable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Foldable.swift; sourceTree = "<group>"; };
+		8496F0E91B375BD400896D26 /* EitherExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EitherExt.swift; sourceTree = "<group>"; };
 		84A88F981A71DF7F003D53CF /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A88F9C1A71DF7F003D53CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A88FA31A71DF7F003D53CF /* SwiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -445,6 +451,7 @@
 				84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */,
 				84A88FE61A71DFC5003D53CF /* CharacterExt.swift */,
 				84A88FEA1A71DFC5003D53CF /* DictionaryExt.swift */,
+				8496F0E91B375BD400896D26 /* EitherExt.swift */,
 				84A890031A71DFC5003D53CF /* OptionalExt.swift */,
 				84EA2C261B1CE70B0001FB3F /* ResultExt.swift */,
 				84A890091A71DFC5003D53CF /* StringExt.swift */,
@@ -460,6 +467,7 @@
 				84A88FE21A71DFC5003D53CF /* Bifunctor.swift */,
 				84A88FE31A71DFC5003D53CF /* Bounded.swift */,
 				84A88FE81A71DFC5003D53CF /* Copointed.swift */,
+				8496F0E61B37571F00896D26 /* Foldable.swift */,
 				84A88FEC1A71DFC5003D53CF /* Function.swift */,
 				84A88FED1A71DFC5003D53CF /* Functor.swift */,
 				84A88FF01A71DFC5003D53CF /* HList.swift */,
@@ -780,10 +788,12 @@
 				84A890231A71DFC5003D53CF /* IxMultiStore.swift in Sources */,
 				84A890191A71DFC5003D53CF /* Curry.swift in Sources */,
 				84A8901A1A71DFC5003D53CF /* DictionaryExt.swift in Sources */,
+				8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84A8902E1A71DFC5003D53CF /* NonEmptyList.swift in Sources */,
 				84A8901D1A71DFC5003D53CF /* Functor.swift in Sources */,
 				84A8901C1A71DFC5003D53CF /* Function.swift in Sources */,
 				84A890241A71DFC5003D53CF /* IxState.swift in Sources */,
+				8496F0E71B37571F00896D26 /* Foldable.swift in Sources */,
 				84A890391A71DFC5003D53CF /* StringExt.swift in Sources */,
 				84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */,
 				84A890281A71DFC5003D53CF /* Lens.swift in Sources */,
@@ -860,10 +870,12 @@
 				84DF75BE1B0BD1D400C912B0 /* Maybe.swift in Sources */,
 				84DF75BF1B0BD1D400C912B0 /* Monoid.swift in Sources */,
 				84DF75C01B0BD1D400C912B0 /* NonEmptyList.swift in Sources */,
+				8496F0EB1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84DF75C11B0BD1D400C912B0 /* Num.swift in Sources */,
 				84DF75C21B0BD1D400C912B0 /* Pointed.swift in Sources */,
 				84DF75C31B0BD1D400C912B0 /* Semigroup.swift in Sources */,
 				84DF75C41B0BD1D400C912B0 /* State.swift in Sources */,
+				8496F0E81B37571F00896D26 /* Foldable.swift in Sources */,
 				84DF75C51B0BD1D400C912B0 /* SYB.swift in Sources */,
 				84DF75C61B0BD1D400C912B0 /* Those.swift in Sources */,
 				84DF75C71B0BD1D400C912B0 /* Tuple.swift in Sources */,

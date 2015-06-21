@@ -43,6 +43,25 @@ extension Array : Monad {
 	}
 }
 
+extension Array : Foldable {
+	public func foldr<B>(k : T -> B -> B, _ i : B) -> B {
+		switch self.match {
+		case .Nil:
+			return i
+		case .Cons(let x, let xs):
+			return k(x)(xs.foldr(k, i))
+		}
+	}
+
+	public func foldl<B>(com : B -> T -> B, _ i : B) -> B {
+		return self.reduce(i, combine: uncurry(com))
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mzero)
+	}
+}
+
 extension Array {
 	/// Destructures a list into its constituent parts.
 	///

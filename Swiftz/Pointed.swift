@@ -17,11 +17,3 @@ extension Result : Pointed {
 		return Result.value(x)
 	}
 }
-
-extension Either : Pointed {
-	typealias A = R
-
-	public static func pure(r : R) -> Either<L, R> {
-		return Either.Right(r)
-	}
-}
