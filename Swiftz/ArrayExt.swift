@@ -101,8 +101,12 @@ extension Array {
 	}
 
 	/// Safely indexes into an array by converting out of bounds errors to nils.
-	public func safeIndex(array : Array<T>)(i : Int) -> T? {
-		return indexArray(array, i: i)
+	public func safeIndex(i : Int) -> T? {
+		if i < self.count && i >= 0 {
+			return self[i]
+		} else {
+			return nil
+		}
 	}
 
 	/// Maps a function over an array that takes pairs of (index, element) to a different element.
@@ -188,15 +192,6 @@ extension Array {
 			var array = Array([self[0]])
 			array += prependAll(item, array: self.tail!)
 			return Array(array)
-		}
-	}
-
-	/// Safely indexes into an array by converting out of bounds errors to nils.
-	public func indexArray(xs : [T], i : Int) -> T? {
-		if i < xs.count && i >= 0 {
-			return xs[i]
-		} else {
-			return nil
 		}
 	}
 
