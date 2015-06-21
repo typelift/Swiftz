@@ -83,7 +83,7 @@ class ResultSpec : XCTestCase {
 		}
 
 		property("Result obeys the Applicative identity law") <- forAll { (x : ResultOf<Int>) in
-			return (pure(identity) <*> x.getResult) == x.getResult
+			return (Result.pure(identity) <*> x.getResult) == x.getResult
 		}
 
 		property("Result obeys the first Applicative composition law") <- forAll { (fl : ResultOf<ArrowOf<Int8, Int8>>, gl : ResultOf<ArrowOf<Int8, Int8>>, x : ResultOf<Int8>) in
@@ -95,16 +95,16 @@ class ResultSpec : XCTestCase {
 		property("Result obeys the second Applicative composition law") <- forAll { (fl : ResultOf<ArrowOf<Int8, Int8>>, gl : ResultOf<ArrowOf<Int8, Int8>>, x : ResultOf<Int8>) in
 			let f = { $0.getArrow } <^> fl.getResult
 			let g = { $0.getArrow } <^> gl.getResult
-			return (pure(curry(•)) <*> f <*> g <*> x.getResult) == (f <*> (g <*> x.getResult))
+			return (Result.pure(curry(•)) <*> f <*> g <*> x.getResult) == (f <*> (g <*> x.getResult))
 		}
 
 		property("Result obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, ResultOf<Int>>) in
 			let f = { $0.getResult } • fa.getArrow
-			return (pure(a) >>- f) == f(a)
+			return (Result.pure(a) >>- f) == f(a)
 		}
 
 		property("Result obeys the Monad right identity law") <- forAll { (m : ResultOf<Int>) in
-			return (m.getResult >>- pure) == m.getResult
+			return (m.getResult >>- Result.pure) == m.getResult
 		}
 
 		property("Result obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ResultOf<Int>>, ga : ArrowOf<Int, ResultOf<Int>>, m : ResultOf<Int>) in

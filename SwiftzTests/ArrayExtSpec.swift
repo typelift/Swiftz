@@ -130,19 +130,23 @@ class ArrayExtSpec : XCTestCase {
 		property("drop behaves") <- forAll { (array : ArrayOf<Int>, limit : Positive<Int>) in
 			return array.getArray.drop(limit.getPositive).count == max(0, array.getArray.count - limit.getPositive)
 		}
+
+		property("span behaves") <- forAll { (xs : ArrayOf<Int>, pred : ArrowOf<Int, Bool>) in
+			let p = xs.getArray.span(pred.getArrow)
+			let t = (xs.getArray.takeWhile(pred.getArrow), xs.getArray.dropWhile(pred.getArrow))
+			return p.0 == t.0 && p.1 == t.1
+		}
+
+		property("intercalate behaves") <- forAll { (xs : ArrayOf<Int>, xxsa : ArrayOf<ArrayOf<Int>>) in
+			let xxs = xxsa.getArray.map { $0.getArray }
+			return intercalate(xs.getArray, nested: xxs) == concat(xxs.intersperse(xs.getArray))
+		}
+
+		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : ArrayOf<Int>) in
+			return group(xs.getArray) == xs.getArray.groupBy { $0 == $1 }
+		}
 	}
 
-	func testDropWhile() {
-		let array = [1,2,3,4,5]
-
-		XCTAssert(array.dropWhile(<=3) == [4,5], "Should be equal")
-	}
-
-	func testTakeWhile() {
-		let array = [1,2,3,4,5]
-
-		XCTAssert(array.takeWhile(<=3) == [1,2,3], "Should be equal")
-	}
 
 	func testAny() {
 		let withArray = Array([1,4,5,7])
@@ -152,26 +156,6 @@ class ArrayExtSpec : XCTestCase {
 	func testAll() {
 		let array = [1,3,24,5]
 		XCTAssert(array.all(<=24), "Should be true")
-	}
-
-	func testIntercalate() {
-		let result = intercalate([1,2,3], nested: [[4,5],[6,7]])
-
-		XCTAssert(result == [4,5,1,2,3,6,7], "Should be equal")
-	}
-
-	func testSpan() {
-		let withArray = [1,2,3,4,1,2,3,4]
-
-		let tuple = withArray.span { a in a < 3 }
-		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4,1,2,3,4], "Should be equal")
-	}
-
-	func testGroup() {
-		let array = [1,2,3,3,4,5,6,7,7,8,9,9,0]
-		let result = group(array)
-
-		XCTAssert(result == [[1],[2],[3,3],[4],[5],[6],[7,7],[8],[9,9],[0]], "Should be equal")
 	}
 
 	func testSplitAt() {

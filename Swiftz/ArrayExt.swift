@@ -247,6 +247,11 @@ extension Array {
 		}
 	}
 
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other according to an equality predicate.
+	public func groupBy(p : (T, T) -> Bool) -> [[T]] {
+		return self.groupBy(curry(p))
+	}
 
 	/// Returns a list of the first elements that do not satisfy a predicate until that predicate
 	/// returns false.
