@@ -7,7 +7,7 @@
 //
 
 extension Optional {
-	/// Case analysis for the Maybe type.  Given a maybe, a default value in case it is None, and
+	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
 	/// a function, maps the function over the value in the Maybe.
 	public func maybe<B>(def : B, onSome : T -> B) -> B {
 		switch self {

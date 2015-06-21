@@ -21,6 +21,12 @@ public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
 	return t.reduce(h) { $0.op($1) }
 }
 
+extension List : Semigroup {
+	public func op(other : List<A>) -> List<A> {
+		return self + other
+	}
+}
+
 extension Array : Semigroup {
 	public func op(other : [T]) -> [T] {
 		return self + other

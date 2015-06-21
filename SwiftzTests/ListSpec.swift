@@ -99,11 +99,11 @@ class ListSpec : XCTestCase {
 //		}
 
 		property("List obeys the Monoidal left identity law") <- forAll { (x : ListOf<Int8>) in
-			return (x.getList + List()) == x.getList
+			return (x.getList <> List()) == x.getList
 		}
 
 		property("List obeys the Monoidal right identity law") <- forAll { (x : ListOf<Int8>) in
-			return (List() + x.getList) == x.getList
+			return (List() <> x.getList) == x.getList
 		}
 
 		property("List can cycle into an infinite list") <- forAll { (x : ListOf<Int8>) in

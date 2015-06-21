@@ -16,6 +16,10 @@ public func mconcat<S : Monoid>(t : [S]) -> S {
 	return sconcat(S.mzero, t: t)
 }
 
+extension List : Monoid {
+	public static var mzero : List<A> { return [] }
+}
+
 extension Array : Monoid {
 	public static var mzero : [T] { return [] }
 }
