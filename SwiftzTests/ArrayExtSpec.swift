@@ -78,6 +78,14 @@ class ArrayExtSpec : XCTestCase {
 			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
 		}
 
+		property("Array obeys the Monoidal left identity law") <- forAll { (x : ArrayOf<Int8>) in
+			return (x.getArray <> []) == x.getArray
+		}
+
+		property("Array obeys the Monoidal right identity law") <- forAll { (x : ArrayOf<Int8>) in
+			return ([] <> x.getArray) == x.getArray
+		}
+
 		property("scanl behaves") <- forAll { (withArray : ArrayOf<Int>) in
 			let scanned = withArray.getArray.scanl(0, r: +)
 			if withArray.getArray.isEmpty {
