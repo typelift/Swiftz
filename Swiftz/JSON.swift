@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum JSONValue : Printable {
+public enum JSONValue : CustomStringConvertible {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
 	case JSONNumber(Double)
@@ -18,19 +18,19 @@ public enum JSONValue : Printable {
 	
 	private func values() -> NSObject {
 		switch self {
-		case let JSONArray(xs): 
+		case let .JSONArray(xs):
 			return NSArray(array: xs.map { $0.values() })
-		case let JSONObject(xs): 
-			return NSDictionary(dictionary: map(dict: xs)({ k, v in
+		case let .JSONObject(xs):
+			return Dictionary.fromList(xs.map({ k, v in
 				return (NSString(string: k), v.values())
 			}))
-		case let JSONNumber(n): 
+		case let .JSONNumber(n):
 			return NSNumber(double: n)
-		case let JSONString(s): 
+		case let .JSONString(s):
 			return NSString(string: s)
-		case let JSONBool(b): 
+		case let .JSONBool(b):
 			return NSNumber(bool: b)
-		case let JSONNull(): 
+		case .JSONNull():
 			return NSNull()
 		}
 	}
@@ -41,14 +41,14 @@ public enum JSONValue : Printable {
 		case let xs as NSArray:
 			return .JSONArray((xs as [AnyObject]).map { self.make($0 as! NSObject) })
 		case let xs as NSDictionary:
-			return JSONValue.JSONObject(map(dict: xs as [NSObject: AnyObject])({ (k: NSObject, v: AnyObject) in
+			return JSONValue.JSONObject(Dictionary.fromList((xs as [NSObject: AnyObject]).map({ (k: NSObject, v: AnyObject) in
 				return (String(k as! NSString), self.make(v as! NSObject))
-			}))
+			})))
 		case let xs as NSNumber: // TODO: number or bool?...
 			return .JSONNumber(Double(xs.doubleValue))
 		case let xs as NSString: 
 			return .JSONString(String(xs))
-		case let xs as NSNull: 
+		case _ as NSNull:
 			return .JSONNull()
 		default:
 			return error("Non-exhaustive pattern match performed.");
@@ -56,17 +56,22 @@ public enum JSONValue : Printable {
 	}
 	
 	public func encode() -> NSData? {
-		var e: NSError?
-		let opts: NSJSONWritingOptions = nil
-		// TODO: check s is a dict or array
-		return NSJSONSerialization.dataWithJSONObject(self.values(), options:opts, error: &e)
+		do {
+			// TODO: check s is a dict or array
+			return try NSJSONSerialization.dataWithJSONObject(self.values(), options: NSJSONWritingOptions(rawValue: 0))
+		} catch _ {
+			return nil
+		}
 	}
 	
 	// TODO: should this be optional?
 	public static func decode(s : NSData) -> JSONValue? {
-		var e: NSError?
-		let opts: NSJSONReadingOptions = nil
-		let r: AnyObject? = NSJSONSerialization.JSONObjectWithData(s, options: opts, error: &e)
+		let r : AnyObject?
+		do {
+			r = try NSJSONSerialization.JSONObjectWithData(s, options: NSJSONReadingOptions(rawValue: 0))
+		} catch _ {
+			r = nil
+		}
 		
 		if let json: AnyObject = r {
 			return make(json as! NSObject)
@@ -112,9 +117,9 @@ public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	case let (.JSONNumber(l), .JSONNumber(r)) where l == r: 
 		return true
 	case let (.JSONObject(l), .JSONObject(r))
-		where equal(l, r, { (v1: (String, JSONValue), v2: (String, JSONValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
+		where l.elementsEqual(r, isEquivalent: { (v1: (String, JSONValue), v2: (String, JSONValue)) in v1.0 == v2.0 && v1.1 == v2.1 }):
 		return true
-	case let (.JSONArray(l), .JSONArray(r)) where equal(l, r, { $0 == $1 }):
+	case let (.JSONArray(l), .JSONArray(r)) where l.elementsEqual(r, isEquivalent: { $0 == $1 }):
 		return true
 	default: 
 		return false
@@ -146,7 +151,7 @@ public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs) >>- { A.fromJSON($0) }
+		return resolveKeypath(d, rhs: rhs) >>- { A.fromJSON($0) }
 	default:
 		return .None
 	}
@@ -155,7 +160,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs) >>- JArrayFrom<A, A>.fromJSON
+		return resolveKeypath(d, rhs: rhs) >>- JArrayFrom<A, A>.fromJSON
 	default:
 		return .None
 	}
@@ -164,7 +169,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs) >>- JDictionaryFrom<A, A>.fromJSON
+		return resolveKeypath(d, rhs: rhs) >>- JDictionaryFrom<A, A>.fromJSON
 	default:
 		return .None
 	}
@@ -361,9 +366,9 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs): 
-			return map(dict: xs)({ k, x in
+			return Dictionary.fromList(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
-			})
+			}))
 		default: 
 			return Optional.None
 		}
@@ -374,9 +379,9 @@ public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable
 	public typealias J = Dictionary<String, A>
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ k, x -> (String, JSONValue) in
+		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x -> (String, JSONValue) in
 			return (k, B.toJSON(x))
-		}))
+		})))
 	}
 }
 
@@ -385,19 +390,19 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
-		case let .JSONObject(xs): 
-			return map(dict: xs)({ k, x in
+		case let .JSONObject(xs):
+			return Dictionary<String, A>.fromList(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
-			})
+			}))
 		default: 
 			return Optional.None
 		}
 	}
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(map(dict: xs)({ k, x in
+		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x in
 			return (k, B.toJSON(x))
-		}))
+		})))
 	}
 }
 
@@ -409,14 +414,14 @@ private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypa
 		return .None
 	}
 	
-	switch match(rhs.path) {
+	switch rhs.path.match {
 	case .Nil:
 		return .None
 	case let .Cons(hd, tl):
 		if let o = lhs[hd] {
 			switch o {
 			case let .JSONObject(d) where rhs.path.count > 1:
-				return resolveKeypath(d, JSONKeypath(tl))
+				return resolveKeypath(d, rhs: JSONKeypath(tl))
 			default:
 				return o
 			}

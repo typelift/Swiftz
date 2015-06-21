@@ -21,12 +21,11 @@ class HListSpec : XCTestCase {
 		XCTAssert(list1.tail.head == "banana")
 		XCTAssert(AList.length == 2)
 
+		XCTAssert(list2.head == false)
+		XCTAssert(BList.length == 1)
+
 		typealias Zero = HAppend<HNil, AList, AList>
 		typealias One = HAppend<BList, AList, HCons<Bool, HCons<Int, HCons<String, HNil>>>>
-
-		let zero : Zero = HAppend<(), (), ()>.makeAppend()
-		let one : One = HAppend<(), (), ()>.makeAppend(zero)
-		let x = one.append(list2, list1)
 
 		typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
 		typealias FComp = HMap<(), (Int -> Int, Int -> Int), Int -> Int>

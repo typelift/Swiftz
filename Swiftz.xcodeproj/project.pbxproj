@@ -12,6 +12,10 @@
 		84152B731A818A5C006387D5 /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88F981A71DF7F003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8480AB4E1A7B448A00C6162D /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4D1A7B448A00C6162D /* Sections.swift */; };
 		84961FB51A998976004A186A /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84961FB41A998976004A186A /* State.swift */; };
+		8496F0E71B37571F00896D26 /* Foldable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E61B37571F00896D26 /* Foldable.swift */; };
+		8496F0E81B37571F00896D26 /* Foldable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E61B37571F00896D26 /* Foldable.swift */; };
+		8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E91B375BD400896D26 /* EitherExt.swift */; };
+		8496F0EB1B375BD400896D26 /* EitherExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8496F0E91B375BD400896D26 /* EitherExt.swift */; };
 		84A53D711B1A900900E8A107 /* PartyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC11A71DFA0003D53CF /* PartyExample.swift */; };
 		84A53D721B1A900900E8A107 /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC41A71DFA0003D53CF /* ShapeExample.swift */; };
 		84A53D731B1A900900E8A107 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC81A71DFA0003D53CF /* UserExample.swift */; };
@@ -86,24 +90,20 @@
 		84A8903C1A71DFC5003D53CF /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900C1A71DFC5003D53CF /* Tuple.swift */; };
 		84A8903D1A71DFC5003D53CF /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900D1A71DFC5003D53CF /* TupleExt.swift */; };
 		84A890481A71DFE5003D53CF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903E1A71DFE5003D53CF /* Array.swift */; };
-		84A890491A71DFE5003D53CF /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903F1A71DFE5003D53CF /* Box.swift */; };
 		84A8904A1A71DFE5003D53CF /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890401A71DFE5003D53CF /* Either.swift */; };
 		84A8904B1A71DFE5003D53CF /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890411A71DFE5003D53CF /* Error.swift */; };
 		84A8904C1A71DFE5003D53CF /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890421A71DFE5003D53CF /* Functions.swift */; };
 		84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890431A71DFE5003D53CF /* Nothing.swift */; };
-		84A8904F1A71DFE5003D53CF /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890451A71DFE5003D53CF /* Optional.swift */; };
 		84A890501A71DFE5003D53CF /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890461A71DFE5003D53CF /* Result.swift */; };
 		84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB57631AA12D2200214BC5 /* StateSpec.swift */; };
 		84DF75291B0BD17700C912B0 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DF751E1B0BD17700C912B0 /* Swiftz.framework */; };
 		84DF759C1B0BD1D400C912B0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FF71A71DFC5003D53CF /* Kinds.swift */; };
 		84DF759D1B0BD1D400C912B0 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890021A71DFC5003D53CF /* Operators.swift */; };
 		84DF759E1B0BD1D400C912B0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903E1A71DFE5003D53CF /* Array.swift */; };
-		84DF759F1B0BD1D400C912B0 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903F1A71DFE5003D53CF /* Box.swift */; };
 		84DF75A01B0BD1D400C912B0 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890401A71DFE5003D53CF /* Either.swift */; };
 		84DF75A11B0BD1D400C912B0 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890411A71DFE5003D53CF /* Error.swift */; };
 		84DF75A21B0BD1D400C912B0 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890421A71DFE5003D53CF /* Functions.swift */; };
 		84DF75A31B0BD1D400C912B0 /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890431A71DFE5003D53CF /* Nothing.swift */; };
-		84DF75A41B0BD1D400C912B0 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890451A71DFE5003D53CF /* Optional.swift */; };
 		84DF75A51B0BD1D400C912B0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890461A71DFE5003D53CF /* Result.swift */; };
 		84DF75A61B0BD1D400C912B0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4D1A7B448A00C6162D /* Sections.swift */; };
 		84DF75A71B0BD1D400C912B0 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FDE1A71DFC5003D53CF /* Applicative.swift */; };
@@ -238,6 +238,8 @@
 /* Begin PBXFileReference section */
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		8496F0E61B37571F00896D26 /* Foldable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Foldable.swift; sourceTree = "<group>"; };
+		8496F0E91B375BD400896D26 /* EitherExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EitherExt.swift; sourceTree = "<group>"; };
 		84A88F981A71DF7F003D53CF /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A88F9C1A71DF7F003D53CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84A88FA31A71DF7F003D53CF /* SwiftzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -298,12 +300,10 @@
 		84A8900C1A71DFC5003D53CF /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A8900D1A71DFC5003D53CF /* TupleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleExt.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A8903E1A71DFE5003D53CF /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Array.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Array.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
-		84A8903F1A71DFE5003D53CF /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Box.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Box.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890401A71DFE5003D53CF /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Either.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Either.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890411A71DFE5003D53CF /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Error.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890421A71DFE5003D53CF /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Functions.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Functions.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890431A71DFE5003D53CF /* Nothing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Nothing.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Nothing.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
-		84A890451A71DFE5003D53CF /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Optional.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Optional.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890461A71DFE5003D53CF /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Result.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84BB57631AA12D2200214BC5 /* StateSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateSpec.swift; sourceTree = "<group>"; };
 		84DF751E1B0BD17700C912B0 /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,12 +415,10 @@
 			isa = PBXGroup;
 			children = (
 				84A8903E1A71DFE5003D53CF /* Array.swift */,
-				84A8903F1A71DFE5003D53CF /* Box.swift */,
 				84A890401A71DFE5003D53CF /* Either.swift */,
 				84A890411A71DFE5003D53CF /* Error.swift */,
 				84A890421A71DFE5003D53CF /* Functions.swift */,
 				84A890431A71DFE5003D53CF /* Nothing.swift */,
-				84A890451A71DFE5003D53CF /* Optional.swift */,
 				84A890461A71DFE5003D53CF /* Result.swift */,
 				8480AB4D1A7B448A00C6162D /* Sections.swift */,
 			);
@@ -453,6 +451,7 @@
 				84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */,
 				84A88FE61A71DFC5003D53CF /* CharacterExt.swift */,
 				84A88FEA1A71DFC5003D53CF /* DictionaryExt.swift */,
+				8496F0E91B375BD400896D26 /* EitherExt.swift */,
 				84A890031A71DFC5003D53CF /* OptionalExt.swift */,
 				84EA2C261B1CE70B0001FB3F /* ResultExt.swift */,
 				84A890091A71DFC5003D53CF /* StringExt.swift */,
@@ -468,6 +467,7 @@
 				84A88FE21A71DFC5003D53CF /* Bifunctor.swift */,
 				84A88FE31A71DFC5003D53CF /* Bounded.swift */,
 				84A88FE81A71DFC5003D53CF /* Copointed.swift */,
+				8496F0E61B37571F00896D26 /* Foldable.swift */,
 				84A88FEC1A71DFC5003D53CF /* Function.swift */,
 				84A88FED1A71DFC5003D53CF /* Functor.swift */,
 				84A88FF01A71DFC5003D53CF /* HList.swift */,
@@ -641,7 +641,8 @@
 		84A88F8F1A71DF7F003D53CF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = TypeLift;
 				TargetAttributes = {
 					84A88F971A71DF7F003D53CF = {
@@ -783,17 +784,17 @@
 				84A8904C1A71DFE5003D53CF /* Functions.swift in Sources */,
 				84A890211A71DFC5003D53CF /* Iso.swift in Sources */,
 				84A890311A71DFC5003D53CF /* Num.swift in Sources */,
-				84A8904F1A71DFE5003D53CF /* Optional.swift in Sources */,
 				84A890101A71DFC5003D53CF /* ArrayZipper.swift in Sources */,
 				84A890231A71DFC5003D53CF /* IxMultiStore.swift in Sources */,
 				84A890191A71DFC5003D53CF /* Curry.swift in Sources */,
 				84A8901A1A71DFC5003D53CF /* DictionaryExt.swift in Sources */,
+				8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84A8902E1A71DFC5003D53CF /* NonEmptyList.swift in Sources */,
 				84A8901D1A71DFC5003D53CF /* Functor.swift in Sources */,
 				84A8901C1A71DFC5003D53CF /* Function.swift in Sources */,
 				84A890241A71DFC5003D53CF /* IxState.swift in Sources */,
+				8496F0E71B37571F00896D26 /* Foldable.swift in Sources */,
 				84A890391A71DFC5003D53CF /* StringExt.swift in Sources */,
-				84A890491A71DFE5003D53CF /* Box.swift in Sources */,
 				84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */,
 				84A890281A71DFC5003D53CF /* Lens.swift in Sources */,
 				84A890131A71DFC5003D53CF /* Bounded.swift in Sources */,
@@ -837,12 +838,10 @@
 				84DF759D1B0BD1D400C912B0 /* Operators.swift in Sources */,
 				84DF759E1B0BD1D400C912B0 /* Array.swift in Sources */,
 				84EA2C281B1CE70B0001FB3F /* ResultExt.swift in Sources */,
-				84DF759F1B0BD1D400C912B0 /* Box.swift in Sources */,
 				84DF75A01B0BD1D400C912B0 /* Either.swift in Sources */,
 				84DF75A11B0BD1D400C912B0 /* Error.swift in Sources */,
 				84DF75A21B0BD1D400C912B0 /* Functions.swift in Sources */,
 				84DF75A31B0BD1D400C912B0 /* Nothing.swift in Sources */,
-				84DF75A41B0BD1D400C912B0 /* Optional.swift in Sources */,
 				84DF75A51B0BD1D400C912B0 /* Result.swift in Sources */,
 				84DF75A61B0BD1D400C912B0 /* Sections.swift in Sources */,
 				84DF75A71B0BD1D400C912B0 /* Applicative.swift in Sources */,
@@ -871,10 +870,12 @@
 				84DF75BE1B0BD1D400C912B0 /* Maybe.swift in Sources */,
 				84DF75BF1B0BD1D400C912B0 /* Monoid.swift in Sources */,
 				84DF75C01B0BD1D400C912B0 /* NonEmptyList.swift in Sources */,
+				8496F0EB1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84DF75C11B0BD1D400C912B0 /* Num.swift in Sources */,
 				84DF75C21B0BD1D400C912B0 /* Pointed.swift in Sources */,
 				84DF75C31B0BD1D400C912B0 /* Semigroup.swift in Sources */,
 				84DF75C41B0BD1D400C912B0 /* State.swift in Sources */,
+				8496F0E81B37571F00896D26 /* Foldable.swift in Sources */,
 				84DF75C51B0BD1D400C912B0 /* SYB.swift in Sources */,
 				84DF75C61B0BD1D400C912B0 /* Those.swift in Sources */,
 				84DF75C71B0BD1D400C912B0 /* Tuple.swift in Sources */,
@@ -957,6 +958,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1031,6 +1033,7 @@
 				INFOPLIST_FILE = Swiftz/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -1052,6 +1055,7 @@
 				INFOPLIST_FILE = Swiftz/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -1074,6 +1078,7 @@
 				);
 				INFOPLIST_FILE = SwiftzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.maxs.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1090,6 +1095,7 @@
 				);
 				INFOPLIST_FILE = SwiftzTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.maxs.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1112,6 +1118,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Swiftz;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1134,6 +1141,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Swiftz;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1161,6 +1169,7 @@
 				INFOPLIST_FILE = SwiftzTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.maxs.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -1178,6 +1187,7 @@
 				INFOPLIST_FILE = SwiftzTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.maxs.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

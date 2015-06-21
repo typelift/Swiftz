@@ -13,7 +13,15 @@ public protocol Monoid : Semigroup {
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mzero, t)
+	return sconcat(S.mzero, t: t)
+}
+
+extension List : Monoid {
+	public static var mzero : List<A> { return [] }
+}
+
+extension Array : Monoid {
+	public static var mzero : [T] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
@@ -129,8 +137,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -141,15 +149,15 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public static func left(x: A) -> Dither<A, B> {
-		return Dither([Either.left(x)])
+		return Dither([Either.Left(x)])
 	}
 
 	public static func right(y: B) -> Dither<A, B> {
-		return Dither([Either.right(y)])
+		return Dither([Either.Right(y)])
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
 	public static var mzero : Dither<A, B> {

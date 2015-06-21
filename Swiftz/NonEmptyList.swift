@@ -10,11 +10,11 @@
 ///
 /// Traditionally partial operations on regular lists are total with non-empty lists.
 public struct NonEmptyList<A> {
-	public let head : Box<A>
+	public let head : A
 	public let tail : List<A>
 
 	public init(_ a : A, _ t : List<A>) {
-		head = Box(a)
+		head = a
 		tail = t
 	}
 
@@ -28,20 +28,20 @@ public struct NonEmptyList<A> {
 	}
 
 	public func toList() -> List<A> {
-		return List(head.value, tail)
+		return List(head, tail)
 	}
 }
 
 public func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
-	return Lens { nel in IxStore(nel.head.value) { NonEmptyList($0, nel.tail) } }
+	return Lens { nel in IxStore(nel.head) { NonEmptyList($0, nel.tail) } }
 }
 
 public func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
-	return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head.value, $0) } }
+	return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head, $0) } }
 }
 
 public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
-	return (lhs.head.value == rhs.head.value && lhs.tail == rhs.tail)
+	return (lhs.head == rhs.head && lhs.tail == rhs.tail)
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
@@ -55,7 +55,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
 			xs.append(x)
 		}
 		var l = List<A>()
-		for x in xs.reverse() {
+		for x in Array(xs.reverse()) {
 			l = List(x, l)
 		}
 		self = NonEmptyList(h!, l)
@@ -70,13 +70,13 @@ public final class NonEmptyListGenerator<A> : K1<A>, GeneratorType {
 			head = nil
 			return h
 		} else {
-			var r = l?.head()
+			let r = l?.head()
 			l = self.l?.tail()
 			return r
 		}
 	}
 	public init(_ l : NonEmptyList<A>) {
-		head = l.head.value
+		head = l.head
 		self.l = l.tail
 	}
 }
@@ -87,9 +87,9 @@ extension NonEmptyList : SequenceType {
 	}
 }
 
-extension NonEmptyList : Printable {
+extension NonEmptyList : CustomStringConvertible {
 	public var description : String {
-		var x = ", ".join(self.fmap({ "\($0)" }))
+		let x = ", ".join(self.fmap({ "\($0)" }))
 		return "[\(x)]"
 	}
 }
@@ -99,7 +99,7 @@ extension NonEmptyList : Functor {
 	typealias FB = NonEmptyList<B>
 	
 	public func fmap<B>(f : (A -> B)) -> NonEmptyList<B> {
-		return NonEmptyList<B>(f(self.head.value), self.tail.fmap(f))
+		return NonEmptyList<B>(f(self.head), self.tail.fmap(f))
 	}
 }
 
@@ -120,14 +120,14 @@ extension NonEmptyList : Applicative {
 
 extension NonEmptyList : Monad {
 	public func bind<B>(f : A -> NonEmptyList<B>) -> NonEmptyList<B> {
-		let nh = f(self.head.value)
-		return NonEmptyList<B>(nh.head.value, nh.tail + self.tail.bind { t in f(t).toList() })
+		let nh = f(self.head)
+		return NonEmptyList<B>(nh.head, nh.tail + self.tail.bind { t in f(t).toList() })
 	}
 }
 
 extension NonEmptyList : Copointed {
 	public func extract() -> A {
-		return self.head.value
+		return self.head
 	}
 }
 

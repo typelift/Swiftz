@@ -46,13 +46,6 @@ public func comp<S, T, I, J, A, B>(i1 : Iso<S, T, I, J>)(i2 : Iso<I, J, A, B>) -
 	return i1 • i2
 }
 
-/// MARK: Box iso
-
-/// An isomorphism between Box and its underlying type.
-public func isoBox<A, B>() -> Iso<Box<A>, Box<B>, A, B> {
-	return Iso(get: { $0.value }, inject: { Box($0) } )
-}
-
 /// MARK: Functor base types
 
 /// An isomorphism between the Identity Functor and its underlying type.
