@@ -29,8 +29,8 @@ struct ResultOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 
 	static func arbitrary() -> Gen<ResultOf<A>> {
 		return Gen.frequency([
-			(1, Gen.pure(ResultOf(.Error(defaultError)))),
-			(3, liftM({ ResultOf(pure($0)) })(m1: A.arbitrary()))
+			(1, Gen.pure(ResultOf(Result<A>.Error(defaultError)))),
+			(3, liftM(ResultOf.init • Result<A>.pure)(m1: A.arbitrary()))
 		])
 	}
 
@@ -39,7 +39,7 @@ struct ResultOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 		case .Error(_):
 			return []
 		case let .Value(v):
-			return [ResultOf(.Error(defaultError))] + A.shrink(v).map({ ResultOf(pure($0)) })
+			return [ResultOf(.Error(defaultError))] + A.shrink(v).map(ResultOf.init • Result.pure)
 		}
 	}
 }

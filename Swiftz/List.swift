@@ -331,7 +331,7 @@ public struct List<A> {
 	/// function) and a key and returns the value for the given key, if there is one, or None 
 	/// otherwise.
 	public func lookup<K : Equatable, V>(ev : A -> (K, V), key : K) -> Optional<V> {
-		return { ev($0).1 } <^> self.find({ ev($0).0 == key })
+		return (snd • ev) <^> self.find({ ev($0).0 == key })
 	}
 
 	/// Returns a List of an infinite number of iteratations of applications of a function to an
@@ -432,8 +432,7 @@ extension List : CollectionType {
 
 extension List : CustomStringConvertible {
 	public var description : String {
-		let x = ", ".join(self.fmap({ "\($0)" }))
-		return "[\(x)]"
+		return self.map({ String.init($0) }).intersperse(", ").reduce("", combine: +)
 	}
 }
 
@@ -463,7 +462,7 @@ extension List : Applicative {
 	typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
-		return concat(f.map({ self.map($0) }))
+		return concat(f.map(self.map))
 	}
 }
 
