@@ -151,7 +151,7 @@ public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs: rhs) >>- { A.fromJSON($0) }
+		return resolveKeypath(d, rhs: rhs) >>- A.fromJSON
 	default:
 		return .None
 	}
@@ -315,7 +315,7 @@ public struct JArrayFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
-			let r = xs.map({ B.fromJSON($0) })
+			let r = xs.map(B.fromJSON)
 			let rp = mapFlatten(r)
 			if r.count == rp.count {
 				return rp
@@ -332,7 +332,7 @@ public struct JArrayTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
 	public typealias J = [A]
 	
 	public static func toJSON(xs: J) -> JSONValue {
-		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
+		return JSONValue.JSONArray(xs.map(B.toJSON))
 	}
 }
 
@@ -342,7 +342,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONArray(xs):
-			let r = xs.map({ B.fromJSON($0) })
+			let r = xs.map(B.fromJSON)
 			let rp = mapFlatten(r)
 			if r.count == rp.count {
 				return rp
@@ -355,7 +355,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 	}
 	
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONArray(xs.map { B.toJSON($0) } )
+		return JSONValue.JSONArray(xs.map(B.toJSON))
 	}
 }
 

@@ -127,7 +127,7 @@ extension String {
 			}, initial: [""])
 		}
 
-		return tails(r).any { self.isPrefixOf($0) }
+		return tails(r).any(self.isPrefixOf)
 	}
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
@@ -190,7 +190,7 @@ extension String : Applicative {
 	typealias FAB = [Character -> Character]
 
 	public func ap(a : [Character -> Character]) -> String {
-		return a.map({ return self.map($0) }).reduce("", combine: +)
+		return a.map(self.map).reduce("", combine: +)
 	}
 }
 
