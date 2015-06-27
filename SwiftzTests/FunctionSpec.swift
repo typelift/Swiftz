@@ -24,7 +24,7 @@ class FunctionSpec : XCTestCase {
         property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             return forAll { (x : Int8) in
                 let la = Function.arr(f.getArrow) >>> Function.arr(g.getArrow)
-                let ra = Function.arr(f.getArrow • g.getArrow)
+                let ra = Function.arr(g.getArrow • f.getArrow)
                 return la.apply(x) == ra.apply(x)
             }
         }
@@ -83,7 +83,7 @@ class FunctionSpec : XCTestCase {
         }
         
         property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
-            let la = Function.arr(f.getArrow • g.getArrow).left()
+            let la = Function.arr(g.getArrow • f.getArrow).left()
             let ra = Function.arr(f.getArrow).left() >>> Function.arr(g.getArrow).left()
             return forAll { (e : EitherOf<Int8, Int8>) in
                 return la.apply(e.getEither) == ra.apply(e.getEither)
