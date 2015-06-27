@@ -29,7 +29,7 @@ extension Function : Category {
 	typealias CAC = Function<A, C>
 
 	public static func id() -> Function<T, T> {
-		return Function<T, T>({ $0 })
+		return Function<T, T>(identity)
 	}
 }
 

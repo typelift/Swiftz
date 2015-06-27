@@ -90,9 +90,9 @@ extension Array {
 
 	/// Takes, at most, a specified number of elements from a list and returns that sublist.
 	///
-	///     take(3,  from: [1,2]) == [1,2]
-	///     take(-1, from: [1,2]) == []
-	///     take(0,  from: [1,2]) == []
+	///     [1,2].take(3)  == [1,2]
+	///     [1,2].take(-1) == []
+	///     [1,2].take(0)  == []
 	public func take(n : Int) -> [T] {
 		if n <= 0 {
 			return []
@@ -103,9 +103,9 @@ extension Array {
 
 	/// Drops, at most, a specified number of elements from a list and returns that sublist.
 	///
-	///     drop(3,  from: [1,2]) == []
-	///     drop(-1, from: [1,2]) == [1,2]
-	///     drop(0,  from: [1,2]) == [1,2]
+	///     [1,2].drop(3)  == []
+	///     [1,2].drop(-1) == [1,2]
+	///     [1,2].drop(0)  == [1,2]
 	public func drop(n : Int) -> [T] {
 		if n <= 0 {
 			return self
@@ -114,9 +114,20 @@ extension Array {
 		return Array(self[min(n, self.count) ..< self.count])
 	}
 
-	/// Adds an element to the front of a list.
+	/// Returns an array consisting of the receiver with a given element appended to the front.
 	public func cons(lhs : T) -> [T] {
 		return [lhs] + self
+	}
+	
+	/// Decomposes the receiver into its head and tail.  If the receiver is empty the result is
+	/// `.None`, else the result is `.Just(head, tail)`.
+	public var uncons : Optional<(T, [T])> {
+		switch self.match {
+		case .Nil:
+			return .None
+		case let .Cons(x, xs):
+			return .Some(x, xs)
+		}
 	}
 
 	/// Safely indexes into an array by converting out of bounds errors to nils.
@@ -151,7 +162,7 @@ extension Array {
 	/// of a list accumulating the results of successive function calls applied to reduced values from
 	/// the left to the right.
 	///
-	///     scanl(z, [x1, x2, ...], f) == [z, f(z, x1), f(f(z, x1), x2), ...]
+	///     [x1, x2, ...].scanl(z, f) == [z, f(z, x1), f(f(z, x1), x2), ...]
 	public func scanl<B>(start : B, r : (B, T) -> B) -> [B] {
 		if self.isEmpty {
 			return [start]
@@ -180,18 +191,18 @@ extension Array {
 	/// Returns a tuple containing the first n elements of a list first and the remaining elements
 	/// second.
 	///
-	///     splitAt(3, [1,2,3,4,5]) == ([1,2,3],[4,5])
-	///     splitAt(1, [1,2,3])     == ([1],[2,3])
-	///     splitAt(3, [1,2,3])     == ([1,2,3],[])
-	///     splitAt(4, [1,2,3])     == ([1,2,3],[])
-	///     splitAt(0, [1,2,3])     == ([],[1,2,3])
+	///     [1,2,3,4,5].splitAt(3) == ([1, 2, 3],[4, 5])
+	///     [1,2,3].splitAt(1)     == ([1], [2, 3])
+	///     [1,2,3].splitAt(3)     == ([1, 2, 3], [])
+	///     [1,2,3].splitAt(4)     == ([1, 2, 3], [])
+	///     [1,2,3].splitAt(0)     == ([], [1, 2, 3])
 	public func splitAt(n : Int) -> ([T], [T]) {
 		return (self.take(n), self.drop(n))
 	}
 
 	/// Takes a separator and a list and intersperses that element throughout the list.
 	///
-	///     intersperse(",", ["a","b","c","d","e"] == ["a",",","b",",","c",",","d",",","e"]
+	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
 	public func intersperse(item : T) -> [T] {
 		func prependAll(item : T, array : [T]) -> [T] {
 			var arr = Array([item])
@@ -229,12 +240,12 @@ extension Array {
 	/// Returns a tuple with the first elements that satisfy a predicate until that predicate returns
 	/// false first, and a the rest of the elements second.
 	///
-	///     span([1, 2, 3, 4, 1, 2, 3, 4]) { <3 } == ([1, 2],[3, 4, 1, 2, 3, 4])
-	///     span([1, 2, 3]) { <9 }                == ([1, 2, 3],[])
-	///     span([1, 2, 3]) { <0 }                == ([],[1, 2, 3])
+	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
+	///     [1, 2, 3].span(<9)                == ([1, 2, 3],[])
+	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
 	///
 	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
-	public func span(p : (T -> Bool)) -> ([T], [T]) {
+	public func span(p : T -> Bool) -> ([T], [T]) {
 		switch self.match {
 		case .Nil:
 			return ([], [])
@@ -249,6 +260,10 @@ extension Array {
 
 	/// Returns a tuple with the first elements that do not satisfy a predicate until that predicate
 	/// returns false first, and a the rest of the elements second.
+	///
+	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
+	///
+	///     self.extreme(p) == self.span((!) • p)
 	public func extreme(p : T -> Bool) -> ([T], [T]) {
 		return self.span { ((!) • p)($0) }
 	}
@@ -272,12 +287,12 @@ extension Array {
 		return self.groupBy(curry(p))
 	}
 
-	/// Returns a list of the first elements that do not satisfy a predicate until that predicate
+	/// Returns an array of the first elements that do not satisfy a predicate until that predicate
 	/// returns false.
 	///
-	///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3], <3) == [3,4,5,1,2,3]
-	///     dropWhile([1, 2, 3], <9)                == []
-	///     dropWhile([1, 2, 3], <0)                == [1,2,3]
+	///     [1, 2, 3, 4, 5, 1, 2, 3].dropWhile(<3) == [3,4,5,1,2,3]
+	///     [1, 2, 3].dropWhile(<9)                == []
+	///     [1, 2, 3].dropWhile(<0)                == [1,2,3]
 	public func dropWhile(p : T -> Bool) -> [T] {
 		switch self.match {
 		case .Nil:
@@ -289,13 +304,22 @@ extension Array {
 			return self
 		}
 	}
+	
+	/// Returns an array of of the remaining elements after dropping the largest suffix of the 
+	/// receiver over which the predicate holds.
+	///
+	///     [1, 2, 3, 4, 5].dropWhileEnd(>3) == [1, 2, 3]
+	///     [1, 2, 3, 4, 5, 2].dropWhileEnd(>3) == [1, 2, 3, 4, 5, 2]
+	public func dropWhileEnd(p : T -> Bool) -> [T] {
+		return self.reduce([T](), combine: { xs, x in p(x) && xs.isEmpty ? [] : xs.cons(x) })
+	}
 
-	/// Returns a list of the first elements that satisfy a predicate until that predicate returns
+	/// Returns an array of the first elements that satisfy a predicate until that predicate returns
 	/// false.
 	///
-	///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4], <3)  == [1, 2]
-	///     takeWhile([1,2,3], <9)                  == [1, 2, 3]
-	///     takeWhile([1,2,3], <0)                  == []
+	///     [1, 2, 3, 4, 1, 2, 3, 4].takeWhile(<3) == [1, 2]
+	///     [1,2,3].takeWhile(<9)                  == [1, 2, 3]
+	///     [1,2,3].takeWhile(<0)                  == []
 	public func takeWhile(p : T -> Bool) -> [T] {
 		switch self.match {
 		case .Nil:

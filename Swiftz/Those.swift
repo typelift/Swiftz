@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. Lll rights reserved.
 //
 
-/// Represents a value with three possiblities: Either is contains a left value, a right value, or
-/// both a left and right value (This, That, and Those respectively).
+/// Represents a value with three possiblities: a left value, a right value, or both a left and 
+/// right value (This, That, and These respectively).
 public enum Those<L, R> {
 	case This(L)
 	case That(R)

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
+		826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
 		841408C31B1A8B3F00BA2B6C /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF763E1B0BDD4B00C912B0 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		841408C41B1A8B4700BA2B6C /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF751E1B0BD17700C912B0 /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84152B731A818A5C006387D5 /* Swiftz.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A88F981A71DF7F003D53CF /* Swiftz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -236,6 +238,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		8496F0E61B37571F00896D26 /* Foldable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Foldable.swift; sourceTree = "<group>"; };
@@ -514,6 +517,7 @@
 			children = (
 				84A88FB71A71DFA0003D53CF /* EitherSpec.swift */,
 				84A88FB81A71DFA0003D53CF /* FunctorSpec.swift */,
+				826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */,
 				84A88FBA1A71DFA0003D53CF /* HListSpec.swift */,
 				84A88FBB1A71DFA0003D53CF /* JSONSpec.swift */,
 				84A88FBC1A71DFA0003D53CF /* ListSpec.swift */,
@@ -816,6 +820,7 @@
 				84A88FD61A71DFA0003D53CF /* PartyExample.swift in Sources */,
 				84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */,
 				84A88FCF1A71DFA0003D53CF /* HListSpec.swift in Sources */,
+				826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				84A88FDB1A71DFA0003D53CF /* ThoseSpec.swift in Sources */,
 				84A88FDD1A71DFA0003D53CF /* UserExample.swift in Sources */,
 				84A88FC91A71DFA0003D53CF /* ArrayExtSpec.swift in Sources */,
@@ -898,6 +903,7 @@
 				84A53D741B1A900900E8A107 /* EitherSpec.swift in Sources */,
 				84A53D751B1A900900E8A107 /* FunctorSpec.swift in Sources */,
 				84A53D761B1A900900E8A107 /* HListSpec.swift in Sources */,
+				826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				84A53D771B1A900900E8A107 /* JSONSpec.swift in Sources */,
 				84A53D781B1A900900E8A107 /* ListSpec.swift in Sources */,
 				84A53D791B1A900900E8A107 /* MaybeSpec.swift in Sources */,
