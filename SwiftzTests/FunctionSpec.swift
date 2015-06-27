@@ -16,12 +16,12 @@ class FunctionSpec : XCTestCase {
             return (t.0.0, (t.0.1, t.1))
         }
         
-        property("") <- forAll { (x : Int8) in
+        property("identity") <- forAll { (x : Int8) in
             let a = Function<Int8, Int8>.arr(identity)
             return a.apply(x) == identity(x)
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+        property("composition") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             return forAll { (x : Int8) in
                 let la = Function.arr(f.getArrow) >>> Function.arr(g.getArrow)
                 let ra = Function.arr(g.getArrow • f.getArrow)
@@ -29,7 +29,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>) in
+        property("first") <- forAll { (f : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow).first()
             let ra = Function.arr(Function.arr(f.getArrow).first().apply)
             return forAll { (x : Int8, y : Int8) in
@@ -37,7 +37,7 @@ class FunctionSpec : XCTestCase {
             }
         }
             
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+        property("first under composition") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow) >>> Function.arr(g.getArrow)
             let ra = Function.arr(f.getArrow).first() >>> Function.arr(g.getArrow).first()
             return forAll { (x : Int8, y : Int8) in
@@ -45,7 +45,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>) in
+        property("first") <- forAll { (f : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow).first() >>> Function.arr(fst)
             let ra = Function<(Int8, Int8), Int8>.arr(fst) >>> Function.arr(f.getArrow)
             return forAll { (x : Int8, y : Int8) in
@@ -53,7 +53,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+        property("split") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow).first() >>> (Function.arr(identity) *** Function.arr(g.getArrow))
             let ra = (Function.arr(identity) *** Function.arr(g.getArrow)) >>> Function.arr(f.getArrow).first()
             return forAll { (x : Int8, y : Int8) in
@@ -74,7 +74,7 @@ class FunctionSpec : XCTestCase {
     }
     
     func testArrowChoiceLaws() {
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>) in
+        property("left") <- forAll { (f : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow).left()
             let ra = Function.arr(Function.arr(f.getArrow).left().apply)
             return forAll { (e : EitherOf<Int8, Int8>) in
@@ -82,7 +82,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+        property("composition") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             let la = Function.arr(g.getArrow • f.getArrow).left()
             let ra = Function.arr(f.getArrow).left() >>> Function.arr(g.getArrow).left()
             return forAll { (e : EitherOf<Int8, Int8>) in
@@ -90,7 +90,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>) in
+        property("left under composition") <- forAll { (f : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow) >>> Function.arr(Either<Int8, Int8>.Left)
             let ra = Function.arr(Either<Int8, Int8>.Left) >>> Function.arr(f.getArrow).left()
             return forAll { (x : Int8) in
@@ -98,7 +98,7 @@ class FunctionSpec : XCTestCase {
             }
         }
         
-        property("") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+        property("choice") <- forAll { (f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
             let la = Function.arr(f.getArrow).left() >>> (Function.arr(identity) +++ Function.arr(g.getArrow))
             let ra =  (Function.arr(identity) +++ Function.arr(g.getArrow)) >>> Function.arr(f.getArrow).left()
             return forAll { (e : EitherOf<Int8, Int8>) in
@@ -127,7 +127,7 @@ class FunctionSpec : XCTestCase {
     }
     
     func testArrowApplyLaws() {
-        property("") <- forAll { (x : Int8, y : Int8) in
+        property("app") <- forAll { (x : Int8, y : Int8) in
             let app : Function<(Function<Int8, (Int8, Int8)>, Int8), (Int8, Int8)> = Function<Int8, (Int8, Int8)>.app()
             let la = Function<Int8, Function<Int8, (Int8, Int8)>>.arr({ x in Function.arr({ y in (x, y) }) }).first() >>> app
             return la.apply(x, y) == identity(x, y)
