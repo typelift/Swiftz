@@ -136,6 +136,12 @@ class ArrayExtSpec : XCTestCase {
 			let t = (xs.getArray.takeWhile(pred.getArrow), xs.getArray.dropWhile(pred.getArrow))
 			return p.0 == t.0 && p.1 == t.1
 		}
+		
+		property("extreme behaves") <- forAll { (xs : ArrayOf<Int>, pred : ArrowOf<Int, Bool>) in
+			let p = xs.getArray.extreme(pred.getArrow)
+			let t = xs.getArray.span((!) • pred.getArrow)
+			return p.0 == t.0 && p.1 == t.1
+		}
 
 		property("intercalate behaves") <- forAll { (xs : ArrayOf<Int>, xxsa : ArrayOf<ArrayOf<Int>>) in
 			let xxs = xxsa.getArray.map { $0.getArray }
@@ -144,6 +150,30 @@ class ArrayExtSpec : XCTestCase {
 
 		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : ArrayOf<Int>) in
 			return group(xs.getArray) == xs.getArray.groupBy { $0 == $1 }
+		}
+		
+		property("isPrefixOf behaves") <- forAll { (s1 : ArrayOf<Int>, s2 : ArrayOf<Int>) in
+			if s1.getArray.isPrefixOf(s2.getArray) {
+				return s1.getArray.stripPrefix(s2.getArray) != nil
+			}
+			
+			if s2.getArray.isPrefixOf(s1.getArray) {
+				return s2.getArray.stripPrefix(s1.getArray) != nil
+			}
+			
+			return Discard()
+		}
+		
+		property("isSuffixOf behaves") <- forAll { (s1 : ArrayOf<Int>, s2 : ArrayOf<Int>) in
+			if s1.getArray.isSuffixOf(s2.getArray) {
+				return s1.getArray.stripSuffix(s2.getArray) != nil
+			}
+			
+			if s2.getArray.isSuffixOf(s1.getArray) {
+				return s2.getArray.stripSuffix(s1.getArray) != nil
+			}
+			
+			return Discard()
 		}
 	}
 
