@@ -136,6 +136,12 @@ class ArrayExtSpec : XCTestCase {
 			let t = (xs.getArray.takeWhile(pred.getArrow), xs.getArray.dropWhile(pred.getArrow))
 			return p.0 == t.0 && p.1 == t.1
 		}
+		
+		property("extreme behaves") <- forAll { (xs : ArrayOf<Int>, pred : ArrowOf<Int, Bool>) in
+			let p = xs.getArray.extreme(pred.getArrow)
+			let t = xs.getArray.span((!) • pred.getArrow)
+			return p.0 == t.0 && p.1 == t.1
+		}
 
 		property("intercalate behaves") <- forAll { (xs : ArrayOf<Int>, xxsa : ArrayOf<ArrayOf<Int>>) in
 			let xxs = xxsa.getArray.map { $0.getArray }
