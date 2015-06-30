@@ -32,14 +32,6 @@ public struct NonEmptyList<A> {
 	}
 }
 
-public func head<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, A, A> {
-	return Lens { nel in IxStore(nel.head) { NonEmptyList($0, nel.tail) } }
-}
-
-public func tail<A>() -> Lens<NonEmptyList<A>, NonEmptyList<A>, List<A>, List<A>> {
-	return Lens { nel in IxStore(nel.tail) { NonEmptyList(nel.head, $0) } }
-}
-
 public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
 	return (lhs.head == rhs.head && lhs.tail == rhs.tail)
 }
