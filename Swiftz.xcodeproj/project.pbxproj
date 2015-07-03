@@ -52,7 +52,6 @@
 		84A88FDC1A71DFA0003D53CF /* TupleExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC71A71DFA0003D53CF /* TupleExtSpec.swift */; };
 		84A8900E1A71DFC5003D53CF /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FDE1A71DFC5003D53CF /* Applicative.swift */; };
 		84A8900F1A71DFC5003D53CF /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */; };
-		84A890101A71DFC5003D53CF /* ArrayZipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */; };
 		84A890111A71DFC5003D53CF /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE11A71DFC5003D53CF /* Arrow.swift */; };
 		84A890121A71DFC5003D53CF /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE21A71DFC5003D53CF /* Bifunctor.swift */; };
 		84A890131A71DFC5003D53CF /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE31A71DFC5003D53CF /* Bounded.swift */; };
@@ -105,7 +104,6 @@
 		84DF75AA1B0BD1D400C912B0 /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE71A71DFC5003D53CF /* Comonad.swift */; };
 		84DF75AB1B0BD1D400C912B0 /* Curry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE91A71DFC5003D53CF /* Curry.swift */; };
 		84DF75B21B0BD1D400C912B0 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FFB1A71DFC5003D53CF /* Monad.swift */; };
-		84DF75B41B0BD1D400C912B0 /* ArrayZipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */; };
 		84DF75B51B0BD1D400C912B0 /* Bifunctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE21A71DFC5003D53CF /* Bifunctor.swift */; };
 		84DF75B61B0BD1D400C912B0 /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE31A71DFC5003D53CF /* Bounded.swift */; };
 		84DF75B71B0BD1D400C912B0 /* Copointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE81A71DFC5003D53CF /* Copointed.swift */; };
@@ -248,7 +246,6 @@
 		84A88FC71A71DFA0003D53CF /* TupleExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleExtSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FDE1A71DFC5003D53CF /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Applicative.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FDF1A71DFC5003D53CF /* ArrayExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; usesTabs = 1; };
-		84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayZipper.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FE11A71DFC5003D53CF /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FE21A71DFC5003D53CF /* Bifunctor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bifunctor.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FE31A71DFC5003D53CF /* Bounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bounded.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -435,7 +432,6 @@
 		84A890561A71E19D003D53CF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				84A88FE01A71DFC5003D53CF /* ArrayZipper.swift */,
 				84A88FE21A71DFC5003D53CF /* Bifunctor.swift */,
 				84A88FE31A71DFC5003D53CF /* Bounded.swift */,
 				84A88FE81A71DFC5003D53CF /* Copointed.swift */,
@@ -752,7 +748,6 @@
 				84A8900F1A71DFC5003D53CF /* ArrayExt.swift in Sources */,
 				84A8904C1A71DFE5003D53CF /* Functions.swift in Sources */,
 				84A890311A71DFC5003D53CF /* Num.swift in Sources */,
-				84A890101A71DFC5003D53CF /* ArrayZipper.swift in Sources */,
 				84A890191A71DFC5003D53CF /* Curry.swift in Sources */,
 				84A8901A1A71DFC5003D53CF /* DictionaryExt.swift in Sources */,
 				8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */,
@@ -815,7 +810,6 @@
 				84DF75AA1B0BD1D400C912B0 /* Comonad.swift in Sources */,
 				84DF75AB1B0BD1D400C912B0 /* Curry.swift in Sources */,
 				84DF75B21B0BD1D400C912B0 /* Monad.swift in Sources */,
-				84DF75B41B0BD1D400C912B0 /* ArrayZipper.swift in Sources */,
 				84DF75B51B0BD1D400C912B0 /* Bifunctor.swift in Sources */,
 				84DF75B61B0BD1D400C912B0 /* Bounded.swift in Sources */,
 				84DF75B71B0BD1D400C912B0 /* Copointed.swift in Sources */,
