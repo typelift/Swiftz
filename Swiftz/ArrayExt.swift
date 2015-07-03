@@ -250,8 +250,8 @@ extension Array {
 		return and(self.map(f))
 	}
 
-	/// Returns a tuple with the first elements that satisfy a predicate until that predicate returns
-	/// false first, and a the rest of the elements second.
+	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a 
+	/// given predicate and the second element is the remainder of the list:
 	///
 	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
 	///     [1, 2, 3].span(<9)                == ([1, 2, 3],[])
@@ -271,8 +271,8 @@ extension Array {
 		}
 	}
 
-	/// Returns a tuple with the first elements that do not satisfy a predicate until that predicate
-	/// returns false first, and a the rest of the elements second.
+	/// Returns a tuple where the first element is the longest prefix of elements that do not 
+	/// satisfy a given predicate and the second element is the remainder of the list:
 	///
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
 	///

@@ -35,11 +35,6 @@ public class User : JSONDecodable {
 			<*> x <? "tweets" 							
 			<*> x <? "attrs" <> "one" // A nested keypath
 	}
-	
-	// lens example
-	public class func luserName() -> Lens<User, User, String, String> {
-		return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attr) } }
-	}
 }
 
 public func ==(lhs : User, rhs : User) -> Bool {

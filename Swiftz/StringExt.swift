@@ -26,11 +26,6 @@ extension String {
 		return xs.reduce("", combine: { "\($0)\($1)\n" })
 	}
 
-	/// Returns a Lens that targets the newline-seperated sections of a String
-	public static func lines() -> Iso<String, String, [String], [String]> {
-		return Iso(get: { $0.lines() }, inject: unlines)
-	}
-
 	/// Appends a character onto the front of a string.
 	public static func cons(head : Character, tail : String) -> String {
 		return String(head) + tail
