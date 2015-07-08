@@ -27,10 +27,10 @@ struct ResultOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 		return ResultOf(opt)
 	}
 
-	static func arbitrary() -> Gen<ResultOf<A>> {
+	static var arbitrary : Gen<ResultOf<A>> {
 		return Gen.frequency([
 			(1, Gen.pure(ResultOf(Result<A>.Error(defaultError)))),
-			(3, liftM(ResultOf.init • Result<A>.pure)(m1: A.arbitrary()))
+			(3, liftM(ResultOf.init • Result<A>.pure)(m1: A.arbitrary))
 		])
 	}
 
