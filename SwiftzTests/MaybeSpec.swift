@@ -21,20 +21,16 @@ struct MaybeOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 		return "\(self.getMaybe)"
 	}
 
-	private static func create(opt : Maybe<A>) -> MaybeOf<A> {
-		return MaybeOf(opt)
-	}
-
 	static var arbitrary : Gen<MaybeOf<A>> {
 		return Gen.frequency([
 			(1, Gen.pure(MaybeOf(Maybe<A>.none()))),
-			(3, liftM({ MaybeOf(Maybe<A>.just($0)) })(m1: A.arbitrary))
+			(3, (MaybeOf.init • Maybe<A>.just) <^> A.arbitrary),
 		])
 	}
 
 	static func shrink(bl : MaybeOf<A>) -> [MaybeOf<A>] {
 		if bl.getMaybe.isJust() {
-			return [MaybeOf(Maybe<A>.none())] + A.shrink(bl.getMaybe.fromJust()).map({ MaybeOf(Maybe<A>.just($0)) })
+			return [MaybeOf(Maybe<A>.none())] + A.shrink(bl.getMaybe.fromJust()).map(MaybeOf.init • Maybe<A>.just)
 		}
 		return []
 	}

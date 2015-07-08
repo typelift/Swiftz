@@ -21,10 +21,6 @@ struct StateOf<S, A : Arbitrary> : Arbitrary, CustomStringConvertible {
         return "\(self.getState)"
     }
     
-    private static func create(opt : State<S, A>) -> StateOf<S, A> {
-        return StateOf(opt)
-    }
-    
     static var arbitrary : Gen<StateOf<S, A>> {
         fatalError()
     }

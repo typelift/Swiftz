@@ -21,11 +21,7 @@ struct ListOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	var description : String {
 		return "\(self.getList)"
 	}
-
-	private static func create(array : List<A>) -> ListOf<A> {
-		return ListOf(array)
-	}
-
+	
 	static var arbitrary : Gen<ListOf<A>> {
 		return Gen.sized { n in
 			return Gen<Int>.choose((0, n)).bind { k in
@@ -33,7 +29,7 @@ struct ListOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 					return Gen.pure(ListOf([]))
 				}
 
-				return sequence(Array((0...k)).map { _ in A.arbitrary }).fmap({ ListOf.create(List(fromArray: $0)) })
+				return (ListOf.init • List.init) <^> sequence(Array((0...k)).map { _ in A.arbitrary })
 			}
 		}
 	}
