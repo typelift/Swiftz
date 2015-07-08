@@ -14,7 +14,7 @@ public enum ArrayMatcher<A> {
 }
 
 extension Array : Functor {
-	typealias A = T
+	typealias A = Element
 	typealias B = Any
 	typealias FB = Array<B>
 
@@ -24,7 +24,7 @@ extension Array : Functor {
 }
 
 extension Array : Pointed {
-	public static func pure(x : A) -> [T] {
+	public static func pure(x : A) -> [Element] {
 		return [x]
 	}
 }
@@ -44,7 +44,7 @@ extension Array : Monad {
 }
 
 extension Array : Foldable {
-	public func foldr<B>(k : T -> B -> B, _ i : B) -> B {
+	public func foldr<B>(k : Element -> B -> B, _ i : B) -> B {
 		switch self.match {
 		case .Nil:
 			return i
@@ -53,7 +53,7 @@ extension Array : Foldable {
 		}
 	}
 
-	public func foldl<B>(com : B -> T -> B, _ i : B) -> B {
+	public func foldl<B>(com : B -> Element -> B, _ i : B) -> B {
 		return self.reduce(i, combine: uncurry(com))
 	}
 
@@ -67,7 +67,7 @@ extension Array {
 	///
 	/// If the given list is empty, this function returns .Nil.  If the list is non-empty, this
 	/// function returns .Cons(head, tail)
-	public var match : ArrayMatcher<T> {
+	public var match : ArrayMatcher<Element> {
 		if self.count == 0 {
 			return .Nil
 		} else if self.count == 1 {
@@ -79,7 +79,7 @@ extension Array {
 	}
 
 	/// Returns the tail of the list, or None if the list is empty.
-	public var tail : Optional<[T]> {
+	public var tail : Optional<[Element]> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -89,15 +89,15 @@ extension Array {
 	}
 	
 	/// Returns an array of all initial segments of the receiver, shortest first
-	public var inits : [[T]] {
-		return self.reduce([[T]](), combine: { xss, x in
+	public var inits : [[Element]] {
+		return self.reduce([[Element]](), combine: { xss, x in
 			return xss.map { $0.cons(x) }.cons([])
 		})
 	}
 	
 	/// Returns an array of all final segments of the receiver, longest first
-	public var tails : [[T]] {
-		return self.reduce([[T]](), combine: { x, y in
+	public var tails : [[Element]] {
+		return self.reduce([[Element]](), combine: { x, y in
 			return [x.first!.cons(y)] + x
 		})
 	}
@@ -107,7 +107,7 @@ extension Array {
 	///     [1,2].take(3)  == [1,2]
 	///     [1,2].take(-1) == []
 	///     [1,2].take(0)  == []
-	public func take(n : Int) -> [T] {
+	public func take(n : Int) -> [Element] {
 		if n <= 0 {
 			return []
 		}
@@ -120,7 +120,7 @@ extension Array {
 	///     [1,2].drop(3)  == []
 	///     [1,2].drop(-1) == [1,2]
 	///     [1,2].drop(0)  == [1,2]
-	public func drop(n : Int) -> [T] {
+	public func drop(n : Int) -> [Element] {
 		if n <= 0 {
 			return self
 		}
@@ -129,13 +129,13 @@ extension Array {
 	}
 
 	/// Returns an array consisting of the receiver with a given element appended to the front.
-	public func cons(lhs : T) -> [T] {
+	public func cons(lhs : Element) -> [Element] {
 		return [lhs] + self
 	}
 	
 	/// Decomposes the receiver into its head and tail.  If the receiver is empty the result is
 	/// `.None`, else the result is `.Just(head, tail)`.
-	public var uncons : Optional<(T, [T])> {
+	public var uncons : Optional<(Element, [Element])> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -144,7 +144,7 @@ extension Array {
 		}
 	}
 	/// Safely indexes into an array by converting out of bounds errors to nils.
-	public func safeIndex(i : Int) -> T? {
+	public func safeIndex(i : Int) -> Element? {
 		if i < self.count && i >= 0 {
 			return self[i]
 		} else {
@@ -153,7 +153,7 @@ extension Array {
 	}
 
 	/// Maps a function over an array that takes pairs of (index, element) to a different element.
-	public func mapWithIndex<U>(f : (Int, T) -> U) -> [U] {
+	public func mapWithIndex<U>(f : (Int, Element) -> U) -> [U] {
 		var res = [U]()
 		res.reserveCapacity(self.count)
 		for i in 0 ..< self.count {
@@ -162,8 +162,19 @@ extension Array {
 		return res
 	}
 
+	public func mapMaybe<U>(f : Element -> Optional<U>) -> [U] {
+		var res = [U]()
+		res.reserveCapacity(self.count)
+		for x in self {
+			if let v = f(x) {
+				res.append(v)
+			}
+		}
+		return res
+	}
+	
 	/// Folds a reducing function over an array from right to left.
-	public func foldRight<U>(z : U, f : (T, U) -> U) -> U {
+	public func foldRight<U>(z : U, f : (Element, U) -> U) -> U {
 		var res = z
 		for x in self {
 			res = f(x, res)
@@ -176,7 +187,7 @@ extension Array {
 	/// the left to the right.
 	///
 	///     [x1, x2, ...].scanl(z, f) == [z, f(z, x1), f(f(z, x1), x2), ...]
-	public func scanl<B>(start : B, r : (B, T) -> B) -> [B] {
+	public func scanl<B>(start : B, r : (B, Element) -> B) -> [B] {
 		if self.isEmpty {
 			return [start]
 		}
@@ -192,7 +203,7 @@ extension Array {
 
 	/// Returns the first element in a list matching a given predicate.  If no such element exists, this
 	/// function returns nil.
-	public func find(f : (T -> Bool)) -> T? {
+	public func find(f : (Element -> Bool)) -> Element? {
 		for x in self {
 			if f(x) {
 				return .Some(x)
@@ -209,15 +220,15 @@ extension Array {
 	///     [1,2,3].splitAt(3)     == ([1, 2, 3], [])
 	///     [1,2,3].splitAt(4)     == ([1, 2, 3], [])
 	///     [1,2,3].splitAt(0)     == ([], [1, 2, 3])
-	public func splitAt(n : Int) -> ([T], [T]) {
+	public func splitAt(n : Int) -> ([Element], [Element]) {
 		return (self.take(n), self.drop(n))
 	}
 
 	/// Takes a separator and a list and intersperses that element throughout the list.
 	///
 	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
-	public func intersperse(item : T) -> [T] {
-		func prependAll(item : T, array : [T]) -> [T] {
+	public func intersperse(item : Element) -> [Element] {
+		func prependAll(item : Element, array : [Element]) -> [Element] {
 			var arr = Array([item])
 			for i in 0..<(array.count - 1) {
 				arr.append(array[i])
@@ -240,13 +251,13 @@ extension Array {
 
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
 	/// least once by an element of the list.
-	public func any(f : (T -> Bool)) -> Bool {
+	public func any(f : (Element -> Bool)) -> Bool {
 		return or(self.map(f))
 	}
 
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
 	/// all elemenets of the list.
-	public func all(f : (A -> Bool)) -> Bool {
+	public func all(f : (Element -> Bool)) -> Bool {
 		return and(self.map(f))
 	}
 
@@ -258,7 +269,7 @@ extension Array {
 	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
 	///
 	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
-	public func span(p : T -> Bool) -> ([T], [T]) {
+	public func span(p : Element -> Bool) -> ([Element], [Element]) {
 		switch self.match {
 		case .Nil:
 			return ([], [])
@@ -277,13 +288,13 @@ extension Array {
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
 	///
 	///     self.extreme(p) == self.span((!) • p)
-	public func extreme(p : T -> Bool) -> ([T], [T]) {
+	public func extreme(p : Element -> Bool) -> ([Element], [Element]) {
 		return self.span { ((!) • p)($0) }
 	}
 
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : T -> T -> Bool) -> [[T]] {
+	public func groupBy(p : Element -> Element -> Bool) -> [[Element]] {
 		switch self.match {
 		case .Nil:
 			return []
@@ -296,7 +307,7 @@ extension Array {
 
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : (T, T) -> Bool) -> [[T]] {
+	public func groupBy(p : (Element, Element) -> Bool) -> [[Element]] {
 		return self.groupBy(curry(p))
 	}
 
@@ -306,7 +317,7 @@ extension Array {
 	///     [1, 2, 3, 4, 5, 1, 2, 3].dropWhile(<3) == [3,4,5,1,2,3]
 	///     [1, 2, 3].dropWhile(<9)                == []
 	///     [1, 2, 3].dropWhile(<0)                == [1,2,3]
-	public func dropWhile(p : T -> Bool) -> [T] {
+	public func dropWhile(p : Element -> Bool) -> [Element] {
 		switch self.match {
 		case .Nil:
 			return []
@@ -323,8 +334,8 @@ extension Array {
 	///
 	///     [1, 2, 3, 4, 5].dropWhileEnd(>3) == [1, 2, 3]
 	///     [1, 2, 3, 4, 5, 2].dropWhileEnd(>3) == [1, 2, 3, 4, 5, 2]
-	public func dropWhileEnd(p : T -> Bool) -> [T] {
-		return self.reduce([T](), combine: { xs, x in p(x) && xs.isEmpty ? [] : xs.cons(x) })
+	public func dropWhileEnd(p : Element -> Bool) -> [Element] {
+		return self.reduce([Element](), combine: { xs, x in p(x) && xs.isEmpty ? [] : xs.cons(x) })
 	}
 
 	/// Returns an array of the first elements that satisfy a predicate until that predicate returns
@@ -333,7 +344,7 @@ extension Array {
 	///     [1, 2, 3, 4, 1, 2, 3, 4].takeWhile(<3) == [1, 2]
 	///     [1,2,3].takeWhile(<9)                  == [1, 2, 3]
 	///     [1,2,3].takeWhile(<0)                  == []
-	public func takeWhile(p : T -> Bool) -> [T] {
+	public func takeWhile(p : Element -> Bool) -> [Element] {
 		switch self.match {
 		case .Nil:
 			return []
@@ -346,9 +357,9 @@ extension Array {
 	}
 }
 
-extension Array where T : Equatable {
+extension Array where Element : Equatable {
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
-	public func isPrefixOf(r : [T]) -> Bool {
+	public func isPrefixOf(r : [Element]) -> Bool {
 		switch (self.match, r.match) {
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
 			return xs.isPrefixOf(ys)
@@ -360,19 +371,19 @@ extension Array where T : Equatable {
 	}
 	
 	/// Takes two lists and returns true if the first string is a suffix of the second string.
-	public func isSuffixOf(r : [T]) -> Bool {
+	public func isSuffixOf(r : [Element]) -> Bool {
 		return self.reverse().isPrefixOf(r.reverse())
 	}
 	
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
-	public func isInfixOf(r : [T]) -> Bool {
+	public func isInfixOf(r : [Element]) -> Bool {
 		return r.tails.any(self.isPrefixOf)
 	}
 	
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
-	public func stripPrefix(r : [T]) -> Optional<[T]> {
+	public func stripPrefix(r : [Element]) -> Optional<[Element]> {
 		switch (self.match, r.match) {
 		case (.Nil, _):
 			return .Some(r)
@@ -385,7 +396,7 @@ extension Array where T : Equatable {
 	
 	/// Takes two strings and drops items in the first from the end of the second.  If the first
 	/// string is not a suffix of the second string this function returns nothing.
-	public func stripSuffix(r : [T]) -> Optional<[T]> {
+	public func stripSuffix(r : [Element]) -> Optional<[Element]> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}
 }
@@ -393,22 +404,7 @@ extension Array where T : Equatable {
 /// Maps a function over a list of Optionals, applying the function of the optional is Some,
 /// discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs : [A?]) -> [A] {
-	var w = [A]()
-	w.reserveCapacity(xs.foldRight(0) { c, n in
-		if c != nil {
-			return n + 1
-		} else {
-			return n
-		}
-	})
-	for c in xs {
-		if let x = c {
-			w.append(x)
-		} else {
-			// nothing
-		}
-	}
-	return w
+	return xs.mapMaybe(identity)
 }
 
 /// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.

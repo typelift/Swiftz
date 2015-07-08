@@ -21,7 +21,7 @@ extension List : Monoid {
 }
 
 extension Array : Monoid {
-	public static var mzero : [T] { return [] }
+	public static var mzero : [Element] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
