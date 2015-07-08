@@ -23,14 +23,10 @@ struct ResultOf<A : Arbitrary> : Arbitrary, CustomStringConvertible {
 		return "\(self.getResult)"
 	}
 
-	private static func create(opt : Result<A>) -> ResultOf<A> {
-		return ResultOf(opt)
-	}
-
-	static func arbitrary() -> Gen<ResultOf<A>> {
+	static var arbitrary : Gen<ResultOf<A>> {
 		return Gen.frequency([
 			(1, Gen.pure(ResultOf(Result<A>.Error(defaultError)))),
-			(3, liftM(ResultOf.init • Result<A>.pure)(m1: A.arbitrary()))
+			(3, (ResultOf.init • Result<A>.pure <^> A.arbitrary)),
 		])
 	}
 

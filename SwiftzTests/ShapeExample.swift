@@ -25,7 +25,7 @@ enum Shape : Dataable {
 		case let (1, xs):
 			let x1 = xs.safeIndex(0)
 			let x2 = x1 >>- { $1 as? Int }
-			return { Plane($0) } <^> x2
+			return Plane <^> x2
 		default:
 			return .None
 		}

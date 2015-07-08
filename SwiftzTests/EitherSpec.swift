@@ -21,19 +21,18 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 		return "\(self.getEither)"
 	}
 
-	private static func create(either : Either<A, B>) -> EitherOf<A, B> {
-		return EitherOf(either)
-	}
-
-	static func arbitrary() -> Gen<EitherOf<A, B>> {
-		return Gen.oneOf([ liftM({ Either.Left($0) })(m1: A.arbitrary()), liftM({ Either.Right($0) })(m1: B.arbitrary()) ]).fmap(EitherOf.create)
+	static var arbitrary : Gen<EitherOf<A, B>> {
+		return EitherOf.init <^> Gen.oneOf([
+			Either.Left <^> A.arbitrary,
+			Either.Right <^> B.arbitrary,
+		])
 	}
 
 	static func shrink(bl : EitherOf<A, B>) -> [EitherOf<A, B>] {
 		return bl.getEither.either(onLeft: { x in
-			return A.shrink(x).map({ Either.Left($0) }).map(EitherOf.create)
+			return A.shrink(x).map(EitherOf.init • Either.Left)
 		}, onRight: { y in
-			return B.shrink(y).map({ Either.Right($0) }).map(EitherOf.create)
+			return B.shrink(y).map(EitherOf.init • Either.Right)
 		})
 	}
 }
