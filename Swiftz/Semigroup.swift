@@ -28,7 +28,7 @@ extension List : Semigroup {
 }
 
 extension Array : Semigroup {
-	public func op(other : [T]) -> [T] {
+	public func op(other : [Element]) -> [Element] {
 		return self + other
 	}
 }

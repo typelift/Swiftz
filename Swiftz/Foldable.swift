@@ -10,7 +10,7 @@ protocol Foldable {
 	typealias A
 	typealias B
 
-	func foldr(A -> B -> B, B) -> B
-	func foldl(B -> A -> B, B) -> B
-	func foldMap<M : Monoid>(A -> M) -> M
+	func foldr(_ : A -> B -> B, _ : B) -> B
+	func foldl(_ : B -> A -> B, _ : B) -> B
+	func foldMap<M : Monoid>(_ : A -> M) -> M
 }

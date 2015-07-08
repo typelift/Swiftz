@@ -9,7 +9,7 @@
 /// Functors equipped with a point taking values to instances of themselves.
 public protocol Pointed {
 	typealias A
-	static func pure(A) -> Self
+	static func pure(_ : A) -> Self
 }
 
 extension Result : Pointed {
