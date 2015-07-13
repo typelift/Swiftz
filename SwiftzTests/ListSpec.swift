@@ -92,13 +92,13 @@ class ListSpec : XCTestCase {
 				let cycle = x.cycle()
 
 				return forAll { (n : Positive<Int>) in
-					return (0...UInt(n.getPositive)).map({ i in cycle[i] == x[(i % x.length())] }).filter(==false).isEmpty
+					return (0...UInt(n.getPositive)).map({ i in cycle[i] == x[(i % x.count)] }).filter(==false).isEmpty
 				}
 			}
 		}
 
 		property("isEmpty behaves") <- forAllShrink(List<Int>.arbitrary, shrinker: List<Int>.shrink) { xs in
-			return xs.isEmpty == (xs.length() == 0)
+			return xs.isEmpty == (xs.count == 0)
 		}
 
 		property("map behaves") <- forAllShrink(List<Int>.arbitrary, shrinker: List<Int>.shrink) { xs in
@@ -118,15 +118,15 @@ class ListSpec : XCTestCase {
 
 		property("take behaves") <- forAll { (limit : UInt) in
 			return forAllShrink(List<Int>.arbitrary, shrinker: List<Int>.shrink) { xs in
-				return xs.take(limit).length() <= limit
+				return xs.take(limit).count <= limit
 			}
 		}
 
 		property("drop behaves") <- forAll { (limit : UInt) in
 			return forAllShrink(List<Int>.arbitrary, shrinker: List<Int>.shrink) { xs in
 				let l = xs.drop(limit)
-				if xs.length() >= limit {
-					return l.length() == (xs.length() - limit)
+				if xs.count >= limit {
+					return l.count == (xs.count - limit)
 				}
 				return l == []
 			}

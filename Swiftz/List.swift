@@ -86,6 +86,16 @@ public struct List<A> {
 		}
 	}
 
+	/// Returns the length of the list.
+	///
+	/// For infinite lists this function will throw an exception.
+	public var count : UInt {
+		if self.len == -1 {
+			return error("Cannot take the length of an infinite list.")
+		}
+		return UInt(self.len)
+	}
+	
 	/// Creates a list of n repeating values.
 	public static func replicate(n : UInt, value : A) -> List<A> {
 		var l = List<A>()
@@ -140,16 +150,6 @@ public struct List<A> {
 	/// will never terminate.
 	public var isFinite : Bool {
 		return self.len != -1
-	}
-
-	/// Returns the length of the list.
-	///
-	/// For infinite lists this function will throw an exception.
-	public func length() -> UInt {
-		if self.len == -1 {
-			return error("Cannot take the length of an infinite list.")
-		}
-		return UInt(self.len)
 	}
 
 	/// Yields a new list by applying a function to each element of the receiver.
@@ -591,7 +591,7 @@ extension List : CollectionType {
 	public var startIndex : UInt { return 0 }
 	
 	public var endIndex : UInt {
-		return self.isFinite ? self.length() : error("An infinite list has no end index.")
+		return self.isFinite ? self.count : error("An infinite list has no end index.")
 	}
 }
 
