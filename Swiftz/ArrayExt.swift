@@ -252,13 +252,13 @@ extension Array {
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
 	/// least once by an element of the list.
 	public func any(f : (Element -> Bool)) -> Bool {
-		return or(self.map(f))
+		return self.map(f).or
 	}
 
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
 	/// all elemenets of the list.
 	public func all(f : (Element -> Bool)) -> Bool {
-		return and(self.map(f))
+		return self.map(f).and
 	}
 
 	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a 
@@ -399,6 +399,26 @@ extension Array where Element : Equatable {
 	public func stripSuffix(r : [Element]) -> Optional<[Element]> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}
+	
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other.
+	///
+	///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
+	public var group : [[Element]] {
+		return self.groupBy { a in { b in a == b } }
+	}
+}
+
+extension Array where Element : BooleanType {
+	/// Returns the conjunction of a list of Booleans.
+	public var and : Bool {
+		return self.reduce(true) { $0.boolValue && $1.boolValue }
+	}
+	
+	/// Returns the dijunction of a list of Booleans.
+	public var or : Bool {
+		return self.reduce(false) { $0.boolValue || $1.boolValue }
+	}
 }
 
 /// Maps a function over a list of Optionals, applying the function of the optional is Some,
@@ -410,24 +430,6 @@ public func mapFlatten<A>(xs : [A?]) -> [A] {
 /// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
 public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 	return concat(nested.intersperse(list))
-}
-
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
-/// other.
-///
-///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
-public func group<A : Equatable>(list : [A]) -> [[A]] {
-	return list.groupBy { a in { b in a == b } }
-}
-
-/// Returns the conjunction of a list of Booleans.
-public func and(list : [Bool]) -> Bool {
-	return list.reduce(true) {$0 && $1}
-}
-
-/// Returns the dijunction of a list of Booleans.
-public func or(list : [Bool]) -> Bool {
-	return list.reduce(false) {$0 || $1}
 }
 
 /// Concatenate a list of lists.

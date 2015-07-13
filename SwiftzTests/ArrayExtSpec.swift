@@ -111,16 +111,16 @@ class ArrayExtSpec : XCTestCase {
 
 		property("and behaves") <- forAll { (withArray : ArrayOf<Bool>) in
 			if let _ = withArray.getArray.find(==false) {
-				return !and(withArray.getArray)
+				return !withArray.getArray.and
 			}
-			return and(withArray.getArray)
+			return withArray.getArray.and
 		}
 
 		property("or behaves") <- forAll { (withArray : ArrayOf<Bool>) in
 			if let _ = withArray.getArray.find(==true) {
-				return or(withArray.getArray)
+				return withArray.getArray.or
 			}
-			return !or(withArray.getArray)
+			return !withArray.getArray.or
 		}
 
 		property("take behaves") <- forAll { (array : ArrayOf<Int>, limit : Positive<Int>) in
@@ -149,7 +149,7 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : ArrayOf<Int>) in
-			return group(xs.getArray) == xs.getArray.groupBy { $0 == $1 }
+			return xs.getArray.group == xs.getArray.groupBy { $0 == $1 }
 		}
 		
 		property("isPrefixOf behaves") <- forAll { (s1 : ArrayOf<Int>, s2 : ArrayOf<Int>) in
