@@ -103,7 +103,7 @@ class ListSpec : XCTestCase {
 		}
 
 		property("List can cycle into an infinite list") <- forAll { (x : ListOf<Int8>) in
-			return !x.getList.isEmpty() ==> {
+			return !x.getList.isEmpty ==> {
 				let finite = x.getList
 				let cycle = finite.cycle()
 
@@ -114,7 +114,7 @@ class ListSpec : XCTestCase {
 		}
 
 		property("isEmpty behaves") <- forAll { (xs : ListOf<Int>) in
-			return xs.getList.isEmpty() == (xs.getList.length() == 0)
+			return xs.getList.isEmpty == (xs.getList.length() == 0)
 		}
 
 		property("map behaves") <- forAll { (xs : ListOf<Int>) in
@@ -144,7 +144,7 @@ class ListSpec : XCTestCase {
 
 		property("scanl behaves") <- forAll { (withArray : ListOf<Int>) in
 			let scanned = withArray.getList.scanl(curry(+), initial: 0)
-			switch withArray.getList.match() {
+			switch withArray.getList.match {
 			case .Nil:
 				return scanned == [0]
 			case let .Cons(x, xs):

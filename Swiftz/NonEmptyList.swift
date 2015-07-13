@@ -19,7 +19,7 @@ public struct NonEmptyList<A> {
 	}
 
 	public init?(_ list : List<A>) {
-		switch list.match() {
+		switch list.match {
 		case .Nil:
 			return nil
 		case let .Cons(h, t):
