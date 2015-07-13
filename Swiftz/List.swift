@@ -516,13 +516,13 @@ public func concat<A>(xss : List<List<A>>) -> List<A> {
 }
 
 /// Appends two lists together.
-public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
+public func + <A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	return lhs.append(rhs)
 }
 
 /// MARK: Equatable
 
-public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	switch (lhs.match, rhs.match) {
 	case (.Nil, .Nil):
 		return true
@@ -531,6 +531,10 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	default:
 		return false
 	}
+}
+
+public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+	return !(lhs == rhs)
 }
 
 /// MARK: Collection Protocols

@@ -27,6 +27,12 @@ extension List : Semigroup {
 	}
 }
 
+extension NonEmptyList : Semigroup {
+	public func op(other : NonEmptyList<A>) -> NonEmptyList<A> {
+		return NonEmptyList(self.head, self.tail + other.toList())
+	}
+}
+
 extension Array : Semigroup {
 	public func op(other : [Element]) -> [Element] {
 		return self + other

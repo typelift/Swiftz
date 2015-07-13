@@ -30,6 +30,10 @@ public struct NonEmptyList<A> {
 	public func toList() -> List<A> {
 		return List(head, tail)
 	}
+	
+	public func reverse() -> NonEmptyList<A> {
+		return NonEmptyList(self.toList().reverse())!
+	}
 }
 
 public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
