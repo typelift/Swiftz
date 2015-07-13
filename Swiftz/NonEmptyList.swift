@@ -58,28 +58,9 @@ extension NonEmptyList : ArrayLiteralConvertible {
 	}
 }
 
-public final class NonEmptyListGenerator<A> : K1<A>, GeneratorType {
-	var head: A?
-	var l: List<A>?
-	public func next() -> A? {
-		if let h = head {
-			head = nil
-			return h
-		} else {
-			let r = l?.head()
-			l = self.l?.tail()
-			return r
-		}
-	}
-	public init(_ l : NonEmptyList<A>) {
-		head = l.head
-		self.l = l.tail
-	}
-}
-
 extension NonEmptyList : SequenceType {
-	public func generate() -> NonEmptyListGenerator<A> {
-		return NonEmptyListGenerator(self)
+	public func generate() -> ListGenerator<A> {
+		return ListGenerator(self.toList())
 	}
 }
 
