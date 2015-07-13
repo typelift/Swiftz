@@ -443,6 +443,9 @@ public struct List<A> {
 	}
 }
 
+// File radar: If these lines are uncommented the compiler throws spurious "Redundant Conformance to
+// Foo errors in the rest of the file.
+//
 //extension List where A : Equatable {
 //	/// Takes two lists and returns true if the first string is a prefix of the second string.
 //	public func isPrefixOf(r : List<A>) -> Bool {
