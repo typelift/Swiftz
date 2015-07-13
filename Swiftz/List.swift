@@ -106,7 +106,7 @@ public struct List<A> {
 	}
 
 	/// Returns the first element in the list, or None if the list is empty.
-	public func head() -> Optional<A> {
+	public var head : Optional<A> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -116,7 +116,7 @@ public struct List<A> {
 	}
 
 	/// Returns the tail of the list, or None if the list is empty.
-	public func tail() -> Optional<List<A>> {
+	public var tail : Optional<List<A>> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -135,7 +135,7 @@ public struct List<A> {
 	/// Returns an array of all final segments of the receiver, longest first
 	public var tails : List<List<A>> {
 		return self.reduce(List<List<A>>(), combine: { x, y in
-			return List<List<A>>.pure(List(y, x.head()!)) + x
+			return List<List<A>>.pure(List(y, x.head!)) + x
 		})
 	}
 
