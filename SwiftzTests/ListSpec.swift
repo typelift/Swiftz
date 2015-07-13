@@ -67,16 +67,24 @@ class ListSpec : XCTestCase {
 		}
 
 		// Swift unroller can't handle our scale.
-//		property("List obeys the first Applicative composition law") <- forAll { (fl : ListOf<ArrowOf<Int8, Int8>>, gl : ListOf<ArrowOf<Int8, Int8>>, x : ListOf<Int8>) in
-//			let f = fl.getList.fmap({ $0.getArrow })
-//			let g = gl.getList.fmap({ $0.getArrow })
-//			return (curry(•) <^> f <*> g <*> x.getList) == (f <*> (g <*> x.getList))
+//		property("List obeys the first Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
+//			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
+//				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
+//					let f = fl.fmap({ $0.getArrow })
+//					let g = gl.fmap({ $0.getArrow })
+//					return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
+//				}
+//			}
 //		}
-//
-//		property("List obeys the second Applicative composition law") <- forAll { (fl : ListOf<ArrowOf<Int8, Int8>>, gl : ListOf<ArrowOf<Int8, Int8>>, x : ListOf<Int8>) in
-//			let f = fl.getList.fmap({ $0.getArrow })
-//			let g = gl.getList.fmap({ $0.getArrow })
-//			return (List.pure(curry(•)) <*> f <*> g <*> x.getList) == (f <*> (g <*> x.getList))
+//		
+//		property("List obeys the second Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
+//			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
+//				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
+//					let f = fl.fmap({ $0.getArrow })
+//					let g = gl.fmap({ $0.getArrow })
+//					return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+//				}
+//			}
 //		}
 
 		property("List obeys the Monoidal left identity law") <- forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in

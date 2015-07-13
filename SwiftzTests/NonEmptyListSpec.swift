@@ -24,6 +24,35 @@ extension NonEmptyList where A : Arbitrary {
 
 class NonEmptyListSpec : XCTestCase {
 	func testProperties() {
+		property("Non-empty Lists of Equatable elements obey reflexivity") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { l in
+			return l == l
+		}
+		
+		property("Non-empty Lists of Equatable elements obey symmetry") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { x in
+			return forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { y in
+				return (x == y) == (y == x)
+			}
+		}
+		
+		property("Non-empty Lists of Equatable elements obey transitivity") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { x in
+			return forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { y in
+				let inner = forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { z in
+					return (x == y) && (y == z) ==> (x == z)
+				}
+				return inner
+			}
+		}
+		
+		property("Non-empty Lists of Equatable elements obey negation") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { x in
+			return forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { y in
+				return (x != y) == !(x == y)
+			}
+		}
+		
+		property("Non-empty Lists of Comparable elements obey reflexivity") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { l in
+			return l == l
+		}
+		
 		property("head behaves") <- forAll { (x : Int) in
 			return forAllShrink(List<Int>.arbitrary, shrinker: List<Int>.shrink) { xs in
 				return NonEmptyList(x, xs).head == x

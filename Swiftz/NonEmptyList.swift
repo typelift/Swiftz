@@ -36,8 +36,12 @@ public struct NonEmptyList<A> {
 	}
 }
 
-public func ==<A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
-	return (lhs.head == rhs.head && lhs.tail == rhs.tail)
+public func == <A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+	return lhs.toList() == rhs.toList()
+}
+
+public func != <A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> Bool {
+	return lhs.toList() != rhs.toList()
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
@@ -59,6 +63,8 @@ extension NonEmptyList : ArrayLiteralConvertible {
 }
 
 extension NonEmptyList : SequenceType {
+	typealias Generator = ListGenerator<A>
+	
 	public func generate() -> ListGenerator<A> {
 		return ListGenerator(self.toList())
 	}
