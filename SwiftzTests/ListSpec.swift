@@ -66,26 +66,30 @@ class ListSpec : XCTestCase {
 			return (List.pure(identity) <*> x) == x
 		}
 
-		// Swift unroller can't handle our scale.
-//		property("List obeys the first Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-//			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-//				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-//					let f = fl.fmap({ $0.getArrow })
-//					let g = gl.fmap({ $0.getArrow })
-//					return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
-//				}
-//			}
-//		}
-//		
-//		property("List obeys the second Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-//			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-//				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-//					let f = fl.fmap({ $0.getArrow })
-//					let g = gl.fmap({ $0.getArrow })
-//					return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
-//				}
-//			}
-//		}
+		// Swift unroller can't handle our scale; Use only small lists.
+		property("List obeys the first Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
+			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
+				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
+					return (fl.count <= 3 && gl.count <= 3) ==> {
+						let f = fl.fmap({ $0.getArrow })
+						let g = gl.fmap({ $0.getArrow })
+						return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
+					}
+				}
+			}
+		}
+
+		property("List obeys the second Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
+			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
+				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
+					return (fl.count <= 3 && gl.count <= 3) ==> {
+						let f = fl.fmap({ $0.getArrow })
+						let g = gl.fmap({ $0.getArrow })
+						return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+					}
+				}
+			}
+		}
 
 		property("List obeys the Monoidal left identity law") <- forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
 			return (x <> List()) == x
