@@ -64,7 +64,7 @@ public struct List<A> {
 
 	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
 	/// the result is Cons(head, tail).
-	public func match() -> ListMatcher<A> {
+	public var match : ListMatcher<A> {
 		if self.len == 0 {
 			return .Nil
 		}
@@ -76,7 +76,7 @@ public struct List<A> {
 	///
 	/// Indexing into the empty list will throw an exception.
 	public subscript(n : UInt) -> A {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return error("Cannot extract an element from an empty list.")
 		case let .Cons(x, _) where n == 0:
@@ -97,7 +97,7 @@ public struct List<A> {
 
 	/// Returns the first element in the list, or None if the list is empty.
 	public func head() -> Optional<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return .None
 		case let .Cons(head, _):
@@ -107,7 +107,7 @@ public struct List<A> {
 
 	/// Returns the tail of the list, or None if the list is empty.
 	public func tail() -> Optional<List<A>> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return .None
 		case let .Cons(_, tail):
@@ -115,8 +115,22 @@ public struct List<A> {
 		}
 	}
 
+	/// Returns an array of all initial segments of the receiver, shortest first
+	public var inits : List<List<A>> {
+		return self.reduce(List<List<A>>(), combine: { xss, x in
+			return List<List<A>>([], xss.map { List(x, $0) })
+		})
+	}
+	
+	/// Returns an array of all final segments of the receiver, longest first
+	public var tails : List<List<A>> {
+		return self.reduce(List<List<A>>(), combine: { x, y in
+			return List<List<A>>.pure(List(y, x.head()!)) + x
+		})
+	}
+
 	/// Returns whether or not the receiver is the empty list.
-	public func isEmpty() -> Bool {
+	public var isEmpty : Bool {
 		return self.len == 0
 	}
 
@@ -124,7 +138,7 @@ public struct List<A> {
 	///
 	/// It may be dangerous to attempt to iterate over an infinite list of values because the loop
 	/// will never terminate.
-	public func isFinite() -> Bool {
+	public var isFinite : Bool {
 		return self.len != -1
 	}
 
@@ -140,7 +154,7 @@ public struct List<A> {
 
 	/// Yields a new list by applying a function to each element of the receiver.
 	public func map<B>(f : A -> B) -> List<B> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(hd, tl):
@@ -152,7 +166,7 @@ public struct List<A> {
 	///
 	/// If the receiver is infinite, the result of this function will be the receiver itself.
 	public func append(rhs : List<A>) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return rhs
 		case let .Cons(x, xs):
@@ -167,7 +181,7 @@ public struct List<A> {
 
 	/// Returns a list of elements satisfying a predicate.
 	public func filter(p : A -> Bool) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
@@ -177,7 +191,7 @@ public struct List<A> {
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
 	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return initial
 		case let .Cons(x, xs):
@@ -187,7 +201,7 @@ public struct List<A> {
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
 	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return initial
 		case let .Cons(x, xs):
@@ -203,7 +217,7 @@ public struct List<A> {
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
 	public func scanl<B>(f : B -> A -> B, initial : B) -> List<B> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return List<B>(initial)
 		case let .Cons(x, xs):
@@ -219,7 +233,7 @@ public struct List<A> {
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
 	public func scanl<B>(f : (B, A) -> B, initial : B) -> List<B> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return List<B>(initial)
 		case let .Cons(x, xs):
@@ -229,7 +243,7 @@ public struct List<A> {
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
 	public func scanl1(f : A -> A -> A) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
@@ -239,7 +253,7 @@ public struct List<A> {
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
 	public func scanl1(f : (A, A) -> A) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
@@ -253,7 +267,7 @@ public struct List<A> {
 			return []
 		}
 
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
@@ -267,7 +281,7 @@ public struct List<A> {
 			return self
 		}
 
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(_, xs):
@@ -280,9 +294,29 @@ public struct List<A> {
 		return (self.take(n), self.drop(n))
 	}
 
+	/// Takes a separator and a list and intersperses that element throughout the list.
+	///
+	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
+	public func intersperse(item : A) -> List<A> {
+		func prependToAll(sep : A, l : List<A>) -> List<A> {
+			switch l.match {
+			case .Nil:
+				return List()
+			case.Cons(let x, let xs):
+				return List(sep, List(x, prependToAll(sep, l: xs)))
+			}
+		}
+		switch self.match {
+		case .Nil:
+			return List()
+		case .Cons(let x, let xs):
+			return List(x, prependToAll(item, l: xs))
+		}
+	}
+	
 	/// Returns a list of the longest prefix of elements satisfying a predicate.
 	public func takeWhile(p : A -> Bool) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case .Cons(let x, let xs):
@@ -296,7 +330,7 @@ public struct List<A> {
 	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
 	/// predicate has been removed.
 	public func dropWhile(p : A -> Bool) -> List<A> {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
@@ -307,6 +341,56 @@ public struct List<A> {
 		}
 	}
 
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other according to an equality predicate.
+	public func groupBy(p : A -> A -> Bool) -> List<List<A>> {
+		switch self.match {
+		case .Nil:
+			return []
+		case .Cons(let x, let xs):
+			let (ys, zs) = xs.span(p(x))
+			let l = List(x, ys)
+			return List<List<A>>(l, zs.groupBy(p))
+		}
+	}
+	
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other according to an equality predicate.
+	public func groupBy(p : (A, A) -> Bool) -> List<List<A>> {
+		return self.groupBy(curry(p))
+	}
+	
+	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
+	/// given predicate and the second element is the remainder of the list:
+	///
+	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
+	///     [1, 2, 3].span(<9)                == ([1, 2, 3],[])
+	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
+	///
+	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
+	public func span(p : A -> Bool) -> (List<A>, List<A>) {
+		switch self.match {
+		case .Nil:
+			return ([], [])
+		case .Cons(let x, let xs):
+			if p(x) {
+				let (ys, zs) = xs.span(p)
+				return (List(x, ys), zs)
+			}
+			return ([], self)
+		}
+	}
+	
+	/// Returns a tuple where the first element is the longest prefix of elements that do not
+	/// satisfy a given predicate and the second element is the remainder of the list:
+	///
+	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
+	///
+	///     self.extreme(p) == self.span((!) • p)
+	public func extreme(p : A -> Bool) -> (List<A>, List<A>) {
+		return self.span { ((!) • p)($0) }
+	}
+	
 	/// Returns the elements of the receiver in reverse order.
 	///
 	/// For infinite lists this function will diverge.
@@ -345,6 +429,82 @@ public struct List<A> {
 		let (hd, tl) = self.next()
 		return List((hd, (tl + [hd]).cycle()))
 	}
+	
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+	/// least once by an element of the list.
+	public func any(f : (Element -> Bool)) -> Bool {
+		return self.map(f).or
+	}
+	
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+	/// all elemenets of the list.
+	public func all(f : (Element -> Bool)) -> Bool {
+		return self.map(f).and
+	}
+}
+
+//extension List where A : Equatable {
+//	/// Takes two lists and returns true if the first string is a prefix of the second string.
+//	public func isPrefixOf(r : List<A>) -> Bool {
+//		switch (self.match, r.match) {
+//		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+//			return xs.isPrefixOf(ys)
+//		case (.Nil, _):
+//			return true
+//		default:
+//			return false
+//		}
+//	}
+//
+//	/// Takes two lists and returns true if the first string is a suffix of the second string.
+//	public func isSuffixOf(r : List<A>) -> Bool {
+//		return self.reverse().isPrefixOf(r.reverse())
+//	}
+//	
+//	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
+//	/// second string.
+//	public func isInfixOf(r : List<A>) -> Bool {
+//		return r.tails.any(self.isPrefixOf)
+//	}
+//	
+//	/// Takes two strings and drops items in the first from the second.  If the first string is not a
+//	/// prefix of the second string this function returns Nothing.
+//	public func stripPrefix(r : List<A>) -> Optional<List<A>> {
+//		switch (self.match, r.match) {
+//		case (.Nil, _):
+//			return .Some(r)
+//		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
+//			return xs.stripPrefix(xs)
+//		default:
+//			return .None
+//		}
+//	}
+//	
+//	/// Takes two strings and drops items in the first from the end of the second.  If the first
+//	/// string is not a suffix of the second string this function returns nothing.
+//	public func stripSuffix(r : List<A>) -> Optional<List<A>> {
+//		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
+//	}
+//	
+//	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+//	/// other.
+//	///
+//	///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
+//	public var group : List<List<A>> {
+//		return self.groupBy { a in { b in a == b } }
+//	}
+//}
+
+extension List where A : BooleanType {
+	/// Returns the conjunction of a list of Booleans.
+	public var and : Bool {
+		return self.reduce(true) { $0.boolValue && $1.boolValue }
+	}
+	
+	/// Returns the dijunction of a list of Booleans.
+	public var or : Bool {
+		return self.reduce(false) { $0.boolValue || $1.boolValue }
+	}
 }
 
 /// Flattens a list of lists into a single lists.
@@ -360,7 +520,7 @@ public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 /// MARK: Equatable
 
 public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
-	switch (lhs.match(), rhs.match()) {
+	switch (lhs.match, rhs.match) {
 	case (.Nil, .Nil):
 		return true
 	case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
@@ -396,17 +556,17 @@ extension List : ArrayLiteralConvertible {
 
 public final class ListGenerator<A> : GeneratorType {
 	var l : List<A>
-
+	
 	public func next() -> Optional<A> {
 		if l.len == 0 {
 			return nil
 		}
-
+		
 		let (hd, tl) = l.next()
 		l = tl
 		return hd
 	}
-
+	
 	public init(_ l : List<A>) {
 		self.l = l
 	}
@@ -420,19 +580,20 @@ extension List : SequenceType {
 
 extension List : CollectionType {
 	public typealias Index = UInt
-
-	public var startIndex: UInt { get { return 0 } }
-
-	public var endIndex: UInt {
-		get {
-			return self.isFinite() ? self.length() : error("An infinite list has no end index.")
-		}
+	
+	public var startIndex : UInt { return 0 }
+	
+	public var endIndex : UInt {
+		return self.isFinite ? self.length() : error("An infinite list has no end index.")
 	}
 }
 
 extension List : CustomStringConvertible {
 	public var description : String {
-		return self.map({ String.init($0) }).intersperse(", ").reduce("", combine: +)
+		if self.isFinite {
+			return self.map({ String.init($0) }).intersperse(", ").reduce("", combine: +)
+		}
+		return "[...]"
 	}
 }
 
@@ -471,7 +632,7 @@ public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
 }
 
 extension List : Monad {
-	public func bind<B>(f: A -> List<B>) -> List<B> {
+	public func bind<B>(f : A -> List<B>) -> List<B> {
 		return self.concatMap(f)
 	}
 }
