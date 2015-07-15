@@ -523,14 +523,15 @@ public func + <A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 /// MARK: Equatable
 
 public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
-	switch (lhs.match, rhs.match) {
-	case (.Nil, .Nil):
-		return true
-	case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
-		return lHead == rHead && lTail == rTail
-	default:
+	if !lhs.isFinite || !rhs.isFinite {
+		return error("Fatal: One of the lists being compared for equality is not finite.")
+	}
+	
+	if lhs.count != rhs.count {
 		return false
 	}
+	
+	return zip(lhs, rhs).map(==).reduce(true) { $0 && $1 }
 }
 
 public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
@@ -580,6 +581,8 @@ public final class ListGenerator<A> : GeneratorType {
 }
 
 extension List : SequenceType {
+	typealias Generator = ListGenerator<A>
+
 	public func generate() -> ListGenerator<A> {
 		return ListGenerator(self)
 	}
