@@ -531,7 +531,7 @@ public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 		return false
 	}
 	
-	return lazy(Zip2Sequence(lhs, rhs)).map(==).reduce(true) { $0 && $1 }
+	return zip(lhs, rhs).map(==).reduce(true) { $0 && $1 }
 }
 
 public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
