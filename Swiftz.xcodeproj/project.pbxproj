@@ -13,6 +13,8 @@
 		826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
 		828F7D951B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
 		828F7D961B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
+		82E51B7F1B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
+		82E51B801B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
 		82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		841408C31B1A8B3F00BA2B6C /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF763E1B0BDD4B00C912B0 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -32,7 +34,6 @@
 		84A53D781B1A900900E8A107 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FBC1A71DFA0003D53CF /* ListSpec.swift */; };
 		84A53D791B1A900900E8A107 /* MaybeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */; };
 		84A53D7A1B1A900900E8A107 /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */; };
-		84A53D7B1B1A900900E8A107 /* ResultSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC21A71DFA0003D53CF /* ResultSpec.swift */; };
 		84A53D7C1B1A900900E8A107 /* StateSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB57631AA12D2200214BC5 /* StateSpec.swift */; };
 		84A53D7D1B1A900900E8A107 /* ThoseSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */; };
 		84A53D7E1B1A900900E8A107 /* ArrayExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FB41A71DFA0003D53CF /* ArrayExtSpec.swift */; };
@@ -49,7 +50,6 @@
 		84A88FD21A71DFA0003D53CF /* MaybeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */; };
 		84A88FD31A71DFA0003D53CF /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */; };
 		84A88FD51A71DFA0003D53CF /* OptionalExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */; };
-		84A88FD71A71DFA0003D53CF /* ResultSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC21A71DFA0003D53CF /* ResultSpec.swift */; };
 		84A88FD91A71DFA0003D53CF /* ShapeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC41A71DFA0003D53CF /* ShapeExample.swift */; };
 		84A88FDA1A71DFA0003D53CF /* StringExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */; };
 		84A88FDB1A71DFA0003D53CF /* ThoseSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */; };
@@ -87,18 +87,14 @@
 		84A890481A71DFE5003D53CF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903E1A71DFE5003D53CF /* Array.swift */; };
 		84A8904A1A71DFE5003D53CF /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890401A71DFE5003D53CF /* Either.swift */; };
 		84A8904B1A71DFE5003D53CF /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890411A71DFE5003D53CF /* Error.swift */; };
-		84A8904C1A71DFE5003D53CF /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890421A71DFE5003D53CF /* Functions.swift */; };
 		84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890431A71DFE5003D53CF /* Nothing.swift */; };
-		84A890501A71DFE5003D53CF /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890461A71DFE5003D53CF /* Result.swift */; };
 		84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB57631AA12D2200214BC5 /* StateSpec.swift */; };
 		84DF75291B0BD17700C912B0 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DF751E1B0BD17700C912B0 /* Swiftz.framework */; };
 		84DF759C1B0BD1D400C912B0 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FF71A71DFC5003D53CF /* Kinds.swift */; };
 		84DF759E1B0BD1D400C912B0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8903E1A71DFE5003D53CF /* Array.swift */; };
 		84DF75A01B0BD1D400C912B0 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890401A71DFE5003D53CF /* Either.swift */; };
 		84DF75A11B0BD1D400C912B0 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890411A71DFE5003D53CF /* Error.swift */; };
-		84DF75A21B0BD1D400C912B0 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890421A71DFE5003D53CF /* Functions.swift */; };
 		84DF75A31B0BD1D400C912B0 /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890431A71DFE5003D53CF /* Nothing.swift */; };
-		84DF75A51B0BD1D400C912B0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A890461A71DFE5003D53CF /* Result.swift */; };
 		84DF75A61B0BD1D400C912B0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB4D1A7B448A00C6162D /* Sections.swift */; };
 		84DF75A71B0BD1D400C912B0 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FDE1A71DFC5003D53CF /* Applicative.swift */; };
 		84DF75A81B0BD1D400C912B0 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A88FE11A71DFC5003D53CF /* Arrow.swift */; };
@@ -133,8 +129,6 @@
 		84DF75CF1B0BD1D400C912B0 /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900D1A71DFC5003D53CF /* TupleExt.swift */; };
 		84DF76301B0BDCE800C912B0 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84DF762F1B0BDCE800C912B0 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84DF76311B0BDCE800C912B0 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84DF762F1B0BDCE800C912B0 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		84EA2C271B1CE70B0001FB3F /* ResultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EA2C261B1CE70B0001FB3F /* ResultExt.swift */; };
-		84EA2C281B1CE70B0001FB3F /* ResultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EA2C261B1CE70B0001FB3F /* ResultExt.swift */; };
 		84F2C4FA1A7AEB9B00316E5F /* JSONKeypath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */; };
 /* End PBXBuildFile section */
 
@@ -225,6 +219,7 @@
 		822A5FC21B4CD9EC00F48B0B /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		828F7D941B4261A5005EF918 /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserExample.swift; sourceTree = "<group>"; };
+		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
 		82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyListSpec.swift; sourceTree = "<group>"; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -243,7 +238,6 @@
 		84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaybeSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonoidSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC01A71DFA0003D53CF /* OptionalExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExtSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
-		84A88FC21A71DFA0003D53CF /* ResultSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC41A71DFA0003D53CF /* ShapeExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeExample.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC51A71DFA0003D53CF /* StringExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
 		84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThoseSpec.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -281,15 +275,12 @@
 		84A8903E1A71DFE5003D53CF /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Array.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Array.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890401A71DFE5003D53CF /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Either.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Either.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890411A71DFE5003D53CF /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Error.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
-		84A890421A71DFE5003D53CF /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Functions.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Functions.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84A890431A71DFE5003D53CF /* Nothing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Nothing.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Nothing.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
-		84A890461A71DFE5003D53CF /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Result.swift; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		84BB57631AA12D2200214BC5 /* StateSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateSpec.swift; sourceTree = "<group>"; };
 		84DF751E1B0BD17700C912B0 /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DF75281B0BD17700C912B0 /* Swiftz-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftz-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DF762F1B0BDCE800C912B0 /* Swiftz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Swiftz.h; path = Swiftz/Swiftz.h; sourceTree = "<group>"; };
 		84DF76321B0BDD4B00C912B0 /* SwiftCheck.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftCheck.xcodeproj; path = Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj; sourceTree = SOURCE_ROOT; };
-		84EA2C261B1CE70B0001FB3F /* ResultExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultExt.swift; sourceTree = "<group>"; };
 		84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONKeypath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -394,11 +385,10 @@
 			isa = PBXGroup;
 			children = (
 				84A8903E1A71DFE5003D53CF /* Array.swift */,
+				82E51B7E1B5C41E8003CA361 /* Combinators.swift */,
 				84A890401A71DFE5003D53CF /* Either.swift */,
 				84A890411A71DFE5003D53CF /* Error.swift */,
-				84A890421A71DFE5003D53CF /* Functions.swift */,
 				84A890431A71DFE5003D53CF /* Nothing.swift */,
-				84A890461A71DFE5003D53CF /* Result.swift */,
 				8480AB4D1A7B448A00C6162D /* Sections.swift */,
 			);
 			name = Core;
@@ -425,7 +415,6 @@
 				84A88FEA1A71DFC5003D53CF /* DictionaryExt.swift */,
 				8496F0E91B375BD400896D26 /* EitherExt.swift */,
 				84A890031A71DFC5003D53CF /* OptionalExt.swift */,
-				84EA2C261B1CE70B0001FB3F /* ResultExt.swift */,
 				84A890091A71DFC5003D53CF /* StringExt.swift */,
 				84A8900D1A71DFC5003D53CF /* TupleExt.swift */,
 			);
@@ -491,7 +480,6 @@
 				84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */,
 				84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */,
 				82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */,
-				84A88FC21A71DFA0003D53CF /* ResultSpec.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
 			);
@@ -727,7 +715,7 @@
 				84A890161A71DFC5003D53CF /* CharacterExt.swift in Sources */,
 				8480AB4E1A7B448A00C6162D /* Sections.swift in Sources */,
 				84A8902B1A71DFC5003D53CF /* Monad.swift in Sources */,
-				84EA2C271B1CE70B0001FB3F /* ResultExt.swift in Sources */,
+				82E51B7F1B5C41E8003CA361 /* Combinators.swift in Sources */,
 				84A890371A71DFC5003D53CF /* Semigroup.swift in Sources */,
 				84A890331A71DFC5003D53CF /* OptionalExt.swift in Sources */,
 				84A8903A1A71DFC5003D53CF /* SYB.swift in Sources */,
@@ -744,13 +732,11 @@
 				84A890261A71DFC5003D53CF /* JSON.swift in Sources */,
 				822A5FC31B4CD9EC00F48B0B /* Operators.swift in Sources */,
 				84A890271A71DFC5003D53CF /* Kinds.swift in Sources */,
-				84A890501A71DFE5003D53CF /* Result.swift in Sources */,
 				84A8903D1A71DFC5003D53CF /* TupleExt.swift in Sources */,
 				84A8902C1A71DFC5003D53CF /* Monoid.swift in Sources */,
 				84A890291A71DFC5003D53CF /* List.swift in Sources */,
 				84A890121A71DFC5003D53CF /* Bifunctor.swift in Sources */,
 				84A8900F1A71DFC5003D53CF /* ArrayExt.swift in Sources */,
-				84A8904C1A71DFE5003D53CF /* Functions.swift in Sources */,
 				84A890311A71DFC5003D53CF /* Num.swift in Sources */,
 				84A890191A71DFC5003D53CF /* Curry.swift in Sources */,
 				84A8901A1A71DFC5003D53CF /* DictionaryExt.swift in Sources */,
@@ -788,7 +774,6 @@
 				84A88FD11A71DFA0003D53CF /* ListSpec.swift in Sources */,
 				82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */,
 				84A88FD01A71DFA0003D53CF /* JSONSpec.swift in Sources */,
-				84A88FD71A71DFA0003D53CF /* ResultSpec.swift in Sources */,
 				84A88FD31A71DFA0003D53CF /* MonoidSpec.swift in Sources */,
 				84A88FDA1A71DFA0003D53CF /* StringExtSpec.swift in Sources */,
 				84A88FCC1A71DFA0003D53CF /* EitherSpec.swift in Sources */,
@@ -801,12 +786,10 @@
 			files = (
 				84DF759C1B0BD1D400C912B0 /* Kinds.swift in Sources */,
 				84DF759E1B0BD1D400C912B0 /* Array.swift in Sources */,
-				84EA2C281B1CE70B0001FB3F /* ResultExt.swift in Sources */,
+				82E51B801B5C41E8003CA361 /* Combinators.swift in Sources */,
 				84DF75A01B0BD1D400C912B0 /* Either.swift in Sources */,
 				84DF75A11B0BD1D400C912B0 /* Error.swift in Sources */,
-				84DF75A21B0BD1D400C912B0 /* Functions.swift in Sources */,
 				84DF75A31B0BD1D400C912B0 /* Nothing.swift in Sources */,
-				84DF75A51B0BD1D400C912B0 /* Result.swift in Sources */,
 				84DF75A61B0BD1D400C912B0 /* Sections.swift in Sources */,
 				84DF75A71B0BD1D400C912B0 /* Applicative.swift in Sources */,
 				84DF75A81B0BD1D400C912B0 /* Arrow.swift in Sources */,
@@ -859,7 +842,6 @@
 				828F7D961B4261A5005EF918 /* UserExample.swift in Sources */,
 				84A53D791B1A900900E8A107 /* MaybeSpec.swift in Sources */,
 				84A53D7A1B1A900900E8A107 /* MonoidSpec.swift in Sources */,
-				84A53D7B1B1A900900E8A107 /* ResultSpec.swift in Sources */,
 				84A53D7C1B1A900900E8A107 /* StateSpec.swift in Sources */,
 				82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */,
 				84A53D7D1B1A900900E8A107 /* ThoseSpec.swift in Sources */,

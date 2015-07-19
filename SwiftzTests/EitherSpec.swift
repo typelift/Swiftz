@@ -57,12 +57,12 @@ class EitherSpec : XCTestCase {
 		}
 
 		property("fold returns its default on .Left") <- forAll { (e : EitherOf<String, Int>) in
-			return e.getEither.isLeft() ==> (e.getEither.fold(0, f: identity) == 0)
+			return e.getEither.isLeft ==> (e.getEither.fold(0, f: identity) == 0)
 		}
 
 		property("Either is a bifunctor") <- forAll { (e : EitherOf<String, Int>) in
 			let y = e.getEither.bimap(identity, *2)
-			if e.getEither.isLeft() {
+			if e.getEither.isLeft {
 				return y == e.getEither
 			} else {
 				return y == (*2) <^> e.getEither

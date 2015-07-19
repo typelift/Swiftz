@@ -11,9 +11,3 @@ public protocol Pointed {
 	typealias A
 	static func pure(_ : A) -> Self
 }
-
-extension Result : Pointed {
-	public static func pure(x : V) -> Result<V> {
-		return Result.value(x)
-	}
-}
