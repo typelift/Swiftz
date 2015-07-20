@@ -43,6 +43,14 @@ class MonoidSpec : XCTestCase {
 		property("Last obeys right identity") <- forAll { (i : MaybeOf<Int>) in
 			return (Last(i.getMaybe) <> Last.mzero).value() == i.getMaybe
 		}
+		
+		property("Proxy obeys left identity") <- forAll { (i : Proxy<Int>) in
+			return (Proxy.mzero <> i) == i
+		}
+		
+		property("Proxy obeys right identity") <- forAll { (i : Proxy<Int>) in
+			return (i <> Proxy.mzero) == i
+		}
 	}
 
 	func testDither() {
