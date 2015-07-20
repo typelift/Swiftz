@@ -9,19 +9,19 @@
 /// A `Monoid` is a `Semigroup` that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
-	static var mzero : Self { get }
+	static var mempty : Self { get }
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mzero, t: t)
+	return sconcat(S.mempty, t: t)
 }
 
 extension List : Monoid {
-	public static var mzero : List<A> { return [] }
+	public static var mempty : List<A> { return [] }
 }
 
 extension Array : Monoid {
-	public static var mzero : [Element] { return [] }
+	public static var mempty : [Element] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
@@ -32,7 +32,7 @@ public struct Sum<N : Num> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Sum<N> {
+	public static var mempty : Sum<N> {
 		return Sum(N.zero)
 	}
 
@@ -49,7 +49,7 @@ public struct Product<N : Num> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Product<N> {
+	public static var mempty : Product<N> {
 		return Product(N.one)
 	}
 
@@ -66,7 +66,7 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 		value = x
 	}
 
-	public static var mzero : AdjoinNil<A> {
+	public static var mempty : AdjoinNil<A> {
 		return AdjoinNil(Maybe.none())
 	}
 
@@ -91,7 +91,7 @@ public struct First<A : Comparable> : Monoid {
 		value = x
 	}
 
-	public static var mzero : First<A> {
+	public static var mempty : First<A> {
 		return First(Maybe.none())
 	}
 
@@ -112,7 +112,7 @@ public struct Last<A : Comparable> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Last<A> {
+	public static var mempty : Last<A> {
 		return Last(Maybe.none())
 	}
 
@@ -157,10 +157,10 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return values.foldRight(C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
-	public static var mzero : Dither<A, B> {
+	public static var mempty : Dither<A, B> {
 		return Dither([])
 	}
 
