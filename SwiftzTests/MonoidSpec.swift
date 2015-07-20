@@ -45,11 +45,11 @@ class MonoidSpec : XCTestCase {
 		}
 		
 		property("Proxy obeys left identity") <- forAll { (i : Proxy<Int>) in
-			return (Proxy.mzero <> i) == i
+			return (Proxy.mempty <> i) == i
 		}
 		
 		property("Proxy obeys right identity") <- forAll { (i : Proxy<Int>) in
-			return (i <> Proxy.mzero) == i
+			return (i <> Proxy.mempty) == i
 		}
 	}
 

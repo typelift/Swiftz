@@ -44,7 +44,7 @@ extension Proxy : Semigroup {
 }
 
 extension Proxy : Monoid {
-	public static var mzero : Proxy<T> {
+	public static var mempty : Proxy<T> {
 		return Proxy()
 	}
 }
