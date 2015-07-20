@@ -61,16 +61,16 @@ class ProxySpec : XCTestCase {
 			return (Proxy<(Int -> Int) -> (Int -> Int) -> Int -> Int>.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
 		}
 		
-		property("Array obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Proxy<Int>>) in
+		property("Proxy obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Proxy<Int>>) in
 			let f = { $0 } • fa.getArrow
 			return (Proxy.pure(a) >>- f) == f(a)
 		}
 		
-		property("Array obeys the Monad right identity law") <- forAll { (m : Proxy<Int>) in
+		property("Proxy obeys the Monad right identity law") <- forAll { (m : Proxy<Int>) in
 			return (m >>- Proxy.pure) == m
 		}
 		
-		property("Array obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>, m : ArrayOf<Int>) in
+		property("Proxy obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>, m : ArrayOf<Int>) in
 			let f = { $0.getArray } • fa.getArrow
 			let g = { $0.getArray } • ga.getArrow
 			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
