@@ -71,6 +71,12 @@ public func >>- <A, B>(l : Identity<A>, f : A -> Identity<B>) -> Identity<B> {
 	return l.bind(f)
 }
 
+extension Identity : MonadFix {
+	public static func mfix(f : A -> Identity<A>) -> Identity<A> {
+		return f(Identity.mfix(f).runIdentity)
+	}
+}
+
 extension Identity : MonadZip {
 	typealias C = Any
 	typealias FC = Identity<C>
