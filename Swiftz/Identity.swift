@@ -19,6 +19,18 @@ public struct Identity<A> {
 	}
 }
 
+/// MARK: Equatable
+
+public func ==<A : Equatable>(lhs : Identity<A>, rhs : Identity<A>) -> Bool {
+	return lhs.runIdentity == rhs.runIdentity
+}
+
+public func !=<A : Equatable>(lhs : Identity<A>, rhs : Identity<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+/// MARK: Control.*
+
 extension Identity : Functor {
 	typealias B = Any
 	typealias FB = Identity<B>
@@ -26,6 +38,10 @@ extension Identity : Functor {
 	public func fmap<B>(f : A -> B) -> Identity<B> {
 		return Identity<B>(f(self.runIdentity))
 	}
+}
+
+public func <^> <A, B>(f : A -> B, l : Identity<A>) -> Identity<B> {
+	return l.fmap(f)
 }
 
 extension Identity : Pointed {
@@ -41,10 +57,18 @@ extension Identity : Applicative {
 	}
 }
 
+public func <*> <A, B>(f : Identity<(A -> B)>, l : Identity<A>) -> Identity<B> {
+	return l.ap(f)
+}
+
 extension Identity : Monad {
 	public func bind<B>(f : A -> Identity<B>) -> Identity<B> {
 		return f(self.runIdentity)
 	}
+}
+
+public func >>- <A, B>(l : Identity<A>, f : A -> Identity<B>) -> Identity<B> {
+	return l.bind(f)
 }
 
 extension Identity : MonadZip {
