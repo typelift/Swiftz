@@ -650,3 +650,14 @@ extension List : Monad {
 public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 	return l.bind(f)
 }
+
+extension List : MonadPlus {
+	public static var mzero : List<A> {
+		return []
+	}
+	
+	public func mplus(other : List<A>) -> List<A> {
+		return self + other
+	}
+}
+

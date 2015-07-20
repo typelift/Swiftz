@@ -161,6 +161,26 @@ public func >>- <A, B>(l : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 	return l.bind(f)
 }
 
+extension Maybe : MonadPlus {
+	public static var mzero : Maybe<A> {
+		return .none()
+	}
+	
+	public func mplus(other : Maybe<A>) -> Maybe<A> {
+		if self.isNone() {
+			return other
+		} else {
+			return self
+		}
+	}
+}
+
+extension Maybe : MonadFix {
+	public static func mfix(f : A -> Maybe<A>) -> Maybe<A> {
+		return f(Maybe.mfix(f).fromJust())
+	}
+}
+
 extension Maybe : Foldable {
 	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
 		if self.isNone() {
