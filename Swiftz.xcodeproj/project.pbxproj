@@ -15,8 +15,6 @@
 		828F7D961B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
 		82E51B7F1B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
 		82E51B801B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
-		82E51BAB1B5DA00B003CA361 /* MonadZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BAA1B5DA00B003CA361 /* MonadZip.swift */; };
-		82E51BAC1B5DA00B003CA361 /* MonadZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BAA1B5DA00B003CA361 /* MonadZip.swift */; };
 		82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		841408C31B1A8B3F00BA2B6C /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF763E1B0BDD4B00C912B0 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -222,7 +220,6 @@
 		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		828F7D941B4261A5005EF918 /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserExample.swift; sourceTree = "<group>"; };
 		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
-		82E51BAA1B5DA00B003CA361 /* MonadZip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonadZip.swift; sourceTree = "<group>"; };
 		82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyListSpec.swift; sourceTree = "<group>"; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -406,7 +403,6 @@
 				84A88FE71A71DFC5003D53CF /* Comonad.swift */,
 				84A88FE91A71DFC5003D53CF /* Curry.swift */,
 				84A88FFB1A71DFC5003D53CF /* Monad.swift */,
-				82E51BAA1B5DA00B003CA361 /* MonadZip.swift */,
 			);
 			name = Control;
 			sourceTree = "<group>";
@@ -731,7 +727,6 @@
 				84A890181A71DFC5003D53CF /* Copointed.swift in Sources */,
 				84A8900E1A71DFC5003D53CF /* Applicative.swift in Sources */,
 				84A8903B1A71DFC5003D53CF /* Those.swift in Sources */,
-				82E51BAB1B5DA00B003CA361 /* MonadZip.swift in Sources */,
 				84A8904B1A71DFE5003D53CF /* Error.swift in Sources */,
 				84A890111A71DFC5003D53CF /* Arrow.swift in Sources */,
 				84A890261A71DFC5003D53CF /* JSON.swift in Sources */,
@@ -804,7 +799,6 @@
 				84DF75B21B0BD1D400C912B0 /* Monad.swift in Sources */,
 				84DF75B51B0BD1D400C912B0 /* Bifunctor.swift in Sources */,
 				84DF75B61B0BD1D400C912B0 /* Bounded.swift in Sources */,
-				82E51BAC1B5DA00B003CA361 /* MonadZip.swift in Sources */,
 				84DF75B71B0BD1D400C912B0 /* Copointed.swift in Sources */,
 				822A5FC41B4CD9EC00F48B0B /* Operators.swift in Sources */,
 				84DF75B81B0BD1D400C912B0 /* Function.swift in Sources */,
