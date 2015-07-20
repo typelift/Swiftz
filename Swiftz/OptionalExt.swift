@@ -95,7 +95,7 @@ extension Optional : Foldable {
 	}
 
 	public func foldMap<M : Monoid>(f : A -> M) -> M {
-		return self.foldr(curry(<>) • f, M.mzero)
+		return self.foldr(curry(<>) • f, M.mempty)
 	}
 }
 

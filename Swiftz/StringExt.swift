@@ -148,7 +148,7 @@ extension String {
 extension String : Monoid {
 	typealias M = String
 
-	public static var mzero : String {
+	public static var mempty : String {
 		return ""
 	}
 

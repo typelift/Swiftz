@@ -40,8 +40,8 @@ class JSONSpec : XCTestCase {
 		let path = ["this", "is", "a", "deeply", "nested", "bit", "of", "json", "mkay"]
 		
 		XCTAssertTrue(keypath.path == path, "Expected keypath and path to match")
-		XCTAssertTrue((JSONKeypath.mzero <> keypath).path == keypath.path, "Expected left identity to hold")
-		XCTAssertTrue((keypath <> JSONKeypath.mzero).path == keypath.path, "Expected right identity to hold")
+		XCTAssertTrue((JSONKeypath.mempty <> keypath).path == keypath.path, "Expected left identity to hold")
+		XCTAssertTrue((keypath <> JSONKeypath.mempty).path == keypath.path, "Expected right identity to hold")
 	}
 }
 
