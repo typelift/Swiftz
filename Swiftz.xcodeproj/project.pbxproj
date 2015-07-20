@@ -15,6 +15,8 @@
 		828F7D961B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
 		82E51B7F1B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
 		82E51B801B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
+		82E51BB01B5DA4D3003CA361 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BAF1B5DA4D3003CA361 /* Identity.swift */; };
+		82E51BB11B5DA4D3003CA361 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BAF1B5DA4D3003CA361 /* Identity.swift */; };
 		82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		841408C31B1A8B3F00BA2B6C /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF763E1B0BDD4B00C912B0 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -220,6 +222,7 @@
 		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		828F7D941B4261A5005EF918 /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserExample.swift; sourceTree = "<group>"; };
 		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
+		82E51BAF1B5DA4D3003CA361 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyListSpec.swift; sourceTree = "<group>"; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -431,6 +434,7 @@
 				84A88FEC1A71DFC5003D53CF /* Function.swift */,
 				84A88FED1A71DFC5003D53CF /* Functor.swift */,
 				84A88FF01A71DFC5003D53CF /* HList.swift */,
+				82E51BAF1B5DA4D3003CA361 /* Identity.swift */,
 				84A88FF61A71DFC5003D53CF /* JSON.swift */,
 				84F2C4F91A7AEB9B00316E5F /* JSONKeypath.swift */,
 				84A88FF91A71DFC5003D53CF /* List.swift */,
@@ -725,6 +729,7 @@
 				84A8904A1A71DFE5003D53CF /* Either.swift in Sources */,
 				84A890201A71DFC5003D53CF /* HList.swift in Sources */,
 				84A890181A71DFC5003D53CF /* Copointed.swift in Sources */,
+				82E51BB01B5DA4D3003CA361 /* Identity.swift in Sources */,
 				84A8900E1A71DFC5003D53CF /* Applicative.swift in Sources */,
 				84A8903B1A71DFC5003D53CF /* Those.swift in Sources */,
 				84A8904B1A71DFE5003D53CF /* Error.swift in Sources */,
@@ -797,6 +802,7 @@
 				84DF75AA1B0BD1D400C912B0 /* Comonad.swift in Sources */,
 				84DF75AB1B0BD1D400C912B0 /* Curry.swift in Sources */,
 				84DF75B21B0BD1D400C912B0 /* Monad.swift in Sources */,
+				82E51BB11B5DA4D3003CA361 /* Identity.swift in Sources */,
 				84DF75B51B0BD1D400C912B0 /* Bifunctor.swift in Sources */,
 				84DF75B61B0BD1D400C912B0 /* Bounded.swift in Sources */,
 				84DF75B71B0BD1D400C912B0 /* Copointed.swift in Sources */,

@@ -20,45 +20,6 @@ public protocol Functor {
 	func fmap(f : A -> B) -> FB
 }
 
-/// The Identity Functor holds a singular value.
-public struct Id<A> {
-	private let a : () -> A
-
-	public init(@autoclosure(escaping) _ aa : () -> A) {
-		a = aa
-	}
-
-	public var runId : A {
-		return a()
-	}
-}
-
-extension Id : Functor {
-	typealias B = Any
-	typealias FB = Id<B>
-
-	public func fmap<B>(f : A -> B) -> Id<B> {
-		return Id<B>(f(self.runId))
-	}
-}
-
-extension Id : Copointed {
-	public func extract() -> A {
-		return self.a()
-	}
-}
-
-extension Id : Comonad {
-	typealias FFA = Id<Id<A>>
-	
-	public func duplicate() -> Id<Id<A>> {
-		return Id<Id<A>>(self)
-	}
-	
-	public func extend<B>(f : Id<A> -> B) -> Id<B> {
-		return self.duplicate().fmap(f)
-	}
-}
 
 // The Constant Functor ignores fmap.
 public struct Const<V, I> {

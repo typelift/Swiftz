@@ -36,11 +36,11 @@ public protocol MonadZip : Monad {
 /// A monoid for monads.
 public protocol MonadPlus : Monad {
 	static var mzero : Self { get }
-	func mplus(_: Self) -> Self
+	func mplus(_ : Self) -> Self
 }
 
 /// Monads that admit left-tightening recursion.
 public protocol MonadFix : Monad {
 	/// Calculates the fixed point of a monadic computation.
-	static func mfix(_: A -> Self) -> Self
+	static func mfix(_ : A -> Self) -> Self
 }
