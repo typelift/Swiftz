@@ -9,11 +9,19 @@
 /// A `Monoid` is a `Semigroup` that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
-	static var mzero : Self { get }
+	static var mempty : Self { get }
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mzero, t)
+	return sconcat(S.mempty, t: t)
+}
+
+extension List : Monoid {
+	public static var mempty : List<A> { return [] }
+}
+
+extension Array : Monoid {
+	public static var mempty : [Element] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
@@ -24,7 +32,7 @@ public struct Sum<N : Num> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Sum<N> {
+	public static var mempty : Sum<N> {
 		return Sum(N.zero)
 	}
 
@@ -41,7 +49,7 @@ public struct Product<N : Num> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Product<N> {
+	public static var mempty : Product<N> {
 		return Product(N.one)
 	}
 
@@ -58,7 +66,7 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 		value = x
 	}
 
-	public static var mzero : AdjoinNil<A> {
+	public static var mempty : AdjoinNil<A> {
 		return AdjoinNil(Maybe.none())
 	}
 
@@ -83,7 +91,7 @@ public struct First<A : Comparable> : Monoid {
 		value = x
 	}
 
-	public static var mzero : First<A> {
+	public static var mempty : First<A> {
 		return First(Maybe.none())
 	}
 
@@ -104,7 +112,7 @@ public struct Last<A : Comparable> : Monoid {
 		value = x
 	}
 
-	public static var mzero : Last<A> {
+	public static var mempty : Last<A> {
 		return Last(Maybe.none())
 	}
 
@@ -129,8 +137,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -141,18 +149,18 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public static func left(x: A) -> Dither<A, B> {
-		return Dither([Either.left(x)])
+		return Dither([Either.Left(x)])
 	}
 
 	public static func right(y: B) -> Dither<A, B> {
-		return Dither([Either.right(y)])
+		return Dither([Either.Right(y)])
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
-	public static var mzero : Dither<A, B> {
+	public static var mempty : Dither<A, B> {
 		return Dither([])
 	}
 

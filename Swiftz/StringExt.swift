@@ -26,11 +26,6 @@ extension String {
 		return xs.reduce("", combine: { "\($0)\($1)\n" })
 	}
 
-	/// Returns a Lens that targets the newline-seperated sections of a String
-	public static func lines() -> Iso<String, String, [String], [String]> {
-		return Iso(get: { $0.lines() }, inject: unlines)
-	}
-
 	/// Appends a character onto the front of a string.
 	public static func cons(head : Character, tail : String) -> String {
 		return String(head) + tail
@@ -48,9 +43,9 @@ extension String {
 	/// Destructures a string.  If the string is empty the result is .Nil, otherwise the result is
 	/// .Cons(head, tail).
 	public func match() -> StringMatcher {
-		if count(self) == 0 {
+		if self.characters.count == 0 {
 			return .Nil
-		} else if count(self) == 1 {
+		} else if self.characters.count == 1 {
 			return .Cons(self[self.startIndex], "")
 		}
 		return .Cons(self[self.startIndex], self[advance(self.startIndex, 1)..<self.endIndex])
@@ -123,11 +118,11 @@ extension String {
 	public func isInfixOf(r : String) -> Bool {
 		func tails(l : String) -> [String] {
 			return l.reduce({ x, y in
-				return [String.cons(y, tail: head(x)!)] + x
+				return [String.cons(y, tail: x.first!)] + x
 			}, initial: [""])
 		}
 
-		return any(tails(r), { self.isPrefixOf($0) })
+		return tails(r).any(self.isPrefixOf)
 	}
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
@@ -136,7 +131,7 @@ extension String {
 		switch (self.match(), r.match()) {
 		case (.Nil, _):
 			return .Some(r)
-		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
 			return xs.stripPrefix(xs)
 		default:
 			return .None
@@ -153,7 +148,7 @@ extension String {
 extension String : Monoid {
 	typealias M = String
 
-	public static var mzero : String {
+	public static var mempty : String {
 		return ""
 	}
 
@@ -190,7 +185,7 @@ extension String : Applicative {
 	typealias FAB = [Character -> Character]
 
 	public func ap(a : [Character -> Character]) -> String {
-		return a.map({ return self.map($0) }).reduce("", combine: +)
+		return a.map(self.map).reduce("", combine: +)
 	}
 }
 
@@ -200,7 +195,7 @@ public func <*> (f : Array<(Character -> Character)>, l : String) -> String {
 
 extension String : Monad {
 	public func bind(f : Character -> String) -> String {
-		return Array(self).map(f).reduce("", combine: +)
+		return Array(self.characters).map(f).reduce("", combine: +)
 	}
 }
 

@@ -6,37 +6,99 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-/// Applies a function to the contents of an Optional to yield a new Optional.  If no value exists
-/// the result of this function is None.
-public func flatMap<A, B>(m : Optional<A>) -> (A -> Optional<B>) -> Optional<B> {
-	return { f in maybe(m)(.None)(f) }
-}
-
-/// Case analysis for the Maybe type.  Given a maybe, a default value in case it is None, and
-/// a function, maps the function over the value in the Maybe.
-public func maybe<A, B>(m : Optional<A>) -> B -> (A -> B) -> B {
-	return { z in { f in
-		switch m {
-		case .None: 
-			return z
-		case let .Some(x): 
-			return f(x)
-		}
-	} }
-}
-
-/// Given an Optional and a default value returns the value of the Optional when it is Some, else
-/// this function returns the default value.
-public func getOrElse<T>(m : Optional<T>) -> T -> T {
-	return { def in
-		switch m {
-		case .None: 
+extension Optional {
+	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
+	/// a function, maps the function over the value in the Maybe.
+	public func maybe<B>(def : B, onSome : T -> B) -> B {
+		switch self {
+		case .None:
 			return def
-		case let .Some(x): 
+		case let .Some(x):
+			return onSome(x)
+		}
+	}
+
+
+	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
+	/// this function returns the default value.
+	public func getOrElse(def : T) -> T {
+		switch self {
+		case .None:
+			return def
+		case let .Some(x):
 			return x
 		}
 	}
 }
+
+/// MARK: Instances
+
+extension Optional : Functor {
+	typealias A = T
+	typealias B = Any
+	typealias FB = Optional<B>
+
+	public func fmap<B>(f : T -> B) -> Optional<B> {
+		return self.map(f)
+	}
+}
+
+public func <^> <A, B>(f : A -> B, l : Optional<A>) -> Optional<B> {
+	return l.fmap(f)
+}
+
+extension Optional : Pointed {
+	public static func pure(x : T) -> Optional<T> {
+		return .Some(x)
+	}
+}
+
+extension Optional : Applicative {
+	typealias FA = Optional<A>
+	typealias FAB = Optional<A -> B>
+
+	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
+		if let fn = f {
+			return self.fmap(fn)
+		}
+		return .None
+	}
+}
+
+public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
+	return l.ap(f)
+}
+
+extension Optional : Monad {
+	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
+		return self.flatMap(f)
+	}
+}
+
+public func >>- <A, B>(l : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
+	return l.bind(f)
+}
+
+extension Optional : Foldable {
+	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
+		if let v = self {
+			return k(v)(i)
+		}
+		return i
+	}
+
+	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
+		if let v = self {
+			return k(i)(v)
+		}
+		return i
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mempty)
+	}
+}
+
 
 /// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
 /// Given one or more Optional values, returns the first Optional value that is not nil

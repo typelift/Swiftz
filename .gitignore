@@ -16,3 +16,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+*.xcscmblueprint
+Carthage/Build
+Carthage/Checkouts
+

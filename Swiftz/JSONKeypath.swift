@@ -32,7 +32,7 @@ public struct JSONKeypath : StringLiteralConvertible {
 }
 
 extension JSONKeypath : Monoid {
-	public static var mzero : JSONKeypath {
+	public static var mempty : JSONKeypath {
 		return JSONKeypath([])
 	}
 	
@@ -41,8 +41,8 @@ extension JSONKeypath : Monoid {
 	}
 }
 
-extension JSONKeypath : Printable {
+extension JSONKeypath : CustomStringConvertible {
 	public var description : String {
-		return intersperse(".", self.path).reduce("", combine: +)
+		return self.path.intersperse(".").reduce("", combine: +)
 	}
 }

@@ -160,3 +160,23 @@ extension Maybe : Monad {
 public func >>- <A, B>(l : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 	return l.bind(f)
 }
+
+extension Maybe : Foldable {
+	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
+		if self.isNone() {
+			return i
+		}
+		return k(self.fromJust())(i)
+	}
+
+	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
+		if self.isNone() {
+			return i
+		}
+		return k(i)(self.fromJust())
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mempty)
+	}
+}

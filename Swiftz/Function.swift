@@ -29,12 +29,12 @@ extension Function : Category {
 	typealias CAC = Function<A, C>
 
 	public static func id() -> Function<T, T> {
-		return Function<T, T>({ $0 })
+		return Function<T, T>(identity)
 	}
 }
 
 public func • <A, B, C>(c : Function<B, C>, c2 : Function<A, B>) -> Function<A, C> {
-	return Function.arr { c.apply(c2.apply($0)) }
+	return Function.arr(c.apply • c2.apply)
 }
 
 public func <<< <A, B, C>(c1 : Function<B, C>, c2 : Function<A, B>) -> Function<A, C> {
@@ -98,11 +98,11 @@ extension Function : ArrowChoice {
 }
 
 public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
-	return Function.arr({ Either.left(f.apply($0)) }) ||| Function.arr({ Either.right(g.apply($0)) })
+	return Function.arr(Either.Left • f.apply) ||| Function.arr(Either.Right • g.apply)
 }
 
 public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
-	return Function.arr({ e in e.either(onLeft: { f.apply($0) }, onRight: { g.apply($0) }) })
+	return Function.arr({ e in e.either(onLeft: f.apply, onRight: g.apply) })
 }
 
 extension Function : ArrowApply {
@@ -117,6 +117,6 @@ extension Function : ArrowLoop {
 	typealias LOOP = Function<(A, D), (B, D)>
 
 	public static func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
-		return Function<B, C>.arr { k in Function.loop(f).apply(k) }
+		return Function<B, C>.arr(Function.loop(f).apply)
 	}
 }
