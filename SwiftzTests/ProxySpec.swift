@@ -41,6 +41,10 @@ class ProxySpec : XCTestCase {
 			return (x != y) == !(x == y)
 		}
 		
+		property("Proxies bounds are unique") <- forAll { (x : Proxy<Int>) in
+			return (Proxy.minBound() == x) == (Proxy.maxBound() == x)
+		}
+		
 		property("Proxy obeys the Functor identity law") <- forAll { (x : Proxy<Int>) in
 			return (x.fmap(identity)) == identity(x)
 		}
@@ -75,7 +79,6 @@ class ProxySpec : XCTestCase {
 			let g = { $0.getArray } • ga.getArrow
 			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
 		}
-
 	}
 }
 
