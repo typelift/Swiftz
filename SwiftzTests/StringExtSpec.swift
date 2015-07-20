@@ -67,11 +67,11 @@ class StringExtSpec : XCTestCase {
 //		}
 
 		property("String obeys the Monoidal left identity law") <- forAll { (x : String) in
-			return (x + String.mzero) == x
+			return (x + String.mempty) == x
 		}
 
 		property("String obeys the Monoidal right identity law") <- forAll { (x : String) in
-			return (String.mzero + x) == x
+			return (String.mempty + x) == x
 		}
 
 		property("cons behaves") <- forAll { (c : Character, s : String) in

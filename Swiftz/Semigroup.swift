@@ -105,7 +105,7 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return values.foldRight(C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
 	public func op(other : Vacillate<A, B>) -> Vacillate<A, B> {

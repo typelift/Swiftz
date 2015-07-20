@@ -84,7 +84,7 @@ extension Either : Foldable {
 	public func foldMap<M : Monoid>(f : A -> M) -> M {
 		switch self {
 		case .Left(_):
-			return M.mzero
+			return M.mempty
 		case .Right(let y):
 			return f(y)
 		}
