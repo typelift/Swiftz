@@ -19,6 +19,10 @@
 		82E51BB11B5DA4D3003CA361 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BAF1B5DA4D3003CA361 /* Identity.swift */; };
 		82E51BB31B5DA678003CA361 /* IdentitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BB21B5DA678003CA361 /* IdentitySpec.swift */; };
 		82E51BB41B5DA678003CA361 /* IdentitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BB21B5DA678003CA361 /* IdentitySpec.swift */; };
+		82E51BA01B5D9413003CA361 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B9F1B5D9413003CA361 /* Proxy.swift */; };
+		82E51BA11B5D9413003CA361 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B9F1B5D9413003CA361 /* Proxy.swift */; };
+		82E51BA51B5D96BD003CA361 /* ProxySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BA41B5D96BD003CA361 /* ProxySpec.swift */; };
+		82E51BA61B5D96BD003CA361 /* ProxySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BA41B5D96BD003CA361 /* ProxySpec.swift */; };
 		82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		841408C31B1A8B3F00BA2B6C /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84DF763E1B0BDD4B00C912B0 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -226,6 +230,8 @@
 		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
 		82E51BAF1B5DA4D3003CA361 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		82E51BB21B5DA678003CA361 /* IdentitySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentitySpec.swift; sourceTree = "<group>"; };
+		82E51B9F1B5D9413003CA361 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
+		82E51BA41B5D96BD003CA361 /* ProxySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxySpec.swift; sourceTree = "<group>"; };
 		82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyListSpec.swift; sourceTree = "<group>"; };
 		8480AB4D1A7B448A00C6162D /* Sections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sections.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Sections.swift; sourceTree = SOURCE_ROOT; };
 		84961FB41A998976004A186A /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -446,6 +452,7 @@
 				84A88FFE1A71DFC5003D53CF /* NonEmptyList.swift */,
 				84A890011A71DFC5003D53CF /* Num.swift */,
 				84A890041A71DFC5003D53CF /* Pointed.swift */,
+				82E51B9F1B5D9413003CA361 /* Proxy.swift */,
 				84A890071A71DFC5003D53CF /* Semigroup.swift */,
 				84961FB41A998976004A186A /* State.swift */,
 				84A8900A1A71DFC5003D53CF /* SYB.swift */,
@@ -488,6 +495,7 @@
 				84A88FBD1A71DFA0003D53CF /* MaybeSpec.swift */,
 				84A88FBE1A71DFA0003D53CF /* MonoidSpec.swift */,
 				82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */,
+				82E51BA41B5D96BD003CA361 /* ProxySpec.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
 			);
@@ -730,6 +738,7 @@
 				84A8902A1A71DFC5003D53CF /* Maybe.swift in Sources */,
 				84A8903C1A71DFC5003D53CF /* Tuple.swift in Sources */,
 				84A890341A71DFC5003D53CF /* Pointed.swift in Sources */,
+				82E51BA01B5D9413003CA361 /* Proxy.swift in Sources */,
 				84A8904A1A71DFE5003D53CF /* Either.swift in Sources */,
 				84A890201A71DFC5003D53CF /* HList.swift in Sources */,
 				84A890181A71DFC5003D53CF /* Copointed.swift in Sources */,
@@ -785,6 +794,7 @@
 				82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */,
 				84A88FD01A71DFA0003D53CF /* JSONSpec.swift in Sources */,
 				84A88FD31A71DFA0003D53CF /* MonoidSpec.swift in Sources */,
+				82E51BA51B5D96BD003CA361 /* ProxySpec.swift in Sources */,
 				84A88FDA1A71DFA0003D53CF /* StringExtSpec.swift in Sources */,
 				84A88FCC1A71DFA0003D53CF /* EitherSpec.swift in Sources */,
 			);
@@ -804,6 +814,7 @@
 				84DF75A71B0BD1D400C912B0 /* Applicative.swift in Sources */,
 				84DF75A81B0BD1D400C912B0 /* Arrow.swift in Sources */,
 				84DF75A91B0BD1D400C912B0 /* Category.swift in Sources */,
+				82E51BA11B5D9413003CA361 /* Proxy.swift in Sources */,
 				84DF75AA1B0BD1D400C912B0 /* Comonad.swift in Sources */,
 				84DF75AB1B0BD1D400C912B0 /* Curry.swift in Sources */,
 				84DF75B21B0BD1D400C912B0 /* Monad.swift in Sources */,
@@ -859,6 +870,7 @@
 				84A53D7D1B1A900900E8A107 /* ThoseSpec.swift in Sources */,
 				84A53D7E1B1A900900E8A107 /* ArrayExtSpec.swift in Sources */,
 				84A53D7F1B1A900900E8A107 /* OptionalExtSpec.swift in Sources */,
+				82E51BA61B5D96BD003CA361 /* ProxySpec.swift in Sources */,
 				84A53D801B1A900900E8A107 /* StringExtSpec.swift in Sources */,
 				84A53D811B1A900900E8A107 /* TupleExtSpec.swift in Sources */,
 			);
