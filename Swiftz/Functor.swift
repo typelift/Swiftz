@@ -35,14 +35,14 @@ public struct Const<V, I> {
 }
 
 extension Const : Bifunctor {
-	typealias L = V
-	typealias R = I
-	typealias D = Any
+	public typealias L = V
+	public typealias R = I
+	public typealias D = Any
 
-	typealias PAC = Const<L, R>
-	typealias PAD = Const<V, D>
-	typealias PBC = Const<B, R>
-	typealias PBD = Const<B, D>
+	public typealias PAC = Const<L, R>
+	public typealias PAD = Const<V, D>
+	public typealias PBC = Const<B, R>
+	public typealias PBD = Const<B, D>
 
 	public func bimap<B, D>(f : V -> B, _ : I -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
@@ -58,9 +58,9 @@ extension Const : Bifunctor {
 }
 
 extension Const : Functor {
-	typealias A = V
-	typealias B = Any
-	typealias FB = Const<V, I>
+	public typealias A = V
+	public typealias B = Any
+	public typealias FB = Const<V, I>
 
 	public func fmap<B>(f : V -> B) -> Const<V, I> {
 		return Const<V, I>(self.runConst)

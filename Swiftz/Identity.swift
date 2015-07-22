@@ -32,8 +32,8 @@ public func !=<A : Equatable>(lhs : Identity<A>, rhs : Identity<A>) -> Bool {
 /// MARK: Control.*
 
 extension Identity : Functor {
-	typealias B = Any
-	typealias FB = Identity<B>
+	public typealias B = Any
+	public typealias FB = Identity<B>
 	
 	public func fmap<B>(f : A -> B) -> Identity<B> {
 		return Identity<B>(f(self.runIdentity))
@@ -51,7 +51,8 @@ extension Identity : Pointed {
 }
 
 extension Identity : Applicative {
-	typealias FAB = Identity<A -> B>
+	public typealias FAB = Identity<A -> B>
+	
 	public func ap<B>(f : Identity<A -> B>) -> Identity<B> {
 		return Identity<B>(f.runIdentity(self.runIdentity))
 	}
@@ -78,9 +79,9 @@ extension Identity : MonadFix {
 }
 
 extension Identity : MonadZip {
-	typealias C = Any
-	typealias FC = Identity<C>
-	typealias FTAB = Identity<(A, B)>
+	public typealias C = Any
+	public typealias FC = Identity<C>
+	public typealias FTAB = Identity<(A, B)>
 	
 	public func mzip<B>(other : Identity<B>) -> Identity<(A, B)> {
 		return Identity<(A, B)>((self.runIdentity, other.runIdentity))
@@ -102,7 +103,7 @@ extension Identity : Copointed {
 }
 
 extension Identity : Comonad {
-	typealias FFA = Identity<Identity<A>>
+	public typealias FFA = Identity<Identity<A>>
 	
 	public func duplicate() -> Identity<Identity<A>> {
 		return Identity<Identity<A>>(self)

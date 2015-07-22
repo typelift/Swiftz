@@ -8,9 +8,9 @@
 
 /// The type of a function from T -> U.
 public struct Function<T, U> {
-	typealias A = T
-	typealias B = U
-	typealias C = Any
+	public typealias A = T
+	public typealias B = U
+	public typealias C = Any
 
 	let ap : T -> U
 
@@ -24,9 +24,9 @@ public struct Function<T, U> {
 }
 
 extension Function : Category {
-	typealias CAA = Function<A, A>
-	typealias CBC = Function<B, C>
-	typealias CAC = Function<A, C>
+	public typealias CAA = Function<A, A>
+	public typealias CBC = Function<B, C>
+	public typealias CAC = Function<A, C>
 
 	public static func id() -> Function<T, T> {
 		return Function<T, T>(identity)
@@ -46,17 +46,17 @@ public func >>> <A, B, C>(c1 : Function<A, B>, c2 : Function<B, C>) -> Function<
 }
 
 extension Function : Arrow {
-	typealias D = T
-	typealias E = Swift.Any
+	public typealias D = T
+	public typealias E = Swift.Any
 
-	typealias FIRST = Function<(A, D), (B, D)>
-	typealias SECOND = Function<(D, A), (D, B)>
+	public typealias FIRST = Function<(A, D), (B, D)>
+	public typealias SECOND = Function<(D, A), (D, B)>
 
-	typealias ADE = Function<D, E>
-	typealias SPLIT = Function<(A, D), (B, E)>
+	public typealias ADE = Function<D, E>
+	public typealias SPLIT = Function<(A, D), (B, E)>
 
-	typealias ABD = Function<A, D>
-	typealias FANOUT = Function<A, (B, D)>
+	public typealias ABD = Function<A, D>
+	public typealias FANOUT = Function<A, (B, D)>
 
 	public static func arr(f : T -> U) -> Function<A, B> {
 		return Function<A, B>(f)
@@ -80,13 +80,13 @@ public func &&& <A, B, C>(f : Function<A, B>, g : Function<A, C>) -> Function<A,
 }
 
 extension Function : ArrowChoice {
-	typealias LEFT = Function<Either<A, D>, Either<B, D>>
-	typealias RIGHT = Function<Either<D, A>, Either<D, B>>
+	public typealias LEFT = Function<Either<A, D>, Either<B, D>>
+	public typealias RIGHT = Function<Either<D, A>, Either<D, B>>
 
-	typealias SPLAT = Function<Either<A, D>, Either<B, E>>
+	public typealias SPLAT = Function<Either<A, D>, Either<B, E>>
 
-	typealias ACD = Function<B, D>
-	typealias FANIN = Function<Either<A, B>, D>
+	public typealias ACD = Function<B, D>
+	public typealias FANIN = Function<Either<A, B>, D>
 
 	public func left() -> Function<Either<A, D>, Either<B, D>> {
 		return self +++ Function.id()
@@ -106,7 +106,7 @@ public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Eit
 }
 
 extension Function : ArrowApply {
-	typealias APP = Function<(Function<A, B>, A), B>
+	public typealias APP = Function<(Function<A, B>, A), B>
 
 	public static func app() -> Function<(Function<T, U>, A), B> {
 		return Function<(Function<T, U>, A), B>({ (f, x) in f.apply(x) })
@@ -114,7 +114,7 @@ extension Function : ArrowApply {
 }
 
 extension Function : ArrowLoop {
-	typealias LOOP = Function<(A, D), (B, D)>
+	public typealias LOOP = Function<(A, D), (B, D)>
 
 	public static func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
 		return Function<B, C>.arr(Function.loop(f).apply)

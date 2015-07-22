@@ -34,9 +34,9 @@ extension Optional {
 /// MARK: Instances
 
 extension Optional : Functor {
-	typealias A = T
-	typealias B = Any
-	typealias FB = Optional<B>
+	public typealias A = T
+	public typealias B = Any
+	public typealias FB = Optional<B>
 
 	public func fmap<B>(f : T -> B) -> Optional<B> {
 		return self.map(f)
@@ -54,8 +54,8 @@ extension Optional : Pointed {
 }
 
 extension Optional : Applicative {
-	typealias FA = Optional<A>
-	typealias FAB = Optional<A -> B>
+	public typealias FA = Optional<A>
+	public typealias FAB = Optional<A -> B>
 
 	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
 		if let fn = f {

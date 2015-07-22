@@ -10,7 +10,7 @@
 /// JSON decoding machinery, this class can be used to combine strings into keypaths to target
 /// values inside nested JSON objects.
 public struct JSONKeypath : StringLiteralConvertible {
-	typealias StringLiteralType = String
+	public typealias StringLiteralType = String
 	
 	public let path : [String]
 	

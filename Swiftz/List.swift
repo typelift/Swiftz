@@ -541,7 +541,7 @@ public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 /// MARK: Collection Protocols
 
 extension List : ArrayLiteralConvertible {
-	typealias Element = A
+	public typealias Element = A
 
 	public init(fromArray arr : [Element]) {
 		var xs : [A] = []
@@ -581,7 +581,7 @@ public final class ListGenerator<A> : GeneratorType {
 }
 
 extension List : SequenceType {
-	typealias Generator = ListGenerator<A>
+	public typealias Generator = ListGenerator<A>
 
 	public func generate() -> ListGenerator<A> {
 		return ListGenerator(self)
@@ -610,8 +610,8 @@ extension List : CustomStringConvertible {
 /// MARK: Control.*
 
 extension List : Functor {
-	typealias B = Any
-	typealias FB = List<B>
+	public typealias B = Any
+	public typealias FB = List<B>
 
 	public func fmap<B>(f : (A -> B)) -> List<B> {
 		return self.map(f)
@@ -629,8 +629,8 @@ extension List : Pointed {
 }
 
 extension List : Applicative {
-	typealias FA = List<A>
-	typealias FAB = List<A -> B>
+	public typealias FA = List<A>
+	public typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
 		return concat(f.map(self.map))

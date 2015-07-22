@@ -106,8 +106,8 @@ public func !=<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 /// MARK: Functor
 
 extension Maybe : Functor {
-	typealias B = Any
-	typealias FB = Maybe<B>
+	public typealias B = Any
+	public typealias FB = Maybe<B>
 
 	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
 		if self.isJust() {
@@ -130,8 +130,8 @@ extension Maybe : Pointed {
 }
 
 extension Maybe : Applicative {
-	typealias FA = Maybe<A>
-	typealias FAB = Maybe<A -> B>
+	public typealias FA = Maybe<A>
+	public typealias FAB = Maybe<A -> B>
 	
 	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {

@@ -97,14 +97,14 @@ public func !=<L : Equatable, R : Equatable>(lhs: Those<L, R>, rhs: Those<L, R>)
 /// MARK: Bifunctor
 
 extension Those : Bifunctor {
-	typealias A = L
-	typealias B = Swift.Any
-	typealias C = R
-	typealias D = Swift.Any
-	typealias PAC = Those<A, C>
-	typealias PAD = Those<A, D>
-	typealias PBC = Those<B, C>
-	typealias PBD = Those<B, D>
+	public typealias A = L
+	public typealias B = Swift.Any
+	public typealias C = R
+	public typealias D = Swift.Any
+	public typealias PAC = Those<A, C>
+	public typealias PAD = Those<A, D>
+	public typealias PBC = Those<B, C>
+	public typealias PBD = Those<B, D>
 
 	public func bimap<B, D>(f : A -> B, _ g : C -> D) -> Those<B, D> {
 		switch self {

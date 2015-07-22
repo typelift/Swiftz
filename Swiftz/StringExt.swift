@@ -146,8 +146,6 @@ extension String {
 }
 
 extension String : Monoid {
-	typealias M = String
-
 	public static var mempty : String {
 		return ""
 	}
@@ -162,9 +160,9 @@ public func <>(l : String, r : String) -> String {
 }
 
 extension String : Functor {
-	typealias A = Character
-	typealias B = Character
-	typealias FB = String
+	public typealias A = Character
+	public typealias B = Character
+	public typealias FB = String
 
 	public func fmap(f : Character -> Character) -> String {
 		return self.map(f)
@@ -182,7 +180,7 @@ extension String : Pointed {
 }
 
 extension String : Applicative {
-	typealias FAB = [Character -> Character]
+	public typealias FAB = [Character -> Character]
 
 	public func ap(a : [Character -> Character]) -> String {
 		return a.map(self.map).reduce("", combine: +)

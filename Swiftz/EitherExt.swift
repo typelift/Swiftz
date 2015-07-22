@@ -7,12 +7,12 @@
 //
 
 extension Either : Bifunctor {
-	typealias B = Any
-	typealias D = Any
-	typealias PAC = Either<L, R>
-	typealias PAD = Either<L, D>
-	typealias PBC = Either<B, R>
-	typealias PBD = Either<B, D>
+	public typealias B = Any
+	public typealias D = Any
+	public typealias PAC = Either<L, R>
+	public typealias PAD = Either<L, D>
+	public typealias PBC = Either<B, R>
+	public typealias PBD = Either<B, D>
 
 	public func bimap<B, D>(f : L -> B, _ g : (R -> D)) -> Either<B, D> {
 		switch self {
@@ -33,7 +33,7 @@ extension Either : Bifunctor {
 }
 
 extension Either : Functor {
-	typealias FB = Either<L, B>
+	public typealias FB = Either<L, B>
 
 	public func fmap<B>(f : R -> B) -> Either<L, B> {
 		return f <^> self
@@ -41,7 +41,7 @@ extension Either : Functor {
 }
 
 extension Either : Pointed {
-	typealias A = R
+	public typealias A = R
 
 	public static func pure(r : R) -> Either<L, R> {
 		return Either.Right(r)
@@ -49,7 +49,7 @@ extension Either : Pointed {
 }
 
 extension Either : Applicative {
-	typealias FAB = Either<L, R -> B>
+	public typealias FAB = Either<L, R -> B>
 
 	public func ap<B>(f : Either<L, R -> B>) -> Either<L, B> {
 		return f <*> self

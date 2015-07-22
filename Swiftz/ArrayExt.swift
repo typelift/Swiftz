@@ -14,9 +14,9 @@ public enum ArrayMatcher<A> {
 }
 
 extension Array : Functor {
-	typealias A = Element
-	typealias B = Any
-	typealias FB = Array<B>
+	public typealias A = Element
+	public typealias B = Any
+	public typealias FB = Array<B>
 
 	public func fmap<B>(f : A -> B) -> [B] {
 		return self.map(f)
@@ -30,7 +30,7 @@ extension Array : Pointed {
 }
 
 extension Array : Applicative {
-	typealias FAB = Array<A -> B>
+	public typealias FAB = Array<A -> B>
 
 	public func ap<B>(f : [A -> B]) -> [B] {
 		return f <*> self
@@ -54,10 +54,10 @@ extension Array : MonadPlus {
 }
 
 extension Array : MonadZip {
-	typealias C = Any
-	typealias FC = Array<C>
+	public typealias C = Any
+	public typealias FC = Array<C>
 	
-	typealias FTAB = Array<(A, B)>
+	public typealias FTAB = Array<(A, B)>
 	
 	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
 		return Array<(A, B)>(zip(self, ma))

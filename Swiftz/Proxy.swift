@@ -50,9 +50,9 @@ extension Proxy : Monoid {
 }
 
 extension Proxy : Functor {
-	typealias A = T
-	typealias B = T
-	typealias FB = Proxy<B>
+	public typealias A = T
+	public typealias B = T
+	public typealias FB = Proxy<B>
 	
 	public func fmap<B>(f : A -> B) -> Proxy<B> {
 		return Proxy<B>()
@@ -70,7 +70,7 @@ extension Proxy : Pointed {
 }
 
 extension Proxy : Applicative {
-	typealias FAB = Proxy<A -> B>
+	public typealias FAB = Proxy<A -> B>
 	
 	public func ap<B>(f : Proxy<A -> B>) -> Proxy<B> {
 		return Proxy<B>()
@@ -89,6 +89,48 @@ extension Proxy : Monad {
 
 public func >>- <A, B>(l : Proxy<A>, f : A -> Proxy<B>) -> Proxy<A> {
 	return Proxy()
+}
+
+extension Proxy : MonadFix {
+	public static func mfix(f : A -> Proxy<A>) -> Proxy<A> {
+		return Proxy()
+	}
+}
+
+extension Proxy : MonadZip {
+	public typealias C = T
+	public typealias FC = Proxy<C>
+	public typealias FTAB = Proxy<(A, B)>
+	
+	public func mzip<B>(_ : Proxy<T>) -> Proxy<(A, B)> {
+		return Proxy<(A, B)>()
+	}
+	
+	public func mzipWith<B, C>(_ : FB, _ : A -> B -> C) -> Proxy<T> {
+		return Proxy()
+	}
+	
+	public static func munzip<B>(_ : Proxy<(A, B)>) -> (Proxy<T>, Proxy<T>) {
+		return (Proxy(), Proxy())
+	}
+}
+
+extension Proxy : Copointed {
+	public func extract() -> A {
+		fatalError()
+	}
+}
+
+extension Proxy : Comonad {
+	public typealias FFA = Proxy<Proxy<T>>
+	
+	public func duplicate() -> Proxy<Proxy<T>> {
+		return Proxy<Proxy<T>>()
+	}
+	
+	public func extend<B>(fab : Proxy<T> -> B) -> Proxy<B> {
+		return Proxy<B>()
+	}
 }
 
 /// Uses the proxy to bear witness to the type of the first argument.  Useful in cases where the

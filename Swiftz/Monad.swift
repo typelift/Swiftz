@@ -15,7 +15,7 @@ public protocol Monad : Applicative {
 
 /// Monads that allow zipping.
 public protocol MonadZip : Monad {
-	/// An arbitrary domain.  Usually Any
+	/// An arbitrary domain.  Usually Any.
 	typealias C
 	/// A monad with an arbitrary domain.
 	typealias FC = K1<C>
