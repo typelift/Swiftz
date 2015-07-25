@@ -45,7 +45,7 @@ public func != <A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> 
 }
 
 extension NonEmptyList : ArrayLiteralConvertible {
-	typealias Element = A
+	public typealias Element = A
 
 	public init(arrayLiteral s: Element...) {
 		var xs : [A] = []
@@ -63,7 +63,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
 }
 
 extension NonEmptyList : SequenceType {
-	typealias Generator = ListGenerator<A>
+	public typealias Generator = ListGenerator<A>
 	
 	public func generate() -> ListGenerator<A> {
 		return ListGenerator(self.toList())
@@ -78,8 +78,8 @@ extension NonEmptyList : CustomStringConvertible {
 }
 
 extension NonEmptyList : Functor {
-	typealias B = Any
-	typealias FB = NonEmptyList<B>
+	public typealias B = Any
+	public typealias FB = NonEmptyList<B>
 	
 	public func fmap<B>(f : (A -> B)) -> NonEmptyList<B> {
 		return NonEmptyList<B>(f(self.head), self.tail.fmap(f))
@@ -93,8 +93,8 @@ extension NonEmptyList : Pointed {
 }
 
 extension NonEmptyList : Applicative {
-	typealias FA = NonEmptyList<A>
-	typealias FAB = NonEmptyList<A -> B>
+	public typealias FA = NonEmptyList<A>
+	public typealias FAB = NonEmptyList<A -> B>
 
 	public func ap<B>(f : NonEmptyList<A -> B>) -> NonEmptyList<B> {
 		return f.bind({ f in self.bind({ x in NonEmptyList<B>.pure(f(x)) }) })
@@ -115,7 +115,7 @@ extension NonEmptyList : Copointed {
 }
 
 extension NonEmptyList : Comonad {
-	typealias FFA = NonEmptyList<NonEmptyList<A>>
+	public typealias FFA = NonEmptyList<NonEmptyList<A>>
 
 	public func duplicate() -> NonEmptyList<NonEmptyList<A>> {
 		switch NonEmptyList(self.tail) {

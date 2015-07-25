@@ -141,10 +141,10 @@ public struct HMap<F, A, R> {
 /// fold that reduces `HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>` to `Int -> Int`
 /// through composition will define two `typealias`es:
 ///
-///     typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
+///     public typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
 ///
-///     typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
-///     typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+///     public typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
+///     public typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
 ///
 /// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained 
 /// in a list of type `FList`, to an `HNil` node and an ending value of type `Int -> Int`.

@@ -36,12 +36,12 @@ public protocol Bifunctor {
 }
 
 public struct TupleBF<L, R> : Bifunctor {
-	typealias B = Any
-	typealias D = Any
-	typealias PAC = (L, R)
-	typealias PAD = (L, D)
-	typealias PBC = (B, R)
-	typealias PBD = (B, D)
+	public typealias B = Any
+	public typealias D = Any
+	public typealias PAC = (L, R)
+	public typealias PAD = (L, D)
+	public typealias PBC = (B, R)
+	public typealias PBD = (B, D)
 
 	public let t : (L, R)
 	

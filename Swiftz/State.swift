@@ -35,8 +35,8 @@ public struct State<S, A> {
 }
 
 extension State : Functor {
-	typealias B = Swift.Any
-	typealias FB = State<S, B>
+	public typealias B = Swift.Any
+	public typealias FB = State<S, B>
 	
 	public func fmap<B>(f : A -> B) -> State<S, B> {
 		return State<S, B>({ s in
@@ -73,7 +73,7 @@ extension State : Pointed {
 }
 
 extension State : Applicative {
-	typealias FAB = State<S, A -> B>
+	public typealias FAB = State<S, A -> B>
 	
 	public func ap<B>(stfn : State<S, A -> B>) -> State<S, B> {
 		return stfn.bind({ f in
