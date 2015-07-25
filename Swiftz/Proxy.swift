@@ -50,9 +50,9 @@ extension Proxy : Monoid {
 }
 
 extension Proxy : Functor {
-	typealias A = T
-	typealias B = T
-	typealias FB = Proxy<B>
+	public typealias A = T
+	public typealias B = T
+	public typealias FB = Proxy<B>
 	
 	public func fmap<B>(f : A -> B) -> Proxy<B> {
 		return Proxy<B>()
@@ -70,7 +70,7 @@ extension Proxy : Pointed {
 }
 
 extension Proxy : Applicative {
-	typealias FAB = Proxy<A -> B>
+	public typealias FAB = Proxy<A -> B>
 	
 	public func ap<B>(f : Proxy<A -> B>) -> Proxy<B> {
 		return Proxy<B>()
