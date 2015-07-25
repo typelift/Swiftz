@@ -47,36 +47,39 @@ public func <^> <A, B>(f : A -> B, l : Optional<A>) -> Optional<B> {
 	return l.fmap(f)
 }
 
-extension Optional : Pointed {
+/// FIXME: Unless explicitly noted otherwise, commented out code should be reinstated in a future
+/// beta once the compiler decides that crashing is not an appropriate response to valid extension
+/// declarations.
+extension Optional /*: Pointed*/ {
 	public static func pure(x : T) -> Optional<T> {
 		return .Some(x)
 	}
 }
 
-extension Optional : Applicative {
-	public typealias FA = Optional<A>
-	public typealias FAB = Optional<A -> B>
-
-	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
-		if let fn = f {
-			return self.fmap(fn)
-		}
-		return .None
-	}
-}
+//extension Optional : Applicative {
+//	public typealias FA = Optional<A>
+//	public typealias FAB = Optional<A -> B>
+//
+//	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
+//		return f <*> self
+//	}
+//}
 
 public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
-	return l.ap(f)
+	if let fn = f {
+		return l.fmap(fn)
+	}
+	return .None
 }
 
-extension Optional : Monad {
-	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
-		return self.flatMap(f)
-	}
-}
+//extension Optional : Monad {
+//	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
+//		return self >>- f
+//	}
+//}
 
 public func >>- <A, B>(l : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
-	return l.bind(f)
+	return l.flatMap(f)
 }
 
 extension Optional : Foldable {
