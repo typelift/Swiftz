@@ -17,7 +17,7 @@ extension List where A : Arbitrary {
 	}
 	
 	public static func shrink(xs : List<A>) -> [List<A>] {
-		return List.init <^> [A].shrink(Array(xs.generate()))
+		return List.init <^> [A].shrink(xs.map(identity))
 	}
 }
 
