@@ -63,7 +63,7 @@ extension Either : Monad {
 }
 
 extension Either : MonadFix {
-	public static func mfix(f : R -> Either<L, R>) -> Either<L, R> {
+	public static func mfix(f : (R -> Either<L, R>) -> R -> Either<L, R>) -> R -> Either<L, R> {
 		func fromRight(e : Either<L, R>) -> R {
 			switch e {
 			case .Right(let br):
@@ -72,6 +72,7 @@ extension Either : MonadFix {
 				return error("Cannot take fixpoint of Either.Left")
 			}
 		}
+		
 		return f(fromRight(Either.mfix(f)))
 	}
 }
