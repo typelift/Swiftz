@@ -121,7 +121,7 @@ extension Those : Bifunctor {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap<D>(g : C -> D) -> Those<A, D> {
+	public func rightMap(g : C -> D) -> Those<A, D> {
 		return self.bimap(identity, g)
 	}
 }
