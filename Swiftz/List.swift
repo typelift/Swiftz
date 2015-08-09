@@ -551,7 +551,7 @@ extension List : ArrayLiteralConvertible {
 		}
 
 		var l = List()
-		for x in Array(xs.reverse()) {
+		for x in xs.reverse() {
 			l = List(x, l)
 		}
 		self = l
