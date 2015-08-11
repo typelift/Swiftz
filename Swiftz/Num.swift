@@ -9,13 +9,22 @@
 
 /// `Num`eric types.
 public protocol Num {
+	/// The null quantity.
 	static var zero : Self { get }
+	/// The singular quantity.
 	static var one : Self { get }
+	
+	/// The magnitude of the quantity.
 	var signum : Self { get }
+	/// A quantity with the opposing magnitude of the receiver.
 	var negate : Self { get }
-	func plus(other : Self) -> Self
-	func minus(other : Self) -> Self
-	func times(other : Self) -> Self
+	
+	/// The quantity produced by adding the given quantity to the receiver.
+	func plus(_ : Self) -> Self
+	/// The quantity produced by subtracting the given quantity from the receiver.
+	func minus(_ : Self) -> Self
+	/// The quantity produced by multiplying the receiver by the given quantity.
+	func times(_ : Self) -> Self
 }
 
 extension Int : Num {
