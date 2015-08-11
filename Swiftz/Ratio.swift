@@ -31,14 +31,6 @@ public struct Ratio<T : Integral> {
 extension Ratio : Equatable { }
 
 public func == <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
-	func reduce(n : T, d : T) -> Ratio<T> {
-		if d == T.zero {
-			return undefined()
-		}
-		let gcd = n.greatestCommonDivisor(d)
-		return Ratio(numerator: n.quotient(gcd), denominator: d.quotient(gcd))
-	}
-
 	let lred = reduce(l.numerator(), d: l.denominator())
 	let rred = reduce(r.numerator(), d: r.denominator())
 	return (lred.numerator() == rred.numerator()) && (rred.denominator() == rred.denominator())
@@ -62,4 +54,32 @@ public func > <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) ->
 	return !(l <= r)
 }
 
+extension Ratio : Num {
+	public static var zero : Ratio<T> { return Ratio(numerator: T.zero, denominator: T.one) }
+	public static var one : Ratio<T> { return Ratio(numerator: T.one, denominator: T.one) }
+	
+	public var signum : Ratio<T> { return Ratio(numerator: self.numerator().signum, denominator: T.one) }
+	public var negate : Ratio<T> { return Ratio(numerator: self.numerator().negate, denominator: self.denominator()) }
+	
+	public func plus(other : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other.denominator()).plus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
+	}
+	
+	public func minus(other : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other.denominator()).minus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
+	}
+	
+	public func times(other : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other.numerator()), d: self.denominator().times(other.denominator()))
+	}
+}
 
+/// Implementation Details Follow
+
+private func reduce<T : Integral>(n : T, d : T) -> Ratio<T> {
+	if d == T.zero {
+		return undefined()
+	}
+	let gcd = n.greatestCommonDivisor(d)
+	return Ratio(numerator: n.quotient(gcd), denominator: d.quotient(gcd))
+}
