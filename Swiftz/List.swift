@@ -7,11 +7,11 @@
 //
 
 /// An enum representing the possible values a list can match against.
-public enum ListMatcher<A> {
+public enum ListMatcher<Element> {
 	/// The empty list.
 	case Nil
 	/// A cons cell.
-	case Cons(A, List<A>)
+	case Cons(Element, List<Element>)
 }
 
 /// A lazy ordered sequence of homogenous values.
@@ -20,8 +20,8 @@ public enum ListMatcher<A> {
 /// language, we instead provide a nullary constructor for Nil and a Cons Constructor and an actual
 /// static function named `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
 /// isomorphic to the traditional inductive definition.  As such, the method `match()` is provided
-/// that allows the list to be destructured into a more traditional `Nil | Cons(A, List<A>)` form
-/// that is also compatible with switch-case blocks.
+/// that allows the list to be destructured into a more traditional `Nil | Cons(Element, List<Element>)`
+/// form that is also compatible with switch-case blocks.
 ///
 /// This kind of list is optimized for access to its length, which always occurs in O(1), and
 /// modifications to its head, which always occur in O(1).  Access to the elements occurs in O(n).
@@ -30,12 +30,12 @@ public enum ListMatcher<A> {
 /// List holds these values in a lazy manner, certain primitives like iteration or reversing the 
 /// list will force evaluation of the entire list.  For infinite lists this can lead to a program 
 /// diverging.
-public struct List<A> {
+public struct List<Element> {
 	let len : Int
-	let next : () -> (head : A, tail : List<A>)
+	let next : () -> (head : Element, tail : List<Element>)
 
 	/// Constructs a potentially infinite list.
-	init(@autoclosure(escaping) _ next : () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
+	init(@autoclosure(escaping) _ next : () -> (head : Element, tail : List<Element>), isEmpty : Bool = false) {
 		self.len = isEmpty ? 0 : -1
 		self.next = next
 	}
@@ -48,7 +48,7 @@ public struct List<A> {
 	}
 
 	/// Construct a list with a given head and tail.
-	public init(_ head : A, _ tail : List<A> = List<A>()) {
+	public init(_ head : Element, _ tail : List<Element> = List<Element>()) {
 		if tail.len == -1 {
 			self.len = -1
 		} else {
@@ -58,13 +58,13 @@ public struct List<A> {
 	}
 
 	/// Appends an element onto the front of a list.
-	public static func cons(head : A, tail : List<A>) -> List<A> {
+	public static func cons(head : Element, tail : List<Element>) -> List<Element> {
 		return List(head, tail)
 	}
 
 	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
 	/// the result is Cons(head, tail).
-	public var match : ListMatcher<A> {
+	public var match : ListMatcher<Element> {
 		if self.len == 0 {
 			return .Nil
 		}
@@ -75,7 +75,7 @@ public struct List<A> {
 	/// Indexes into an array.
 	///
 	/// Indexing into the empty list will throw an exception.
-	public subscript(n : UInt) -> A {
+	public subscript(n : UInt) -> Element {
 		switch self.match {
 		case .Nil:
 			return error("Cannot extract an element from an empty list.")
@@ -97,8 +97,8 @@ public struct List<A> {
 	}
 	
 	/// Creates a list of n repeating values.
-	public static func replicate(n : UInt, value : A) -> List<A> {
-		var l = List<A>()
+	public static func replicate(n : UInt, value : Element) -> List<Element> {
+		var l = List<Element>()
 		for _ in 0..<n {
 			l = List.cons(value, tail: l)
 		}
@@ -106,7 +106,7 @@ public struct List<A> {
 	}
 
 	/// Returns the first element in the list, or None if the list is empty.
-	public var head : Optional<A> {
+	public var head : Optional<Element> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -116,7 +116,7 @@ public struct List<A> {
 	}
 
 	/// Returns the tail of the list, or None if the list is empty.
-	public var tail : Optional<List<A>> {
+	public var tail : Optional<List<Element>> {
 		switch self.match {
 		case .Nil:
 			return .None
@@ -126,16 +126,16 @@ public struct List<A> {
 	}
 
 	/// Returns an array of all initial segments of the receiver, shortest first
-	public var inits : List<List<A>> {
-		return self.reduce(List<List<A>>(), combine: { xss, x in
-			return List<List<A>>([], xss.map { List(x, $0) })
+	public var inits : List<List<Element>> {
+		return self.reduce(List<List<Element>>(), combine: { xss, x in
+			return List<List<Element>>([], xss.map { List(x, $0) })
 		})
 	}
 	
 	/// Returns an array of all final segments of the receiver, longest first
-	public var tails : List<List<A>> {
-		return self.reduce(List<List<A>>(), combine: { x, y in
-			return List<List<A>>.pure(List(y, x.head!)) + x
+	public var tails : List<List<Element>> {
+		return self.reduce(List<List<Element>>(), combine: { x, y in
+			return List<List<Element>>.pure(List(y, x.head!)) + x
 		})
 	}
 
@@ -165,7 +165,7 @@ public struct List<A> {
 	/// Appends two lists together.
 	///
 	/// If the receiver is infinite, the result of this function will be the receiver itself.
-	public func append(rhs : List<A>) -> List<A> {
+	public func append(rhs : List<Element>) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return rhs
@@ -175,12 +175,12 @@ public struct List<A> {
 	}
 
 	/// Maps a function over a list and concatenates the results.
-	public func concatMap<B>(f : A -> List<B>) -> List<B> {
+	public func concatMap<B>(f : Element -> List<B>) -> List<B> {
 		return self.reduce({ l, r in l.append(f(r)) }, initial: List<B>())
 	}
 
 	/// Returns a list of elements satisfying a predicate.
-	public func filter(p : A -> Bool) -> List<A> {
+	public func filter(p : Element -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -190,7 +190,7 @@ public struct List<A> {
 	}
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
-	public func reduce<B>(f : B -> A -> B, initial : B) -> B {
+	public func reduce<B>(f : B -> Element -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -200,7 +200,7 @@ public struct List<A> {
 	}
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
-	public func reduce<B>(f : (B, A) -> B, initial : B) -> B {
+	public func reduce<B>(f : (B, Element) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -216,7 +216,7 @@ public struct List<A> {
 	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
-	public func scanl<B>(f : B -> A -> B, initial : B) -> List<B> {
+	public func scanl<B>(f : B -> Element -> B, initial : B) -> List<B> {
 		switch self.match {
 		case .Nil:
 			return List<B>(initial)
@@ -232,7 +232,7 @@ public struct List<A> {
 	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z, x0), f(f(z, x0), x1), f(f(f(z, x2), x1), x0)]
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
-	public func scanl<B>(f : (B, A) -> B, initial : B) -> List<B> {
+	public func scanl<B>(f : (B, Element) -> B, initial : B) -> List<B> {
 		switch self.match {
 		case .Nil:
 			return List<B>(initial)
@@ -242,7 +242,7 @@ public struct List<A> {
 	}
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
-	public func scanl1(f : A -> A -> A) -> List<A> {
+	public func scanl1(f : Element -> Element -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -252,7 +252,7 @@ public struct List<A> {
 	}
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
-	public func scanl1(f : (A, A) -> A) -> List<A> {
+	public func scanl1(f : (Element, Element) -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -262,7 +262,7 @@ public struct List<A> {
 	}
 
 	/// Returns the first n elements of the receiver.
-	public func take(n : UInt) -> List<A> {
+	public func take(n : UInt) -> List<Element> {
 		if n == 0 {
 			return []
 		}
@@ -276,7 +276,7 @@ public struct List<A> {
 	}
 
 	/// Returns the remaining list after dropping n elements from the receiver.
-	public func drop(n : UInt) -> List<A> {
+	public func drop(n : UInt) -> List<Element> {
 		if n == 0 {
 			return self
 		}
@@ -290,15 +290,15 @@ public struct List<A> {
 	}
 
 	/// Returns a tuple of the first n elements and the remainder of the list.
-	public func splitAt(n : UInt) -> (List<A>, List<A>) {
+	public func splitAt(n : UInt) -> (List<Element>, List<Element>) {
 		return (self.take(n), self.drop(n))
 	}
 
 	/// Takes a separator and a list and intersperses that element throughout the list.
 	///
 	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
-	public func intersperse(item : A) -> List<A> {
-		func prependToAll(sep : A, l : List<A>) -> List<A> {
+	public func intersperse(item : Element) -> List<Element> {
+		func prependToAll(sep : Element, l : List<Element>) -> List<Element> {
 			switch l.match {
 			case .Nil:
 				return List()
@@ -315,7 +315,7 @@ public struct List<A> {
 	}
 	
 	/// Returns a list of the longest prefix of elements satisfying a predicate.
-	public func takeWhile(p : A -> Bool) -> List<A> {
+	public func takeWhile(p : Element -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -329,7 +329,7 @@ public struct List<A> {
 
 	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
 	/// predicate has been removed.
-	public func dropWhile(p : A -> Bool) -> List<A> {
+	public func dropWhile(p : Element -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -343,20 +343,20 @@ public struct List<A> {
 
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : A -> A -> Bool) -> List<List<A>> {
+	public func groupBy(p : Element -> Element -> Bool) -> List<List<Element>> {
 		switch self.match {
 		case .Nil:
 			return []
 		case .Cons(let x, let xs):
 			let (ys, zs) = xs.span(p(x))
 			let l = List(x, ys)
-			return List<List<A>>(l, zs.groupBy(p))
+			return List<List<Element>>(l, zs.groupBy(p))
 		}
 	}
 	
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : (A, A) -> Bool) -> List<List<A>> {
+	public func groupBy(p : (Element, Element) -> Bool) -> List<List<Element>> {
 		return self.groupBy(curry(p))
 	}
 	
@@ -368,7 +368,7 @@ public struct List<A> {
 	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
 	///
 	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
-	public func span(p : A -> Bool) -> (List<A>, List<A>) {
+	public func span(p : Element -> Bool) -> (List<Element>, List<Element>) {
 		switch self.match {
 		case .Nil:
 			return ([], [])
@@ -387,14 +387,14 @@ public struct List<A> {
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
 	///
 	///     self.extreme(p) == self.span((!) • p)
-	public func extreme(p : A -> Bool) -> (List<A>, List<A>) {
+	public func extreme(p : Element -> Bool) -> (List<Element>, List<Element>) {
 		return self.span { ((!) • p)($0) }
 	}
 	
 	/// Returns the elements of the receiver in reverse order.
 	///
 	/// For infinite lists this function will diverge.
-	public func reverse() -> List<A> {
+	public func reverse() -> List<Element> {
 		return self.reduce(flip(List.cons), initial: [])
 	}
 
@@ -402,7 +402,7 @@ public struct List<A> {
 	/// or None if no match was found.
 	///
 	/// For infinite lists this function will diverge.
-	public func find(pred: A -> Bool) -> Optional<A> {
+	public func find(pred: Element -> Bool) -> Optional<Element> {
 		for x in self {
 			if pred(x) {
 				return x
@@ -414,18 +414,18 @@ public struct List<A> {
 	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity 
 	/// function) and a key and returns the value for the given key, if there is one, or None 
 	/// otherwise.
-	public func lookup<K : Equatable, V>(ev : A -> (K, V), key : K) -> Optional<V> {
+	public func lookup<K : Equatable, V>(ev : Element -> (K, V), key : K) -> Optional<V> {
 		return (snd • ev) <^> self.find({ ev($0).0 == key })
 	}
 
 	/// Returns a List of an infinite number of iteratations of applications of a function to an
 	/// initial value.
-	public static func iterate(f : A -> A, initial : A) -> List<A> {
+	public static func iterate(f : Element -> Element, initial : Element) -> List<Element> {
 		return List((initial, self.iterate(f, initial: f(initial))))
 	}
 
 	/// Cycles a finite list into an infinite list.
-	public func cycle() -> List<A> {
+	public func cycle() -> List<Element> {
 		let (hd, tl) = self.next()
 		return List((hd, (tl + [hd]).cycle()))
 	}
@@ -446,9 +446,9 @@ public struct List<A> {
 // File radar: If these lines are uncommented the compiler throws spurious "Redundant Conformance to
 // Foo errors in the rest of the file.
 //
-//extension List where A : Equatable {
+//extension List where Element : Equatable {
 //	/// Takes two lists and returns true if the first string is a prefix of the second string.
-//	public func isPrefixOf(r : List<A>) -> Bool {
+//	public func isPrefixOf(r : List<Element>) -> Bool {
 //		switch (self.match, r.match) {
 //		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
 //			return xs.isPrefixOf(ys)
@@ -460,19 +460,19 @@ public struct List<A> {
 //	}
 //
 //	/// Takes two lists and returns true if the first string is a suffix of the second string.
-//	public func isSuffixOf(r : List<A>) -> Bool {
+//	public func isSuffixOf(r : List<Element>) -> Bool {
 //		return self.reverse().isPrefixOf(r.reverse())
 //	}
 //	
 //	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 //	/// second string.
-//	public func isInfixOf(r : List<A>) -> Bool {
+//	public func isInfixOf(r : List<Element>) -> Bool {
 //		return r.tails.any(self.isPrefixOf)
 //	}
 //	
 //	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 //	/// prefix of the second string this function returns Nothing.
-//	public func stripPrefix(r : List<A>) -> Optional<List<A>> {
+//	public func stripPrefix(r : List<Element>) -> Optional<List<Element>> {
 //		switch (self.match, r.match) {
 //		case (.Nil, _):
 //			return .Some(r)
@@ -485,7 +485,7 @@ public struct List<A> {
 //	
 //	/// Takes two strings and drops items in the first from the end of the second.  If the first
 //	/// string is not a suffix of the second string this function returns nothing.
-//	public func stripSuffix(r : List<A>) -> Optional<List<A>> {
+//	public func stripSuffix(r : List<Element>) -> Optional<List<Element>> {
 //		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 //	}
 //	
@@ -493,12 +493,12 @@ public struct List<A> {
 //	/// other.
 //	///
 //	///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
-//	public var group : List<List<A>> {
+//	public var group : List<List<Element>> {
 //		return self.groupBy { a in { b in a == b } }
 //	}
 //}
 
-extension List where A : BooleanType {
+extension List where Element : BooleanType {
 	/// Returns the conjunction of a list of Booleans.
 	public var and : Bool {
 		return self.reduce(true) { $0.boolValue && $1.boolValue }
@@ -541,8 +541,6 @@ public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 /// MARK: Collection Protocols
 
 extension List : ArrayLiteralConvertible {
-	public typealias Element = A
-
 	public init(fromArray arr : [Element]) {
 		var xs : [A] = []
 		var g = arr.generate()
@@ -562,10 +560,10 @@ extension List : ArrayLiteralConvertible {
 	}
 }
 
-public final class ListGenerator<A> : GeneratorType {
-	var l : List<A>
+public final class ListGenerator<Element> : GeneratorType {
+	var l : List<Element>
 	
-	public func next() -> Optional<A> {
+	public func next() -> Optional<Element> {
 		if l.len == 0 {
 			return nil
 		}
@@ -575,15 +573,15 @@ public final class ListGenerator<A> : GeneratorType {
 		return hd
 	}
 	
-	public init(_ l : List<A>) {
+	public init(_ l : List<Element>) {
 		self.l = l
 	}
 }
 
 extension List : SequenceType {
-	public typealias Generator = ListGenerator<A>
+	public typealias Generator = ListGenerator<Element>
 
-	public func generate() -> ListGenerator<A> {
+	public func generate() -> ListGenerator<Element> {
 		return ListGenerator(self)
 	}
 }
@@ -623,13 +621,14 @@ public func <^> <A, B>(f : A -> B, l : List<A>) -> List<B> {
 }
 
 extension List : Pointed {
-	public static func pure(a: A) -> List<A> {
+	public typealias A = Element
+	public static func pure(a : A) -> List<Element> {
 		return List(a, [])
 	}
 }
 
 extension List : Applicative {
-	public typealias FA = List<A>
+	public typealias FA = List<Element>
 	public typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
