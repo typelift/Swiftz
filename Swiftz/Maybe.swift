@@ -11,7 +11,7 @@
 ///
 /// Because the nil case of Maybe does not indicate any significant information about cause, it may
 /// be more appropriate to use Result or Either which have explicit error cases.
-@available(*, deprecated, message="Use OptionalExt in stead")
+@available(*, deprecated, message="Use OptionalExt instead")
 public struct Maybe<A>  {
 	let value: A?
 
