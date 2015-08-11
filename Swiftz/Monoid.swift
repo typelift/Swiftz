@@ -58,22 +58,22 @@ public struct Product<N : Num> : Monoid {
 	}
 }
 
-/// The `Semigroup`-lifting `Maybe` `Monoid`
+/// The `Semigroup`-lifting `Optional` `Monoid`
 public struct AdjoinNil<A : Semigroup> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
 	public static var mempty : AdjoinNil<A> {
-		return AdjoinNil(Maybe.none())
+		return AdjoinNil(nil)
 	}
 
 	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
-		if let x = self.value().value {
-			if let y = other.value().value {
-				return AdjoinNil(Maybe(x.op(y)))
+		if let x = self.value() {
+			if let y = other.value() {
+				return AdjoinNil(x.op(y))
 			} else {
 				return self
 			}
@@ -85,18 +85,18 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 
 /// The left-biased `Maybe` `Monoid`
 public struct First<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
 	public static var mempty : First<A> {
-		return First(Maybe.none())
+		return First(nil)
 	}
 
 	public func op(other : First<A>) -> First<A> {
-		if self.value().isJust() {
+		if self.value() != nil {
 			return self
 		} else {
 			return other
@@ -106,18 +106,18 @@ public struct First<A : Comparable> : Monoid {
 
 /// The right-biased `Maybe` `Monoid`.
 public struct Last<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
 	public static var mempty : Last<A> {
-		return Last(Maybe.none())
+		return Last(nil)
 	}
 
 	public func op(other : Last<A>) -> Last<A> {
-		if other.value().isJust() {
+		if other.value() != nil {
 			return other
 		} else {
 			return self
@@ -137,8 +137,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex.predecessor()] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex.predecessor()] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {

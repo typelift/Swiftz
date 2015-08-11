@@ -17,6 +17,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 *.xcscmblueprint
+Cartfile.resolved
 Carthage/Build
 Carthage/Checkouts
 

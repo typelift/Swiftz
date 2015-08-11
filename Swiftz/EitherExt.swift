@@ -27,7 +27,7 @@ extension Either : Bifunctor {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap<D>(g : R -> D) -> Either<L, D> {
+	public func rightMap(g : R -> D) -> Either<L, D> {
 		return self.bimap(identity, g)
 	}
 }
@@ -44,7 +44,7 @@ extension Either : Pointed {
 	public typealias A = R
 
 	public static func pure(r : R) -> Either<L, R> {
-		return Either.Right(r)
+		return .Right(r)
 	}
 }
 

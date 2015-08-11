@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Darwin
-
 /// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
 /// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
 /// in convenience they gain in flexibility.
@@ -41,7 +39,7 @@ public struct HCons<H, T : HList> : HList {
 	}
 
 	public static var length : Int {
-		return (1 + Tail.length)
+		return Tail.length.successor()
 	}
 }
 
