@@ -82,7 +82,7 @@ public struct List<A> {
 		case let .Cons(x, _) where n == 0:
 			return x
 		case let .Cons(_, xs):
-			return xs[n - 1]
+			return xs[n.predecessor()]
 		}
 	}
 
@@ -271,7 +271,7 @@ public struct List<A> {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
-			return List.cons(x, tail: xs.take(n - 1))
+			return List.cons(x, tail: xs.take(n.predecessor()))
 		}
 	}
 
@@ -285,7 +285,7 @@ public struct List<A> {
 		case .Nil:
 			return []
 		case let .Cons(_, xs):
-			return xs.drop(n - 1)
+			return xs.drop(n.predecessor())
 		}
 	}
 

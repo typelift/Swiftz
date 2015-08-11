@@ -41,7 +41,7 @@ public struct HCons<H, T : HList> : HList {
 	}
 
 	public static var length : Int {
-		return (1 + Tail.length)
+		return Tail.length.successor()
 	}
 }
 

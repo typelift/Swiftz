@@ -225,11 +225,11 @@ extension Array {
 	public func intersperse(item : Element) -> [Element] {
 		func prependAll(item : Element, array : [Element]) -> [Element] {
 			var arr = Array([item])
-			for i in array.startIndex..<(array.endIndex - 1) {
+			for i in array.startIndex..<array.endIndex.predecessor() {
 				arr.append(array[i])
 				arr.append(item)
 			}
-			arr.append(array[array.count - 1])
+			arr.append(array[array.endIndex.predecessor()])
 			return arr
 		}
 
