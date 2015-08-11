@@ -11,6 +11,7 @@
 /// While Int has arbitrary precision in Swift, operations beyond 64-bits are O(inf).
 public typealias Rational = Ratio<Int>
 
+/// Represents a `Ratio`nal number with an `Integral` numerator and denominator.
 public struct Ratio<T : Integral> {
 	public let numerator, denominator : () -> T
 	
