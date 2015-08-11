@@ -177,6 +177,28 @@ extension Integral {
 		}
 		return (q, r)
 	}
+	
+	/// Returns the least common multiple of the receiver and a given quantity.
+	public func leastCommonMultiple(other : Self) -> Self {
+		if self == Self.zero || other == Self.zero {
+			return Self.zero
+		}
+		return self.quotient(self.greatestCommonDivisor(other)).times(other).absoluteValue
+	}
+
+	/// Returns the greatest common divisor of the receiver and a given quantity.
+	///
+	/// Unrolled version of tranditionally recursive Euclidean Division algorithm.
+	public func greatestCommonDivisor(other : Self) -> Self {
+		var a = self
+		var b = other
+		while b != Self.zero {
+			let v = b
+			b = a.mod(b)
+			a = v
+		}
+		return a
+	}
 }
 
 extension Int : Integral {
