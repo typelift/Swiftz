@@ -11,7 +11,7 @@
 public protocol Num {
 	static var zero : Self { get }
 	static var one : Self { get }
-	var sign : Self { get }
+	var signum : Self { get }
 	var negate : Self { get }
 	func plus(other : Self) -> Self
 	func minus(other : Self) -> Self
@@ -21,7 +21,7 @@ public protocol Num {
 extension Int : Num {
 	public static var zero : Int { return 0 }
 	public static var one : Int { return 1 }
-	public var sign : Int {
+	public var signum : Int {
 		if self < 0 {
 			return -1
 		} else if self > 0 {
@@ -38,7 +38,7 @@ extension Int : Num {
 extension Int8 : Num {
 	public static var zero : Int8 { return 0 }
 	public static var one : Int8 { return 1 }
-	public var sign : Int8 {
+	public var signum : Int8 {
 		if self < 0 {
 			return -1
 		} else if self > 0 {
@@ -55,7 +55,7 @@ extension Int8 : Num {
 extension Int16 : Num {
 	public static var zero : Int16 { return 0 }
 	public static var one : Int16 { return 1 }
-	public var sign : Int16 {
+	public var signum : Int16 {
 		if self < 0 {
 			return -1
 		} else if self > 0 {
@@ -72,7 +72,7 @@ extension Int16 : Num {
 extension Int32 : Num {
 	public static var zero : Int32 { return 0 }
 	public static var one : Int32 { return 1 }
-	public var sign : Int32 {
+	public var signum : Int32 {
 		if self < 0 {
 			return -1
 		} else if self > 0 {
@@ -89,7 +89,7 @@ extension Int32 : Num {
 extension Int64 : Num {
 	public static var zero : Int64 { return 0 }
 	public static var one : Int64 { return 1 }
-	public var sign : Int64 {
+	public var signum : Int64 {
 		if self < 0 {
 			return -1
 		} else if self > 0 {
@@ -106,7 +106,7 @@ extension Int64 : Num {
 extension UInt : Num {
 	public static var zero : UInt { return 0 }
 	public static var one : UInt { return 1 }
-	public var sign : UInt {
+	public var signum : UInt {
 		if self > 0 {
 			return 1
 		}
@@ -121,7 +121,7 @@ extension UInt : Num {
 extension UInt8 : Num {
 	public static var zero : UInt8 { return 0 }
 	public static var one : UInt8 { return 1 }
-	public var sign : UInt8 {
+	public var signum : UInt8 {
 		if self > 0 {
 			return 1
 		}
@@ -136,7 +136,7 @@ extension UInt8 : Num {
 extension UInt16 : Num {
 	public static var zero : UInt16 { return 0 }
 	public static var one : UInt16 { return 1 }
-	public var sign : UInt16 {
+	public var signum : UInt16 {
 		if self > 0 {
 			return 1
 		}
@@ -151,7 +151,7 @@ extension UInt16 : Num {
 extension UInt32 : Num {
 	public static var zero : UInt32 { return 0 }
 	public static var one : UInt32 { return 1 }
-	public var sign : UInt32 {
+	public var signum : UInt32 {
 		if self > 0 {
 			return 1
 		}
@@ -166,7 +166,7 @@ extension UInt32 : Num {
 extension UInt64 : Num {
 	public static var zero : UInt64 { return 0 }
 	public static var one : UInt64 { return 1 }
-	public var sign : UInt64 {
+	public var signum : UInt64 {
 		if self > 0 {
 			return 1
 		}
@@ -205,7 +205,7 @@ extension Integral {
 	
 	public func divMod(d : Self) -> (Self, Self) {
 		let (q, r) = self.quotientRemainder(d)
-		if r.sign == d.sign.negate {
+		if r.signum == d.signum.negate {
 			return (q.minus(Self.one), r.plus(d))
 		}
 		return (q, r)
