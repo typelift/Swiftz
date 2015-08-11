@@ -28,6 +28,8 @@ public struct Ratio<T : Integral> {
 	}
 }
 
+extension Ratio : Equatable { }
+
 public func == <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	func reduce(n : T, d : T) -> Ratio<T> {
 		if d == T.zero {
@@ -41,4 +43,23 @@ public func == <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -
 	let rred = reduce(r.numerator(), d: r.denominator())
 	return (lred.numerator() == rred.numerator()) && (rred.denominator() == rred.denominator())
 }
+
+extension Ratio : Comparable { }
+
+public func < <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+	return (l.numerator().times(r.denominator())) < (r.numerator().times(l.denominator()))
+}
+
+public func <= <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+	return (l.numerator().times(r.denominator())) <= (r.numerator().times(l.denominator()))
+}
+
+public func >= <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+	return !(l < r)
+}
+
+public func > <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+	return !(l <= r)
+}
+
 
