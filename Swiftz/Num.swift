@@ -134,26 +134,26 @@ extension UInt64 : NumericType {
 }
 
 
-public protocol Real : NumericType { }
+public protocol RealType : NumericType { }
 
-extension Int : Real { }
-extension Int8 : Real { }
-extension Int16 : Real { }
-extension Int32 : Real { }
-extension Int64 : Real { }
-extension UInt : Real { }
-extension UInt8 : Real { }
-extension UInt16 : Real { }
-extension UInt32 : Real { }
-extension UInt64 : Real { }
+extension Int : RealType { }
+extension Int8 : RealType { }
+extension Int16 : RealType { }
+extension Int32 : RealType { }
+extension Int64 : RealType { }
+extension UInt : RealType { }
+extension UInt8 : RealType { }
+extension UInt16 : RealType { }
+extension UInt32 : RealType { }
+extension UInt64 : RealType { }
 
 /// Numeric types that support division.
-public protocol Integral : Real {
+public protocol IntegralType : RealType {
 	/// Simultaneous quotient and remainder.
 	func quotientRemainder(_ : Self) -> (quotient : Self, remainder : Self)
 }
 
-extension Integral {
+extension IntegralType {
 	public func quotient(d : Self) -> Self {
 		return self.quotientRemainder(d).quotient
 	}
@@ -201,42 +201,42 @@ extension Integral {
 	}
 }
 
-extension Int : Integral {
+extension Int : IntegralType {
 	public func quotientRemainder(d : Int) -> (quotient : Int, remainder : Int) { return (self / d, self % d) }
 }
 
-extension Int8 : Integral {
+extension Int8 : IntegralType {
 	public func quotientRemainder(d : Int8) -> (quotient : Int8, remainder : Int8) { return (self / d, self % d) }
 }
 
-extension Int16 : Integral {
+extension Int16 : IntegralType {
 	public func quotientRemainder(d : Int16) -> (quotient : Int16, remainder : Int16) { return (self / d, self % d) }
 }
 
-extension Int32 : Integral {
+extension Int32 : IntegralType {
 	public func quotientRemainder(d : Int32) -> (quotient : Int32, remainder : Int32) { return (self / d, self % d) }
 }
 
-extension Int64 : Integral {
+extension Int64 : IntegralType {
 	public func quotientRemainder(d : Int64) -> (quotient : Int64, remainder : Int64) { return (self / d, self % d) }
 }
 
-extension UInt : Integral {
+extension UInt : IntegralType {
 	public func quotientRemainder(d : UInt) -> (quotient : UInt, remainder : UInt) { return (self / d, self % d) }
 }
 
-extension UInt8 : Integral {
+extension UInt8 : IntegralType {
 	public func quotientRemainder(d : UInt8) -> (quotient : UInt8, remainder : UInt8) { return (self / d, self % d) }
 }
 
-extension UInt16 : Integral {
+extension UInt16 : IntegralType {
 	public func quotientRemainder(d : UInt16) -> (quotient : UInt16, remainder : UInt16) { return (self / d, self % d) }
 }
 
-extension UInt32 : Integral {
+extension UInt32 : IntegralType {
 	public func quotientRemainder(d : UInt32) -> (quotient : UInt32, remainder : UInt32) { return (self / d, self % d) }
 }
 
-extension UInt64 : Integral {
+extension UInt64 : IntegralType {
 	public func quotientRemainder(d : UInt64) -> (quotient : UInt64, remainder : UInt64) { return (self / d, self % d) }
 }

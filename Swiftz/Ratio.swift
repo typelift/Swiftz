@@ -11,8 +11,8 @@
 /// While Int has arbitrary precision in Swift, operations beyond 64-bits are O(inf).
 public typealias Rational = Ratio<Int>
 
-/// Represents a `Ratio`nal number with an `Integral` numerator and denominator.
-public struct Ratio<T : Integral> {
+/// Represents a `Ratio`nal number with an `IntegralType` numerator and denominator.
+public struct Ratio<T : IntegralType> {
 	public let numerator, denominator : () -> T
 	
 	public init(@autoclosure(escaping) numerator : () -> T, @autoclosure(escaping) denominator : () -> T) {
@@ -31,7 +31,7 @@ public struct Ratio<T : Integral> {
 
 extension Ratio : Equatable { }
 
-public func == <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func == <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	let lred = reduce(l.numerator(), d: l.denominator())
 	let rred = reduce(r.numerator(), d: r.denominator())
 	return (lred.numerator() == rred.numerator()) && (rred.denominator() == rred.denominator())
@@ -39,19 +39,19 @@ public func == <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -
 
 extension Ratio : Comparable { }
 
-public func < <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func < <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) < (r.numerator().times(l.denominator()))
 }
 
-public func <= <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func <= <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) <= (r.numerator().times(l.denominator()))
 }
 
-public func >= <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func >= <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l < r)
 }
 
-public func > <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func > <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l <= r)
 }
 
@@ -77,7 +77,7 @@ extension Ratio : NumericType {
 
 /// Implementation Details Follow
 
-private func reduce<T : Integral>(n : T, d : T) -> Ratio<T> {
+private func reduce<T : IntegralType>(n : T, d : T) -> Ratio<T> {
 	if d == T.zero {
 		return undefined()
 	}
