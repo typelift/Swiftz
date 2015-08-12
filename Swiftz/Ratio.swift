@@ -55,7 +55,7 @@ public func > <T : protocol<Equatable, Integral>>(l : Ratio<T>, r : Ratio<T>) ->
 	return !(l <= r)
 }
 
-extension Ratio : Num {
+extension Ratio : NumericType {
 	public static var zero : Ratio<T> { return Ratio(numerator: T.zero, denominator: T.one) }
 	public static var one : Ratio<T> { return Ratio(numerator: T.one, denominator: T.one) }
 	

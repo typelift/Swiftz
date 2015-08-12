@@ -8,7 +8,7 @@
 
 
 /// `Num`eric types.
-public protocol Num : Comparable {
+public protocol NumericType : Comparable {
 	/// The null quantity.
 	static var zero : Self { get }
 	/// The singular quantity.
@@ -27,7 +27,7 @@ public protocol Num : Comparable {
 	func times(_ : Self) -> Self
 }
 
-extension Num {
+extension NumericType {
 	public var signum : Self {
 		if self == Self.zero {
 			return Self.zero
@@ -43,7 +43,7 @@ extension Num {
 	}
 }
 
-extension Int : Num {
+extension Int : NumericType {
 	public static var zero : Int { return 0 }
 	public static var one : Int { return 1 }
 	public var negate : Int { return -self }
@@ -52,7 +52,7 @@ extension Int : Num {
 	public func times(other : Int) -> Int { return self * other }
 }
 
-extension Int8 : Num {
+extension Int8 : NumericType {
 	public static var zero : Int8 { return 0 }
 	public static var one : Int8 { return 1 }
 	public var negate : Int8 { return -self }
@@ -61,7 +61,7 @@ extension Int8 : Num {
 	public func times(other : Int8) -> Int8 { return self * other }
 }
 
-extension Int16 : Num {
+extension Int16 : NumericType {
 	public static var zero : Int16 { return 0 }
 	public static var one : Int16 { return 1 }
 	public var negate : Int16 { return -self }
@@ -70,7 +70,7 @@ extension Int16 : Num {
 	public func times(other : Int16) -> Int16 { return self * other }
 }
 
-extension Int32 : Num {
+extension Int32 : NumericType {
 	public static var zero : Int32 { return 0 }
 	public static var one : Int32 { return 1 }
 	public var negate : Int32 { return -self }
@@ -79,7 +79,7 @@ extension Int32 : Num {
 	public func times(other : Int32) -> Int32 { return self * other }
 }
 
-extension Int64 : Num {
+extension Int64 : NumericType {
 	public static var zero : Int64 { return 0 }
 	public static var one : Int64 { return 1 }
 	public var negate : Int64 { return -self }
@@ -88,7 +88,7 @@ extension Int64 : Num {
 	public func times(other : Int64) -> Int64 { return self * other }
 }
 
-extension UInt : Num {
+extension UInt : NumericType {
 	public static var zero : UInt { return 0 }
 	public static var one : UInt { return 1 }
 	public var negate : UInt { return undefined() }
@@ -97,7 +97,7 @@ extension UInt : Num {
 	public func times(other : UInt) -> UInt { return self * other }
 }
 
-extension UInt8 : Num {
+extension UInt8 : NumericType {
 	public static var zero : UInt8 { return 0 }
 	public static var one : UInt8 { return 1 }
 	public var negate : UInt8 { return undefined() }
@@ -106,7 +106,7 @@ extension UInt8 : Num {
 	public func times(other : UInt8) -> UInt8 { return self * other }
 }
 
-extension UInt16 : Num {
+extension UInt16 : NumericType {
 	public static var zero : UInt16 { return 0 }
 	public static var one : UInt16 { return 1 }
 	public var negate : UInt16 { return undefined() }
@@ -115,7 +115,7 @@ extension UInt16 : Num {
 	public func times(other : UInt16) -> UInt16 { return self * other }
 }
 
-extension UInt32 : Num {
+extension UInt32 : NumericType {
 	public static var zero : UInt32 { return 0 }
 	public static var one : UInt32 { return 1 }
 	public var negate : UInt32 { return undefined() }
@@ -124,7 +124,7 @@ extension UInt32 : Num {
 	public func times(other : UInt32) -> UInt32 { return self * other }
 }
 
-extension UInt64 : Num {
+extension UInt64 : NumericType {
 	public static var zero : UInt64 { return 0 }
 	public static var one : UInt64 { return 1 }
 	public var negate : UInt64 { return undefined() }
@@ -134,7 +134,7 @@ extension UInt64 : Num {
 }
 
 
-public protocol Real : Num { }
+public protocol Real : NumericType { }
 
 extension Int : Real { }
 extension Int8 : Real { }

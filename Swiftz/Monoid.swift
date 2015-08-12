@@ -25,7 +25,7 @@ extension Array : Monoid {
 }
 
 /// The `Monoid` of numeric types under addition.
-public struct Sum<N : Num> : Monoid {
+public struct Sum<N : NumericType> : Monoid {
 	public let value : () -> N
 
 	public init(@autoclosure(escaping) _ x : () -> N) {
@@ -42,7 +42,7 @@ public struct Sum<N : Num> : Monoid {
 }
 
 /// The `Monoid` of numeric types under multiplication.
-public struct Product<N : Num> : Monoid {
+public struct Product<N : NumericType> : Monoid {
 	public let value : () -> N
 
 	public init(@autoclosure(escaping) _ x : () -> N) {
