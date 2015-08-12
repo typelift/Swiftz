@@ -7,7 +7,7 @@
 //
 
 
-/// `Num`eric types.
+/// Numeric types.
 public protocol NumericType : Comparable {
 	/// The null quantity.
 	static var zero : Self { get }
@@ -133,19 +133,50 @@ extension UInt64 : NumericType {
 	public func times(other : UInt64) -> UInt64 { return self * other }
 }
 
+/// Numeric types that support full-precision `Rational` conversions.
+public protocol RealType : NumericType {
+	var toRational : Rational { get }
+}
 
-public protocol RealType : NumericType { }
+extension Int : RealType {
+	public var toRational : Rational { return Rational(numerator: self, denominator: 1) }
+}
 
-extension Int : RealType { }
-extension Int8 : RealType { }
-extension Int16 : RealType { }
-extension Int32 : RealType { }
-extension Int64 : RealType { }
-extension UInt : RealType { }
-extension UInt8 : RealType { }
-extension UInt16 : RealType { }
-extension UInt32 : RealType { }
-extension UInt64 : RealType { }
+extension Int8 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension Int16 : RealType {
+ 	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension Int32 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension Int64 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension UInt : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension UInt8 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension UInt16 : RealType {
+ 	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension UInt32 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
+
+extension UInt64 : RealType {
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+}
 
 /// Numeric types that support division.
 public protocol IntegralType : RealType {
