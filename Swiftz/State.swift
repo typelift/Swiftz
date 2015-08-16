@@ -32,16 +32,11 @@ public struct State<S, A> {
 	public func withState(f : S -> S) -> State<S, A> {
 		return State(self.runState • f)
 	}
-	
-	/// Converts a State Monad to an Indexed State Monad.
-	public func toIndexedState() -> IxState<S, S, A> {
-		return IxState(runState)
-	}
 }
 
 extension State : Functor {
-	typealias B = Swift.Any
-	typealias FB = State<S, B>
+	public typealias B = Swift.Any
+	public typealias FB = State<S, B>
 	
 	public func fmap<B>(f : A -> B) -> State<S, B> {
 		return State<S, B>({ s in
@@ -78,7 +73,7 @@ extension State : Pointed {
 }
 
 extension State : Applicative {
-	typealias FAB = State<S, A -> B>
+	public typealias FAB = State<S, A -> B>
 	
 	public func ap<B>(stfn : State<S, A -> B>) -> State<S, B> {
 		return stfn.bind({ f in

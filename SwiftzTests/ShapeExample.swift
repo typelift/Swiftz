@@ -15,17 +15,17 @@ enum Shape : Dataable {
 	case Plane(Int)
 	
 	static func typeRep() -> Any.Type {
-		return reflect(self).valueType
+		return Mirror(reflecting: self).subjectType
 	}
 	
 	static func fromRep(r: Data) -> Shape? {
 		switch (r.con, r.vals) {
-		case let (0, xs):
+		case (0, _):
 			return Boat
 		case let (1, xs):
-			let x1 = indexArray(xs, 0)
+			let x1 = xs.safeIndex(0)
 			let x2 = x1 >>- { $1 as? Int }
-			return { Plane($0) } <^> x2
+			return Plane <^> x2
 		default:
 			return .None
 		}

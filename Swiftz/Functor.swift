@@ -35,9 +35,10 @@ public struct Id<A> {
 
 extension Id : Functor {
 	public typealias B = Any
+	public typealias FB = Id<B>
 
 	public func fmap<B>(f : A -> B) -> Id<B> {
-		return (Id<B>(f(self.runId)))
+		return Id<B>(f(self.runId))
 	}
 }
 
@@ -48,58 +49,59 @@ extension Id : Copointed {
 }
 
 extension Id : Comonad {
-	typealias FFA = Id<Id<A>>
+	public typealias FFA = Id<Id<A>>
 	
 	public func duplicate() -> Id<Id<A>> {
 		return Id<Id<A>>(self)
 	}
 	
-	public func extend(f : Id<A> -> B) -> Id<B> {
+	public func extend<B>(f : Id<A> -> B) -> Id<B> {
 		return self.duplicate().fmap(f)
 	}
 }
 
 // The Constant Functor ignores fmap.
-public struct Const<A, B> {
-	private let a :  () -> A
+public struct Const<V, I> {
+	private let a :  () -> V
 
-	public init(@autoclosure(escaping) _ aa : () -> A) {
+	public init(@autoclosure(escaping) _ aa : () -> V) {
 		a = aa
 	}
 
-	public var runConst : A {
+	public var runConst : V {
 		return a()
 	}
 }
 
-// TODO: File rdar; This has to be in this file or we get linker errors.
 extension Const : Bifunctor {
-	typealias B = Any
-	typealias C = B
-	typealias D = Any
+	public typealias L = V
+	public typealias R = I
+	public typealias D = Any
 
-	typealias PAC = Const<A, C>
-	typealias PAD = Const<A, D>
-	typealias PBC = Const<B, C>
-	typealias PBD = Const<B, D>
+	public typealias PAC = Const<L, R>
+	public typealias PAD = Const<V, D>
+	public typealias PBC = Const<B, R>
+	public typealias PBD = Const<B, D>
 
-	public func bimap<B, C, D>(f : A -> B, _ g : C -> D) -> Const<B, D> {
+	public func bimap<B, D>(f : V -> B, _ : I -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
 	}
 
-	public func leftMap<C, B>(f : A -> B) -> Const<B, C> {
+	public func leftMap<B>(f : V -> B) -> Const<B, I> {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap<C, D>(g : C -> D) -> Const<A, D> {
+	public func rightMap<D>(g : I -> D) -> Const<V, D> {
 		return self.bimap(identity, g)
 	}
 }
 
 extension Const : Functor {
-	typealias FB = Const<A, B>
+	public typealias A = V
+	public typealias B = Any
+	public typealias FB = Const<V, I>
 
-	public func fmap<B>(f : A -> B) -> Const<A, B> {
-		return Const<A, B>(self.runConst)
+	public func fmap<B>(f : V -> B) -> Const<V, I> {
+		return Const<V, I>(self.runConst)
 	}
 }

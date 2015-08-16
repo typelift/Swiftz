@@ -8,35 +8,39 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
 class HListSpec : XCTestCase {
 	func testHList() {
 		typealias AList = HCons<Int, HCons<String, HNil>>
 		typealias BList = HCons<Bool, HNil>
 
-		let list1 : AList = HCons(h: 10, t: HCons(h: "banana", t: HNil()))
-		let list2 : BList = HCons(h: false, t: HNil())
-
-		XCTAssert(list1.head == 10)
-		XCTAssert(list1.tail.head == "banana")
-		XCTAssert(AList.length == 2)
-
+		property("The attributes of an HList are statically known") <- forAll { (x : Bool) in
+			let list : BList = HCons(h: false, t: HNil())
+			return (list.head == false) ^&&^ (BList.length == 1)
+		}
+		
+		property("The attributes of an HList are statically known") <- forAll { (x : Int, s : String) in
+			let list : AList = HCons(h: x, t: HCons(h: s, t: HNil()))
+			return (list.head == x) ^&&^ (list.tail.head == s) ^&&^ (AList.length == 2)
+		}
+		
 		typealias Zero = HAppend<HNil, AList, AList>
 		typealias One = HAppend<BList, AList, HCons<Bool, HCons<Int, HCons<String, HNil>>>>
-
-		let zero : Zero = HAppend<(), (), ()>.makeAppend()
-		let one : One = HAppend<(), (), ()>.makeAppend(zero)
-		let x = one.append(list2, list1)
 
 		typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
 		typealias FComp = HMap<(), (Int -> Int, Int -> Int), Int -> Int>
 		typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
 		typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
-
-		let listf : FList = HCons(h: +10, t: HCons(h: %5, t: HCons(h: *3, t: HNil())))
-		let comp : FComp = HMap<(), (), ()>.compose()
-		let foldEnd : FEnd = HFold<(), (), (), ()>.makeFold()
-		let fullFold = FBegin.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: foldEnd)))
-		XCTAssert(fullFold.fold((), identity, listf)(5) == 0)
+		
+		property("A static fold can be modelled by a dynamic one") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, h : ArrowOf<Int, Int>) in
+			let listf : FList = HCons(h: f.getArrow, t: HCons(h: g.getArrow, t: HCons(h: h.getArrow, t: HNil())))
+			let comp : FComp = HMap<(), (), ()>.compose()
+			let foldEnd : FEnd = HFold<(), (), (), ()>.makeFold()
+			let fullFold = FBegin.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: foldEnd)))
+			return forAll { (x : Int) in
+				return fullFold.fold((), identity, listf)(x) == [f.getArrow, g.getArrow, h.getArrow].reverse().reduce(identity, combine: •)(x)
+			}
+		}
 	}
 }

@@ -9,25 +9,5 @@
 /// Functors equipped with a point taking values to instances of themselves.
 public protocol Pointed {
 	typealias A
-	static func pure(A) -> Self
-}
-
-extension Box : Pointed {
-	public class func pure(x : T) -> Box<T> {
-		return Box(x)
-	}
-}
-
-extension Result : Pointed {
-	public static func pure(x : V) -> Result<V> {
-		return Result.value(x)
-	}
-}
-
-extension Either : Pointed {
-	typealias A = R
-
-	public static func pure(r : R) -> Either<L, R> {
-		return Either.right(r)
-	}
+	static func pure(_ : A) -> Self
 }
