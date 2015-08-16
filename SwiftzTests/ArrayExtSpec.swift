@@ -53,13 +53,13 @@ class ArrayExtSpec : XCTestCase {
 			return (Array.pure(identity) <*> x) == x
 		}
 
-		reportProperty("Array obeys the first Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
+		property("Array obeys the first Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })
 			return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
 		}
 
-		reportProperty("Array obeys the second Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
+		property("Array obeys the second Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })
 			return (Array.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
