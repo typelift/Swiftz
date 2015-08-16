@@ -32,6 +32,8 @@ public func <*> <A, B, R>(f : (R -> (A -> B)), g : (R -> A)) -> (R -> B) {
 	return { x in f(x)(g(x)) }
 }
 
+// MARK: - Control.Monad
+
 /// Bind | "Kontinue Environment"
 public func >>- <A, B, R>(f : (R -> A), k : (A -> (R -> B))) -> (R -> B) {
 	return { r in k(f(r))(r) }
