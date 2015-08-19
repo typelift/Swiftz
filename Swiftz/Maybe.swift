@@ -11,7 +11,8 @@
 ///
 /// Because the nil case of Maybe does not indicate any significant information about cause, it may
 /// be more appropriate to use Result or Either which have explicit error cases.
-public struct Maybe<A> {
+@available(*, deprecated, message="Use OptionalExt instead")
+public struct Maybe<A>  {
 	let value: A?
 
 	var description : String {
@@ -106,8 +107,8 @@ public func !=<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 /// MARK: Functor
 
 extension Maybe : Functor {
-	typealias B = Any
-	typealias FB = Maybe<B>
+	public typealias B = Any
+	public typealias FB = Maybe<B>
 
 	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
 		if self.isJust() {
@@ -130,8 +131,8 @@ extension Maybe : Pointed {
 }
 
 extension Maybe : Applicative {
-	typealias FA = Maybe<A>
-	typealias FAB = Maybe<A -> B>
+	public typealias FA = Maybe<A>
+	public typealias FAB = Maybe<A -> B>
 	
 	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
@@ -159,4 +160,24 @@ extension Maybe : Monad {
 
 public func >>- <A, B>(l : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 	return l.bind(f)
+}
+
+extension Maybe : Foldable {
+	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
+		if self.isNone() {
+			return i
+		}
+		return k(self.fromJust())(i)
+	}
+
+	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
+		if self.isNone() {
+			return i
+		}
+		return k(i)(self.fromJust())
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mempty)
+	}
 }

@@ -13,7 +13,3 @@ FOUNDATION_EXPORT double SwiftzVersionNumber;
 
 //! Project version string for Swiftz.
 FOUNDATION_EXPORT const unsigned char SwiftzVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Swiftz/PublicHeader.h>
-
-

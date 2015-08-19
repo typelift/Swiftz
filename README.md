@@ -52,7 +52,7 @@ the library rely on their combinatorial semantics to allow declarative ideas to
 be expressed more clearly in Swift.
 
 Swiftz is a proper superset of [Swiftx](https://github.com/typelift/Swiftx) that
-implements higher-level data types like Lenses, Zippers, HLists, and a number of
+implements higher-level data types like Arrows, Lists, HLists, and a number of
 typeclasses integral to programming with the maximum amount of support from the
 type system.
 
@@ -112,11 +112,6 @@ public class User : JSONDecodable {
 			<*> x <? "tweets" 
 			<*> x <? "attrs" <> "one" // A nested keypath
     }
-    
-    // lens example
-    public class func luserName() -> Lens<User, User, String, String> {
-        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attr) } }
-    }
 }
 
 public func ==(lhs : User, rhs : User) -> Bool {
@@ -129,55 +124,7 @@ let userjs = "{\"name\": \"max\", \"age\": 10, \"tweets\": [\"hello\"], \"attrs\
 //: the user would be nil.
 let user : User? = JSONValue.decode(userjs) >>- User.fromJSON // .Some( User("max", 10, ["hello"], "1") )
 ```
-
-**Lenses**
-
-```swift
-import struct Swiftz.Lens
-import struct Swiftz.IxStore
-
-//: A party has a host, who is a user.
-final class Party {
-    let host : User
-
-    init(h : User) {
-        host = h
-    }
-
-    class func lpartyHost() -> Lens<Party, Party, User, User> {
-        let getter = { (party : Party) -> User in
-            party.host
-        }
-
-        let setter = { (party : Party, host : User) -> Party in
-            Party(h: host)
-        }
-
-        return Lens(get: getter, set: setter)
-    }
-}
-
-//: A Lens for the User's name.
-extension User {
-    public class func luserName() -> Lens<User, User, String, String> {
-        return Lens { user in IxStore(user.name) { User($0, user.age, user.tweets, user.attrs) } }
-    }
-}
-
-//: Let's throw a party now.
-let party = Party(h: User("max", 1, [], Dictionary()))
-
-//: A lens for a party host's name.
-let hostnameLens = Party.lpartyHost() • User.luserName()
-
-//: Retrieve our gracious host's name.
-let name = hostnameLens.get(party) // "max"
-
-//: Our party seems to be lacking in proper nouns. 
-let updatedParty = (Party.lpartyHost() • User.luserName()).set(party, "Max")
-let properName = hostnameLens.get(updatedParty) // "Max"
-```
-
+ 
 **Semigroups and Monoids**
 
 ```swift

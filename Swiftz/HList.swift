@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Darwin
-
 /// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
 /// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
 /// in convenience they gain in flexibility.
@@ -41,7 +39,7 @@ public struct HCons<H, T : HList> : HList {
 	}
 
 	public static var length : Int {
-		return (1 + Tail.length)
+		return Tail.length.successor()
 	}
 }
 
@@ -141,10 +139,10 @@ public struct HMap<F, A, R> {
 /// fold that reduces `HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>` to `Int -> Int`
 /// through composition will define two `typealias`es:
 ///
-///     typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
+///     public typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
 ///
-///     typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
-///     typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+///     public typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
+///     public typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
 ///
 /// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained 
 /// in a list of type `FList`, to an `HNil` node and an ending value of type `Int -> Int`.
