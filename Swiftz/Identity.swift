@@ -7,19 +7,24 @@
 //
 
 /// The Identity Functor holds a singular value.
-public struct Identity<A> {
-	private let unIdentity : () -> A
+public struct Identity<T> {
+	private let unIdentity : () -> T
 	
-	public init(@autoclosure(escaping) _ aa : () -> A) {
+	public init(@autoclosure(escaping) _ aa : () -> T) {
 		unIdentity = aa
 	}
 	
-	public var runIdentity : A {
+	public var runIdentity : T {
 		return unIdentity()
 	}
 }
 
+public func == <T : Equatable>(l : Identity<T>, r : Identity<T>) -> Bool {
+	return l.runIdentity == r.runIdentity
+}
+
 extension Identity : Functor {
+	public typealias A = T
 	public typealias B = Any
 	public typealias FB = Identity<B>
 	
@@ -33,7 +38,7 @@ public func <^> <A, B>(f : A -> B, m : Identity<A>) -> Identity<B> {
 }
 
 extension Identity : Pointed {
-	public static func pure(x : A) -> Identity<A> {
+	public static func pure(x : A) -> Identity<T> {
 		return Identity(x)
 	}
 }
@@ -67,13 +72,13 @@ extension Identity : Copointed {
 }
 
 extension Identity : Comonad {
-	public typealias FFA = Identity<Identity<A>>
+	public typealias FFA = Identity<Identity<T>>
 	
-	public func duplicate() -> Identity<Identity<A>> {
-		return Identity<Identity<A>>(self)
+	public func duplicate() -> Identity<Identity<T>> {
+		return Identity<Identity<T>>(self)
 	}
 	
-	public func extend<B>(f : Identity<A> -> B) -> Identity<B> {
+	public func extend<B>(f : Identity<T> -> B) -> Identity<B> {
 		return self.duplicate().fmap(f)
 	}
 }
