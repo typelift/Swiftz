@@ -158,8 +158,8 @@ public func transpose<T>(ss : Stream<Stream<T>>) -> Stream<Stream<T>> {
 }
 
 /// Zips two `Stream`s into a third Stream using a combining function.
-public func zipWith<A, B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-	return { s1 in { s2 in Stream { (f(s1.step().head)(s2.step().head), zipWith(f)(s1.step().tail)(s2.step().tail)) } } }
+public func zipWith<A, B, C>(s1 : Stream<A>, _ s2 : Stream<B>, _ f : A -> B -> C) -> Stream<C> {
+	return Stream { (f(s1.step().head)(s2.step().head), zipWith(s1.step().tail, s2.step().tail, f)) }
 }
 
 /// Unzips a `Stream` of pairs into a pair of Streams.
