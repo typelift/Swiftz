@@ -7,8 +7,22 @@
 //
 
 /// A lazy infinite sequence of values.
-public struct Stream<T> {
-	private let step : () -> (head : T, tail : Stream<T>)
+///
+/// A `Stream` can be thought of as a function indexed by positions -stopping points at which the
+/// the function yields a value back.  Rather than hold the entire domain and range of the function
+/// in memory, the `Stream` is aware of the current initial point and a way of garnering any
+/// subsequent points.
+///
+/// A Stream is optimized for access to its head, which occurs in O(1).  Element access is O(index)
+/// and can often be made even more expensive by the repeated evaluation of a complex stream.
+///
+/// Because `Stream`s and their assorted operations are lazy, building up a `Stream` from a large
+/// amount of combinators will necessarily increase the cost of forcing the stream down the line.
+/// In addition, due to the fact that a `Stream` is an infinite structure, attempting to traverse
+/// the `Stream` in a non-lazy manner will diverge e.g. invoking `.forEach(_:)` or using `zip` with
+/// an eager structure and a `Stream`.
+public struct Stream<Element> {
+	private let step : () -> (head : Element, tail : Stream<Element>)
 	
 	private init(_ step : () -> (head : T, tail : Stream<T>)) {
 		self.step = step
