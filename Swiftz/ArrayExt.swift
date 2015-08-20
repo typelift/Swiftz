@@ -72,21 +72,6 @@ extension Array : MonadZip {
 	}
 }
 
-extension Array : MonadFix {
-	public static func mfix(f : A -> Array<Element>) -> Array<Element> {
-		return { l in
-			switch fix({ recur -> Array<Element> -> Array<Element> in
-				return { x in recur(f(x.first!)) }
-			})(l).match {
-			case .Nil:
-				return .Nil
-			case let .Cons(y, _):
-				return Array.mfix({ x in f(x).tail! }).cons(y)
-			}
-		}
-	}
-}
-
 extension Array : Foldable {
 	public func foldr<B>(k : Element -> B -> B, _ i : B) -> B {
 		switch self.match {

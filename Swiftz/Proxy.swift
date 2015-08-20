@@ -91,12 +91,6 @@ public func >>- <A, B>(l : Proxy<A>, f : A -> Proxy<B>) -> Proxy<A> {
 	return Proxy()
 }
 
-extension Proxy : MonadFix {
-	public static func mfix(f : A -> Proxy<A>) -> Proxy<A> {
-		return Proxy()
-	}
-}
-
 extension Proxy : MonadZip {
 	public typealias C = T
 	public typealias FC = Proxy<C>

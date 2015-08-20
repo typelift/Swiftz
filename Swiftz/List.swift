@@ -27,8 +27,8 @@ public enum ListMatcher<Element> {
 /// modifications to its head, which always occur in O(1).  Access to the elements occurs in O(n).
 ///
 /// Unlike an Array, a List can potentially represent an infinite sequence of values.  Because the
-/// List holds these values in a lazy manner, certain primitives like iteration or reversing the 
-/// list will force evaluation of the entire list.  For infinite lists this can lead to a program 
+/// List holds these values in a lazy manner, certain primitives like iteration or reversing the
+/// list will force evaluation of the entire list.  For infinite lists this can lead to a program
 /// diverging.
 public struct List<Element> {
 	let len : Int
@@ -411,8 +411,8 @@ public struct List<Element> {
 		return nil
 	}
 
-	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity 
-	/// function) and a key and returns the value for the given key, if there is one, or None 
+	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity
+	/// function) and a key and returns the value for the given key, if there is one, or None
 	/// otherwise.
 	public func lookup<K : Equatable, V>(ev : Element -> (K, V), key : K) -> Optional<V> {
 		return (snd • ev) <^> self.find({ ev($0).0 == key })
@@ -463,13 +463,13 @@ public struct List<Element> {
 //	public func isSuffixOf(r : List<Element>) -> Bool {
 //		return self.reverse().isPrefixOf(r.reverse())
 //	}
-//	
+//
 //	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 //	/// second string.
 //	public func isInfixOf(r : List<Element>) -> Bool {
 //		return r.tails.any(self.isPrefixOf)
 //	}
-//	
+//
 //	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 //	/// prefix of the second string this function returns Nothing.
 //	public func stripPrefix(r : List<Element>) -> Optional<List<Element>> {
@@ -482,13 +482,13 @@ public struct List<Element> {
 //			return .None
 //		}
 //	}
-//	
+//
 //	/// Takes two strings and drops items in the first from the end of the second.  If the first
 //	/// string is not a suffix of the second string this function returns nothing.
 //	public func stripSuffix(r : List<Element>) -> Optional<List<Element>> {
 //		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 //	}
-//	
+//
 //	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 //	/// other.
 //	///
@@ -541,11 +541,6 @@ public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 /// MARK: Collection Protocols
 
 extension List : ArrayLiteralConvertible {
-<<<<<<< HEAD
-	public typealias Element = A
-
-=======
->>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
 	public init(fromArray arr : [Element]) {
 		var xs : [A] = []
 		var g = arr.generate()
@@ -584,11 +579,7 @@ public final class ListGenerator<Element> : GeneratorType {
 }
 
 extension List : SequenceType {
-<<<<<<< HEAD
-	public typealias Generator = ListGenerator<A>
-=======
 	public typealias Generator = ListGenerator<Element>
->>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
 
 	public func generate() -> ListGenerator<Element> {
 		return ListGenerator(self)
@@ -637,11 +628,7 @@ extension List : Pointed {
 }
 
 extension List : Applicative {
-<<<<<<< HEAD
-	public typealias FA = List<A>
-=======
 	public typealias FA = List<Element>
->>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
 	public typealias FAB = List<A -> B>
 
 	public func ap<B>(f : List<A -> B>) -> List<B> {
@@ -662,14 +649,3 @@ extension List : Monad {
 public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 	return l.bind(f)
 }
-
-extension List : MonadPlus {
-	public static var mzero : List<A> {
-		return []
-	}
-	
-	public func mplus(other : List<A>) -> List<A> {
-		return self + other
-	}
-}
-

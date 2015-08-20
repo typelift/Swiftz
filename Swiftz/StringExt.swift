@@ -19,18 +19,18 @@ extension String {
 	public func lines() -> [String] {
 		return self.componentsSeparatedByString("\n")
 	}
-
+	
 	/// Concatenates an array of strings into a single string containing newlines between each
 	/// element.
 	public static func unlines(xs : [String]) -> String {
 		return xs.reduce("", combine: { "\($0)\($1)\n" })
 	}
-
+	
 	/// Appends a character onto the front of a string.
 	public static func cons(head : Character, tail : String) -> String {
 		return String(head) + tail
 	}
-
+	
 	/// Creates a string of n repeating characters.
 	public static func replicate(n : UInt, value : Character) -> String {
 		var l = ""
@@ -39,7 +39,7 @@ extension String {
 		}
 		return l
 	}
-
+	
 	/// Destructures a string.  If the string is empty the result is .Nil, otherwise the result is
 	/// .Cons(head, tail).
 	public func match() -> StringMatcher {
@@ -50,12 +50,12 @@ extension String {
 		}
 		return .Cons(self[self.startIndex], self[self.startIndex.successor()..<self.endIndex])
 	}
-
+	
 	/// Returns a string containing the characters of the receiver in reverse order.
 	public func reverse() -> String {
 		return self.reduce(flip(String.cons), initial: "")
 	}
-
+	
 	/// Maps a function over the characters of a string and returns a new string of those values.
 	public func map(f : Character -> Character) -> String {
 		switch self.match() {
@@ -65,7 +65,7 @@ extension String {
 			return String(f(hd)) + tl.map(f)
 		}
 	}
-
+	
 	/// Removes characters from the receiver that do not satisfy a given predicate.
 	public func filter(p : Character -> Bool) -> String {
 		switch self.match() {
@@ -75,7 +75,7 @@ extension String {
 			return p(x) ? (String(x) + xs.filter(p)) : xs.filter(p)
 		}
 	}
-
+	
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
 	public func reduce<B>(f : B -> Character -> B, initial : B) -> B {
 		switch self.match() {
@@ -85,7 +85,7 @@ extension String {
 			return xs.reduce(f, initial: f(initial)(x))
 		}
 	}
-
+	
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
 	public func reduce<B>(f : (B, Character) -> B, initial : B) -> B {
 		switch self.match() {
@@ -95,7 +95,7 @@ extension String {
 			return xs.reduce(f, initial: f(initial, x))
 		}
 	}
-
+	
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
 	public func isPrefixOf(r : String) -> Bool {
 		switch (self.match(), r.match()) {
@@ -107,24 +107,24 @@ extension String {
 			return false
 		}
 	}
-
+	
 	/// Takes two lists and returns true if the first string is a suffix of the second string.
 	public func isSuffixOf(r : String) -> Bool {
 		return self.reverse().isPrefixOf(r.reverse())
 	}
-
+	
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
 	public func isInfixOf(r : String) -> Bool {
 		func tails(l : String) -> [String] {
 			return l.reduce({ x, y in
 				return [String.cons(y, tail: x.first!)] + x
-			}, initial: [""])
+				}, initial: [""])
 		}
-
+		
 		return tails(r).any(self.isPrefixOf)
 	}
-
+	
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
 	public func stripPrefix(r : String) -> Optional<String> {
@@ -137,8 +137,8 @@ extension String {
 			return .None
 		}
 	}
-
-	/// Takes two strings and drops items in the first from the end of the second.  If the first 
+	
+	/// Takes two strings and drops items in the first from the end of the second.  If the first
 	/// string is not a suffix of the second string this function returns nothing.
 	public func stripSuffix(r : String) -> Optional<String> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
@@ -146,15 +146,12 @@ extension String {
 }
 
 extension String : Monoid {
-<<<<<<< HEAD
-=======
 	public typealias M = String
-
->>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
+	
 	public static var mempty : String {
 		return ""
 	}
-
+	
 	public func op(other : String) -> String {
 		return self + other
 	}
@@ -168,7 +165,7 @@ extension String : Functor {
 	public typealias A = Character
 	public typealias B = Character
 	public typealias FB = String
-
+	
 	public func fmap(f : Character -> Character) -> String {
 		return self.map(f)
 	}
@@ -186,7 +183,7 @@ extension String : Pointed {
 
 extension String : Applicative {
 	public typealias FAB = [Character -> Character]
-
+	
 	public func ap(a : [Character -> Character]) -> String {
 		return a.map(self.map).reduce("", combine: +)
 	}

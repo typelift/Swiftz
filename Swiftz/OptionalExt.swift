@@ -17,8 +17,8 @@ extension Optional {
 			return onSome(x)
 		}
 	}
-
-
+	
+	
 	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
 	/// this function returns the default value.
 	public func getOrElse(def : T) -> T {
@@ -37,7 +37,7 @@ extension Optional : Functor {
 	public typealias A = T
 	public typealias B = Any
 	public typealias FB = Optional<B>
-
+	
 	public func fmap<B>(f : T -> B) -> Optional<B> {
 		return self.map(f)
 	}
@@ -56,19 +56,6 @@ extension Optional /*: Pointed*/ {
 	}
 }
 
-<<<<<<< HEAD
-extension Optional : Applicative {
-	public typealias FA = Optional<A>
-	public typealias FAB = Optional<A -> B>
-
-	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
-		if let fn = f {
-			return self.fmap(fn)
-		}
-		return .None
-	}
-}
-=======
 //extension Optional : Applicative {
 //	public typealias FA = Optional<A>
 //	public typealias FAB = Optional<A -> B>
@@ -77,7 +64,6 @@ extension Optional : Applicative {
 //		return f <*> self
 //	}
 //}
->>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
 
 public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
 	if let fn = f {
@@ -103,14 +89,14 @@ extension Optional : Foldable {
 		}
 		return i
 	}
-
+	
 	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
 		if let v = self {
 			return k(i)(v)
 		}
 		return i
 	}
-
+	
 	public func foldMap<M : Monoid>(f : A -> M) -> M {
 		return self.foldr(curry(<>) • f, M.mempty)
 	}

@@ -62,21 +62,6 @@ extension Either : Monad {
 	}
 }
 
-extension Either : MonadFix {
-	public static func mfix(f : (R -> Either<L, R>) -> R -> Either<L, R>) -> R -> Either<L, R> {
-		func fromRight(e : Either<L, R>) -> R {
-			switch e {
-			case .Right(let br):
-				return br
-			case .Left(_):
-				return error("Cannot take fixpoint of Either.Left")
-			}
-		}
-		
-		return f(fromRight(Either.mfix(f)))
-	}
-}
-
 extension Either : Foldable {
 	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
 		switch self {
