@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		822A5FC31B4CD9EC00F48B0B /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822A5FC21B4CD9EC00F48B0B /* Operators.swift */; };
 		822A5FC41B4CD9EC00F48B0B /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822A5FC21B4CD9EC00F48B0B /* Operators.swift */; };
+		825C0E431B85681C0026E738 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825C0E421B85681C0026E738 /* Stream.swift */; };
+		825C0E441B85681C0026E738 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825C0E421B85681C0026E738 /* Stream.swift */; };
 		826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
 		826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
 		828F7D951B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
@@ -225,6 +227,7 @@
 
 /* Begin PBXFileReference section */
 		822A5FC21B4CD9EC00F48B0B /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
+		825C0E421B85681C0026E738 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		828F7D941B4261A5005EF918 /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserExample.swift; sourceTree = "<group>"; };
 		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
@@ -456,6 +459,7 @@
 				82EBC6AE1B7AA4CC004AF7B6 /* Ratio.swift */,
 				84A890071A71DFC5003D53CF /* Semigroup.swift */,
 				84961FB41A998976004A186A /* State.swift */,
+				825C0E421B85681C0026E738 /* Stream.swift */,
 				84A8900A1A71DFC5003D53CF /* SYB.swift */,
 				84A8900B1A71DFC5003D53CF /* Those.swift */,
 				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
@@ -762,6 +766,7 @@
 				8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84A8902E1A71DFC5003D53CF /* NonEmptyList.swift in Sources */,
 				84A8901D1A71DFC5003D53CF /* Functor.swift in Sources */,
+				825C0E431B85681C0026E738 /* Stream.swift in Sources */,
 				84A8901C1A71DFC5003D53CF /* Function.swift in Sources */,
 				8496F0E71B37571F00896D26 /* Foldable.swift in Sources */,
 				84A890391A71DFC5003D53CF /* StringExt.swift in Sources */,
@@ -838,6 +843,7 @@
 				84DF75C21B0BD1D400C912B0 /* Pointed.swift in Sources */,
 				84DF75C31B0BD1D400C912B0 /* Semigroup.swift in Sources */,
 				84DF75C41B0BD1D400C912B0 /* State.swift in Sources */,
+				825C0E441B85681C0026E738 /* Stream.swift in Sources */,
 				8496F0E81B37571F00896D26 /* Foldable.swift in Sources */,
 				84DF75C51B0BD1D400C912B0 /* SYB.swift in Sources */,
 				84DF75C61B0BD1D400C912B0 /* Those.swift in Sources */,
