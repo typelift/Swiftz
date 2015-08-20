@@ -8,13 +8,13 @@
 
 /// A lazy infinite sequence of values.
 ///
-/// A `Stream` can be thought of as a function indexed by positions -stopping points at which the
+/// A `Stream` can be thought of as a function indexed by positions - stopping points at which the
 /// the function yields a value back.  Rather than hold the entire domain and range of the function
 /// in memory, the `Stream` is aware of the current initial point and a way of garnering any
 /// subsequent points.
 ///
 /// A Stream is optimized for access to its head, which occurs in O(1).  Element access is O(index)
-/// and can often be made even more expensive by the repeated evaluation of a complex stream.
+/// and is made even more expensive by implicit repeated evaluation of complex streams.
 ///
 /// Because `Stream`s and their assorted operations are lazy, building up a `Stream` from a large
 /// amount of combinators will necessarily increase the cost of forcing the stream down the line.
