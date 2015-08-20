@@ -6,41 +6,56 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+/// The `Writer` Monad represents a computation that appends (writes) to an associated `Monoid` 
+/// value as it evaluates.
+///
+/// `Writer` is most famous for allowing the accumulation of log output during program execution.
 public struct Writer<W : Monoid, T> {
+	/// Extracts the current value and environment.
 	public let runWriter : (T, W)
 	
 	public init(_ runWriter : (T, W)) {
 		self.runWriter = runWriter
 	}
 	
+	/// Returns a `Writer` that applies the function to its current value and environment.
 	public func mapWriter<U, V : Monoid>(f : (T, W) -> (U, V)) -> Writer<V, U> {
 		return Writer<V, U>(f(self.runWriter))
 	}
 	
+	/// Extracts the current environment from the receiver.
 	public var exec : W {
 		return self.runWriter.1
 	}
 }
 
+/// Appends the given value to the `Writer`'s environment.
 public func tell<W : Monoid>(w : W) -> Writer<W, ()> {
 	return Writer(((), w))
 }
 
+/// Executes the action of the given `Writer` and adds its output to the result of the computation.
 public func listen<W : Monoid, A>(w : Writer<W, A>) -> Writer<W, (A, W)> {
 	let (a, w) = w.runWriter
 	return Writer(((a, w), w))
 }
 
+/// Executes the action of the given `Writer` then applies the function to the produced environment
+/// and adds the overall output to the result of the computation.
 public func listens<W : Monoid, A, B>(f : W -> B, w : Writer<W, A>) -> Writer<W, (A, B)> {
 	let (a, w) = w.runWriter
 	return Writer(((a, f(w)), w))
 }
 
+/// Executes the action of the given `Writer` to get a value and a function.  The function is then
+/// applied to the current environment and the output added to the result of the computation.
 public func pass<W : Monoid, A>(w : Writer<W, (A, W -> W)>) -> Writer<W, A> {
 	let ((a, f), w) = w.runWriter
 	return Writer((a, f(w)))
 }
 
+/// Executes the actino of the given `Writer` and applies the given function to its environment,
+/// leaving the value produced untouched.
 public func censor<W : Monoid, A>(f : W -> W, w : Writer<W, A>) -> Writer<W, A> {
 	let (a, w) = w.runWriter
 	return Writer((a, f(w)))
