@@ -24,32 +24,32 @@
 public struct Stream<Element> {
 	private let step : () -> (head : Element, tail : Stream<Element>)
 	
-	private init(_ step : () -> (head : T, tail : Stream<T>)) {
+	private init(_ step : () -> (head : Element, tail : Stream<Element>)) {
 		self.step = step
 	}
 	
 	/// Uses function to construct a `Stream`.
 	///
 	/// Unlike unfold for lists, unfolds to construct a `Stream` have no base case.
-	public static func unfold<A>(initial : A, _ f : A -> (T, A)) -> Stream<T> {
+	public static func unfold<A>(initial : A, _ f : A -> (Element, A)) -> Stream<Element> {
 		let (x, d) = f(initial)
 		return Stream { (x, Stream.unfold(d, f)) }
 	}
 	
 	/// Repeats a value into a constant stream of that same value.
-	public static func `repeat`(x : T) -> Stream<T> {
+	public static func `repeat`(x : Element) -> Stream<Element> {
 		return Stream { (x, `repeat`(x)) }
 	}
 	
 	/// Returns a `Stream` of an infinite number of iteratations of applications of a function to a value.
-	public static func iterate(initial : T, _ f : T -> T)-> Stream<T> {
+	public static func iterate(initial : Element, _ f : Element -> Element)-> Stream<Element> {
 		return Stream { (initial, Stream.iterate(f(initial), f)) }
 	}
 	
 	/// Cycles a non-empty list into an infinite `Stream` of repeating values.
 	///
 	/// This function is partial with respect to the empty list.
-	public static func cycle(xs : [T]) -> Stream<T> {
+	public static func cycle(xs : [Element]) -> Stream<Element> {
 		switch xs.match {
 		case .Nil:
 			return error("Cannot cycle an empty list.")
@@ -58,42 +58,40 @@ public struct Stream<Element> {
 		}
 	}
 	
-	public subscript(n : UInt) -> T {
-		return index(self)(n)
+	public subscript(n : UInt) -> Element {
+		return self.index(n)
 	}
 	
 	/// Looks up the nth element of a `Stream`.
-	public func index<T>(s : Stream<T>) -> UInt -> T {
-		return { n in
-			if n == 0 {
-				return s.step().head
-			}
-			return self.index(s.step().tail)(n - 1)
+	public func index(n : UInt) -> Element {
+		if n == 0 {
+			return self.head
 		}
+		return self.step().tail.index(n.predecessor())
 	}
 	
 	/// Returns the first element of a `Stream`.
-	public var head : T {
+	public var head : Element {
 		return self.step().head
 	}
 	
 	/// Returns the remaining elements of a `Stream`.
-	public var tail : Stream<T> {
+	public var tail : Stream<Element> {
 		return self.step().tail
 	}
 	
 	/// Returns a `Stream` of all initial segments of a `Stream`.
-	public var inits : Stream<[T]> {
-		return Stream<[T]> { ([], self.step().tail.inits.fmap({ $0.cons(self.step().head) })) }
+	public var inits : Stream<[Element]> {
+		return Stream<[Element]> { ([], self.step().tail.inits.fmap({ $0.cons(self.step().head) })) }
 	}
 	
 	/// Returns a `Stream` of all final segments of a `Stream`.
-	public var tails : Stream<Stream<T>> {
-		return Stream<Stream<T>> { (self, self.step().tail.tails) }
+	public var tails : Stream<Stream<Element>> {
+		return Stream<Stream<Element>> { (self, self.step().tail.tails) }
 	}
 	
 	/// Returns a pair of the first n elements and the remaining eleemnts in a `Stream`.
-	public func splitAt(n : UInt) -> ([T], Stream<T>) {
+	public func splitAt(n : UInt) -> ([Element], Stream<Element>) {
 		if n == 0 {
 			return ([], self)
 		}
@@ -102,7 +100,7 @@ public struct Stream<Element> {
 	}
 	
 	/// Returns the longest prefix of values in a `Stream` for which a predicate holds.
-	public func takeWhile(p : T -> Bool) -> [T] {
+	public func takeWhile(p : Element -> Bool) -> [Element] {
 		if p(self.step().head) {
 			return self.step().tail.takeWhile(p).cons(self.step().head)
 		}
@@ -110,7 +108,7 @@ public struct Stream<Element> {
 	}
 	
 	/// Returns the longest suffix remaining after a predicate holds.
-	public func dropWhile(p : T -> Bool) -> Stream<T> {
+	public func dropWhile(p : Element -> Bool) -> Stream<Element> {
 		if p(self.step().head) {
 			return self.step().tail.dropWhile(p)
 		}
@@ -118,7 +116,7 @@ public struct Stream<Element> {
 	}
 	
 	/// Returns the first n elements of a `Stream`.
-	public func take(n : UInt) -> [T] {
+	public func take(n : UInt) -> [Element] {
 		if n == 0 {
 			return []
 		}
@@ -126,7 +124,7 @@ public struct Stream<Element> {
 	}
 	
 	/// Returns a `Stream` with the first n elements removed.
-	public func drop(n : UInt) -> Stream<T> {
+	public func drop(n : UInt) -> Stream<Element> {
 		if n == 0 {
 			return self
 		}
@@ -136,7 +134,7 @@ public struct Stream<Element> {
 	/// Removes elements from the `Stream` that do not satisfy a given predicate.
 	///
 	/// If there are no elements that satisfy this predicate this function will diverge.
-	public func filter(p : T -> Bool) -> Stream<T> {
+	public func filter(p : Element -> Bool) -> Stream<Element> {
 		if p(self.step().head) {
 			return Stream { (self.step().head, self.step().tail.filter(p)) }
 		}
@@ -144,22 +142,22 @@ public struct Stream<Element> {
 	}
 	
 	/// Returns a `Stream` of alternating elements from each Stream.
-	public func interleaveWith(s2 : Stream<T>) -> Stream<T> {
+	public func interleaveWith(s2 : Stream<Element>) -> Stream<Element> {
 		return Stream { (self.step().head, s2.interleaveWith(self.tail)) }
 	}
 	
 	/// Creates a `Stream` alternating an element in between the values of another Stream.
-	public func intersperse(x : T) -> Stream<T> {
+	public func intersperse(x : Element) -> Stream<Element> {
 		return Stream { (self.step().head, Stream { (x, self.step().tail.intersperse(x)) } ) }
 	}
 
 	/// Returns a `Stream` of successive reduced values.
-	public func scanl<A>(initial : A, combine : A -> T -> A) -> Stream<A> {
+	public func scanl<A>(initial : A, combine : A -> Element -> A) -> Stream<A> {
 		return Stream<A> { (initial, self.step().tail.scanl(combine(initial)(self.step().head), combine: combine)) }
 	}
 
 	/// Returns a `Stream` of successive reduced values.
-	public func scanl1(f : T -> T -> T) -> Stream<T> {
+	public func scanl1(f : Element -> Element -> Element) -> Stream<Element> {
 		return self.step().tail.scanl(self.step().head, combine: f)
 	}
 }
@@ -182,7 +180,7 @@ public func unzip<A, B>(sp : Stream<(A, B)>) -> (Stream<A>, Stream<B>) {
 }
 
 extension Stream : Functor {
-	public typealias A = T
+	public typealias A = Element
 	public typealias B = Swift.Any
 	public typealias FB = Stream<B>
 	
@@ -250,11 +248,11 @@ extension Stream : Comonad {
 }
 
 extension Stream : ArrayLiteralConvertible {
-	public init(fromArray arr : [T]) {
+	public init(fromArray arr : [Element]) {
 		self = Stream.cycle(arr)
 	}
 	
-	public init(arrayLiteral s : T...) {
+	public init(arrayLiteral s : Element...) {
 		self.init(fromArray: s)
 	}
 }
@@ -274,9 +272,9 @@ public final class StreamGenerator<Element> : GeneratorType {
 }
 
 extension Stream : SequenceType {
-	public typealias Generator = StreamGenerator<T>
+	public typealias Generator = StreamGenerator<Element>
 	
-	public func generate() -> StreamGenerator<T> {
+	public func generate() -> StreamGenerator<Element> {
 		return StreamGenerator(self)
 	}
 }
