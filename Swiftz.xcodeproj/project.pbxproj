@@ -13,6 +13,10 @@
 		825C0E441B85681C0026E738 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825C0E421B85681C0026E738 /* Stream.swift */; };
 		826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
 		826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */; };
+		828BB55C1B7E71B600D3327A /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BB55B1B7E71B600D3327A /* Writer.swift */; };
+		828BB55D1B7E71B600D3327A /* Writer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BB55B1B7E71B600D3327A /* Writer.swift */; };
+		828BB5611B7E77C700D3327A /* WriterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BB5601B7E77C700D3327A /* WriterSpec.swift */; };
+		828BB5621B7E77C700D3327A /* WriterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BB5601B7E77C700D3327A /* WriterSpec.swift */; };
 		828F7D951B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
 		828F7D961B4261A5005EF918 /* UserExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828F7D941B4261A5005EF918 /* UserExample.swift */; };
 		82E51B7F1B5C41E8003CA361 /* Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B7E1B5C41E8003CA361 /* Combinators.swift */; };
@@ -229,6 +233,8 @@
 		822A5FC21B4CD9EC00F48B0B /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		825C0E421B85681C0026E738 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		826A12F01B3DF9A300547FD4 /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
+		828BB55B1B7E71B600D3327A /* Writer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Writer.swift; sourceTree = "<group>"; };
+		828BB5601B7E77C700D3327A /* WriterSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriterSpec.swift; sourceTree = "<group>"; };
 		828F7D941B4261A5005EF918 /* UserExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserExample.swift; sourceTree = "<group>"; };
 		82E51B7E1B5C41E8003CA361 /* Combinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Combinators.swift; path = Carthage/Checkouts/Swiftx/Swiftx/Combinators.swift; sourceTree = SOURCE_ROOT; };
 		82E51B9F1B5D9413003CA361 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
@@ -463,6 +469,7 @@
 				84A8900A1A71DFC5003D53CF /* SYB.swift */,
 				84A8900B1A71DFC5003D53CF /* Those.swift */,
 				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
+				828BB55B1B7E71B600D3327A /* Writer.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -502,6 +509,7 @@
 				82E51BA41B5D96BD003CA361 /* ProxySpec.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
+				828BB5601B7E77C700D3327A /* WriterSpec.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -765,6 +773,7 @@
 				84A8901A1A71DFC5003D53CF /* DictionaryExt.swift in Sources */,
 				8496F0EA1B375BD400896D26 /* EitherExt.swift in Sources */,
 				84A8902E1A71DFC5003D53CF /* NonEmptyList.swift in Sources */,
+				828BB55C1B7E71B600D3327A /* Writer.swift in Sources */,
 				84A8901D1A71DFC5003D53CF /* Functor.swift in Sources */,
 				825C0E431B85681C0026E738 /* Stream.swift in Sources */,
 				84A8901C1A71DFC5003D53CF /* Function.swift in Sources */,
@@ -785,6 +794,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A88FD91A71DFA0003D53CF /* ShapeExample.swift in Sources */,
+				828BB5611B7E77C700D3327A /* WriterSpec.swift in Sources */,
 				84A88FDC1A71DFA0003D53CF /* TupleExtSpec.swift in Sources */,
 				84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */,
 				84A88FCF1A71DFA0003D53CF /* HListSpec.swift in Sources */,
@@ -842,6 +852,7 @@
 				84DF75C11B0BD1D400C912B0 /* Num.swift in Sources */,
 				84DF75C21B0BD1D400C912B0 /* Pointed.swift in Sources */,
 				84DF75C31B0BD1D400C912B0 /* Semigroup.swift in Sources */,
+				828BB55D1B7E71B600D3327A /* Writer.swift in Sources */,
 				84DF75C41B0BD1D400C912B0 /* State.swift in Sources */,
 				825C0E441B85681C0026E738 /* Stream.swift in Sources */,
 				8496F0E81B37571F00896D26 /* Foldable.swift in Sources */,
@@ -862,6 +873,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A53D721B1A900900E8A107 /* ShapeExample.swift in Sources */,
+				828BB5621B7E77C700D3327A /* WriterSpec.swift in Sources */,
 				84A53D741B1A900900E8A107 /* EitherSpec.swift in Sources */,
 				84A53D751B1A900900E8A107 /* FunctorSpec.swift in Sources */,
 				84A53D761B1A900900E8A107 /* HListSpec.swift in Sources */,
