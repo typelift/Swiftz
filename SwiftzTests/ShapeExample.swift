@@ -15,7 +15,7 @@ enum Shape : Dataable {
 	case Plane(Int)
 	
 	static func typeRep() -> Any.Type {
-		return reflect(self).valueType
+		return Mirror(reflecting: self).subjectType
 	}
 	
 	static func fromRep(r: Data) -> Shape? {

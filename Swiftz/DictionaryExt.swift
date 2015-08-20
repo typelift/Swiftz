@@ -10,8 +10,8 @@ extension Dictionary {
 	/// Creates a Dictionary from a list of Key-Value pairs.
 	static func fromList(l : [(Key, Value)]) -> Dictionary<Key, Value> {
 		var d = Dictionary<Key, Value>(minimumCapacity: l.count)
-		for (k, v) in l {
-			d[k] = v
+		l.forEach { (k, v) in
+ 			d[k] = v
 		}
 		return d
 	}
@@ -159,7 +159,7 @@ extension Dictionary {
 	/// Maps a function over all keys and values in the receiver.
 	public func mapWithKey<Value2>(f : Key -> Value -> Value2) -> Dictionary<Key, Value2> {
 		var d = Dictionary<Key, Value2>()
-		for (k, v) in self {
+		self.forEach { (k, v) in
 			d[k] = f(k)(v)
 		}
 		return d
@@ -173,7 +173,7 @@ extension Dictionary {
 	/// Maps a function over all keys in the receiver.
 	public func mapKeys<Key2 : Hashable>(f : Key -> Key2) -> Dictionary<Key2, Value> {
 		var d = Dictionary<Key2, Value>()
-		for (k, v) in self {
+		self.forEach { (k, v) in
 			d[f(k)] = v
 		}
 		return d
@@ -191,7 +191,7 @@ extension Dictionary {
 	/// Filters all keys and values that do not satisfy a given predicate from the receiver.
 	public func filterWithKey(pred : Key -> Value -> Bool) -> Dictionary<Key, Value> {
 		var d = Dictionary<Key, Value>()
-		for (k, v) in self {
+		self.forEach { (k, v) in
 			if pred(k)(v) {
 				d[k] = v
 			}
@@ -218,7 +218,7 @@ extension Dictionary {
 	public func partitionWithKey(pred : Key -> Value -> Bool) -> (passed : Dictionary<Key, Value>, failed : Dictionary<Key, Value>) {
 		var pass = Dictionary<Key, Value>()
 		var fail = Dictionary<Key, Value>()
-		for (k, v) in self {
+		self.forEach { (k, v) in
 			if pred(k)(v) {
 				pass[k] = v
 			} else {

@@ -200,12 +200,12 @@ public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 
 public protocol JSONDecodable {
 	typealias J = Self
-	static func fromJSON(x: JSONValue) -> J?
+	static func fromJSON(x : JSONValue) -> J?
 }
 
 public protocol JSONEncodable {
 	typealias J
-	static func toJSON(x: J) -> JSONValue
+	static func toJSON(x : J) -> JSONValue
 }
 
 // J mate

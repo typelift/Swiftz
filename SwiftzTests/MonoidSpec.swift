@@ -28,20 +28,20 @@ class MonoidSpec : XCTestCase {
 			return (Product(i) <> Product.mempty).value() == i
 		}
 
-		property("First obeys left identity") <- forAll { (i : MaybeOf<Int>) in
-			return (First.mempty <> First(i.getMaybe)).value() == i.getMaybe
+		property("First obeys left identity") <- forAll { (i : Optional<Int>) in
+			return (First.mempty <> First(i)).value() == i
 		}
 
-		property("First obeys right identity") <- forAll { (i : MaybeOf<Int>) in
-			return (First(i.getMaybe) <> First.mempty).value() == i.getMaybe
+		property("First obeys right identity") <- forAll { (i : Optional<Int>) in
+			return (First(i) <> First.mempty).value() == i
 		}
 
-		property("Last obeys left identity") <- forAll { (i : MaybeOf<Int>) in
-			return (Last.mempty <> Last(i.getMaybe)).value() == i.getMaybe
+		property("Last obeys left identity") <- forAll { (i : Optional<Int>) in
+			return (Last.mempty <> Last(i)).value() == i
 		}
 
-		property("Last obeys right identity") <- forAll { (i : MaybeOf<Int>) in
-			return (Last(i.getMaybe) <> Last.mempty).value() == i.getMaybe
+		property("Last obeys right identity") <- forAll { (i : Optional<Int>) in
+			return (Last(i) <> Last.mempty).value() == i
 		}
 		
 		property("Proxy obeys left identity") <- forAll { (i : Proxy<Int>) in

@@ -48,7 +48,7 @@ extension String {
 		} else if self.characters.count == 1 {
 			return .Cons(self[self.startIndex], "")
 		}
-		return .Cons(self[self.startIndex], self[advance(self.startIndex, 1)..<self.endIndex])
+		return .Cons(self[self.startIndex], self[self.startIndex.successor()..<self.endIndex])
 	}
 
 	/// Returns a string containing the characters of the receiver in reverse order.
@@ -146,6 +146,11 @@ extension String {
 }
 
 extension String : Monoid {
+<<<<<<< HEAD
+=======
+	public typealias M = String
+
+>>>>>>> f9033e1bd247a1e7ab3b35b3b222a4091004b4ae
 	public static var mempty : String {
 		return ""
 	}

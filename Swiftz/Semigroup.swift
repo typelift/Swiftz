@@ -85,8 +85,8 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex.predecessor()] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex.predecessor()] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
