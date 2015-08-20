@@ -157,11 +157,6 @@ public func transpose<T>(ss : Stream<Stream<T>>) -> Stream<Stream<T>> {
 	return Stream { (Stream { (xs.step().head, yss.fmap{ $0.head }) }, transpose(Stream { (xs.step().tail, yss.fmap{ $0.tail }) } )) }
 }
 
-/// Zips two `Stream`s into a `Stream` of pairs.
-public func zip<A, B>(s1 : Stream<A>) -> Stream<B> -> Stream<(A, B)> {
-	return { s2 in Stream { ((s1.step().head, s2.step().head), zip(s1.step().tail)(s2.step().tail)) } }
-}
-
 /// Zips two `Stream`s into a third Stream using a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
 	return { s1 in { s2 in Stream { (f(s1.step().head)(s2.step().head), zipWith(f)(s1.step().tail)(s2.step().tail)) } } }
@@ -237,5 +232,53 @@ extension Stream : Comonad {
 	
 	public func extend<B>(f : Stream<A> -> B) -> Stream<B> {
 		return Stream<B> { (f(self), self.tail.extend(f)) }
+	}
+}
+
+extension Stream : ArrayLiteralConvertible {
+	public init(fromArray arr : [T]) {
+		self = Stream.cycle(arr)
+	}
+	
+	public init(arrayLiteral s : T...) {
+		self.init(fromArray: s)
+	}
+}
+
+public final class StreamGenerator<Element> : GeneratorType {
+	var l : Stream<Element>
+	
+	public func next() -> Optional<Element> {
+		let (hd, tl) = l.step()
+		l = tl
+		return hd
+	}
+	
+	public init(_ l : Stream<Element>) {
+		self.l = l
+	}
+}
+
+extension Stream : SequenceType {
+	public typealias Generator = StreamGenerator<T>
+	
+	public func generate() -> StreamGenerator<T> {
+		return StreamGenerator(self)
+	}
+}
+
+extension Stream : CollectionType {
+	public typealias Index = UInt
+	
+	public var startIndex : UInt { return 0 }
+	
+	public var endIndex : UInt {
+		return error("An infinite list has no end index.")
+	}
+}
+
+extension Stream : CustomStringConvertible {
+	public var description : String {
+		return "[\(self.head), ...]"
 	}
 }
