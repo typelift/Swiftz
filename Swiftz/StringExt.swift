@@ -119,7 +119,7 @@ extension String {
 		func tails(l : String) -> [String] {
 			return l.reduce({ x, y in
 				return [String.cons(y, tail: x.first!)] + x
-				}, initial: [""])
+			}, initial: [""])
 		}
 		
 		return tails(r).any(self.isPrefixOf)
