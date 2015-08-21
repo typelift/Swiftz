@@ -19,7 +19,7 @@ public protocol Category {
 	typealias A
 	/// Target
 	typealias B
-	/// Other Target; Usually Any
+	/// Other Target; Usually Any.
 	typealias C
 
 	/// The identity category

@@ -151,7 +151,7 @@ public func !=(lhs : JSONValue, rhs : JSONValue) -> Bool {
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs: rhs) >>- A.fromJSON
+		return resolveKeypath(d, rhs: rhs).flatMap(A.fromJSON)
 	default:
 		return .None
 	}
@@ -160,7 +160,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs: rhs) >>- JArrayFrom<A, A>.fromJSON
+		return resolveKeypath(d, rhs: rhs).flatMap(JArrayFrom<A, A>.fromJSON)
 	default:
 		return .None
 	}
@@ -169,7 +169,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String:A]? {
 	switch lhs {
 	case let .JSONObject(d):
-		return resolveKeypath(d, rhs: rhs) >>- JDictionaryFrom<A, A>.fromJSON
+		return resolveKeypath(d, rhs: rhs).flatMap(JDictionaryFrom<A, A>.fromJSON)
 	default:
 		return .None
 	}

@@ -65,6 +65,24 @@ public func >>- <A, B>(m : Identity<A>, f : A -> Identity<B>) -> Identity<B> {
 	return m.bind(f)
 }
 
+extension Identity : MonadZip {
+	public typealias C = Any
+	public typealias FC = Identity<C>
+	public typealias FTAB = Identity<(A, B)>
+	
+	public func mzip<B>(other : Identity<B>) -> Identity<(A, B)> {
+		return Identity<(A, B)>((self.runIdentity, other.runIdentity))
+	}
+	
+	public func mzipWith<B, C>(other : Identity<B>, _ f : A -> B -> C) -> Identity<C> {
+		return Identity<C>(f(self.runIdentity)(other.runIdentity))
+	}
+	
+	public static func munzip<B>(it : Identity<(A, B)>) -> (Identity<A>, Identity<B>) {
+		return (Identity<A>(it.runIdentity.0), Identity<B>(it.runIdentity.1))
+	}
+}
+
 extension Identity : Copointed {
 	public func extract() -> A {
 		return self.runIdentity

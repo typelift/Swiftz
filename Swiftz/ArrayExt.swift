@@ -43,6 +43,35 @@ extension Array : Monad {
 	}
 }
 
+extension Array : MonadPlus {
+	public static var mzero : Array<Element> {
+		return []
+	}
+	
+	public func mplus(other : Array<Element>) -> Array<Element> {
+		return self + other
+	}
+}
+
+extension Array : MonadZip {
+	public typealias C = Any
+	public typealias FC = Array<C>
+	
+	public typealias FTAB = Array<(A, B)>
+	
+	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
+		return Array<(A, B)>(zip(self, ma))
+	}
+	
+	public func mzipWith<B, C>(other : Array<B>, _ f : A -> B -> C) -> Array<C> {
+		return self.mzip(other).map(uncurry(f))
+	}
+	
+	public static func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
+		return (ftab.map(fst), ftab.map(snd))
+	}
+}
+
 extension Array : Foldable {
 	public func foldr<B>(k : Element -> B -> B, _ i : B) -> B {
 		switch self.match {
