@@ -31,8 +31,6 @@
 		82E51BA11B5D9413003CA361 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B9F1B5D9413003CA361 /* Proxy.swift */; };
 		82E51BA51B5D96BD003CA361 /* ProxySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BA41B5D96BD003CA361 /* ProxySpec.swift */; };
 		82E51BA61B5D96BD003CA361 /* ProxySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BA41B5D96BD003CA361 /* ProxySpec.swift */; };
-		82E51BB31B5DA678003CA361 /* IdentitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BB21B5DA678003CA361 /* IdentitySpec.swift */; };
-		82E51BB41B5DA678003CA361 /* IdentitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51BB21B5DA678003CA361 /* IdentitySpec.swift */; };
 		82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */; };
 		82EBC6AF1B7AA4CC004AF7B6 /* Ratio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EBC6AE1B7AA4CC004AF7B6 /* Ratio.swift */; };
@@ -823,7 +821,6 @@
 				828F7D951B4261A5005EF918 /* UserExample.swift in Sources */,
 				84A88FC91A71DFA0003D53CF /* ArrayExtSpec.swift in Sources */,
 				84A88FD51A71DFA0003D53CF /* OptionalExtSpec.swift in Sources */,
-				82E51BB31B5DA678003CA361 /* IdentitySpec.swift in Sources */,
 				84A88FCD1A71DFA0003D53CF /* FunctorSpec.swift in Sources */,
 				84A88FD11A71DFA0003D53CF /* ListSpec.swift in Sources */,
 				82E5A65C1B53666000255137 /* NonEmptyListSpec.swift in Sources */,
@@ -906,7 +903,6 @@
 				84A53D781B1A900900E8A107 /* ListSpec.swift in Sources */,
 				828F7D961B4261A5005EF918 /* UserExample.swift in Sources */,
 				84A53D7A1B1A900900E8A107 /* MonoidSpec.swift in Sources */,
-				82E51BB41B5DA678003CA361 /* IdentitySpec.swift in Sources */,
 				84A53D7C1B1A900900E8A107 /* StateSpec.swift in Sources */,
 				82E5A65D1B53666000255137 /* NonEmptyListSpec.swift in Sources */,
 				84A53D7D1B1A900900E8A107 /* ThoseSpec.swift in Sources */,
