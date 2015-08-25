@@ -29,11 +29,15 @@ public class User : JSONDecodable {
 	}
 	
 	public class func fromJSON(x : JSONValue) -> User? {
+		let p1 : String? = x <? "name"
+		let p2 : Int? = x <? "age"
+		let p3 : [String]? = x <? "tweets"
+		let p4 : String? = x <? "attrs" <> "one" // A nested keypath
 		return User.create
-			<^> x <? "name" 
-			<*> x <? "age"
-			<*> x <? "tweets" 							
-			<*> x <? "attrs" <> "one" // A nested keypath
+			<^> p1
+			<*> p2
+			<*> p3
+			<*> p4
 	}
 }
 

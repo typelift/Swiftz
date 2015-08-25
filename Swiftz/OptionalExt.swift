@@ -9,7 +9,7 @@
 extension Optional {
 	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
 	/// a function, maps the function over the value in the Maybe.
-	public func maybe<B>(def : B, onSome : T -> B) -> B {
+	public func maybe<B>(def : B, onSome : Wrapped -> B) -> B {
 		switch self {
 		case .None:
 			return def
@@ -21,7 +21,7 @@ extension Optional {
 	
 	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
 	/// this function returns the default value.
-	public func getOrElse(def : T) -> T {
+	public func getOrElse(def : Wrapped) -> Wrapped {
 		switch self {
 		case .None:
 			return def
@@ -34,11 +34,11 @@ extension Optional {
 /// MARK: Instances
 
 extension Optional : Functor {
-	public typealias A = T
+	public typealias A = Wrapped
 	public typealias B = Any
 	public typealias FB = Optional<B>
 	
-	public func fmap<B>(f : T -> B) -> Optional<B> {
+	public func fmap<B>(f : Wrapped -> B) -> Optional<B> {
 		return self.map(f)
 	}
 }
@@ -47,23 +47,20 @@ public func <^> <A, B>(f : A -> B, l : Optional<A>) -> Optional<B> {
 	return l.fmap(f)
 }
 
-/// FIXME: Unless explicitly noted otherwise, commented out code should be reinstated in a future
-/// beta once the compiler decides that crashing is not an appropriate response to valid extension
-/// declarations.
 extension Optional /*: Pointed*/ {
-	public static func pure(x : T) -> Optional<T> {
+	public static func pure(x : Wrapped) -> Optional<Wrapped> {
 		return .Some(x)
 	}
 }
 
-//extension Optional : Applicative {
-//	public typealias FA = Optional<A>
-//	public typealias FAB = Optional<A -> B>
-//
-//	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
-//		return f <*> self
-//	}
-//}
+extension Optional : Applicative {
+	public typealias FA = Optional<A>
+	public typealias FAB = Optional<A -> B>
+
+	public func ap<B>(f : Optional<A -> B>) -> Optional<B>	{
+		return f <*> self
+	}
+}
 
 public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
 	if let fn = f {
@@ -72,11 +69,11 @@ public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
 	return .None
 }
 
-//extension Optional : Monad {
-//	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
-//		return self >>- f
-//	}
-//}
+extension Optional : Monad {
+	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
+		return self >>- f
+	}
+}
 
 public func >>- <A, B>(l : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
 	return l.flatMap(f)
