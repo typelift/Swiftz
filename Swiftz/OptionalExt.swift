@@ -9,7 +9,7 @@
 extension Optional {
 	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
 	/// a function, maps the function over the value in the Maybe.
-	public func maybe<B>(def : B, onSome : T -> B) -> B {
+	public func maybe<B>(def : B, onSome : Wrapped -> B) -> B {
 		switch self {
 		case .None:
 			return def
@@ -21,7 +21,7 @@ extension Optional {
 	
 	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
 	/// this function returns the default value.
-	public func getOrElse(def : T) -> T {
+	public func getOrElse(def : Wrapped) -> Wrapped {
 		switch self {
 		case .None:
 			return def
@@ -34,11 +34,11 @@ extension Optional {
 /// MARK: Instances
 
 extension Optional : Functor {
-	public typealias A = T
+	public typealias A = Wrapped
 	public typealias B = Any
 	public typealias FB = Optional<B>
 	
-	public func fmap<B>(f : T -> B) -> Optional<B> {
+	public func fmap<B>(f : Wrapped -> B) -> Optional<B> {
 		return self.map(f)
 	}
 }
@@ -51,7 +51,7 @@ public func <^> <A, B>(f : A -> B, l : Optional<A>) -> Optional<B> {
 /// beta once the compiler decides that crashing is not an appropriate response to valid extension
 /// declarations.
 extension Optional /*: Pointed*/ {
-	public static func pure(x : T) -> Optional<T> {
+	public static func pure(x : Wrapped) -> Optional<Wrapped> {
 		return .Some(x)
 	}
 }

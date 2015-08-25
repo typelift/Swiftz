@@ -72,7 +72,7 @@ extension NonEmptyList : SequenceType {
 
 extension NonEmptyList : CustomStringConvertible {
 	public var description : String {
-		let x = ", ".join(self.fmap({ String($0) }))
+		let x = self.fmap({ String($0) }).joinWithSeparator(", ")
 		return "[\(x)]"
 	}
 }
