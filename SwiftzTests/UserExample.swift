@@ -29,11 +29,12 @@ public class User : JSONDecodable {
 	}
 	
 	public class func fromJSON(x : JSONValue) -> User? {
-		return User.create
-			<^> x <? "name" 
-			<*> x <? "age"
-			<*> x <? "tweets" 							
-			<*> x <? "attrs" <> "one" // A nested keypath
+		fatalError()
+//		return User.create
+//			<^> x <? "name" 
+//			<*> x <? "age"
+//			<*> x <? "tweets" 							
+//			<*> x <? "attrs" <> "one" // A nested keypath
 	}
 }
 

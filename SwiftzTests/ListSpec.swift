@@ -160,7 +160,8 @@ class ListSpec : XCTestCase {
 			case .Nil:
 				return scanned == [0]
 			case let .Cons(x, xs):
-				return scanned == (List.pure(0) + xs.scanl(curry(+), initial: 0 + x))
+				let rig = (List.pure(0) + xs.scanl(curry(+), initial: 0 + x))
+				return scanned == rig
 			}
 		}
 	}
