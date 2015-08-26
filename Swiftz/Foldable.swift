@@ -7,7 +7,7 @@
 //
 
 /// A `Foldable` type admits a way of "summarizing" its entire structure.
-protocol Foldable {
+public protocol Foldable {
 	typealias A
 	typealias B
 
