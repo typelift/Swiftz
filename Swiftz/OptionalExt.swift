@@ -43,10 +43,6 @@ extension Optional : Functor {
 	}
 }
 
-public func <^> <A, B>(f : A -> B, l : Optional<A>) -> Optional<B> {
-	return l.fmap(f)
-}
-
 extension Optional /*: Pointed*/ {
 	public static func pure(x : Wrapped) -> Optional<Wrapped> {
 		return .Some(x)
@@ -62,21 +58,10 @@ extension Optional : Applicative {
 	}
 }
 
-public func <*> <A, B>(f : Optional<(A -> B)>, l : Optional<A>) -> Optional<B> {
-	if let fn = f {
-		return l.fmap(fn)
-	}
-	return .None
-}
-
 extension Optional : Monad {
 	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
 		return self >>- f
 	}
-}
-
-public func >>- <A, B>(l : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
-	return l.flatMap(f)
 }
 
 extension Optional : Foldable {
