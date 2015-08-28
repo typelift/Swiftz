@@ -84,6 +84,13 @@ extension Optional : Foldable {
 	}
 }
 
+extension Optional : SequenceType {
+	public typealias Generator = GeneratorOfOne<Wrapped>
+
+	public func generate() -> GeneratorOfOne<Wrapped> {
+		return GeneratorOfOne(self)
+	}
+}
 
 /// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
 /// Given one or more Optional values, returns the first Optional value that is not nil
