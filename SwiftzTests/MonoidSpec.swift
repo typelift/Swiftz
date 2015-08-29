@@ -1,6 +1,6 @@
 //
 //  MonoidSpec.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/19/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -43,11 +43,11 @@ class MonoidSpec : XCTestCase {
 		property("Last obeys right identity") <- forAll { (i : Optional<Int>) in
 			return (Last(i) <> Last.mempty).value() == i
 		}
-		
+
 		property("Proxy obeys left identity") <- forAll { (i : Proxy<Int>) in
 			return (Proxy.mempty <> i) == i
 		}
-		
+
 		property("Proxy obeys right identity") <- forAll { (i : Proxy<Int>) in
 			return (i <> Proxy.mempty) == i
 		}

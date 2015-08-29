@@ -1,6 +1,6 @@
 //
 //  Semigroup.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -78,8 +78,8 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 	public let values : [Either<A, B>] // this array will never be empty
 
 	public init(_ vs : [Either<A, B>]) {
-//		if vs.isEmpty { 
-//			error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") 
+//		if vs.isEmpty {
+//			error("Cannot construct a \(Vacillate<A, B>.self) with no elements.")
 //		}
 		var vals = [Either<A, B>]()
 		for v in vs {

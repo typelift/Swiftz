@@ -1,6 +1,6 @@
 //
 //  NonEmptyList.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 10/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -30,7 +30,7 @@ public struct NonEmptyList<A> {
 	public func toList() -> List<A> {
 		return List(head, tail)
 	}
-	
+
 	public func reverse() -> NonEmptyList<A> {
 		return NonEmptyList(self.toList().reverse())!
 	}
@@ -64,7 +64,7 @@ extension NonEmptyList : ArrayLiteralConvertible {
 
 extension NonEmptyList : SequenceType {
 	public typealias Generator = ListGenerator<A>
-	
+
 	public func generate() -> ListGenerator<A> {
 		return ListGenerator(self.toList())
 	}
@@ -80,7 +80,7 @@ extension NonEmptyList : CustomStringConvertible {
 extension NonEmptyList : Functor {
 	public typealias B = Any
 	public typealias FB = NonEmptyList<B>
-	
+
 	public func fmap<B>(f : (A -> B)) -> NonEmptyList<B> {
 		return NonEmptyList<B>(f(self.head), self.tail.fmap(f))
 	}

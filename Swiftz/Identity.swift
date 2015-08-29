@@ -9,11 +9,11 @@
 /// The Identity Functor holds a singular value.
 public struct Identity<T> {
 	private let unIdentity : () -> T
-	
+
 	public init(@autoclosure(escaping) _ aa : () -> T) {
 		unIdentity = aa
 	}
-	
+
 	public var runIdentity : T {
 		return unIdentity()
 	}
@@ -27,7 +27,7 @@ extension Identity : Functor {
 	public typealias A = T
 	public typealias B = Any
 	public typealias FB = Identity<B>
-	
+
 	public func fmap<B>(f : A -> B) -> Identity<B> {
 		return Identity<B>(f(self.runIdentity))
 	}
@@ -45,7 +45,7 @@ extension Identity : Pointed {
 
 extension Identity : Applicative {
 	public typealias FAB = Identity<A -> B>
-	
+
 	public func ap<B>(f : Identity<A -> B>) -> Identity<B> {
 		return Identity<B>(f.runIdentity(self.runIdentity))
 	}
@@ -69,15 +69,15 @@ extension Identity : MonadZip {
 	public typealias C = Any
 	public typealias FC = Identity<C>
 	public typealias FTAB = Identity<(A, B)>
-	
+
 	public func mzip<B>(other : Identity<B>) -> Identity<(A, B)> {
 		return Identity<(A, B)>((self.runIdentity, other.runIdentity))
 	}
-	
+
 	public func mzipWith<B, C>(other : Identity<B>, _ f : A -> B -> C) -> Identity<C> {
 		return Identity<C>(f(self.runIdentity)(other.runIdentity))
 	}
-	
+
 	public static func munzip<B>(it : Identity<(A, B)>) -> (Identity<A>, Identity<B>) {
 		return (Identity<A>(it.runIdentity.0), Identity<B>(it.runIdentity.1))
 	}
@@ -91,11 +91,11 @@ extension Identity : Copointed {
 
 extension Identity : Comonad {
 	public typealias FFA = Identity<Identity<T>>
-	
+
 	public func duplicate() -> Identity<Identity<T>> {
 		return Identity<Identity<T>>(self)
 	}
-	
+
 	public func extend<B>(f : Identity<T> -> B) -> Identity<B> {
 		return self.duplicate().fmap(f)
 	}

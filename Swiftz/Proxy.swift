@@ -31,7 +31,7 @@ extension Proxy : Bounded {
 	public static func minBound() -> Proxy<T> {
 		return Proxy()
 	}
-	
+
 	public static func maxBound() -> Proxy<T> {
 		return Proxy()
 	}
@@ -53,7 +53,7 @@ extension Proxy : Functor {
 	public typealias A = T
 	public typealias B = T
 	public typealias FB = Proxy<B>
-	
+
 	public func fmap<B>(f : A -> B) -> Proxy<B> {
 		return Proxy<B>()
 	}
@@ -71,7 +71,7 @@ extension Proxy : Pointed {
 
 extension Proxy : Applicative {
 	public typealias FAB = Proxy<A -> B>
-	
+
 	public func ap<B>(f : Proxy<A -> B>) -> Proxy<B> {
 		return Proxy<B>()
 	}
@@ -95,15 +95,15 @@ extension Proxy : MonadZip {
 	public typealias C = T
 	public typealias FC = Proxy<C>
 	public typealias FTAB = Proxy<(A, B)>
-	
+
 	public func mzip<B>(_ : Proxy<T>) -> Proxy<(A, B)> {
 		return Proxy<(A, B)>()
 	}
-	
+
 	public func mzipWith<B, C>(_ : FB, _ : A -> B -> C) -> Proxy<T> {
 		return Proxy()
 	}
-	
+
 	public static func munzip<B>(_ : Proxy<(A, B)>) -> (Proxy<T>, Proxy<T>) {
 		return (Proxy(), Proxy())
 	}
@@ -117,11 +117,11 @@ extension Proxy : Copointed {
 
 extension Proxy : Comonad {
 	public typealias FFA = Proxy<Proxy<T>>
-	
+
 	public func duplicate() -> Proxy<Proxy<T>> {
 		return Proxy<Proxy<T>>()
 	}
-	
+
 	public func extend<B>(fab : Proxy<T> -> B) -> Proxy<B> {
 		return Proxy<B>()
 	}

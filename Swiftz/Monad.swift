@@ -1,6 +1,6 @@
 //
 //  Monad.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 29/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -19,16 +19,16 @@ public protocol MonadZip : Monad {
 	typealias C
 	/// A monad with an arbitrary domain.
 	typealias FC = K1<C>
-	
+
 	/// A Monad containing a zipped tuple.
 	typealias FTAB = K1<(A, B)>
-	
+
 	/// Zip for monads.
 	func mzip(_ : FB) -> FTAB
-	
+
 	/// ZipWith for monads.
 	func mzipWith(_ : FB, _ : A -> B -> C) -> FC
-	
+
 	/// Unzip for monads.
 	static func munzip(_ : FTAB) -> (Self, FB)
 }

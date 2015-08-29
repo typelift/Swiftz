@@ -1,6 +1,6 @@
 //
 //  DictionaryExt.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 5/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -11,7 +11,7 @@ extension Dictionary {
 	static func fromList(l : [(Key, Value)]) -> Dictionary<Key, Value> {
 		var d = Dictionary<Key, Value>(minimumCapacity: l.count)
 		l.forEach { (k, v) in
- 			d[k] = v
+			d[k] = v
 		}
 		return d
 	}

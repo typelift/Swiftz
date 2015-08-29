@@ -14,16 +14,16 @@ public typealias Rational = Ratio<Int>
 /// Represents a `Ratio`nal number with an `IntegralType` numerator and denominator.
 public struct Ratio<T : IntegralType> {
 	public let numerator, denominator : () -> T
-	
+
 	public init(@autoclosure(escaping) numerator : () -> T, @autoclosure(escaping) denominator : () -> T) {
 		self.numerator = numerator
 		self.denominator = denominator
 	}
-	
+
 	public static var infinity : Rational {
 		return Rational(numerator: 1, denominator: 0)
 	}
-	
+
 	public static var NAN : Rational {
 		return Rational(numerator: 0, denominator: 0)
 	}
@@ -58,18 +58,18 @@ public func > <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>
 extension Ratio : NumericType {
 	public static var zero : Ratio<T> { return Ratio(numerator: T.zero, denominator: T.one) }
 	public static var one : Ratio<T> { return Ratio(numerator: T.one, denominator: T.one) }
-	
+
 	public var signum : Ratio<T> { return Ratio(numerator: self.numerator().signum, denominator: T.one) }
 	public var negate : Ratio<T> { return Ratio(numerator: self.numerator().negate, denominator: self.denominator()) }
-	
+
 	public func plus(other : Ratio<T>) -> Ratio<T> {
 		return reduce(self.numerator().times(other.denominator()).plus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
 	}
-	
+
 	public func minus(other : Ratio<T>) -> Ratio<T> {
 		return reduce(self.numerator().times(other.denominator()).minus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
 	}
-	
+
 	public func times(other : Ratio<T>) -> Ratio<T> {
 		return reduce(self.numerator().times(other.numerator()), d: self.denominator().times(other.denominator()))
 	}

@@ -1,6 +1,6 @@
 //
 //  OptionalExt.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 4/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -17,8 +17,8 @@ extension Optional {
 			return onSome(x)
 		}
 	}
-	
-	
+
+
 	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
 	/// this function returns the default value.
 	public func getOrElse(def : Wrapped) -> Wrapped {
@@ -37,7 +37,7 @@ extension Optional : Functor {
 	public typealias A = Wrapped
 	public typealias B = Any
 	public typealias FB = Optional<B>
-	
+
 	public func fmap<B>(f : Wrapped -> B) -> Optional<B> {
 		return self.map(f)
 	}
@@ -71,14 +71,14 @@ extension Optional : Foldable {
 		}
 		return i
 	}
-	
+
 	public func foldl<B>(k : B -> A -> B, _ i : B) -> B {
 		if let v = self {
 			return k(i)(v)
 		}
 		return i
 	}
-	
+
 	public func foldMap<M : Monoid>(f : A -> M) -> M {
 		return self.foldr(curry(<>) • f, M.mempty)
 	}

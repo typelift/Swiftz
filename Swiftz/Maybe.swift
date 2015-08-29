@@ -1,6 +1,6 @@
 //
 //  Functor.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Josh Abernathy on 6/7/2014.
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
@@ -40,9 +40,9 @@ public struct Maybe<A>  {
 	/// Returns whether or not the receiver contains a value.
 	public func isJust() -> Bool {
 		switch value {
-		case .Some(_): 
+		case .Some(_):
 			return true
-		case .None: 
+		case .None:
 			return false
 		}
 	}
@@ -92,11 +92,11 @@ public func ==<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
 		return true
 	}
-	
+
 	if lhs.isJust() && rhs.isJust() {
 		return lhs.fromJust() == rhs.fromJust()
 	}
-	
+
 	return false
 }
 
@@ -133,7 +133,7 @@ extension Maybe : Pointed {
 extension Maybe : Applicative {
 	public typealias FA = Maybe<A>
 	public typealias FAB = Maybe<A -> B>
-	
+
 	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
 			let fn: (A -> B) = f.fromJust()

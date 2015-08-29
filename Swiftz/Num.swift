@@ -1,6 +1,6 @@
 //
 //  Num.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -13,12 +13,12 @@ public protocol NumericType : Comparable {
 	static var zero : Self { get }
 	/// The singular quantity.
 	static var one : Self { get }
-	
+
 	/// The magnitude of the quantity.
 	var signum : Self { get }
 	/// A quantity with the opposing magnitude of the receiver.
 	var negate : Self { get }
-	
+
 	/// The quantity produced by adding the given quantity to the receiver.
 	func plus(_ : Self) -> Self
 	/// The quantity produced by subtracting the given quantity from the receiver.
@@ -37,7 +37,7 @@ extension NumericType {
 			return Self.one.negate
 		}
 	}
-	
+
 	public var absoluteValue : Self {
 		return (self.signum >= Self.zero) ? self : self.negate
 	}
@@ -48,7 +48,7 @@ extension Int : NumericType {
 	public static var one : Int { return 1 }
 	public var negate : Int { return -self }
 	public func plus(other : Int) -> Int { return self + other }
-	public func minus(other : Int) -> Int { return self - other }	
+	public func minus(other : Int) -> Int { return self - other }
 	public func times(other : Int) -> Int { return self * other }
 }
 
@@ -57,7 +57,7 @@ extension Int8 : NumericType {
 	public static var one : Int8 { return 1 }
 	public var negate : Int8 { return -self }
 	public func plus(other : Int8) -> Int8 { return self + other }
-	public func minus(other : Int8) -> Int8 { return self - other }	
+	public func minus(other : Int8) -> Int8 { return self - other }
 	public func times(other : Int8) -> Int8 { return self * other }
 }
 
@@ -66,7 +66,7 @@ extension Int16 : NumericType {
 	public static var one : Int16 { return 1 }
 	public var negate : Int16 { return -self }
 	public func plus(other : Int16) -> Int16 { return self + other }
-	public func minus(other : Int16) -> Int16 { return self - other }	
+	public func minus(other : Int16) -> Int16 { return self - other }
 	public func times(other : Int16) -> Int16 { return self * other }
 }
 
@@ -75,7 +75,7 @@ extension Int32 : NumericType {
 	public static var one : Int32 { return 1 }
 	public var negate : Int32 { return -self }
 	public func plus(other : Int32) -> Int32 { return self + other }
-	public func minus(other : Int32) -> Int32 { return self - other }	
+	public func minus(other : Int32) -> Int32 { return self - other }
 	public func times(other : Int32) -> Int32 { return self * other }
 }
 
@@ -84,7 +84,7 @@ extension Int64 : NumericType {
 	public static var one : Int64 { return 1 }
 	public var negate : Int64 { return -self }
 	public func plus(other : Int64) -> Int64 { return self + other }
-	public func minus(other : Int64) -> Int64 { return self - other }	
+	public func minus(other : Int64) -> Int64 { return self - other }
 	public func times(other : Int64) -> Int64 { return self * other }
 }
 
@@ -93,7 +93,7 @@ extension UInt : NumericType {
 	public static var one : UInt { return 1 }
 	public var negate : UInt { return undefined() }
 	public func plus(other : UInt) -> UInt { return self + other }
-	public func minus(other : UInt) -> UInt { return self - other }	
+	public func minus(other : UInt) -> UInt { return self - other }
 	public func times(other : UInt) -> UInt { return self * other }
 }
 
@@ -102,7 +102,7 @@ extension UInt8 : NumericType {
 	public static var one : UInt8 { return 1 }
 	public var negate : UInt8 { return undefined() }
 	public func plus(other : UInt8) -> UInt8 { return self + other }
-	public func minus(other : UInt8) -> UInt8 { return self - other }	
+	public func minus(other : UInt8) -> UInt8 { return self - other }
 	public func times(other : UInt8) -> UInt8 { return self * other }
 }
 
@@ -111,7 +111,7 @@ extension UInt16 : NumericType {
 	public static var one : UInt16 { return 1 }
 	public var negate : UInt16 { return undefined() }
 	public func plus(other : UInt16) -> UInt16 { return self + other }
-	public func minus(other : UInt16) -> UInt16 { return self - other }	
+	public func minus(other : UInt16) -> UInt16 { return self - other }
 	public func times(other : UInt16) -> UInt16 { return self * other }
 }
 
@@ -120,7 +120,7 @@ extension UInt32 : NumericType {
 	public static var one : UInt32 { return 1 }
 	public var negate : UInt32 { return undefined() }
 	public func plus(other : UInt32) -> UInt32 { return self + other }
-	public func minus(other : UInt32) -> UInt32 { return self - other }	
+	public func minus(other : UInt32) -> UInt32 { return self - other }
 	public func times(other : UInt32) -> UInt32 { return self * other }
 }
 
@@ -129,7 +129,7 @@ extension UInt64 : NumericType {
 	public static var one : UInt64 { return 1 }
 	public var negate : UInt64 { return undefined() }
 	public func plus(other : UInt64) -> UInt64 { return self + other }
-	public func minus(other : UInt64) -> UInt64 { return self - other }	
+	public func minus(other : UInt64) -> UInt64 { return self - other }
 	public func times(other : UInt64) -> UInt64 { return self * other }
 }
 
@@ -147,7 +147,7 @@ extension Int8 : RealType {
 }
 
 extension Int16 : RealType {
- 	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
 }
 
 extension Int32 : RealType {
@@ -167,7 +167,7 @@ extension UInt8 : RealType {
 }
 
 extension UInt16 : RealType {
- 	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
+	public var toRational : Rational { return Rational(numerator: Int(self), denominator: 1) }
 }
 
 extension UInt32 : RealType {
@@ -192,15 +192,15 @@ extension IntegralType {
 	public func remainder(d : Self) -> Self {
 		return self.quotientRemainder(d).remainder
 	}
-	
+
 	public func divide(d : Self) -> Self {
 		return self.divMod(d).quotient
 	}
-	
+
 	public func mod(d : Self) -> Self {
 		return self.divMod(d).modulus
 	}
-	
+
 	public func divMod(d : Self) -> (quotient : Self, modulus : Self) {
 		let (q, r) = self.quotientRemainder(d)
 		if r.signum == d.signum.negate {
@@ -208,7 +208,7 @@ extension IntegralType {
 		}
 		return (q, r)
 	}
-	
+
 	/// Returns the least common multiple of the receiver and a given quantity.
 	public func leastCommonMultiple(other : Self) -> Self {
 		if self == Self.zero || other == Self.zero {

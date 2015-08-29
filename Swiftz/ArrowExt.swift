@@ -20,7 +20,7 @@ public func >>> <A, B, C>(f : (A -> B), g : (B -> C)) -> (A -> C) {
 
 // MARK: - Data.Functor
 
-/// Fmap | Returns a function that applies the given transformation to any arguments drawn from its 
+/// Fmap | Returns a function that applies the given transformation to any arguments drawn from its
 /// environment.
 ///
 /// Function composition.
@@ -30,7 +30,7 @@ public func <^> <A, B, R>(f : A -> B, g : R -> A) -> (R -> B) {
 
 // MARK: - Control.Applicative
 
-/// Ap | Uses the latter function to draw an argument from the environment that is then applied to 
+/// Ap | Uses the latter function to draw an argument from the environment that is then applied to
 /// the former function.
 ///
 /// "Share Environment"

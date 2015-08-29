@@ -11,19 +11,19 @@ import Swiftz
 import SwiftCheck
 
 struct StateOf<S, A : Arbitrary> : Arbitrary, CustomStringConvertible {
-    let getState : State<S, A>
-    
-    init(_ state : State<S, A>) {
-        self.getState = state
-    }
-    
-    var description : String {
-        return "\(self.getState)"
-    }
-    
-    static var arbitrary : Gen<StateOf<S, A>> {
-        fatalError()
-    }
+	let getState : State<S, A>
+
+	init(_ state : State<S, A>) {
+		self.getState = state
+	}
+
+	var description : String {
+		return "\(self.getState)"
+	}
+
+	static var arbitrary : Gen<StateOf<S, A>> {
+		fatalError()
+	}
 }
 
 class StateSpec : XCTestCase {

@@ -1,6 +1,6 @@
 //
 //  ArrayExt.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -47,7 +47,7 @@ extension Array : MonadPlus {
 	public static var mzero : Array<Element> {
 		return []
 	}
-	
+
 	public func mplus(other : Array<Element>) -> Array<Element> {
 		return self + other
 	}
@@ -56,17 +56,17 @@ extension Array : MonadPlus {
 extension Array : MonadZip {
 	public typealias C = Any
 	public typealias FC = Array<C>
-	
+
 	public typealias FTAB = Array<(A, B)>
-	
+
 	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
 		return Array<(A, B)>(zip(self, ma))
 	}
-	
+
 	public func mzipWith<B, C>(other : Array<B>, _ f : A -> B -> C) -> Array<C> {
 		return self.mzip(other).map(uncurry(f))
 	}
-	
+
 	public static func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
 		return (ftab.map(fst), ftab.map(snd))
 	}
@@ -116,14 +116,14 @@ extension Array {
 			return .Some(xs)
 		}
 	}
-	
+
 	/// Returns an array of all initial segments of the receiver, shortest first
 	public var inits : [[Element]] {
 		return self.reduce([[Element]](), combine: { xss, x in
 			return xss.map { $0.cons(x) }.cons([])
 		})
 	}
-	
+
 	/// Returns an array of all final segments of the receiver, longest first
 	public var tails : [[Element]] {
 		return self.reduce([[Element]](), combine: { x, y in
@@ -161,7 +161,7 @@ extension Array {
 	public func cons(lhs : Element) -> [Element] {
 		return [lhs] + self
 	}
-	
+
 	/// Decomposes the receiver into its head and tail.  If the receiver is empty the result is
 	/// `.None`, else the result is `.Just(head, tail)`.
 	public var uncons : Optional<(Element, [Element])> {
@@ -196,7 +196,7 @@ extension Array {
 		}
 		return res
 	}
-	
+
 	/// Folds a reducing function over an array from right to left.
 	public func foldRight<U>(z : U, f : (Element, U) -> U) -> U {
 		var res = z
@@ -285,7 +285,7 @@ extension Array {
 		return self.map(f).and
 	}
 
-	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a 
+	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
 	/// given predicate and the second element is the remainder of the list:
 	///
 	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
@@ -306,7 +306,7 @@ extension Array {
 		}
 	}
 
-	/// Returns a tuple where the first element is the longest prefix of elements that do not 
+	/// Returns a tuple where the first element is the longest prefix of elements that do not
 	/// satisfy a given predicate and the second element is the remainder of the list:
 	///
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
@@ -352,8 +352,8 @@ extension Array {
 			return self
 		}
 	}
-	
-	/// Returns an array of of the remaining elements after dropping the largest suffix of the 
+
+	/// Returns an array of of the remaining elements after dropping the largest suffix of the
 	/// receiver over which the predicate holds.
 	///
 	///     [1, 2, 3, 4, 5].dropWhileEnd(>3) == [1, 2, 3]
@@ -393,18 +393,18 @@ extension Array where Element : Equatable {
 			return false
 		}
 	}
-	
+
 	/// Takes two lists and returns true if the first string is a suffix of the second string.
 	public func isSuffixOf(r : [Element]) -> Bool {
 		return self.reverse().isPrefixOf(r.reverse())
 	}
-	
+
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
 	public func isInfixOf(r : [Element]) -> Bool {
 		return r.tails.any(self.isPrefixOf)
 	}
-	
+
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
 	public func stripPrefix(r : [Element]) -> Optional<[Element]> {
@@ -417,13 +417,13 @@ extension Array where Element : Equatable {
 			return .None
 		}
 	}
-	
+
 	/// Takes two strings and drops items in the first from the end of the second.  If the first
 	/// string is not a suffix of the second string this function returns nothing.
 	public func stripSuffix(r : [Element]) -> Optional<[Element]> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}
-	
+
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other.
 	///
@@ -438,7 +438,7 @@ extension Array where Element : BooleanType {
 	public var and : Bool {
 		return self.reduce(true) { $0.boolValue && $1.boolValue }
 	}
-	
+
 	/// Returns the dijunction of a list of Booleans.
 	public var or : Bool {
 		return self.reduce(false) { $0.boolValue || $1.boolValue }
