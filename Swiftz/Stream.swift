@@ -23,11 +23,11 @@
 /// an eager structure and a `Stream`.
 public struct Stream<Element> {
 	private let step : () -> (head : Element, tail : Stream<Element>)
-	
+
 	private init(_ step : () -> (head : Element, tail : Stream<Element>)) {
 		self.step = step
 	}
-	
+
 	/// Uses function to construct a `Stream`.
 	///
 	/// Unlike unfold for lists, unfolds to construct a `Stream` have no base case.
@@ -35,17 +35,17 @@ public struct Stream<Element> {
 		let (x, d) = f(initial)
 		return Stream { (x, Stream.unfold(d, f)) }
 	}
-	
+
 	/// Repeats a value into a constant stream of that same value.
 	public static func `repeat`(x : Element) -> Stream<Element> {
 		return Stream { (x, `repeat`(x)) }
 	}
-	
+
 	/// Returns a `Stream` of an infinite number of iteratations of applications of a function to a value.
 	public static func iterate(initial : Element, _ f : Element -> Element)-> Stream<Element> {
 		return Stream { (initial, Stream.iterate(f(initial), f)) }
 	}
-	
+
 	/// Cycles a non-empty list into an infinite `Stream` of repeating values.
 	///
 	/// This function is partial with respect to the empty list.
@@ -57,11 +57,11 @@ public struct Stream<Element> {
 			return Stream { (x, cycle(xs + [x])) }
 		}
 	}
-	
+
 	public subscript(n : UInt) -> Element {
 		return self.index(n)
 	}
-	
+
 	/// Looks up the nth element of a `Stream`.
 	public func index(n : UInt) -> Element {
 		if n == 0 {
@@ -69,27 +69,27 @@ public struct Stream<Element> {
 		}
 		return self.step().tail.index(n.predecessor())
 	}
-	
+
 	/// Returns the first element of a `Stream`.
 	public var head : Element {
 		return self.step().head
 	}
-	
+
 	/// Returns the remaining elements of a `Stream`.
 	public var tail : Stream<Element> {
 		return self.step().tail
 	}
-	
+
 	/// Returns a `Stream` of all initial segments of a `Stream`.
 	public var inits : Stream<[Element]> {
 		return Stream<[Element]> { ([], self.step().tail.inits.fmap({ $0.cons(self.step().head) })) }
 	}
-	
+
 	/// Returns a `Stream` of all final segments of a `Stream`.
 	public var tails : Stream<Stream<Element>> {
 		return Stream<Stream<Element>> { (self, self.step().tail.tails) }
 	}
-	
+
 	/// Returns a pair of the first n elements and the remaining eleemnts in a `Stream`.
 	public func splitAt(n : UInt) -> ([Element], Stream<Element>) {
 		if n == 0 {
@@ -98,7 +98,7 @@ public struct Stream<Element> {
 		let (p, r) = self.tail.splitAt(n - 1)
 		return (p.cons(self.head), r)
 	}
-	
+
 	/// Returns the longest prefix of values in a `Stream` for which a predicate holds.
 	public func takeWhile(p : Element -> Bool) -> [Element] {
 		if p(self.step().head) {
@@ -106,7 +106,7 @@ public struct Stream<Element> {
 		}
 		return []
 	}
-	
+
 	/// Returns the longest suffix remaining after a predicate holds.
 	public func dropWhile(p : Element -> Bool) -> Stream<Element> {
 		if p(self.step().head) {
@@ -114,7 +114,7 @@ public struct Stream<Element> {
 		}
 		return self
 	}
-	
+
 	/// Returns the first n elements of a `Stream`.
 	public func take(n : UInt) -> [Element] {
 		if n == 0 {
@@ -122,7 +122,7 @@ public struct Stream<Element> {
 		}
 		return self.step().tail.take(n - 1).cons(self.step().head)
 	}
-	
+
 	/// Returns a `Stream` with the first n elements removed.
 	public func drop(n : UInt) -> Stream<Element> {
 		if n == 0 {
@@ -140,12 +140,12 @@ public struct Stream<Element> {
 		}
 		return self.step().tail.filter(p)
 	}
-	
+
 	/// Returns a `Stream` of alternating elements from each Stream.
 	public func interleaveWith(s2 : Stream<Element>) -> Stream<Element> {
 		return Stream { (self.step().head, s2.interleaveWith(self.tail)) }
 	}
-	
+
 	/// Creates a `Stream` alternating an element in between the values of another Stream.
 	public func intersperse(x : Element) -> Stream<Element> {
 		return Stream { (self.step().head, Stream { (x, self.step().tail.intersperse(x)) } ) }
@@ -183,7 +183,7 @@ extension Stream : Functor {
 	public typealias A = Element
 	public typealias B = Swift.Any
 	public typealias FB = Stream<B>
-	
+
 	public func fmap<B>(f : A -> B) -> Stream<B> {
 		return Stream<B> { (f(self.step().head), self.step().tail.fmap(f)) }
 	}
@@ -201,7 +201,7 @@ extension Stream : Pointed {
 
 extension Stream : Applicative {
 	public typealias FAB = Stream<A -> B>
-	
+
 	public func ap<B>(fab : Stream<A -> B>) -> Stream<B> {
 		let f = fab.step().head
 		let fs = fab.step().tail
@@ -237,11 +237,11 @@ extension Stream : Copointed {
 
 extension Stream : Comonad {
 	public typealias FFA = Stream<Stream<A>>
-	
+
 	public func duplicate() -> Stream<Stream<A>> {
 		return self.tails
 	}
-	
+
 	public func extend<B>(f : Stream<A> -> B) -> Stream<B> {
 		return Stream<B> { (f(self), self.tail.extend(f)) }
 	}
@@ -251,7 +251,7 @@ extension Stream : ArrayLiteralConvertible {
 	public init(fromArray arr : [Element]) {
 		self = Stream.cycle(arr)
 	}
-	
+
 	public init(arrayLiteral s : Element...) {
 		self.init(fromArray: s)
 	}
@@ -259,13 +259,13 @@ extension Stream : ArrayLiteralConvertible {
 
 public final class StreamGenerator<Element> : GeneratorType {
 	var l : Stream<Element>
-	
+
 	public func next() -> Optional<Element> {
 		let (hd, tl) = l.step()
 		l = tl
 		return hd
 	}
-	
+
 	public init(_ l : Stream<Element>) {
 		self.l = l
 	}
@@ -273,7 +273,7 @@ public final class StreamGenerator<Element> : GeneratorType {
 
 extension Stream : SequenceType {
 	public typealias Generator = StreamGenerator<Element>
-	
+
 	public func generate() -> StreamGenerator<Element> {
 		return StreamGenerator(self)
 	}
@@ -281,9 +281,9 @@ extension Stream : SequenceType {
 
 extension Stream : CollectionType {
 	public typealias Index = UInt
-	
+
 	public var startIndex : UInt { return 0 }
-	
+
 	public var endIndex : UInt {
 		return error("An infinite list has no end index.")
 	}

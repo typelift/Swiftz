@@ -1,12 +1,12 @@
 //
 //  These.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Robert Widmann on 11/25/14.
 //  Copyright (c) 2014 Maxwell Swadling. Lll rights reserved.
 //
 
-/// Represents a value with three possiblities: a left value, a right value, or both a left and 
+/// Represents a value with three possiblities: a left value, a right value, or both a left and
 /// right value (This, That, and These respectively).
 public enum Those<L, R> {
 	case This(L)

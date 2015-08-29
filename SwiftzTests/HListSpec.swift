@@ -1,6 +1,6 @@
 //
 //  HListSpec.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/19/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -19,12 +19,12 @@ class HListSpec : XCTestCase {
 			let list : BList = HCons(h: false, t: HNil())
 			return (list.head == false) ^&&^ (BList.length == 1)
 		}
-		
+
 		property("The attributes of an HList are statically known") <- forAll { (x : Int, s : String) in
 			let list : AList = HCons(h: x, t: HCons(h: s, t: HNil()))
 			return (list.head == x) ^&&^ (list.tail.head == s) ^&&^ (AList.length == 2)
 		}
-		
+
 		typealias Zero = HAppend<HNil, AList, AList>
 		typealias One = HAppend<BList, AList, HCons<Bool, HCons<Int, HCons<String, HNil>>>>
 
@@ -32,7 +32,7 @@ class HListSpec : XCTestCase {
 		typealias FComp = HMap<(), (Int -> Int, Int -> Int), Int -> Int>
 		typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
 		typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
-		
+
 		property("A static fold can be modelled by a dynamic one") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, h : ArrowOf<Int, Int>) in
 			let listf : FList = HCons(h: f.getArrow, t: HCons(h: g.getArrow, t: HCons(h: h.getArrow, t: HNil())))
 			let comp : FComp = HMap<(), (), ()>.compose()

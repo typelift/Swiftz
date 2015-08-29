@@ -6,23 +6,23 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
-/// The `Writer` Monad represents a computation that appends (writes) to an associated `Monoid` 
+/// The `Writer` Monad represents a computation that appends (writes) to an associated `Monoid`
 /// value as it evaluates.
 ///
 /// `Writer` is most famous for allowing the accumulation of log output during program execution.
 public struct Writer<W : Monoid, T> {
 	/// Extracts the current value and environment.
 	public let runWriter : (T, W)
-	
+
 	public init(_ runWriter : (T, W)) {
 		self.runWriter = runWriter
 	}
-	
+
 	/// Returns a `Writer` that applies the function to its current value and environment.
 	public func mapWriter<U, V : Monoid>(f : (T, W) -> (U, V)) -> Writer<V, U> {
 		return Writer<V, U>(f(self.runWriter))
 	}
-	
+
 	/// Extracts the current environment from the receiver.
 	public var exec : W {
 		return self.runWriter.1
@@ -64,7 +64,7 @@ public func censor<W : Monoid, A>(f : W -> W, w : Writer<W, A>) -> Writer<W, A> 
 extension Writer : Functor {
 	public typealias B = Any
 	public typealias FB = Writer<W, B>
-	
+
 	public func fmap<B>(f : A -> B) -> Writer<W, B> {
 		return self.mapWriter { (a, w) in (f(a), w) }
 	}
@@ -76,7 +76,7 @@ public func <^> <W : Monoid, A, B>(f : A -> B, w : Writer<W, A>) -> Writer<W, B>
 
 extension Writer : Pointed {
 	public typealias A = T
-	
+
 	public static func pure<W : Monoid, A>(x: A) -> Writer<W, A> {
 		return Writer<W, A>((x, W.mempty))
 	}
@@ -84,7 +84,7 @@ extension Writer : Pointed {
 
 extension Writer : Applicative {
 	public typealias FAB = Writer<W, A -> B>
-	
+
 	public func ap(fs : Writer<W, A -> B>) -> Writer<W, B> {
 		return fs <*> self
 	}

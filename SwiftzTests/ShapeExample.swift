@@ -1,6 +1,6 @@
 //
 //  ShapeExample.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 9/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -13,11 +13,11 @@ import Swiftz
 enum Shape : Dataable {
 	case Boat
 	case Plane(Int)
-	
+
 	static func typeRep() -> Any.Type {
 		return Mirror(reflecting: self).subjectType
 	}
-	
+
 	static func fromRep(r: Data) -> Shape? {
 		switch (r.con, r.vals) {
 		case (0, _):
@@ -30,12 +30,12 @@ enum Shape : Dataable {
 			return .None
 		}
 	}
-	
+
 	func toRep() -> Data {
 		switch self {
-		case .Boat: 
+		case .Boat:
 			return Data(con: 0, vals: [])
-		case let .Plane(w): 
+		case let .Plane(w):
 			return Data(con: 1, vals: [("wingspan", w)])
 		}
 	}
@@ -43,11 +43,11 @@ enum Shape : Dataable {
 
 func ==(lhs: Shape, rhs: Shape) -> Bool {
 	switch (lhs, rhs) {
-	case (.Boat, .Boat): 
+	case (.Boat, .Boat):
 		return true
-	case let (.Plane(q), .Plane(w)) where w == q: 
+	case let (.Plane(q), .Plane(w)) where w == q:
 		return true
-	default: 
+	default:
 		return false
 	}
 }

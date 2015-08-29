@@ -1,6 +1,6 @@
 //
 //  List.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -95,7 +95,7 @@ public struct List<Element> {
 		}
 		return UInt(self.len)
 	}
-	
+
 	/// Creates a list of n repeating values.
 	public static func replicate(n : UInt, value : Element) -> List<Element> {
 		var l = List<Element>()
@@ -131,7 +131,7 @@ public struct List<Element> {
 			return List<List<Element>>([], xss.map { List(x, $0) })
 		})
 	}
-	
+
 	/// Returns an array of all final segments of the receiver, longest first
 	public var tails : List<List<Element>> {
 		return self.reduce(List<List<Element>>(), combine: { x, y in
@@ -313,7 +313,7 @@ public struct List<Element> {
 			return List(x, prependToAll(item, l: xs))
 		}
 	}
-	
+
 	/// Returns a list of the longest prefix of elements satisfying a predicate.
 	public func takeWhile(p : Element -> Bool) -> List<Element> {
 		switch self.match {
@@ -353,13 +353,13 @@ public struct List<Element> {
 			return List<List<Element>>(l, zs.groupBy(p))
 		}
 	}
-	
+
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
 	public func groupBy(p : (Element, Element) -> Bool) -> List<List<Element>> {
 		return self.groupBy(curry(p))
 	}
-	
+
 	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
 	/// given predicate and the second element is the remainder of the list:
 	///
@@ -380,7 +380,7 @@ public struct List<Element> {
 			return ([], self)
 		}
 	}
-	
+
 	/// Returns a tuple where the first element is the longest prefix of elements that do not
 	/// satisfy a given predicate and the second element is the remainder of the list:
 	///
@@ -390,7 +390,7 @@ public struct List<Element> {
 	public func extreme(p : Element -> Bool) -> (List<Element>, List<Element>) {
 		return self.span { ((!) • p)($0) }
 	}
-	
+
 	/// Returns the elements of the receiver in reverse order.
 	///
 	/// For infinite lists this function will diverge.
@@ -429,13 +429,13 @@ public struct List<Element> {
 		let (hd, tl) = self.next()
 		return List((hd, (tl + [hd]).cycle()))
 	}
-	
+
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
 	/// least once by an element of the list.
 	public func any(f : (Element -> Bool)) -> Bool {
 		return self.map(f).or
 	}
-	
+
 	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
 	/// all elemenets of the list.
 	public func all(f : (Element -> Bool)) -> Bool {
@@ -503,7 +503,7 @@ extension List where Element : BooleanType {
 	public var and : Bool {
 		return self.reduce(true) { $0.boolValue && $1.boolValue }
 	}
-	
+
 	/// Returns the dijunction of a list of Booleans.
 	public var or : Bool {
 		return self.reduce(false) { $0.boolValue || $1.boolValue }
@@ -526,11 +526,11 @@ public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	if !lhs.isFinite || !rhs.isFinite {
 		return error("Fatal: One of the lists being compared for equality is not finite.")
 	}
-	
+
 	if lhs.count != rhs.count {
 		return false
 	}
-	
+
 	return zip(lhs, rhs).map(==).reduce(true) { $0 && $1 }
 }
 
@@ -562,17 +562,17 @@ extension List : ArrayLiteralConvertible {
 
 public final class ListGenerator<Element> : GeneratorType {
 	var l : List<Element>
-	
+
 	public func next() -> Optional<Element> {
 		if l.len == 0 {
 			return nil
 		}
-		
+
 		let (hd, tl) = l.next()
 		l = tl
 		return hd
 	}
-	
+
 	public init(_ l : List<Element>) {
 		self.l = l
 	}
@@ -588,9 +588,9 @@ extension List : SequenceType {
 
 extension List : CollectionType {
 	public typealias Index = UInt
-	
+
 	public var startIndex : UInt { return 0 }
-	
+
 	public var endIndex : UInt {
 		return self.isFinite ? self.count : error("An infinite list has no end index.")
 	}
@@ -654,7 +654,7 @@ extension List : MonadPlus {
 	public static var mzero : List<A> {
 		return []
 	}
-	
+
 	public func mplus(other : List<A>) -> List<A> {
 		return self + other
 	}

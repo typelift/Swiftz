@@ -1,6 +1,6 @@
 //
 //  Functor.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Josh Abernathy on 6/7/2014.
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.

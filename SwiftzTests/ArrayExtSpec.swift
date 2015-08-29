@@ -1,6 +1,6 @@
 //
 //  ArrayExtSpec.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/19/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -146,7 +146,7 @@ class ArrayExtSpec : XCTestCase {
 				return p.0 == t.0 && p.1 == t.1
 			}
 		}
-		
+
 		property("extreme behaves") <- forAll { (xs : Array<Int>) in
 			return forAll { (pred : ArrowOf<Int, Bool>) in
 				let p = xs.extreme(pred.getArrow)
@@ -163,28 +163,28 @@ class ArrayExtSpec : XCTestCase {
 		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : Array<Int>) in
 			return xs.group == xs.groupBy { $0 == $1 }
 		}
-		
+
 		property("isPrefixOf behaves") <- forAll { (s1 : Array<Int>, s2 : Array<Int>) in
 			if s1.isPrefixOf(s2) {
 				return s1.stripPrefix(s2) != nil
 			}
-			
+
 			if s2.isPrefixOf(s1) {
 				return s2.stripPrefix(s1) != nil
 			}
-			
+
 			return Discard()
 		}
-		
+
 		property("isSuffixOf behaves") <- forAll { (s1 : Array<Int>, s2 : Array<Int>) in
 			if s1.isSuffixOf(s2) {
 				return s1.stripSuffix(s2) != nil
 			}
-			
+
 			if s2.isSuffixOf(s1) {
 				return s2.stripSuffix(s1) != nil
 			}
-			
+
 			return Discard()
 		}
 	}

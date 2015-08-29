@@ -1,6 +1,6 @@
 //
 //  ListSpec.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/19/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -15,7 +15,7 @@ extension List where Element : Arbitrary {
 	public static var arbitrary : Gen<List<Element>> {
 		return List.init <^> [Element].arbitrary
 	}
-	
+
 	public static func shrink(xs : List<Element>) -> [List<Element>] {
 		return List.init <^> [Element].shrink(xs.map(identity))
 	}
@@ -36,7 +36,7 @@ class ListSpec : XCTestCase {
 		property("Lists of Equatable elements obey reflexivity") <- forAll { (l : List<Int>) in
 			return l == l
 		}
-		
+
 		property("Lists of Equatable elements obey symmetry") <- forAll { (x : List<Int>) in
 			return forAll { (y : List<Int>) in
 				return (x == y) == (y == x)

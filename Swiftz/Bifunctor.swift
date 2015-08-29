@@ -1,6 +1,6 @@
 //
 //  Bifunctor.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 7/25/14.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -8,7 +8,7 @@
 
 /// A Functor where the first and second arguments are covariant.
 ///
-/// FIXME: Something in swiftc doesn't like it when conforming instances use a generic <D> in 
+/// FIXME: Something in swiftc doesn't like it when conforming instances use a generic <D> in
 /// definitions of rightMap.  It has been removed in all instances for now.
 public protocol Bifunctor {
 	typealias L
@@ -47,11 +47,11 @@ public struct TupleBF<L, R> : Bifunctor {
 	public typealias PBD = (B, D)
 
 	public let t : (L, R)
-	
+
 	public init(_ t : (L, R)) {
 		self.t = t
 	}
-	
+
 	public func bimap<B, D>(f : (L -> B), _ g : (R -> D)) -> (B, D) {
 		return (f(t.0), g(t.1))
 	}

@@ -1,6 +1,6 @@
 //
 //  Pointed.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/8/15.
 //  Copyright (c) 2015 Maxwell Swadling. All rights reserved.
