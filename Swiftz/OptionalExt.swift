@@ -58,6 +58,25 @@ extension Optional : Applicative {
 	}
 }
 
+extension Optional : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = Optional<C>
+	public typealias D = Any
+	public typealias FD = Optional<D>
+
+	public static func liftA<B>(f : A -> B) -> Optional<A> -> Optional<B> {
+		return { a in Optional<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Optional<A> -> Optional<B> -> Optional<C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Optional<A> -> Optional<B> -> Optional<C> -> Optional<D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension Optional : Monad {
 	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
 		return self >>- f

@@ -50,12 +50,12 @@ extension NonEmptyList : ArrayLiteralConvertible {
 	public init(arrayLiteral s: Element...) {
 		var xs : [A] = []
 		var g = s.generate()
-		let h: A? = g.next()
+		let h : A? = g.next()
 		while let x : A = g.next() {
 			xs.append(x)
 		}
 		var l = List<A>()
-		for x in Array(xs.reverse()) {
+		for x in NonEmptyList(List(fromArray: xs.reverse()))! {
 			l = List(x, l)
 		}
 		self = NonEmptyList(h!, l)
@@ -86,6 +86,10 @@ extension NonEmptyList : Functor {
 	}
 }
 
+public func <^> <A, B>(f : A -> B, l : NonEmptyList<A>) -> NonEmptyList<B> {
+	return l.fmap(f)
+}
+
 extension NonEmptyList : Pointed {
 	public static func pure(x : A) -> NonEmptyList<A> {
 		return NonEmptyList(x, List())
@@ -101,11 +105,39 @@ extension NonEmptyList : Applicative {
 	}
 }
 
+public func <*> <A, B>(f : NonEmptyList<(A -> B)>, l : NonEmptyList<A>) -> NonEmptyList<B> {
+	return l.ap(f)
+}
+
+extension NonEmptyList : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = NonEmptyList<C>
+	public typealias D = Any
+	public typealias FD = NonEmptyList<D>
+
+	public static func liftA<B>(f : A -> B) -> NonEmptyList<A> -> NonEmptyList<B> {
+		return { a in NonEmptyList<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension NonEmptyList : Monad {
 	public func bind<B>(f : A -> NonEmptyList<B>) -> NonEmptyList<B> {
 		let nh = f(self.head)
 		return NonEmptyList<B>(nh.head, nh.tail + self.tail.bind { t in f(t).toList() })
 	}
+}
+
+
+public func >>- <A, B>(l : NonEmptyList<A>, f : A -> NonEmptyList<B>) -> NonEmptyList<B> {
+	return l.bind(f)
 }
 
 extension NonEmptyList : Copointed {

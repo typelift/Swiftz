@@ -627,6 +627,25 @@ extension List : Pointed {
 	}
 }
 
+extension List : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = List<C>
+	public typealias D = Any
+	public typealias FD = List<D>
+
+	public static func liftA<B>(f : A -> B) -> List<A> -> List<B> {
+		return { a in List<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension List : Applicative {
 	public typealias FA = List<Element>
 	public typealias FAB = List<A -> B>
