@@ -135,6 +135,27 @@ extension NonEmptyList : Monad {
 	}
 }
 
+extension NonEmptyList : MonadOps {
+	public static func liftM<B>(f : A -> B) -> NonEmptyList<A> -> NonEmptyList<B> {
+		return { m1 in m1 >>- { x1 in NonEmptyList<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in NonEmptyList<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in NonEmptyList<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> NonEmptyList<B>, g : B -> NonEmptyList<C>) -> (A -> NonEmptyList<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> NonEmptyList<C>, f : A -> NonEmptyList<B>) -> (A -> NonEmptyList<C>) {
+	return f >>->> g
+}
 
 public func >>- <A, B>(l : NonEmptyList<A>, f : A -> NonEmptyList<B>) -> NonEmptyList<B> {
 	return l.bind(f)

@@ -124,3 +124,25 @@ extension State : Monad {
 public func >>- <S, A, B>(xs : State<S, A>, f : A -> State<S, B>) -> State<S, B> {
 	return xs.bind(f)
 }
+
+extension State : MonadOps {
+	public static func liftM<B>(f : A -> B) -> State<S, A> -> State<S, B> {
+		return { m1 in m1 >>- { x1 in State<S, B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> State<S, A> -> State<S, B> -> State<S, C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in State<S, C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> State<S, A> -> State<S, B> -> State<S, C> -> State<S, D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in State<S, D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <S, A, B, C>(f : A -> State<S, B>, g : B -> State<S, C>) -> (A -> State<S, C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <S, A, B, C>(g : B -> State<S, C>, f : A -> State<S, B>) -> (A -> State<S, C>) {
+	return f >>->> g
+}

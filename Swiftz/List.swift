@@ -669,6 +669,28 @@ public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 	return l.bind(f)
 }
 
+extension List : MonadOps {
+	public static func liftM<B>(f : A -> B) -> List<A> -> List<B> {
+		return { m1 in m1 >>- { x1 in List<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in List<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> List<B>, g : B -> List<C>) -> (A -> List<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> List<C>, f : A -> List<B>) -> (A -> List<C>) {
+	return f >>->> g
+}
+
 extension List : MonadPlus {
 	public static var mzero : List<A> {
 		return []

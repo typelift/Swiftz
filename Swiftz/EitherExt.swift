@@ -56,10 +56,50 @@ extension Either : Applicative {
 	}
 }
 
+extension Either : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = Either<L, C>
+	public typealias FD = Either<L, D>
+
+	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
+		return { a in Either<L, A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension Either : Monad {
 	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
 		return self >>- f
 	}
+}
+
+extension Either : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
+		return { m1 in m1 >>- { x1 in Either<L, B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Either<L, C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Either<L, D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> (A -> Either<L, C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> (A -> Either<L, C>) {
+	return f >>->> g
 }
 
 extension Either : Foldable {

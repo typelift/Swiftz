@@ -94,6 +94,25 @@ public func <*> <W : Monoid, A, B>(wfs : Writer<W, A -> B>, xs : Writer<W, A>) -
 	return wfs.bind(Writer.fmap(xs))
 }
 
+extension Writer : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = Writer<W, C>
+	public typealias D = Any
+	public typealias FD = Writer<W, D>
+
+	public static func liftA<B>(f : A -> B) -> Writer<W, A> -> Writer<W, B> {
+		return { a in Writer<W, A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension Writer : Monad {
 	public func bind<B>(f : A -> Writer<W, B>) -> Writer<W, B> {
 		return self >>- f
@@ -104,6 +123,28 @@ public func >>- <W, A, B>(x : Writer<W, A>, f : A -> Writer<W, B>) -> Writer<W,B
 	let (a, w) = x.runWriter
 	let (a2, w2) = f(a).runWriter
 	return Writer((a2, w <> w2))
+}
+
+extension Writer : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Writer<W, A> -> Writer<W, B> {
+		return { m1 in m1 >>- { x1 in Writer<W, B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Writer<W, C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Writer<W, D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <W : Monoid, A, B, C>(f : A -> Writer<W, B>, g : B -> Writer<W, C>) -> (A -> Writer<W, C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <W : Monoid, A, B, C>(g : B -> Writer<W, C>, f : A -> Writer<W, B>) -> (A -> Writer<W, C>) {
+	return f >>->> g
 }
 
 public func == <W : protocol<Monoid, Equatable>, A : Equatable>(l : Writer<W, A>, r : Writer<W, A>) -> Bool {

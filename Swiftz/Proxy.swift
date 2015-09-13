@@ -106,8 +106,30 @@ extension Proxy : Monad {
 	}
 }
 
-public func >>- <A, B>(l : Proxy<A>, f : A -> Proxy<B>) -> Proxy<A> {
+public func >>- <A, B>(l : Proxy<A>, f : A -> Proxy<B>) -> Proxy<B> {
 	return Proxy()
+}
+
+extension Proxy : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Proxy<A> -> Proxy<B> {
+		return { m1 in Proxy<B>() }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Proxy<A> -> Proxy<B> -> Proxy<C> {
+		return { m1 in { m2 in Proxy<C>() } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Proxy<A> -> Proxy<B> -> Proxy<C> -> Proxy<D> {
+		return { m1 in { m2 in { m3 in Proxy<D>() } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> Proxy<B>, g : B -> Proxy<C>) -> (A -> Proxy<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> Proxy<C>, f : A -> Proxy<B>) -> (A -> Proxy<C>) {
+	return f >>->> g
 }
 
 extension Proxy : MonadZip {

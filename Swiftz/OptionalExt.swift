@@ -83,6 +83,28 @@ extension Optional : Monad {
 	}
 }
 
+extension Optional : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Optional<A> -> Optional<B> {
+		return { m1 in m1 >>- { x1 in Optional<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Optional<A> -> Optional<B> -> Optional<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Optional<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Optional<A> -> Optional<B> -> Optional<C> -> Optional<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Optional<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> Optional<B>, g : B -> Optional<C>) -> (A -> Optional<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> Optional<C>, f : A -> Optional<B>) -> (A -> Optional<C>) {
+	return f >>->> g
+}
+
 extension Optional : Foldable {
 	public func foldr<B>(k : A -> B -> B, _ i : B) -> B {
 		if let v = self {
