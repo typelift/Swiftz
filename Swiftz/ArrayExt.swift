@@ -62,6 +62,28 @@ extension Array : Monad {
 	}
 }
 
+extension Array : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Array<A> -> Array<B> {
+		return { m1 in m1 >>- { x1 in Array<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Array<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Array<A> -> Array<B> -> Array<C> -> Array<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Array<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> Array<B>, g : B -> Array<C>) -> (A -> Array<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> Array<C>, f : A -> Array<B>) -> (A -> Array<C>) {
+	return f >>->> g
+}
+
 extension Array : MonadPlus {
 	public static var mzero : Array<Element> {
 		return []

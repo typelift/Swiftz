@@ -13,6 +13,25 @@ public protocol Monad : Applicative {
 	func bind(f : A -> FB) -> FB
 }
 
+public protocol MonadOps : Monad {
+	typealias C
+	typealias FC = K1<C>
+	typealias D
+	typealias FD = K1<D>
+
+	/// Lift a function to a Monadic action.
+	static func liftM(f : A -> B) -> Self -> FB
+
+	/// Lift a binary function to a Monadic action.
+	static func liftM2(f : A -> B -> C) -> Self -> FB -> FC
+
+	/// Lift a ternary function to a Monadic action.
+	static func liftM3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+
+	func >>->> (_ : A -> FB, _ : B -> FC) -> (A -> FC)
+	func <<-<< (_ : B -> FC, _ : A -> FB) -> (A -> FC)
+}
+
 /// Monads that allow zipping.
 public protocol MonadZip : Monad {
 	/// An arbitrary domain.  Usually Any.
