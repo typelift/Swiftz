@@ -65,7 +65,7 @@ class EitherSpec : XCTestCase {
 			if e.getEither.isLeft {
 				return y == e.getEither
 			} else {
-				return y == (*2) <^> e.getEither
+				return y == ((*2) <^> e.getEither)
 			}
 		}
 

@@ -200,8 +200,8 @@ extension Array {
 		return [lhs] + self
 	}
 
-	/// Decomposes the receiver into its head and tail.  If the receiver is empty the Array is
-	/// `.None`, else the Array is `.Just(head, tail)`.
+	/// Decomposes the receiver into its head and tail.  If the receiver is empty the result is
+	/// `.None`, else the result is `.Just(head, tail)`.
 	public var uncons : Optional<(Element, [Element])> {
 		switch self.match {
 		case .Nil:
@@ -244,9 +244,9 @@ extension Array {
 		return res
 	}
 
-	/// Takes a binary function, an initial value, and a list and scans the function across each element
-	/// of a list accumulating the Arrays of successive function calls applied to reduced values from
-	/// the left to the right.
+	/// Takes a binary function, an initial value, and a list and scans the function across each 
+	/// element of a list accumulating the result of successive function calls applied to reduced 
+	/// values from the left to the right.
 	///
 	///     [x1, x2, ...].scanl(z, f) == [z, f(z, x1), f(f(z, x1), x2), ...]
 	public func scanl<B>(start : B, r : (B, Element) -> B) -> [B] {
@@ -311,13 +311,13 @@ extension Array {
 		}
 	}
 
-	/// Maps a predicate over a list.  For the Array to be true, the predicate must be satisfied at
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
 	/// least once by an element of the list.
 	public func any(f : (Element -> Bool)) -> Bool {
 		return self.map(f).or
 	}
 
-	/// Maps a predicate over a list.  For the Array to be true, the predicate must be satisfied by
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
 	/// all elemenets of the list.
 	public func all(f : (Element -> Bool)) -> Bool {
 		return self.map(f).and
@@ -489,7 +489,7 @@ public func mapFlatten<A>(xs : [A?]) -> [A] {
 	return xs.mapMaybe(identity)
 }
 
-/// Inserts a list in between the elements of a 2-dimensional array and concatenates the Array.
+/// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
 public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 	return concat(nested.intersperse(list))
 }
