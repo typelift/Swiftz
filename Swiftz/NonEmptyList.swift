@@ -18,6 +18,11 @@ public struct NonEmptyList<A> {
 		tail = t
 	}
 
+	public init(_ a : A, _ t : NonEmptyList<A>) {
+		head = a
+		tail = t.toList()
+	}
+
 	public init?(_ list : List<A>) {
 		switch list.match {
 		case .Nil:
@@ -47,18 +52,12 @@ public func != <A : Equatable>(lhs : NonEmptyList<A>, rhs : NonEmptyList<A>) -> 
 extension NonEmptyList : ArrayLiteralConvertible {
 	public typealias Element = A
 
-	public init(arrayLiteral s: Element...) {
-		var xs : [A] = []
-		var g = s.generate()
-		let h : A? = g.next()
-		while let x : A = g.next() {
-			xs.append(x)
+	public init(arrayLiteral xs : Element...) {
+		var l = NonEmptyList<A>(xs.first!, List())
+		for x in xs[1..<xs.endIndex].reverse() {
+			l = NonEmptyList(x, l)
 		}
-		var l = List<A>()
-		for x in NonEmptyList(List(fromArray: xs.reverse()))! {
-			l = List(x, l)
-		}
-		self = NonEmptyList(h!, l)
+		self = l
 	}
 }
 
@@ -173,7 +172,7 @@ extension NonEmptyList : Comonad {
 	public func duplicate() -> NonEmptyList<NonEmptyList<A>> {
 		switch NonEmptyList(self.tail) {
 		case .None:
-			return NonEmptyList<NonEmptyList<A>>(self, [])
+			return NonEmptyList<NonEmptyList<A>>(self, List())
 		case let .Some(x):
 			return NonEmptyList<NonEmptyList<A>>(self, x.duplicate().toList())
 		}
