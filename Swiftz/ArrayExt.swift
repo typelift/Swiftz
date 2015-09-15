@@ -245,8 +245,8 @@ extension Array {
 	}
 
 	/// Takes a binary function, an initial value, and a list and scans the function across each 
-	/// element of a list accumulating the result of successive function calls applied to reduced 
-	/// values from the left to the right.
+	/// element from left to right.  After each pass of the scanning function the output is added to
+	/// an accumulator and used in the succeeding scan until the receiver is consumed.
 	///
 	///     [x1, x2, ...].scanl(z, f) == [z, f(z, x1), f(f(z, x1), x2), ...]
 	public func scanl<B>(start : B, r : (B, Element) -> B) -> [B] {
