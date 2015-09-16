@@ -1,6 +1,6 @@
 //
 //  TupleExtSpec.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/19/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -12,11 +12,11 @@ import SwiftCheck
 
 class TupleExtSpec : XCTestCase {
 	func testProperties() {
-		property["fst behaves"] = forAll { (x : Int, y : Int) in
+		property("fst behaves") <- forAll { (x : Int, y : Int) in
 			return fst((x, y)) == x
 		}
 
-		property["snd behaves"] = forAll { (x : Int, y : Int) in
+		property("snd behaves") <- forAll { (x : Int, y : Int) in
 			return snd((x, y)) == y
 		}
 	}

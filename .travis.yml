@@ -1,10 +1,12 @@
 language: objective-c
-osx_image: beta-xcode6.3
+osx_image: xcode7
 
-install: 
+before_install:
+    - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
+
+install:
     - git submodule update -i --recursive
 
 script:
-    - xctool -project Swiftz.xcodeproj -scheme Swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
-    - xctool -project Swiftz.xcodeproj -scheme Swiftz-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test
-
+    - set -o pipefail && xcodebuild -project Swiftz.xcodeproj -scheme Swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild -project Swiftz.xcodeproj -scheme Swiftz-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test | xcpretty -c -f `xcpretty-travis-formatter`

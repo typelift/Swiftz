@@ -10,39 +10,39 @@
 /// JSON decoding machinery, this class can be used to combine strings into keypaths to target
 /// values inside nested JSON objects.
 public struct JSONKeypath : StringLiteralConvertible {
-	typealias StringLiteralType = String
-	
+	public typealias StringLiteralType = String
+
 	public let path : [String]
-	
+
 	public init(_ path : [String]) {
 		self.path = path
 	}
-	
+
 	public init(unicodeScalarLiteral value : UnicodeScalar) {
 		self.path = ["\(value)"]
 	}
-	
+
 	public init(extendedGraphemeClusterLiteral value : String) {
 		self.path = [value]
 	}
-	
+
 	public init(stringLiteral value : String) {
 		self.path = [value]
 	}
 }
 
 extension JSONKeypath : Monoid {
-	public static var mzero : JSONKeypath {
+	public static var mempty : JSONKeypath {
 		return JSONKeypath([])
 	}
-	
+
 	public func op(other : JSONKeypath) -> JSONKeypath {
 		return JSONKeypath(self.path + other.path)
 	}
 }
 
-extension JSONKeypath : Printable {
+extension JSONKeypath : CustomStringConvertible {
 	public var description : String {
-		return intersperse(".", self.path).reduce("", combine: +)
+		return self.path.intersperse(".").reduce("", combine: +)
 	}
 }

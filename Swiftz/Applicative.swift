@@ -1,6 +1,6 @@
 //
 //  Applicative.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 15/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -17,4 +17,21 @@ public protocol Applicative : Pointed, Functor {
 
 	/// Applies the function encapsulated by the Functor to the value encapsulated by the receiver.
 	func ap(f : FAB) -> FB
+}
+
+/// Additional functions to be implemented by those types conforming to the Applicative protocol.
+public protocol ApplicativeOps : Applicative {
+	typealias C
+	typealias FC = K1<C>
+	typealias D
+	typealias FD = K1<D>
+
+	/// Lift a function to a Functorial action.
+	static func liftA(f : A -> B) -> Self -> FB
+
+	/// Lift a binary function to a Functorial action.
+	static func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+
+	/// Lift a ternary function to a Functorial action.
+	static func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
 }

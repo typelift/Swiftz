@@ -1,6 +1,6 @@
 //
 //  Kinds.swift
-//  swiftz_core
+//  Swiftz
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.

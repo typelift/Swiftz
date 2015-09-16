@@ -1,6 +1,6 @@
 //
 //  Category.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Robert Widmann on 1/18/15.
 //  Copyright (c) 2015 TypeLift. All rights reserved.
@@ -19,7 +19,7 @@ public protocol Category {
 	typealias A
 	/// Target
 	typealias B
-	/// Other Target; Usually Any
+	/// Other Target; Usually Any.
 	typealias C
 
 	/// The identity category
@@ -38,10 +38,10 @@ public protocol Category {
 	func •(c : CBC, c2 : Self) -> CAC
 
 	/// Right-to-left composition.
-	func >>> (Self, CBC) -> CAC
+	func >>> (_ : Self, _ : CBC) -> CAC
 
 	/// Left-to-right composition.
 	///
 	/// Usually an alias for •
-	func <<< (CBC, Self) -> CAC
+	func <<< (_ : CBC, _ : Self) -> CAC
 }

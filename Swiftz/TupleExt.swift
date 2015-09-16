@@ -1,6 +1,6 @@
 //
 //  TupleExt.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 7/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -11,19 +11,9 @@ public func fst<A, B>(ab : (A, B)) -> A {
 	return ab.0
 }
 
-/// Creates a lens into the first value of a pair.
-public func fst<A, B, C>() -> Lens<(A, C), (B, C), A, B> {
-	return Lens { (x, y) in IxStore(x) { ($0, y) } }
-}
-
 /// Extracts the second value from a pair.
 public func snd<A, B>(ab : (A, B)) -> B {
 	return ab.1
-}
-
-/// Creates a lens into the second value of a pair.
-public func snd<A, B, C>() -> Lens<(A, B), (A, C), B, C> {
-	return Lens { (x, y) in IxStore(y) { (x, $0) } }
 }
 
 //Not possible to extend like this currently.

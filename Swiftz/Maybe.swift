@@ -1,6 +1,6 @@
 //
 //  Functor.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Josh Abernathy on 6/7/2014.
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
@@ -11,7 +11,8 @@
 ///
 /// Because the nil case of Maybe does not indicate any significant information about cause, it may
 /// be more appropriate to use Result or Either which have explicit error cases.
-public struct Maybe<A> {
+@available(*, deprecated, message="Use OptionalExt instead")
+public struct Maybe<A>  {
 	let value: A?
 
 	var description : String {
@@ -39,9 +40,9 @@ public struct Maybe<A> {
 	/// Returns whether or not the receiver contains a value.
 	public func isJust() -> Bool {
 		switch value {
-		case .Some(_): 
+		case .Some(_):
 			return true
-		case .None: 
+		case .None:
 			return false
 		}
 	}
@@ -77,86 +78,4 @@ public struct Maybe<A> {
 		}
 		return onVal(self.fromJust())
 	}
-}
-
-extension Maybe : BooleanType {
-	public var boolValue : Bool {
-		return isJust()
-	}
-}
-
-/// MARK: Equatable
-
-public func ==<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
-	if lhs.isNone() && rhs.isNone() {
-		return true
-	}
-	
-	if lhs.isJust() && rhs.isJust() {
-		return lhs.fromJust() == rhs.fromJust()
-	}
-	
-	return false
-}
-
-public func !=<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
-	return !(lhs == rhs)
-}
-
-/// MARK: Functor
-
-extension Maybe : Functor {
-	typealias B = Any
-	typealias FB = Maybe<B>
-
-	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
-		if self.isJust() {
-			let b: B = f(self.fromJust())
-			return Maybe<B>.just(b)
-		} else {
-			return Maybe<B>.none()
-		}
-	}
-}
-
-public func <^> <A, B>(f : A -> B, l : Maybe<A>) -> Maybe<B> {
-	return l.fmap(f)
-}
-
-extension Maybe : Pointed {
-	public static func pure(x : A) -> Maybe<A> {
-		return Maybe.just(x)
-	}
-}
-
-extension Maybe : Applicative {
-	typealias FA = Maybe<A>
-	typealias FAB = Maybe<A -> B>
-	
-	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
-		if f.isJust() {
-			let fn: (A -> B) = f.fromJust()
-			return self.fmap(fn)
-		} else {
-			return Maybe<B>.none()
-		}
-	}
-}
-
-public func <*> <A, B>(f : Maybe<(A -> B)>, l : Maybe<A>) -> Maybe<B> {
-	return l.ap(f)
-}
-
-extension Maybe : Monad {
-	public func bind<B>(f : A -> Maybe<B>) -> Maybe<B> {
-		if self.isNone() {
-			return Maybe<B>.none()
-		}
-		return f(self.fromJust())
-	}
-}
-
-
-public func >>- <A, B>(l : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
-	return l.bind(f)
 }
