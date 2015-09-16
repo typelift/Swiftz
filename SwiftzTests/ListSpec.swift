@@ -101,6 +101,23 @@ class ListSpec : XCTestCase {
 			}
 		}
 
+		property("Writer obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
+			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
+			return (List<Int>.pure(a) >>- f) == f(a)
+		}
+
+		property("Writer obeys the Monad right identity law") <- forAll { (m : List<Int>) in
+			return (m >>- List<Int>.pure) == m
+		}
+
+		property("Writer obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
+			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
+			let g : Int -> List<Int> = List<Int>.pure • ga.getArrow
+			return forAll { (m : List<Int>) in
+				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
+			}
+		}
+
 		property("List obeys the Monoidal left identity law") <- forAll { (x : List<Int8>) in
 			return (x <> List()) == x
 		}
