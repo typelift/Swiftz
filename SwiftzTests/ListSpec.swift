@@ -77,40 +77,32 @@ class ListSpec : XCTestCase {
 		}
 
 		// Swift unroller can't handle our scale; Use only small lists.
-		property("List obeys the first Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-					return (fl.count <= 3 && gl.count <= 3) ==> {
-						let f = fl.fmap({ $0.getArrow })
-						let g = gl.fmap({ $0.getArrow })
-						return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
-					}
-				}
+		property("List obeys the first Applicative composition law") <- forAll { (fl : List<ArrowOf<Int8, Int8>>, gl : List<ArrowOf<Int8, Int8>>, x : List<Int8>) in
+			return (fl.count <= 3 && gl.count <= 3) ==> {
+				let f = fl.fmap({ $0.getArrow })
+				let g = gl.fmap({ $0.getArrow })
+				return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
 			}
 		}
 
-		property("List obeys the second Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-					return (fl.count <= 3 && gl.count <= 3) ==> {
-						let f = fl.fmap({ $0.getArrow })
-						let g = gl.fmap({ $0.getArrow })
-						return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
-					}
-				}
+		property("List obeys the second Applicative composition law") <- forAll { (fl : List<ArrowOf<Int8, Int8>>, gl : List<ArrowOf<Int8, Int8>>, x : List<Int8>) in
+			return (fl.count <= 3 && gl.count <= 3) ==> {
+				let f = fl.fmap({ $0.getArrow })
+				let g = gl.fmap({ $0.getArrow })
+				return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
 			}
 		}
 
-		property("Writer obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
+		property("List obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
 			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
 			return (List<Int>.pure(a) >>- f) == f(a)
 		}
 
-		property("Writer obeys the Monad right identity law") <- forAll { (m : List<Int>) in
+		property("List obeys the Monad right identity law") <- forAll { (m : List<Int>) in
 			return (m >>- List<Int>.pure) == m
 		}
 
-		property("Writer obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
+		property("List obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
 			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
 			let g : Int -> List<Int> = List<Int>.pure • ga.getArrow
 			return forAll { (m : List<Int>) in
