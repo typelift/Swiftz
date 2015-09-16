@@ -1,6 +1,6 @@
 //
 //  ArrayExt.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -13,359 +13,488 @@ public enum ArrayMatcher<A> {
 	case Cons(A, [A])
 }
 
-/// Destructures a list into its constituent parts.
-///
-/// If the given list is empty, this function returns .Nil.  If the list is non-empty, this
-/// function returns .Cons(head, tail)
-public func match<T>(l : [T]) -> ArrayMatcher<T> {
-	if l.count == 0 {
-		return .Nil
-	} else if l.count == 1 {
-		return .Cons(l[0], [])
-	}
-	let hd = l[0]
-	let tl = Array<T>(l[1..<l.count])
-	return .Cons(hd, tl)
-}
+extension Array : Functor {
+	public typealias A = Element
+	public typealias B = Any
+	public typealias FB = Array<B>
 
-/// Returns the first element in the list, or None if the list is empty.
-public func head<A>(l : [A]) -> Optional<A> {
-	switch match(l) {
-	case .Nil:
-		return .None
-	case .Cons(let x, _):
-		return .Some(x)
+	public func fmap<B>(f : A -> B) -> [B] {
+		return self.map(f)
 	}
 }
 
-/// Returns the tail of the list, or None if the list is empty.
-public func tail<A>(l : [A]) -> Optional<[A]> {
-	switch match(l) {
-	case .Nil:
-		return .None
-	case .Cons(_, let xs):
-		return .Some(xs)
+extension Array : Pointed {
+	public static func pure(x : A) -> [Element] {
+		return [x]
 	}
 }
 
-/// Takes, at most, a specified number of elements from a list and returns that sublist.
-///
-///     take(3,  from: [1,2]) == [1,2]
-///     take(-1, from: [1,2]) == []
-///     take(0,  from: [1,2]) == []
-public func take<A>(n : Int, from list : [A]) -> [A] {
-	if n <= 0 {
+extension Array : Applicative {
+	public typealias FAB = Array<A -> B>
+
+	public func ap<B>(f : [A -> B]) -> [B] {
+		return f <*> self
+	}
+}
+
+extension Array : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = Array<C>
+	public typealias D = Any
+	public typealias FD = Array<D>
+
+	public static func liftA<B>(f : A -> B) -> Array<A> -> Array<B> {
+		return { a in Array<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Array<A> -> Array<B> -> Array<C> -> Array<D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
+extension Array : Monad {
+	public func bind<B>(f : A -> [B]) -> [B] {
+		return self.flatMap(f)
+	}
+}
+
+extension Array : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Array<A> -> Array<B> {
+		return { m1 in m1 >>- { x1 in Array<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Array<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Array<A> -> Array<B> -> Array<C> -> Array<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Array<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> Array<B>, g : B -> Array<C>) -> (A -> Array<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> Array<C>, f : A -> Array<B>) -> (A -> Array<C>) {
+	return f >>->> g
+}
+
+extension Array : MonadPlus {
+	public static var mzero : Array<Element> {
 		return []
 	}
 
-	return Array(list[0 ..< min(n, list.count)])
-}
-
-/// Drops, at most, a specified number of elements from a list and returns that sublist.
-///
-///     drop(3,  from: [1,2]) == []
-///     drop(-1, from: [1,2]) == [1,2]
-///     drop(0,  from: [1,2]) == [1,2]
-public func drop<A>(n : Int, from list : [A]) -> [A] {
-	if n <= 0 {
-		return list
+	public func mplus(other : Array<Element>) -> Array<Element> {
+		return self + other
 	}
-	
-	return Array(list[min(n, list.count) ..< list.count])
 }
 
-/// Adds an element to the front of a list.
-public func cons<T>(lhs : T, var rhs : [T]) -> [T] {
-	rhs.insert(lhs, atIndex: 0)
-	return rhs
-}
+extension Array : MonadZip {
+	public typealias FTAB = Array<(A, B)>
 
-/// Safely indexes into an array by converting out of bounds errors to nils.
-public func safeIndex<T>(array : Array<T>)(i : Int) -> T? {
-	return indexArray(array, i)
-}
-
-/// Returns the result of concatenating the values in the left and right arrays together.
-public func concat<T>(lhs: [T])(_ rhs : [T]) -> [T] {
-	return lhs + rhs
-}
-
-/// Maps a function over an array that takes pairs of (index, element) to a different element.
-public func mapWithIndex<T, U>(array : Array<T>)(f : (Int, T) -> U) -> [U] {
-	var res = [U]()
-	res.reserveCapacity(array.count)
-	for i in 0 ..< array.count {
-		res.append(f(i, array[i]))
+	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
+		return Array<(A, B)>(zip(self, ma))
 	}
-	return res
+
+	public func mzipWith<B, C>(other : Array<B>, _ f : A -> B -> C) -> Array<C> {
+		return self.mzip(other).map(uncurry(f))
+	}
+
+	public static func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
+		return (ftab.map(fst), ftab.map(snd))
+	}
 }
 
-/// Folds a reducing function over an array from right to left.
-public func foldRight<T, U>(array : Array<T>)(z : U, f : (T, U) -> U) -> U {
-	var res = z
-	for x in array {
-		res = f(x, res)
-	}
-	return res
-}
-
-/// Takes a binary function, an initial value, and a list and scans the function across each element
-/// of a list accumulating the results of successive function calls applied to reduced values from
-/// the left to the right.
-///
-///     scanl(z, [x1, x2, ...], f) == [z, f(z, x1), f(f(z, x1), x2), ...]
-public func scanl<B, T>(start : B, list : [T], r : (B, T) -> B) -> [B] {
-	if list.isEmpty {
-		return [start]
-	}
-	var arr = [B]()
-	arr.append(start)
-	var reduced = start
-	for x in list {
-		reduced = r(reduced, x)
-		arr.append(reduced)
-	}
-	return Array(arr)
-}
-
-/// Returns the first element in a list matching a given predicate.  If no such element exists, this
-/// function returns nil.
-public func find<T>(list : [T], f : (T -> Bool)) -> T? {
-	for x in list {
-		if f(x) {
-			return .Some(x)
+extension Array : Foldable {
+	public func foldr<B>(k : Element -> B -> B, _ i : B) -> B {
+		switch self.match {
+		case .Nil:
+			return i
+		case .Cons(let x, let xs):
+			return k(x)(xs.foldr(k, i))
 		}
 	}
-	return .None
+
+	public func foldl<B>(com : B -> Element -> B, _ i : B) -> B {
+		return self.reduce(i, combine: uncurry(com))
+	}
+
+	public func foldMap<M : Monoid>(f : A -> M) -> M {
+		return self.foldr(curry(<>) • f, M.mempty)
+	}
 }
 
-/// Returns a tuple containing the first n elements of a list first and the remaining elements
-/// second.
-///
-///     splitAt(3, [1,2,3,4,5]) == ([1,2,3],[4,5])
-///     splitAt(1, [1,2,3])     == ([1],[2,3])
-///     splitAt(3, [1,2,3])     == ([1,2,3],[])
-///     splitAt(4, [1,2,3])     == ([1,2,3],[])
-///     splitAt(0, [1,2,3])     == ([],[1,2,3])
-public func splitAt<T>(n : Int, list : [T]) -> ([T], [T]) {
-	return (take(n, from: list), drop(n, from: list))
-}
-
-/// Takes a separator and a list and intersperses that element throughout the list.
-///
-///     intersperse(",", ["a","b","c","d","e"] == ["a",",","b",",","c",",","d",",","e"]
-public func intersperse<T>(item : T, list : [T]) -> [T] {
-	func prependAll(item:T, array:[T]) -> [T] {
-		var arr = Array([item])
-		for i in 0..<(array.count - 1) {
-			arr.append(array[i])
-			arr.append(item)
+extension Array {
+	/// Destructures a list into its constituent parts.
+	///
+	/// If the given list is empty, this function returns .Nil.  If the list is non-empty, this
+	/// function returns .Cons(head, tail)
+	public var match : ArrayMatcher<Element> {
+		if self.count == 0 {
+			return .Nil
+		} else if self.count == 1 {
+			return .Cons(self[0], [])
 		}
-		arr.append(array[array.count - 1])
+		let hd = self[0]
+		let tl = Array(self[1..<self.count])
+		return .Cons(hd, tl)
+	}
+
+	/// Returns the tail of the list, or None if the list is empty.
+	public var tail : Optional<[Element]> {
+		switch self.match {
+		case .Nil:
+			return .None
+		case .Cons(_, let xs):
+			return .Some(xs)
+		}
+	}
+
+	/// Returns an array of all initial segments of the receiver, shortest first
+	public var inits : [[Element]] {
+		return self.reduce([[Element]](), combine: { xss, x in
+			return xss.map { $0.cons(x) }.cons([])
+		})
+	}
+
+	/// Returns an array of all final segments of the receiver, longest first
+	public var tails : [[Element]] {
+		return self.reduce([[Element]](), combine: { x, y in
+			return [x.first!.cons(y)] + x
+		})
+	}
+
+	/// Takes, at most, a specified number of elements from a list and returns that sublist.
+	///
+	///     [1,2].take(3)  == [1,2]
+	///     [1,2].take(-1) == []
+	///     [1,2].take(0)  == []
+	public func take(n : Int) -> [Element] {
+		if n <= 0 {
+			return []
+		}
+
+		return Array(self[0 ..< min(n, self.count)])
+	}
+
+	/// Drops, at most, a specified number of elements from a list and returns that sublist.
+	///
+	///     [1,2].drop(3)  == []
+	///     [1,2].drop(-1) == [1,2]
+	///     [1,2].drop(0)  == [1,2]
+	public func drop(n : Int) -> [Element] {
+		if n <= 0 {
+			return self
+		}
+
+		return Array(self[min(n, self.count) ..< self.count])
+	}
+
+	/// Returns an array consisting of the receiver with a given element appended to the front.
+	public func cons(lhs : Element) -> [Element] {
+		return [lhs] + self
+	}
+
+	/// Decomposes the receiver into its head and tail.  If the receiver is empty the result is
+	/// `.None`, else the result is `.Just(head, tail)`.
+	public var uncons : Optional<(Element, [Element])> {
+		switch self.match {
+		case .Nil:
+			return .None
+		case let .Cons(x, xs):
+			return .Some(x, xs)
+		}
+	}
+	/// Safely indexes into an array by converting out of bounds errors to nils.
+	public func safeIndex(i : Int) -> Element? {
+		if i < self.count && i >= 0 {
+			return self[i]
+		} else {
+			return nil
+		}
+	}
+
+	/// Maps a function over an array that takes pairs of (index, element) to a different element.
+	public func mapWithIndex<U>(f : (Int, Element) -> U) -> [U] {
+		return zip((self.startIndex ..< self.endIndex), self).map(f)
+	}
+
+	public func mapMaybe<U>(f : Element -> Optional<U>) -> [U] {
+		var res = [U]()
+		res.reserveCapacity(self.count)
+		self.forEach { x in
+			if let v = f(x) {
+				res.append(v)
+			}
+		}
+		return res
+	}
+
+	/// Folds a reducing function over an array from right to left.
+	public func foldRight<U>(z : U, f : (Element, U) -> U) -> U {
+		var res = z
+		for x in self {
+			res = f(x, res)
+		}
+		return res
+	}
+
+	/// Takes a binary function, an initial value, and a list and scans the function across each 
+	/// element from left to right.  After each pass of the scanning function the output is added to
+	/// an accumulator and used in the succeeding scan until the receiver is consumed.
+	///
+	///     [x1, x2, ...].scanl(z, f) == [z, f(z, x1), f(f(z, x1), x2), ...]
+	public func scanl<B>(start : B, r : (B, Element) -> B) -> [B] {
+		if self.isEmpty {
+			return [start]
+		}
+		var arr = [B]()
+		arr.append(start)
+		var reduced = start
+		for x in self {
+			reduced = r(reduced, x)
+			arr.append(reduced)
+		}
 		return arr
 	}
-	if list.isEmpty {
-		return list
-	} else if list.count == 1 {
-		return list
-	} else {
-		var array = Array([list[0]])
-		array += prependAll(item, tail(list)!)
-		return Array(array)
+
+	/// Returns the first element in a list matching a given predicate.  If no such element exists, this
+	/// function returns nil.
+	public func find(f : (Element -> Bool)) -> Element? {
+		for x in self {
+			if f(x) {
+				return .Some(x)
+			}
+		}
+		return .None
+	}
+
+	/// Returns a tuple containing the first n elements of a list first and the remaining elements
+	/// second.
+	///
+	///     [1,2,3,4,5].splitAt(3) == ([1, 2, 3],[4, 5])
+	///     [1,2,3].splitAt(1)     == ([1], [2, 3])
+	///     [1,2,3].splitAt(3)     == ([1, 2, 3], [])
+	///     [1,2,3].splitAt(4)     == ([1, 2, 3], [])
+	///     [1,2,3].splitAt(0)     == ([], [1, 2, 3])
+	public func splitAt(n : Int) -> ([Element], [Element]) {
+		return (self.take(n), self.drop(n))
+	}
+
+	/// Takes a separator and a list and intersperses that element throughout the list.
+	///
+	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
+	public func intersperse(item : Element) -> [Element] {
+		func prependAll(item : Element, array : [Element]) -> [Element] {
+			var arr = Array([item])
+			for i in array.startIndex..<array.endIndex.predecessor() {
+				arr.append(array[i])
+				arr.append(item)
+			}
+			arr.append(array[array.endIndex.predecessor()])
+			return arr
+		}
+
+		if self.isEmpty {
+			return self
+		} else if self.count == 1 {
+			return self
+		} else {
+			var array = Array([self[0]])
+			array += prependAll(item, array: self.tail!)
+			return Array(array)
+		}
+	}
+
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+	/// least once by an element of the list.
+	public func any(f : (Element -> Bool)) -> Bool {
+		return self.map(f).or
+	}
+
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+	/// all elemenets of the list.
+	public func all(f : (Element -> Bool)) -> Bool {
+		return self.map(f).and
+	}
+
+	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
+	/// given predicate and the second element is the remainder of the list:
+	///
+	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
+	///     [1, 2, 3].span(<9)                == ([1, 2, 3],[])
+	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
+	///
+	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
+	public func span(p : Element -> Bool) -> ([Element], [Element]) {
+		switch self.match {
+		case .Nil:
+			return ([], [])
+		case .Cons(let x, let xs):
+			if p(x) {
+				let (ys, zs) = xs.span(p)
+				return (ys.cons(x), zs)
+			}
+			return ([], self)
+		}
+	}
+
+	/// Returns a tuple where the first element is the longest prefix of elements that do not
+	/// satisfy a given predicate and the second element is the remainder of the list:
+	///
+	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
+	///
+	///     self.extreme(p) == self.span((!) • p)
+	public func extreme(p : Element -> Bool) -> ([Element], [Element]) {
+		return self.span { ((!) • p)($0) }
+	}
+
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other according to an equality predicate.
+	public func groupBy(p : Element -> Element -> Bool) -> [[Element]] {
+		switch self.match {
+		case .Nil:
+			return []
+		case .Cons(let x, let xs):
+			let (ys, zs) = xs.span(p(x))
+			let l = ys.cons(x)
+			return zs.groupBy(p).cons(l)
+		}
+	}
+
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other according to an equality predicate.
+	public func groupBy(p : (Element, Element) -> Bool) -> [[Element]] {
+		return self.groupBy(curry(p))
+	}
+
+	/// Returns an array of the first elements that do not satisfy a predicate until that predicate
+	/// returns false.
+	///
+	///     [1, 2, 3, 4, 5, 1, 2, 3].dropWhile(<3) == [3,4,5,1,2,3]
+	///     [1, 2, 3].dropWhile(<9)                == []
+	///     [1, 2, 3].dropWhile(<0)                == [1,2,3]
+	public func dropWhile(p : Element -> Bool) -> [Element] {
+		switch self.match {
+		case .Nil:
+			return []
+		case .Cons(let x, let xs):
+			if p(x) {
+				return xs.dropWhile(p)
+			}
+			return self
+		}
+	}
+
+	/// Returns an array of of the remaining elements after dropping the largest suffix of the
+	/// receiver over which the predicate holds.
+	///
+	///     [1, 2, 3, 4, 5].dropWhileEnd(>3) == [1, 2, 3]
+	///     [1, 2, 3, 4, 5, 2].dropWhileEnd(>3) == [1, 2, 3, 4, 5, 2]
+	public func dropWhileEnd(p : Element -> Bool) -> [Element] {
+		return self.reduce([Element](), combine: { xs, x in p(x) && xs.isEmpty ? [] : xs.cons(x) })
+	}
+
+	/// Returns an array of the first elements that satisfy a predicate until that predicate returns
+	/// false.
+	///
+	///     [1, 2, 3, 4, 1, 2, 3, 4].takeWhile(<3) == [1, 2]
+	///     [1,2,3].takeWhile(<9)                  == [1, 2, 3]
+	///     [1,2,3].takeWhile(<0)                  == []
+	public func takeWhile(p : Element -> Bool) -> [Element] {
+		switch self.match {
+		case .Nil:
+			return []
+		case .Cons(let x, let xs):
+			if p(x) {
+				return xs.takeWhile(p).cons(x)
+			}
+			return []
+		}
 	}
 }
 
-//tuples can not be compared with '==' so I will hold off on this for now. rdar://17219478
-//public func zip<A,B>(fst:[A], scd:[B]) -> Array<(A,B)> {
-//  	var size = min(fst.count, scd.count)
-//  	var newArr = Array<(A,B)>()
-//  	for x in 0..<size {
-//  			newArr += (fst[x], scd[x])
-//  	}
-//  	return newArr
-//}
-//
-//public func zip3<A,B,C>(fst:[A], scd:[B], thrd:[C]) -> Array<(A,B,C)> {
-//  	var size = min(fst.count, scd.count, thrd.count)
-//  	var newArr = Array<(A,B,C)>()
-//  	for x in 0..<size {
-//  			newArr += (fst[x], scd[x], thrd[x])
-//  	}
-//  	return newArr
-//}
-//
-//public func zipWith<A,B,C>(fst:[A], scd:[B], f:((A, B) -> C)) -> Array<C> {
-//  	var size = min(fst.count, scd.count)
-//  	var newArr = [C]()
-//  	for x in 0..<size {
-//  			newArr += f(fst[x], scd[x])
-//  	}
-//  	return newArr
-//}
-//
-//public func zipWith3<A,B,C,D>(fst:[A], scd:[B], thrd:[C], f:((A, B, C) -> D)) -> Array<D> {
-//  	var size = min(fst.count, scd.count, thrd.count)
-//  	var newArr = [D]()
-//  	for x in 0..<size {
-//  			newArr += f(fst[x], scd[x], thrd[x])
-//  	}
-//  	return newArr
-//}
+extension Array where Element : Equatable {
+	/// Takes two lists and returns true if the first string is a prefix of the second string.
+	public func isPrefixOf(r : [Element]) -> Bool {
+		switch (self.match, r.match) {
+		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+			return xs.isPrefixOf(ys)
+		case (.Nil, _):
+			return true
+		default:
+			return false
+		}
+	}
 
-/// Maps a function over a list of Optionals, applying the function of the optional is Some, 
+	/// Takes two lists and returns true if the first string is a suffix of the second string.
+	public func isSuffixOf(r : [Element]) -> Bool {
+		return self.reverse().isPrefixOf(r.reverse())
+	}
+
+	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
+	/// second string.
+	public func isInfixOf(r : [Element]) -> Bool {
+		return r.tails.any(self.isPrefixOf)
+	}
+
+	/// Takes two strings and drops items in the first from the second.  If the first string is not a
+	/// prefix of the second string this function returns Nothing.
+	public func stripPrefix(r : [Element]) -> Optional<[Element]> {
+		switch (self.match, r.match) {
+		case (.Nil, _):
+			return .Some(r)
+		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
+			return xs.stripPrefix(xs)
+		default:
+			return .None
+		}
+	}
+
+	/// Takes two strings and drops items in the first from the end of the second.  If the first
+	/// string is not a suffix of the second string this function returns nothing.
+	public func stripSuffix(r : [Element]) -> Optional<[Element]> {
+		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
+	}
+
+	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+	/// other.
+	///
+	///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
+	public var group : [[Element]] {
+		return self.groupBy { a in { b in a == b } }
+	}
+}
+
+extension Array where Element : BooleanType {
+	/// Returns the conjunction of a list of Booleans.
+	public var and : Bool {
+		return self.reduce(true) { $0.boolValue && $1.boolValue }
+	}
+
+	/// Returns the dijunction of a list of Booleans.
+	public var or : Bool {
+		return self.reduce(false) { $0.boolValue || $1.boolValue }
+	}
+}
+
+/// Maps a function over a list of Optionals, applying the function of the optional is Some,
 /// discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs : [A?]) -> [A] {
-	var w = [A]()
-	w.reserveCapacity(foldRight(xs)(z: 0) { c, n in
-		if c != nil {
-			return n + 1
-		} else {
-			return n
-		}
-	})
-	for c in xs {
-		if let x = c {
-			w.append(x)
-		} else {
-			// nothing
-		}
-	}
-	return w
+	return xs.mapMaybe(identity)
 }
-
-/// Safely indexes into an array by converting out of bounds errors to nils.
-public func indexArray<A>(xs : [A], i : Int) -> A? {
-	if i < xs.count && i >= 0 {
-		return xs[i]
-	} else {
-		return nil
-	}
-}
-
-/// Returns the conjunction of a list of Booleans.
-public func and(list : [Bool]) -> Bool {
-	return list.reduce(true) {$0 && $1}
-}
-
-/// Returns the dijunction of a list of Booleans.
-public func or(list : [Bool]) -> Bool {
-	return list.reduce(false) {$0 || $1}
-}
-
-/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
-/// least once by an element of the list.
-public func any<A>(list : [A], f : (A -> Bool)) -> Bool {
-	return or(list.map(f))
-}
-
-/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
-/// all elemenets of the list.
-public func all<A>(list : [A], f : (A -> Bool)) -> Bool {
-	return and(list.map(f))
-}
-
-/// Concatenate a list of lists.
-public func concat<A>(list : [[A]]) -> [A] {
-	return list.reduce([]) { (start, l) -> [A] in
-		return concat(start)(l)
-	}
-}
-
-///Map a function over a list and concatenate the results.
-public func concatMap<A,B>(list: [A], f: A -> [B]) -> [B] {
-	return list.reduce([]) { (start, l) -> [B] in
-		return concat(start)(f(l))
-	}
-}
-
 
 /// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
 public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
-	return concat(intersperse(list, nested))
+	return concat(nested.intersperse(list))
 }
 
-
-/// Returns a tuple with the first elements that satisfy a predicate until that predicate returns
-/// false first, and a the rest of the elements second.
-///
-///     span([1, 2, 3, 4, 1, 2, 3, 4]) { <3 } == ([1, 2],[3, 4, 1, 2, 3, 4])
-///     span([1, 2, 3]) { <9 }                == ([1, 2, 3],[])
-///     span([1, 2, 3]) { <0 }                == ([],[1, 2, 3])
-///
-///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
-public func span<A>(list : [A], p : (A -> Bool)) -> ([A], [A]) {
-	switch match(list) {
-	case .Nil:
-		return ([], [])
-	case .Cons(let x, let xs):
-		if p(x) {
-			let (ys, zs) = span(xs, p)
-			return (cons(x, ys), zs)
-		}
-		return ([], list)
-	}
-}
-
-/// Returns a tuple with the first elements that do not satisfy a predicate until that predicate
-/// returns false first, and a the rest of the elements second.
-public func extreme<A>(l : [A], p : A -> Bool) -> ([A], [A]) {
-	return span(l, { ((!) • p)($0) })
-}
-
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
-/// other according to an equality predicate.
-public func groupBy<A>(list : [A], p : A -> A -> Bool) -> [[A]] {
-	switch match(list) {
-	case .Nil:
-		return []
-	case .Cons(let x, let xs):
-		let (ys, zs) = span(xs, p(x))
-		let l = cons(x, ys)
-		return cons(l, groupBy(zs, p))
-	}
-}
-
-
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
-/// other.
-///
-///     group([0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7]) == [[0], [1, 1], [2], [3, 3], [4], [5], [6], [7, 7]]
-public func group<A : Equatable>(list : [A]) -> [[A]] {
-	return groupBy(list, { a in { b in a == b } })
-}
-
-/// Returns a list of the first elements that do not satisfy a predicate until that predicate
-/// returns false.
-///
-///     dropWhile([1, 2, 3, 4, 5, 1, 2, 3], <3) == [3,4,5,1,2,3]
-///     dropWhile([1, 2, 3], <9)                == []
-///     dropWhile([1, 2, 3], <0)                == [1,2,3]
-public func dropWhile<A>(list : [A], p : A -> Bool) -> [A] {
-	switch match(list) {
-	case .Nil:
-		return []
-	case .Cons(let x, let xs):
-		if p(x) {
-			return dropWhile(xs, p)
-		}
-		return list
-	}
-}
-
-/// Returns a list of the first elements that satisfy a predicate until that predicate returns
-/// false.
-///
-///     takeWhile([1, 2, 3, 4, 1, 2, 3, 4], <3)  == [1, 2]
-///     takeWhile([1,2,3], <9)                  == [1, 2, 3]
-///     takeWhile([1,2,3], <0)                  == []
-public func takeWhile<A>(list : [A], p : A -> Bool) -> [A] {
-	switch match(list) {
-	case .Nil:
-		return []
-	case .Cons(let x, let xs):
-		if p(x) {
-			return cons(x, takeWhile(xs, p))
-		}
-		return []
-	}
+/// Concatenate a list of lists.
+public func concat<T>(list : [[T]]) -> [T] {
+	return list.reduce([], combine: +)
 }

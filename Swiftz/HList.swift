@@ -1,18 +1,16 @@
 //
 //  HList.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 19/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Darwin
-
 /// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
 /// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
 /// in convenience they gain in flexibility.
 ///
-/// An HList is a purely static entity.  All its attributes including its length, the type of each 
+/// An HList is a purely static entity.  All its attributes including its length, the type of each
 /// element, and compatible operations on said elements exist fully at compile time.  HLists, like
 /// regular lists, support folds, maps, and appends, only at the type rather than term level.
 public protocol HList {
@@ -41,7 +39,7 @@ public struct HCons<H, T : HList> : HList {
 	}
 
 	public static var length : Int {
-		return (1 + Tail.length)
+		return Tail.length.successor()
 	}
 }
 
@@ -62,8 +60,8 @@ public struct HNil : HList {
 }
 
 /// `HAppend` is a type-level append of two `HList`s.  They are instantiated with the type of the
-/// first list (XS), the type of the second list (YS) and the type of the result (XYS).  When 
-/// constructed, `HAppend` provides a safe append operation that yields the appropriate HList for 
+/// first list (XS), the type of the second list (YS) and the type of the result (XYS).  When
+/// constructed, `HAppend` provides a safe append operation that yields the appropriate HList for
 /// the given types.
 public struct HAppend<XS, YS, XYS> {
 	public let append : (XS, YS) -> XYS
@@ -134,19 +132,19 @@ public struct HMap<F, A, R> {
 }
 
 /// `HFold` is a type-level right fold over the values in an `HList`.  Like an `HMap`, an HFold
-/// carries a context (of type G).  The actual fold takes values of type V and an accumulator A to 
-/// values of type R.  
+/// carries a context (of type G).  The actual fold takes values of type V and an accumulator A to
+/// values of type R.
 ///
 /// Using an `HFold` necessitates defining the type of its starting and ending data.  For example, a
 /// fold that reduces `HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>` to `Int -> Int`
 /// through composition will define two `typealias`es:
 ///
-///     typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
+///     public typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
 ///
-///     typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
-///     typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+///     public typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
+///     public typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
 ///
-/// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained 
+/// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained
 /// in a list of type `FList`, to an `HNil` node and an ending value of type `Int -> Int`.
 public struct HFold<G, V, A, R> {
 	public let fold : (G, V, A) -> R

@@ -1,6 +1,6 @@
 //
 //  Monoid.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Maxwell Swadling on 3/06/2014.
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
@@ -9,22 +9,30 @@
 /// A `Monoid` is a `Semigroup` that distinguishes an identity element.
 public protocol Monoid : Semigroup {
 	/// The identity element of the Monoid.
-	static var mzero : Self { get }
+	static var mempty : Self { get }
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mzero, t)
+	return sconcat(S.mempty, t: t)
+}
+
+extension List : Monoid {
+	public static var mempty : List<A> { return [] }
+}
+
+extension Array : Monoid {
+	public static var mempty : [Element] { return [] }
 }
 
 /// The `Monoid` of numeric types under addition.
-public struct Sum<N : Num> : Monoid {
+public struct Sum<N : NumericType> : Monoid {
 	public let value : () -> N
 
 	public init(@autoclosure(escaping) _ x : () -> N) {
 		value = x
 	}
 
-	public static var mzero : Sum<N> {
+	public static var mempty : Sum<N> {
 		return Sum(N.zero)
 	}
 
@@ -34,14 +42,14 @@ public struct Sum<N : Num> : Monoid {
 }
 
 /// The `Monoid` of numeric types under multiplication.
-public struct Product<N : Num> : Monoid {
+public struct Product<N : NumericType> : Monoid {
 	public let value : () -> N
 
 	public init(@autoclosure(escaping) _ x : () -> N) {
 		value = x
 	}
 
-	public static var mzero : Product<N> {
+	public static var mempty : Product<N> {
 		return Product(N.one)
 	}
 
@@ -50,22 +58,22 @@ public struct Product<N : Num> : Monoid {
 	}
 }
 
-/// The `Semigroup`-lifting `Maybe` `Monoid`
+/// The `Semigroup`-lifting `Optional` `Monoid`
 public struct AdjoinNil<A : Semigroup> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
-	public static var mzero : AdjoinNil<A> {
-		return AdjoinNil(Maybe.none())
+	public static var mempty : AdjoinNil<A> {
+		return AdjoinNil(nil)
 	}
 
 	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
-		if let x = self.value().value {
-			if let y = other.value().value {
-				return AdjoinNil(Maybe(x.op(y)))
+		if let x = self.value() {
+			if let y = other.value() {
+				return AdjoinNil(x.op(y))
 			} else {
 				return self
 			}
@@ -77,18 +85,18 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 
 /// The left-biased `Maybe` `Monoid`
 public struct First<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
-	public static var mzero : First<A> {
-		return First(Maybe.none())
+	public static var mempty : First<A> {
+		return First(nil)
 	}
 
 	public func op(other : First<A>) -> First<A> {
-		if self.value().isJust() {
+		if self.value() != nil {
 			return self
 		} else {
 			return other
@@ -98,18 +106,18 @@ public struct First<A : Comparable> : Monoid {
 
 /// The right-biased `Maybe` `Monoid`.
 public struct Last<A : Comparable> : Monoid {
-	public let value : () -> Maybe<A>
+	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Maybe<A>) {
+	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
 		value = x
 	}
 
-	public static var mzero : Last<A> {
-		return Last(Maybe.none())
+	public static var mempty : Last<A> {
+		return Last(nil)
 	}
 
 	public func op(other : Last<A>) -> Last<A> {
-		if other.value().isJust() {
+		if other.value() != nil {
 			return other
 		} else {
 			return self
@@ -122,15 +130,15 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public let values : [Either<A, B>]
 
 	public init(_ vs : [Either<A, B>]) {
-		//	if vs.isEmpty { 
-		//		error("Cannot construct a \(Vacillate<A, B>.self) with no elements.") 
+		//	if vs.isEmpty {
+		//		error("Cannot construct a \(Vacillate<A, B>.self) with no elements.")
 		//	}
 		var vals = [Either<A, B>]()
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.left(x.value.op(y.value))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.right(x.value.op(y.value))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex.predecessor()] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex.predecessor()] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -141,18 +149,18 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	}
 
 	public static func left(x: A) -> Dither<A, B> {
-		return Dither([Either.left(x)])
+		return Dither([Either.Left(x)])
 	}
 
 	public static func right(y: B) -> Dither<A, B> {
-		return Dither([Either.right(y)])
+		return Dither([Either.Right(y)])
 	}
 
 	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
-		return foldRight(values)(z: C.mzero) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
+		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
-	public static var mzero : Dither<A, B> {
+	public static var mempty : Dither<A, B> {
 		return Dither([])
 	}
 

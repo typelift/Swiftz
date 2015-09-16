@@ -1,6 +1,6 @@
 //
 //  Functor.swift
-//  swiftz
+//  Swiftz
 //
 //  Created by Josh Abernathy on 6/7/2014.
 //  Copyright (c) 2014 Josh Abernathy. All rights reserved.
@@ -11,7 +11,8 @@
 ///
 /// Because the nil case of Maybe does not indicate any significant information about cause, it may
 /// be more appropriate to use Result or Either which have explicit error cases.
-public struct Maybe<A> {
+@available(*, deprecated, message="Use OptionalExt instead")
+public struct Maybe<A>  {
 	let value: A?
 
 	var description : String {
@@ -39,9 +40,9 @@ public struct Maybe<A> {
 	/// Returns whether or not the receiver contains a value.
 	public func isJust() -> Bool {
 		switch value {
-		case .Some(_): 
+		case .Some(_):
 			return true
-		case .None: 
+		case .None:
 			return false
 		}
 	}
@@ -91,11 +92,11 @@ public func ==<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 	if lhs.isNone() && rhs.isNone() {
 		return true
 	}
-	
+
 	if lhs.isJust() && rhs.isJust() {
 		return lhs.fromJust() == rhs.fromJust()
 	}
-	
+
 	return false
 }
 
@@ -106,8 +107,8 @@ public func !=<A : Equatable>(lhs : Maybe<A>, rhs : Maybe<A>) -> Bool {
 /// MARK: Functor
 
 extension Maybe : Functor {
-	typealias B = Any
-	typealias FB = Maybe<B>
+	public typealias B = Any
+	public typealias FB = Maybe<B>
 
 	public func fmap<B>(f : (A -> B)) -> Maybe<B> {
 		if self.isJust() {
@@ -130,9 +131,9 @@ extension Maybe : Pointed {
 }
 
 extension Maybe : Applicative {
-	typealias FA = Maybe<A>
-	typealias FAB = Maybe<A -> B>
-	
+	public typealias FA = Maybe<A>
+	public typealias FAB = Maybe<A -> B>
+
 	public func ap<B>(f : Maybe<A -> B>) -> Maybe<B>	{
 		if f.isJust() {
 			let fn: (A -> B) = f.fromJust()
