@@ -215,6 +215,25 @@ public func <*> <A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return o.ap(f)
 }
 
+extension Stream : ApplicativeOps {
+	public typealias C = Any
+	public typealias FC = Stream<C>
+	public typealias D = Any
+	public typealias FD = Stream<D>
+
+	public static func liftA<B>(f : A -> B) -> Stream<A> -> Stream<B> {
+		return { a in Stream<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
+		return { a in { b in f <^> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	}
+}
+
 extension Stream : Monad {
 	public func bind<B>(f : A -> Stream<B>) -> Stream<B> {
 		return Stream<B>.unfold(self.fmap(f)) { ss in
@@ -227,6 +246,28 @@ extension Stream : Monad {
 
 public func >>- <A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
 	return x.bind(f)
+}
+
+extension Stream : MonadOps {
+	public static func liftM<B>(f : A -> B) -> Stream<A> -> Stream<B> {
+		return { m1 in m1 >>- { x1 in Stream<B>.pure(f(x1)) } }
+	}
+
+	public static func liftM2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
+		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Stream<C>.pure(f(x1)(x2)) } } } }
+	}
+
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
+		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Stream<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	}
+}
+
+public func >>->> <A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> (A -> Stream<C>) {
+	return { x in f(x) >>- g }
+}
+
+public func <<-<< <A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> (A -> Stream<C>) {
+	return f >>->> g
 }
 
 extension Stream : Copointed {
