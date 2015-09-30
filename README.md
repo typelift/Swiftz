@@ -209,7 +209,7 @@ Operator | Name           | Type
 System Requirements
 ===================
 
-Swiftz supports OS X 10.9+ and iOS 7.0+.
+Swiftz supports OS X 10.9+ and iOS 8.0+.
 
 License
 =======
