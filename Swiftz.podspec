@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.9"
   s.ios.deployment_target = "8.0"
   s.source   = { :git => "https://github.com/typelift/Swiftz.git", :tag => "v#{s.version}", :submodules => true }
-  s.source_files = "Swiftz/*.swift", "**/Swiftx/*.swift", "**/Operadics/*.swift"
+  s.source_files = "Swiftz/*.swift", "**/Swiftx/*.swift", "Carthage/Checkouts/Operadics/*.swift"
 end
