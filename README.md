@@ -11,35 +11,6 @@ the Swift standard library.
 For a small, simpler way to introduce functional primitives into any codebase,
 see [Swiftx](https://github.com/typelift/Swiftx). 
 
-Setup
------
-
-To add Swiftz to your application:
-
-**Using Carthage**
-
-- Add Swiftz to your Cartfile
-- Run `carthage update`
-- Drag the relevant copy of Swiftz into your project.
-- Expand the Link Binary With Libraries phase
-- Click the + and add Swiftz
-- Click the + at the top left corner to add a Copy Files build phase
-- Set the directory to `Frameworks`
-- Click the + and add Swiftz
-
-**Using Git Submodules**
-
-- Clone Swiftz as a submodule into the directory of your choice
-- Run `git submodule init -i --recursive`
-- Drag `Swiftz.xcodeproj` or `Swiftz-iOS.xcodeproj` into your project tree as a subproject
-- Under your project's Build Phases, expand Target Dependencies
-- Click the + and add Swiftz
-- Expand the Link Binary With Libraries phase
-- Click the + and add Swiftz
-- Click the + at the top left corner to add a Copy Files build phase
-- Set the directory to `Frameworks`
-- Click the + and add Swiftz
-
 Introduction
 ------------
 
