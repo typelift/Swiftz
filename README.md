@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/typelift/Swiftz.svg?branch=master)](https://travis-ci.org/typelift/Swiftz)
-
+[![Gitter chat](https://badges.gitter.im/DPVN/chat.png)](https://gitter.im/typelift/general?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
+ 
 Swiftz
 ======
 
