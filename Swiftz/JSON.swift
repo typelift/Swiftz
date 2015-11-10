@@ -11,9 +11,8 @@ import Foundation
 public enum JSONValue : CustomStringConvertible {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
-	case JSONNumber(Double)
 	case JSONString(String)
-	case JSONBool(Bool)
+	case JSONNumber(NSNumber)
 	case JSONNull()
 
 	private func values() -> NSObject {
@@ -25,11 +24,9 @@ public enum JSONValue : CustomStringConvertible {
 				return (NSString(string: k), v.values())
 			}))
 		case let .JSONNumber(n):
-			return NSNumber(double: n)
+			return n
 		case let .JSONString(s):
 			return NSString(string: s)
-		case let .JSONBool(b):
-			return NSNumber(bool: b)
 		case .JSONNull():
 			return NSNull()
 		}
@@ -44,8 +41,8 @@ public enum JSONValue : CustomStringConvertible {
 			return JSONValue.JSONObject(Dictionary.fromList((xs as [NSObject: AnyObject]).map({ (k: NSObject, v: AnyObject) in
 				return (String(k as! NSString), self.make(v as! NSObject))
 			})))
-		case let xs as NSNumber: // TODO: number or bool?...
-			return .JSONNumber(Double(xs.doubleValue))
+		case let xs as NSNumber:
+			return .JSONNumber(xs)
 		case let xs as NSString:
 			return .JSONString(String(xs))
 		case _ as NSNull:
@@ -89,8 +86,6 @@ public enum JSONValue : CustomStringConvertible {
 			switch self {
 			case .JSONNull():
 				return "JSONNull()"
-			case let .JSONBool(b):
-				return "JSONBool(\(b))"
 			case let .JSONString(s):
 				return "JSONString(\(s))"
 			case let .JSONNumber(n):
@@ -109,8 +104,6 @@ public enum JSONValue : CustomStringConvertible {
 public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	switch (lhs, rhs) {
 	case (.JSONNull(), .JSONNull()):
-		return true
-	case let (.JSONBool(l), .JSONBool(r)) where l == r:
 		return true
 	case let (.JSONString(l), .JSONString(r)) where l == r:
 		return true
@@ -216,11 +209,11 @@ public protocol JSON : JSONDecodable, JSONEncodable { }
 extension Bool : JSON {
 	public static func fromJSON(x : JSONValue) -> Bool? {
 		switch x {
-		case let .JSONBool(n):
-			return n
-		case .JSONNumber(0):
+		case .JSONNumber(false),
+		     .JSONNumber(0):
 			return false
-		case .JSONNumber(1):
+		case .JSONNumber(true),
+		     .JSONNumber(1):
 			return true
 		default:
 			return Optional.None
@@ -228,7 +221,7 @@ extension Bool : JSON {
 	}
 
 	public static func toJSON(xs : Bool) -> JSONValue {
-		return JSONValue.JSONNumber(Double(xs))
+		return JSONValue.JSONNumber(xs)
 	}
 }
 
@@ -236,14 +229,44 @@ extension Int : JSON {
 	public static func fromJSON(x : JSONValue) -> Int? {
 		switch x {
 		case let .JSONNumber(n):
-			return Int(n)
+			return n as Int
 		default:
 			return Optional.None
 		}
 	}
 
 	public static func toJSON(xs : Int) -> JSONValue {
-		return JSONValue.JSONNumber(Double(xs))
+		return JSONValue.JSONNumber(xs)
+	}
+}
+
+extension Int64 : JSON {
+	public static func fromJSON(x : JSONValue) -> Int64? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.longLongValue
+		default:
+			return Optional.None
+		}
+	}
+	
+	public static func toJSON(xs : Int64) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(longLong: xs))
+	}
+}
+
+extension UInt64 : JSON {
+	public static func fromJSON(x : JSONValue) -> UInt64? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.unsignedLongLongValue
+		default:
+			return Optional.None
+		}
+	}
+	
+	public static func toJSON(xs : UInt64) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(unsignedLongLong: xs))
 	}
 }
 
@@ -251,7 +274,7 @@ extension Double : JSON {
 	public static func fromJSON(x : JSONValue) -> Double? {
 		switch x {
 		case let .JSONNumber(n):
-			return n
+			return n as Double
 		default:
 			return Optional.None
 		}
@@ -262,18 +285,33 @@ extension Double : JSON {
 	}
 }
 
+extension Float : JSON {
+	public static func fromJSON(x : JSONValue) -> Float? {
+		switch x {
+		case let .JSONNumber(n):
+			return n as Float
+		default:
+			return Optional.None
+		}
+	}
+	
+	public static func toJSON(xs : Float) -> JSONValue {
+		return JSONValue.JSONNumber(xs)
+	}
+}
+
 extension NSNumber : JSON {
 	public class func fromJSON(x : JSONValue) -> NSNumber? {
 		switch x {
 		case let .JSONNumber(n):
-			return NSNumber(double: n)
+			return n
 		default:
 			return Optional.None
 		}
 	}
 
 	public class func toJSON(xs : NSNumber) -> JSONValue {
-		return JSONValue.JSONNumber(Double(xs))
+		return JSONValue.JSONNumber(xs)
 	}
 }
 
