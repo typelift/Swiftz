@@ -30,15 +30,15 @@ class User {
 	}
 }
 
-extension User: JSONDecodable {
+extension User : JSONDecodable {
 	class func fromJSON(x : JSONValue) -> User? {
 		let p1 : UInt64? = x <? "id"
 		let p2 : String? = x <? "name"
 		let p3 : Int? = x <? "age"
 		let p4 : [String]? = x <? "tweets"
 		let p5 : String? = x <? "attrs" <> "one" // A nested keypath
-		let p6: Double? = x <? "balance"
-		let p7: Bool? = x <? "admin"
+		let p6 : Double? = x <? "balance"
+		let p7 : Bool? = x <? "admin"
 		
 		return curry(User.init)
 			<^> p1

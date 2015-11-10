@@ -12,50 +12,50 @@ import Swiftz
 // MARK: - Test models
 /// Person
 struct Person {
-	let name: String
+	let name : String
 	
-	init(_ n: String) {
+	init(_ n : String) {
 		name = n
 	}
 }
 
-extension Person: JSONDecodable {
+extension Person : JSONDecodable {
 	static func fromJSON(x : JSONValue) -> Person? {
 		return Person.init <^> x <? "name"
 	}
 }
 
-extension Person: Equatable {}
+extension Person : Equatable {}
 
-func ==(lhs: Person, rhs: Person) -> Bool {
+func ==(lhs : Person, rhs : Person) -> Bool {
 	return lhs.name == rhs.name
 }
 
 /// UserPermission
 struct UserPermission {
-	let admin: Bool
+	let admin : Bool
 }
 
-extension UserPermission: JSONDecodable {
+extension UserPermission : JSONDecodable {
 	static func fromJSON(x : JSONValue) -> UserPermission? {
 		return UserPermission.init <^> x <? "admin"
 	}
 }
 
-extension UserPermission: Equatable {}
+extension UserPermission : Equatable {}
 
-func ==(lhs: UserPermission, rhs: UserPermission) -> Bool {
+func ==(lhs : UserPermission, rhs : UserPermission) -> Bool {
 	return lhs.admin == rhs.admin
 }
 
 /// Coordinate
 struct Coordinate {
-	let x: Double
-	let y: Double
+	let x : Double
+	let y : Double
 }
 
-extension Coordinate: JSONDecodable {
-	static func fromJSON(x: JSONValue) -> Coordinate? {
+extension Coordinate : JSONDecodable {
+	static func fromJSON(x : JSONValue) -> Coordinate? {
 		return curry(Coordinate.init)
 			<^> x <? "map" <> "coordinates" <> "xPart"
 			<*> x <? "map" <> "coordinates" <> "yPart"
@@ -64,20 +64,20 @@ extension Coordinate: JSONDecodable {
 
 /// Rect
 struct Rect {
-	let origin: CGPoint
-	let size: CGSize
+	let origin : CGPoint
+	let size : CGSize
 }
 
-func FloatToCGFloat(n: Float) -> CGFloat {
+func FloatToCGFloat(n : Float) -> CGFloat {
 	return CGFloat(n)
 }
 
-extension Rect: JSONDecodable {
-	static func fromJSON(x: JSONValue) -> Rect? {
-		let pX: Float? = x <? "origin" <> "x"
-		let pY: Float? = x <? "origin" <> "y"
-		let pW: Float? = x <? "size" <> "width"
-		let pH: Float? = x <? "size" <> "height"
+extension Rect : JSONDecodable {
+	static func fromJSON(x : JSONValue) -> Rect? {
+		let pX : Float? = x <? "origin" <> "x"
+		let pY : Float? = x <? "origin" <> "y"
+		let pW : Float? = x <? "size" <> "width"
+		let pH : Float? = x <? "size" <> "height"
 		
 		let p1 = pX.map(FloatToCGFloat)
 		let p2 = pY.map(FloatToCGFloat)
@@ -99,40 +99,40 @@ extension Rect: JSONDecodable {
 }
 
 /// NumberContainer
-struct NumberContainer {
-	let number: NSNumber
+struct NumberContainer : JSONDecodable {
+	let number : NSNumber
 	
-	static func fromJSON(x: JSONValue) -> NumberContainer? {
+	static func fromJSON(x : JSONValue) -> NumberContainer? {
 		return NumberContainer.init
 			<^> x <? "number"
 	}
 }
 
 /// IntContainer
-struct IntContainer {
-	let number: Int
+struct IntContainer : JSONDecodable {
+	let number : Int
 	
-	static func fromJSON(x: JSONValue) -> IntContainer? {
+	static func fromJSON(x : JSONValue) -> IntContainer? {
 		return IntContainer.init
 			<^> x <? "number"
 	}
 }
 
 /// Int64Container
-struct Int64Container: JSONDecodable {
-	let number: Int64
+struct Int64Container : JSONDecodable {
+	let number : Int64
 	
-	static func fromJSON(x: JSONValue) -> Int64Container? {
+	static func fromJSON(x : JSONValue) -> Int64Container? {
 		return Int64Container.init
 			<^> x <? "number"
 	}
 }
 
 /// UInt64Container
-struct UInt64Container {
-	let number: UInt64
+struct UInt64Container : JSONDecodable {
+	let number : UInt64
 	
-	static func fromJSON(x: JSONValue) -> UInt64Container? {
+	static func fromJSON(x : JSONValue) -> UInt64Container? {
 		return UInt64Container.init
 			<^> x <? "number"
 	}
@@ -180,7 +180,7 @@ class JSONSpec : XCTestCase {
 extension JSONSpec {
 	func testString() {
 		let js = "{\"name\": \"matthew\"}"
-		let p: Person? = JSONValue.decode(js) >>- Person.fromJSON
+		let p = JSONValue.decode(js) >>- Person.fromJSON
 		XCTAssert(p == Person("matthew"))
 	}
 	
@@ -188,22 +188,22 @@ extension JSONSpec {
 		// Test for: false
 		let js1 = "{\"admin\":false}"
 		let up1 = JSONValue.decode(js1) >>- UserPermission.fromJSON
-		XCTAssert(up1! == UserPermission(admin: false))
+		XCTAssert(up1! == UserPermission(admin : false))
 		
 		// Test for: true
 		let js2 = "{\"admin\":true}"
 		let up2 = JSONValue.decode(js2) >>- UserPermission.fromJSON
-		XCTAssert(up2! == UserPermission(admin: true))
+		XCTAssert(up2! == UserPermission(admin : true))
 		
 		// Test for: 0
 		let js3 = "{\"admin\":0}"
 		let up3 = JSONValue.decode(js3) >>- UserPermission.fromJSON
-		XCTAssert(up3! == UserPermission(admin: false))
+		XCTAssert(up3! == UserPermission(admin : false))
 		
 		// Test for: 1
 		let js4 = "{\"admin\":1}"
 		let up4 = JSONValue.decode(js4) >>- UserPermission.fromJSON
-		XCTAssert(up4! == UserPermission(admin: true))
+		XCTAssert(up4! == UserPermission(admin : true))
 	}
 	
 	func testDouble() {
