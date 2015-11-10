@@ -73,7 +73,7 @@ public enum JSONValue : CustomStringConvertible {
 		if let json: AnyObject = r {
 			return make(json as! NSObject)
 		} else {
-			return .None
+			return nil
 		}
 	}
 
@@ -146,7 +146,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs: rhs).flatMap(A.fromJSON)
 	default:
-		return .None
+		return nil
 	}
 }
 
@@ -155,7 +155,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs: rhs).flatMap(JArrayFrom<A, A>.fromJSON)
 	default:
-		return .None
+		return nil
 	}
 }
 
@@ -164,7 +164,7 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	case let .JSONObject(d):
 		return resolveKeypath(d, rhs: rhs).flatMap(JDictionaryFrom<A, A>.fromJSON)
 	default:
-		return .None
+		return nil
 	}
 }
 
@@ -216,7 +216,7 @@ extension Bool : JSON {
 		     .JSONNumber(1):
 			return true
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -231,7 +231,7 @@ extension Int : JSON {
 		case let .JSONNumber(n):
 			return n as Int
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -246,7 +246,7 @@ extension Int64 : JSON {
 		case let .JSONNumber(n):
 			return n.longLongValue
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 	
@@ -261,7 +261,7 @@ extension UInt64 : JSON {
 		case let .JSONNumber(n):
 			return n.unsignedLongLongValue
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 	
@@ -276,7 +276,7 @@ extension Double : JSON {
 		case let .JSONNumber(n):
 			return n as Double
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -291,7 +291,7 @@ extension Float : JSON {
 		case let .JSONNumber(n):
 			return n as Float
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 	
@@ -306,7 +306,7 @@ extension NSNumber : JSON {
 		case let .JSONNumber(n):
 			return n
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -321,7 +321,7 @@ extension String : JSON {
 		case let .JSONString(n):
 			return n
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -337,7 +337,7 @@ extension NSNull : JSON {
 		case .JSONNull():
 			return NSNull()
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -361,7 +361,7 @@ public struct JArrayFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
 				return nil
 			}
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 }
@@ -388,7 +388,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 				return nil
 			}
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -408,7 +408,7 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 				return (k, B.fromJSON(x)!)
 			}))
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 }
@@ -433,7 +433,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 				return (k, B.fromJSON(x)!)
 			}))
 		default:
-			return Optional.None
+			return nil
 		}
 	}
 
@@ -449,12 +449,12 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 
 private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypath) -> JSONValue? {
 	if rhs.path.isEmpty {
-		return .None
+		return nil
 	}
 
 	switch rhs.path.match {
 	case .Nil:
-		return .None
+		return nil
 	case let .Cons(hd, tl):
 		if let o = lhs[hd] {
 			switch o {
@@ -464,7 +464,7 @@ private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypa
 				return o
 			}
 		}
-		return .None
+		return nil
 	}
 }
 
