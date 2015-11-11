@@ -8,12 +8,12 @@
 
 import Foundation
 
-public enum JSONValue : CustomStringConvertible {
+public enum JSONValue : Equatable, CustomStringConvertible {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
 	case JSONString(String)
 	case JSONNumber(NSNumber)
-	case JSONNull()
+	case JSONNull
 
 	private func values() -> NSObject {
 		switch self {
@@ -27,7 +27,7 @@ public enum JSONValue : CustomStringConvertible {
 			return n
 		case let .JSONString(s):
 			return NSString(string: s)
-		case .JSONNull():
+		case .JSONNull:
 			return NSNull()
 		}
 	}
@@ -46,7 +46,7 @@ public enum JSONValue : CustomStringConvertible {
 		case let xs as NSString:
 			return .JSONString(String(xs))
 		case _ as NSNull:
-			return .JSONNull()
+			return .JSONNull
 		default:
 			return error("Non-exhaustive pattern match performed.");
 		}
@@ -84,8 +84,8 @@ public enum JSONValue : CustomStringConvertible {
 	public var description : String {
 		get {
 			switch self {
-			case .JSONNull():
-				return "JSONNull()"
+			case .JSONNull:
+				return "JSONNull"
 			case let .JSONString(s):
 				return "JSONString(\(s))"
 			case let .JSONNumber(n):
@@ -103,7 +103,7 @@ public enum JSONValue : CustomStringConvertible {
 // Equatable
 public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	switch (lhs, rhs) {
-	case (.JSONNull(), .JSONNull()):
+	case (.JSONNull, .JSONNull):
 		return true
 	case let (.JSONString(l), .JSONString(r)) where l == r:
 		return true
@@ -240,6 +240,51 @@ extension Int : JSON {
 	}
 }
 
+extension Int8 : JSON {
+	public static func fromJSON(x : JSONValue) -> Int8? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.charValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : Int8) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(char: xs))
+	}
+}
+
+extension Int16 : JSON {
+	public static func fromJSON(x : JSONValue) -> Int16? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.shortValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : Int16) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(short: xs))
+	}
+}
+
+extension Int32 : JSON {
+	public static func fromJSON(x : JSONValue) -> Int32? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.intValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : Int32) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(int: xs))
+	}
+}
+
 extension Int64 : JSON {
 	public static func fromJSON(x : JSONValue) -> Int64? {
 		switch x {
@@ -252,6 +297,66 @@ extension Int64 : JSON {
 	
 	public static func toJSON(xs : Int64) -> JSONValue {
 		return JSONValue.JSONNumber(NSNumber(longLong: xs))
+	}
+}
+
+extension UInt : JSON {
+	public static func fromJSON(x : JSONValue) -> UInt? {
+		switch x {
+		case let .JSONNumber(n):
+			return n as UInt
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : UInt) -> JSONValue {
+		return JSONValue.JSONNumber(xs)
+	}
+}
+
+extension UInt8 : JSON {
+	public static func fromJSON(x : JSONValue) -> UInt8? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.unsignedCharValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : UInt8) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(unsignedChar: xs))
+	}
+}
+
+extension UInt16 : JSON {
+	public static func fromJSON(x : JSONValue) -> UInt16? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.unsignedShortValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : UInt16) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(unsignedShort: xs))
+	}
+}
+
+extension UInt32 : JSON {
+	public static func fromJSON(x : JSONValue) -> UInt32? {
+		switch x {
+		case let .JSONNumber(n):
+			return n.unsignedIntValue
+		default:
+			return nil
+		}
+	}
+
+	public static func toJSON(xs : UInt32) -> JSONValue {
+		return JSONValue.JSONNumber(NSNumber(unsignedInt: xs))
 	}
 }
 
@@ -334,7 +439,7 @@ extension String : JSON {
 extension NSNull : JSON {
 	public class func fromJSON(x : JSONValue) -> NSNull? {
 		switch x {
-		case .JSONNull():
+		case .JSONNull:
 			return NSNull()
 		default:
 			return nil
@@ -342,7 +447,7 @@ extension NSNull : JSON {
 	}
 
 	public class func toJSON(xs : NSNull) -> JSONValue {
-		return JSONValue.JSONNull()
+		return JSONValue.JSONNull
 	}
 }
 
