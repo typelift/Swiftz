@@ -8,137 +8,98 @@
 
 import XCTest
 import Swiftz
+import SwiftCheck
 
-// MARK: - Test models
-/// Person
-struct Person {
-	let name : String
-	
-	init(_ n : String) {
-		name = n
-	}
-}
-
-extension Person : JSONDecodable {
-	static func fromJSON(x : JSONValue) -> Person? {
-		return Person.init <^> x <? "name"
-	}
-}
-
-extension Person : Equatable {}
-
-func ==(lhs : Person, rhs : Person) -> Bool {
-	return lhs.name == rhs.name
-}
-
-/// UserPermission
-struct UserPermission {
-	let admin : Bool
-}
-
-extension UserPermission : JSONDecodable {
-	static func fromJSON(x : JSONValue) -> UserPermission? {
-		return UserPermission.init <^> x <? "admin"
-	}
-}
-
-extension UserPermission : Equatable {}
-
-func ==(lhs : UserPermission, rhs : UserPermission) -> Bool {
-	return lhs.admin == rhs.admin
-}
-
-/// Coordinate
-struct Coordinate {
-	let x : Double
-	let y : Double
-}
-
-extension Coordinate : JSONDecodable {
-	static func fromJSON(x : JSONValue) -> Coordinate? {
-		return curry(Coordinate.init)
-			<^> x <? "map" <> "coordinates" <> "xPart"
-			<*> x <? "map" <> "coordinates" <> "yPart"
-	}
-}
-
-/// Rect
-struct Rect {
-	let origin : CGPoint
-	let size : CGSize
-}
-
-func FloatToCGFloat(n : Float) -> CGFloat {
-	return CGFloat(n)
-}
-
-extension Rect : JSONDecodable {
-	static func fromJSON(x : JSONValue) -> Rect? {
-		let pX : Float? = x <? "origin" <> "x"
-		let pY : Float? = x <? "origin" <> "y"
-		let pW : Float? = x <? "size" <> "width"
-		let pH : Float? = x <? "size" <> "height"
-		
-		let p1 = pX.map(FloatToCGFloat)
-		let p2 = pY.map(FloatToCGFloat)
-		let p3 = pW.map(FloatToCGFloat)
-		let p4 = pH.map(FloatToCGFloat)
-		
-		let p = curry(CGPointMake)
-			<^> p1
-			<*> p2
-		
-		let s = curry(CGSizeMake)
-			<^> p3
-			<*> p4
-		
-		return curry(Rect.init)
-			<^> p
-			<*> s
-	}
-}
-
-/// NumberContainer
-struct NumberContainer : JSONDecodable {
-	let number : NSNumber
-	
-	static func fromJSON(x : JSONValue) -> NumberContainer? {
-		return NumberContainer.init
-			<^> x <? "number"
-	}
-}
-
-/// IntContainer
-struct IntContainer : JSONDecodable {
-	let number : Int
-	
-	static func fromJSON(x : JSONValue) -> IntContainer? {
-		return IntContainer.init
-			<^> x <? "number"
-	}
-}
-
-/// Int64Container
-struct Int64Container : JSONDecodable {
-	let number : Int64
-	
-	static func fromJSON(x : JSONValue) -> Int64Container? {
-		return Int64Container.init
-			<^> x <? "number"
-	}
-}
-
-/// UInt64Container
-struct UInt64Container : JSONDecodable {
-	let number : UInt64
-	
-	static func fromJSON(x : JSONValue) -> UInt64Container? {
-		return UInt64Container.init
-			<^> x <? "number"
+extension JSONValue : Arbitrary {
+	public static var arbitrary: Gen<JSONValue> {
+		return UInt.arbitrary >>- { n in
+			switch n % 31 {
+			case 0:
+				return UInt.arbitrary >>- { b in
+					if b % 2 == 0  {
+						return Gen.pure(JSONValue.JSONArray([]))
+					}
+					return [JSONValue].arbitrary.fmap(JSONValue.JSONArray)
+				}
+			case 1:
+				return UInt.arbitrary >>- { b in
+					if b % 2 == 0  {
+						return Gen.pure(JSONValue.JSONObject([:]))
+					}
+					return DictionaryOf<String, JSONValue>.arbitrary.fmap { JSONValue.JSONObject($0.getDictionary) }
+				}
+			case 2:
+				return String.arbitrary.fmap(JSONValue.JSONString)
+			case 3:
+				return Bool.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 4:
+				return Int.arbitrary.fmap { JSONValue.JSONNumber($0 as NSNumber) }
+			case 5:
+				return Int8.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 6:
+				return Int16.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 7:
+				return Int32.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 8:
+				return Int64.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 9:
+				return UInt.arbitrary.fmap { JSONValue.JSONNumber($0 as NSNumber) }
+			case 10:
+				return UInt8.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 11:
+				return UInt16.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 12:
+				return UInt32.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 13:
+				return UInt64.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 14:
+				return Float.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			case 15:
+				return Double.arbitrary.fmap(JSONValue.JSONNumber • NSNumber.init)
+			default:
+				return Gen.pure(JSONValue.JSONNull)
+			}
+		}
 	}
 }
 
 class JSONSpec : XCTestCase {
+	let frequentFliers : [Property] = [
+		forAll { (x : JSONValue) in if let xs = String.fromJSON(x).map(String.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Bool.fromJSON(x).map(Bool.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Int.fromJSON(x).map(Int.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Int8.fromJSON(x).map(Int8.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Int16.fromJSON(x).map(Int16.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Int32.fromJSON(x).map(Int32.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Int64.fromJSON(x).map(Int64.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = UInt.fromJSON(x).map(UInt.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = UInt8.fromJSON(x).map(UInt8.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = UInt16.fromJSON(x).map(UInt16.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = UInt32.fromJSON(x).map(UInt32.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = UInt64.fromJSON(x).map(UInt64.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Float.fromJSON(x).map(Float.toJSON) { return xs == .Some(x) }; return Discard() },
+		forAll { (x : JSONValue) in if let xs = Double.fromJSON(x).map(Double.toJSON) { return xs == .Some(x) }; return Discard() },
+
+		forAll { (x : String) in String.fromJSON(String.toJSON(x))! ==== x },
+		forAll { (x : Bool) in Bool.fromJSON(Bool.toJSON(x))! ==== x },
+		forAll { (x : Int) in Int.fromJSON(Int.toJSON(x))! ==== x },
+		forAll { (x : Int8) in Int8.fromJSON(Int8.toJSON(x))! ==== x },
+		forAll { (x : Int16) in Int16.fromJSON(Int16.toJSON(x))! ==== x },
+		forAll { (x : Int32) in Int32.fromJSON(Int32.toJSON(x))! ==== x },
+		forAll { (x : Int64) in Int64.fromJSON(Int64.toJSON(x))! ==== x },
+		forAll { (x : UInt) in UInt.fromJSON(UInt.toJSON(x))! ==== x },
+		forAll { (x : UInt8) in UInt8.fromJSON(UInt8.toJSON(x))! ==== x },
+		forAll { (x : UInt16) in UInt16.fromJSON(UInt16.toJSON(x))! ==== x },
+		forAll { (x : UInt32) in UInt32.fromJSON(UInt32.toJSON(x))! ==== x },
+		forAll { (x : UInt64) in UInt64.fromJSON(UInt64.toJSON(x))! ==== x },
+		forAll { (x : Double) in Double.fromJSON(Double.toJSON(x))! ==== x },
+		forAll { (x : Float) in Float.fromJSON(Float.toJSON(x))! ==== x },
+	]
+
+	func testProperties() {
+		self.frequentFliers.forEach { property("Round trip behaves") <- $0 }
+	}
+
 	func testDataJSON() {
 		let js = "[1,\"foo\"]"
 		let lhs = JSONValue.decode(js)
@@ -173,124 +134,5 @@ class JSONSpec : XCTestCase {
 		XCTAssertTrue(keypath.path == path, "Expected keypath and path to match")
 		XCTAssertTrue((JSONKeypath.mempty <> keypath).path == keypath.path, "Expected left identity to hold")
 		XCTAssertTrue((keypath <> JSONKeypath.mempty).path == keypath.path, "Expected right identity to hold")
-	}
-}
-
-/// Tests for JSON values
-extension JSONSpec {
-	func testString() {
-		let js = "{\"name\": \"matthew\"}"
-		let p = JSONValue.decode(js) >>- Person.fromJSON
-		XCTAssert(p == Person("matthew"))
-	}
-	
-	func testBool() {
-		// Test for: false
-		let js1 = "{\"admin\":false}"
-		let up1 = JSONValue.decode(js1) >>- UserPermission.fromJSON
-		XCTAssert(up1! == UserPermission(admin : false))
-		
-		// Test for: true
-		let js2 = "{\"admin\":true}"
-		let up2 = JSONValue.decode(js2) >>- UserPermission.fromJSON
-		XCTAssert(up2! == UserPermission(admin : true))
-		
-		// Test for: 0
-		let js3 = "{\"admin\":0}"
-		let up3 = JSONValue.decode(js3) >>- UserPermission.fromJSON
-		XCTAssert(up3! == UserPermission(admin : false))
-		
-		// Test for: 1
-		let js4 = "{\"admin\":1}"
-		let up4 = JSONValue.decode(js4) >>- UserPermission.fromJSON
-		XCTAssert(up4! == UserPermission(admin : true))
-	}
-	
-	func testDouble() {
-		let js = "{ \"map\": { \"coordinates\": { \"xPart\": 1000.0, \"yPart\": 2.000 } } }"
-		let coord = JSONValue.decode(js) >>- Coordinate.fromJSON
-		XCTAssert(coord != nil)
-		XCTAssert(coord?.x == 1000.0)
-		XCTAssert(coord?.y == 2.0)
-	}
-	
-	func testFloat() {
-		let js = "{\"origin\":{\"x\":0.0,\"y\":10.5},\"size\":{\"width\":100,\"height\":20.20}}"
-		let rect = JSONValue.decode(js) >>- Rect.fromJSON
-		XCTAssert(rect != nil)
-		XCTAssertTrue(CGPointEqualToPoint(rect!.origin, CGPointMake(0.0, 10.5)))
-		XCTAssertEqualWithAccuracy(rect!.origin.x, 0.0, accuracy: 0.0)
-		XCTAssertEqualWithAccuracy(rect!.origin.y, 10.5, accuracy: 0.0)
-		XCTAssertEqualWithAccuracy(rect!.size.width, 100, accuracy: 0.0)
-		XCTAssertEqualWithAccuracy(rect!.size.height, 20.20, accuracy: 0.01)
-	}
-	
-	func testNSNumber() {
-		let js = "{\"number\":100}"
-		let n = JSONValue.decode(js) >>- NumberContainer.fromJSON
-		XCTAssert(n != nil)
-		XCTAssert(n?.number == 100)
-		XCTAssert(n?.number == NSNumber(integer: 100))
-		
-		let js2 = "{\"number\":false}"
-		let n2 = JSONValue.decode(js2) >>- NumberContainer.fromJSON
-		XCTAssert(n2 != nil)
-		XCTAssert(n2?.number == false)
-		XCTAssert(n2?.number == NSNumber(bool: false))
-		
-		let js3 = "{\"number\":true}"
-		let n3 = JSONValue.decode(js3) >>- NumberContainer.fromJSON
-		XCTAssert(n3 != nil)
-		XCTAssert(n3?.number == true)
-		XCTAssert(n3?.number == NSNumber(bool: true))
-		
-		let js4 = "{\"number\":100.5}"
-		let n4 = JSONValue.decode(js4) >>- NumberContainer.fromJSON
-		XCTAssert(n4 != nil)
-		XCTAssert(n4?.number == 100.5)
-		XCTAssert(n4?.number == NSNumber(double: 100.5))
-	}
-	
-	func testInt() {
-		let js = "{\"number\":100}"
-		let n = JSONValue.decode(js) >>- IntContainer.fromJSON
-		XCTAssert(n != nil)
-		XCTAssert(n?.number == 100)
-		XCTAssert(n?.number == Int(100))
-	}
-	
-	func testInt64() {
-		let value = Int64.max
-		let js = "{\"number\":\(value)}"
-		let n = JSONValue.decode(js) >>- Int64Container.fromJSON
-		XCTAssert(n != nil)
-		XCTAssert(n?.number == value)
-		XCTAssert(n?.number == Int64(value))
-	}
-	
-	func testUInt64() {
-		let value: UInt64 = 103622342330925644
-		let js = "{\"number\":\(value)}"
-		let n = JSONValue.decode(js) >>- UInt64Container.fromJSON
-		XCTAssert(n != nil)
-		XCTAssert(n?.number == value)
-		XCTAssert(n?.number == UInt64(value))
-		XCTAssert(n?.number == NSNumber(unsignedLongLong: value).unsignedLongLongValue)
-	}
-}
-
-extension JSONSpec {
-	func testCoordinateDecode() {
-		let JSON = "{ \"map\": { \"coordinates\": { \"xPart\": 1000.0, \"yPart\": 2.000 } } }"
-		let badJSON = "{ \"map\": { \"coordinates\": { \"zPart\": \"0.0\", \"ePart\": \"10.0\" } } }"
-
-		let coord = JSONValue.decode(JSON) >>- Coordinate.fromJSON
-
-		XCTAssertTrue(coord != nil)
-		XCTAssertTrue(coord?.x == 1000.0)
-		XCTAssertTrue(coord?.y == 2.0)
-
-		let badCoord = JSONValue.decode(badJSON) >>- Coordinate.fromJSON
-		XCTAssertTrue(badCoord == nil)
 	}
 }

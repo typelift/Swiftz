@@ -73,7 +73,7 @@ class GenericsSpec : XCTestCase {
 				case let x as Double:
 					r[n] = JSONValue.JSONNumber(x)
 				default:
-					r[n] = JSONValue.JSONNull()
+					r[n] = JSONValue.JSONNull
 				}
 			}
 			return .JSONObject(r)
