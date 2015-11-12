@@ -294,3 +294,60 @@ extension JSONSpec {
 		XCTAssertTrue(badCoord == nil)
 	}
 }
+
+struct TestObject: JSONDecodable {
+	let required1: String
+	let required2: String
+	let optional1: Bool?
+	let optional2: Bool?
+	
+	static func fromJSON(x : JSONValue) -> TestObject? {
+		let p1: String? = x <? "required1"
+		let p2: String? = x <? "required2"
+		let p3: Bool?? = x <?? "optional1"
+		let p4: Bool?? = x <?? "optional2"
+		
+		return curry(TestObject.init)
+			<^> p1
+			<*> p2
+			<*> p3
+			<*> p4
+	}
+}
+
+extension JSONSpec {
+	func testOptionalRetrieve() {
+		let jsonWithOptionalValue1 = "{\"required1\":\"a\", \"required2\":\"b\",\"optional1\":false}"
+		let jsonWithOptionalValue2 = "{\"required1\":\"a\", \"required2\":\"b\",\"optional2\":true}"
+		let jsonWithOptionalValue3 = "{\"required1\":\"a\", \"required2\":\"b\",\"optional1\":true,\"optional2\":false}"
+		let jsonWithoutOptionalValues = "{\"required1\":\"a\", \"required2\":\"b\"}"
+		
+		let testObject1 = JSONValue.decode(jsonWithOptionalValue1) >>- TestObject.fromJSON
+		XCTAssertNotNil(testObject1)
+		XCTAssert(testObject1!.required1 == "a")
+		XCTAssert(testObject1!.required2 == "b")
+		XCTAssert(testObject1!.optional1 == false)
+		XCTAssert(testObject1!.optional2 == nil)
+		
+		let testObject2 = JSONValue.decode(jsonWithOptionalValue2) >>- TestObject.fromJSON
+		XCTAssertNotNil(testObject2)
+		XCTAssert(testObject2!.required1 == "a")
+		XCTAssert(testObject2!.required2 == "b")
+		XCTAssert(testObject2!.optional1 == nil)
+		XCTAssert(testObject2!.optional2 == true)
+		
+		let testObject3 = JSONValue.decode(jsonWithOptionalValue3) >>- TestObject.fromJSON
+		XCTAssertNotNil(testObject3)
+		XCTAssert(testObject3!.required1 == "a")
+		XCTAssert(testObject3!.required2 == "b")
+		XCTAssert(testObject3!.optional1 == true)
+		XCTAssert(testObject3!.optional2 == false)
+		
+		let testObject4 = JSONValue.decode(jsonWithoutOptionalValues) >>- TestObject.fromJSON
+		XCTAssertNotNil(testObject4)
+		XCTAssert(testObject4!.required1 == "a")
+		XCTAssert(testObject4!.required2 == "b")
+		XCTAssert(testObject4!.optional1 == nil)
+		XCTAssert(testObject4!.optional2 == nil)
+	}
+}
