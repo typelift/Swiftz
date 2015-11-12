@@ -168,6 +168,18 @@ public func <? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKey
 	}
 }
 
+public func <?? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A?? {
+	return lhs <? rhs ?? nil
+}
+
+public func <?? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [A]?? {
+	return lhs <? rhs ?? nil
+}
+
+public func <?? <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> [String: A]?? {
+	return lhs <? rhs ?? nil
+}
+
 public func <! <A : JSONDecodable where A == A.J>(lhs : JSONValue, rhs : JSONKeypath) -> A {
 	if let r : A = (lhs <? rhs) {
 		return r
