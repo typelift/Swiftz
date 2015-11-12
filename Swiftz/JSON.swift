@@ -8,6 +8,12 @@
 
 import Foundation
 
+/// Temporarily added <?? parameter until <?? is added to Operadics.
+infix operator <?? {
+    associativity left
+    precedence 150
+}
+
 public enum JSONValue : CustomStringConvertible {
 	case JSONArray([JSONValue])
 	case JSONObject(Dictionary<String, JSONValue>)
