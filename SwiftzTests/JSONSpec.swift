@@ -295,17 +295,17 @@ extension JSONSpec {
 	}
 }
 
-struct TestObject: JSONDecodable {
-	let required1: String
-	let required2: String
-	let optional1: Bool?
-	let optional2: Bool?
+struct TestObject : JSONDecodable {
+	let required1 : String
+	let required2 : String
+	let optional1 : Bool?
+	let optional2 : Bool?
 	
 	static func fromJSON(x : JSONValue) -> TestObject? {
-		let p1: String? = x <? "required1"
-		let p2: String? = x <? "required2"
-		let p3: Bool?? = x <?? "optional1"
-		let p4: Bool?? = x <?? "optional2"
+		let p1 : String? = x <? "required1"
+		let p2 : String? = x <? "required2"
+		let p3 : Bool?? = x <?? "optional1"
+		let p4 : Bool?? = x <?? "optional2"
 		
 		return curry(TestObject.init)
 			<^> p1
