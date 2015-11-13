@@ -13,42 +13,40 @@ public enum JSONValue : CustomStringConvertible {
 	case JSONObject(Dictionary<String, JSONValue>)
 	case JSONString(String)
 	case JSONNumber(NSNumber)
-	case JSONNull()
+	case JSONNull
 
 	private func values() -> NSObject {
 		switch self {
 		case let .JSONArray(xs):
 			return NSArray(array: xs.map { $0.values() })
 		case let .JSONObject(xs):
-			return Dictionary.fromList(xs.map({ k, v in
-				return (NSString(string: k), v.values())
+			return Dictionary(xs.map({ k, v in
+				return (k, v.values())
 			}))
 		case let .JSONNumber(n):
 			return n
 		case let .JSONString(s):
-			return NSString(string: s)
-		case .JSONNull():
+			return s
+		case .JSONNull:
 			return NSNull()
 		}
 	}
 
 	// we know this is safe because of the NSJSONSerialization docs
-	private static func make(a : NSObject) -> JSONValue {
+	private static func make(a : AnyObject) -> JSONValue {
 		switch a {
-		case let xs as NSArray:
-			return .JSONArray((xs as [AnyObject]).map { self.make($0 as! NSObject) })
-		case let xs as NSDictionary:
-			return JSONValue.JSONObject(Dictionary.fromList((xs as [NSObject: AnyObject]).map({ (k: NSObject, v: AnyObject) in
-				return (String(k as! NSString), self.make(v as! NSObject))
-			})))
+		case let xs as [AnyObject]:
+			return .JSONArray(xs.map(make))
+		case let xs as [String: AnyObject]:
+			return .JSONObject(xs.map(make))
 		case let xs as NSNumber:
 			return .JSONNumber(xs)
-		case let xs as NSString:
-			return .JSONString(String(xs))
+		case let xs as String:
+			return .JSONString(xs)
 		case _ as NSNull:
-			return .JSONNull()
+			return .JSONNull
 		default:
-			return error("Non-exhaustive pattern match performed.");
+			return error("Non-exhaustive pattern match performed.")
 		}
 	}
 
@@ -84,8 +82,8 @@ public enum JSONValue : CustomStringConvertible {
 	public var description : String {
 		get {
 			switch self {
-			case .JSONNull():
-				return "JSONNull()"
+			case .JSONNull:
+				return "JSONNull"
 			case let .JSONString(s):
 				return "JSONString(\(s))"
 			case let .JSONNumber(n):
@@ -103,7 +101,7 @@ public enum JSONValue : CustomStringConvertible {
 // Equatable
 public func ==(lhs : JSONValue, rhs : JSONValue) -> Bool {
 	switch (lhs, rhs) {
-	case (.JSONNull(), .JSONNull()):
+	case (.JSONNull, .JSONNull):
 		return true
 	case let (.JSONString(l), .JSONString(r)) where l == r:
 		return true
@@ -346,7 +344,7 @@ extension String : JSON {
 extension NSNull : JSON {
 	public class func fromJSON(x : JSONValue) -> NSNull? {
 		switch x {
-		case .JSONNull():
+		case .JSONNull:
 			return NSNull()
 		default:
 			return nil
@@ -354,7 +352,7 @@ extension NSNull : JSON {
 	}
 
 	public class func toJSON(xs : NSNull) -> JSONValue {
-		return JSONValue.JSONNull()
+		return .JSONNull
 	}
 }
 
@@ -454,7 +452,7 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs):
-			return Dictionary.fromList(xs.map({ k, x in
+			return Dictionary(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
 			}))
 		default:
@@ -467,7 +465,7 @@ public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable
 	public typealias J = Dictionary<String, A>
 
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x -> (String, JSONValue) in
+		return JSONValue.JSONObject(Dictionary(xs.map({ k, x -> (String, JSONValue) in
 			return (k, B.toJSON(x))
 		})))
 	}
@@ -479,7 +477,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs):
-			return Dictionary<String, A>.fromList(xs.map({ k, x in
+			return Dictionary<String, A>(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
 			}))
 		default:
@@ -488,7 +486,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 	}
 
 	public static func toJSON(xs : J) -> JSONValue {
-		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x in
+		return JSONValue.JSONObject(Dictionary(xs.map({ k, x in
 			return (k, B.toJSON(x))
 		})))
 	}

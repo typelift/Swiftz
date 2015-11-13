@@ -65,15 +65,15 @@ class GenericsSpec : XCTestCase {
 			for (n, vs) in d.vals {
 				switch vs {
 				case let x as Int:
-					r[n] = JSONValue.JSONNumber(x)
+					r[n] = .JSONNumber(x)
 				case let x as String:
-					r[n] = JSONValue.JSONString(x)
+					r[n] = .JSONString(x)
 				case let x as Bool:
-					r[n] = JSONValue.JSONNumber(x)
+					r[n] = .JSONNumber(x)
 				case let x as Double:
-					r[n] = JSONValue.JSONNumber(x)
+					r[n] = .JSONNumber(x)
 				default:
-					r[n] = JSONValue.JSONNull()
+					r[n] = .JSONNull
 				}
 			}
 			return .JSONObject(r)
