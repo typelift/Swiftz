@@ -351,3 +351,67 @@ extension JSONSpec {
 		XCTAssert(testObject4!.optional2 == nil)
 	}
 }
+
+enum UserAccessLevel : Int {
+	case NoAccess, Level1
+}
+
+extension UserAccessLevel : JSONDecodable {}
+extension UserAccessLevel : JSONEncodable {}
+
+enum UserRole : String {
+	case Normal = "normal"
+	case Admin = "admin"
+}
+
+extension UserRole : JSONDecodable {}
+extension UserRole : JSONEncodable {}
+
+struct UserInfo : JSONDecodable, JSONEncodable {
+	let accessLevel : UserAccessLevel
+	let userRole : UserRole
+	
+	static func fromJSON(x : JSONValue) -> UserInfo? {
+		let p1 : UserAccessLevel? = x <? "accessLevel"
+		let p2 : UserRole? = x <? "userRole"
+		return curry(UserInfo.init)
+			<^> p1
+			<*> p2
+	}
+	
+	static func toJSON(x : UserInfo) -> JSONValue {
+		let values: [String : JSONValue] = ["accessLevel" : UserAccessLevel.toJSON(x.accessLevel), "userRole" : UserRole.toJSON(x.userRole)]
+		return JSONValue.JSONObject(values)
+	}
+}
+
+extension NSData {
+	private func toUTF8String() -> String? {
+		return String(data: self, encoding: NSUTF8StringEncoding)
+	}
+}
+
+extension JSONSpec {
+	func testEnumJSONDecodable() {
+		let json1 = "{\"accessLevel\":0,\"userRole\":\"normal\"}"
+		let json2 = "{\"accessLevel\":1,\"userRole\":\"admin\"}"
+		
+		let userInfo1 = JSONValue.decode(json1) >>- UserInfo.fromJSON
+		XCTAssertNotNil(userInfo1)
+		XCTAssert(userInfo1?.accessLevel == .NoAccess)
+		XCTAssert(userInfo1?.userRole == .Normal)
+		
+		let userInfo2 = JSONValue.decode(json2) >>- UserInfo.fromJSON
+		XCTAssertNotNil(userInfo2)
+		XCTAssert(userInfo2?.accessLevel == .Level1)
+		XCTAssert(userInfo2?.userRole == .Admin)
+	}
+	
+	func testEnumJSONEncodable() {
+		let userInfo = UserInfo(accessLevel: .Level1, userRole: .Admin)
+		let jsonValue = UserInfo.toJSON(userInfo)
+		let jsonString = jsonValue.encode()?.toUTF8String()
+		
+		XCTAssert("{\"accessLevel\":1,\"userRole\":\"admin\"}" == jsonString)
+	}
+}
