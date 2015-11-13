@@ -7,13 +7,13 @@
 //
 
 extension Dictionary {
-	/// Creates a Dictionary from a list of Key-Value pairs.
-	static func fromList(l : [(Key, Value)]) -> Dictionary<Key, Value> {
-		var d = Dictionary<Key, Value>(minimumCapacity: l.count)
-		l.forEach { (k, v) in
-			d[k] = v
+	/// Initialize a Dictionary from a list of Key-Value pairs.
+	init<S: SequenceType where S.Generator.Element == Element>
+		(_ seq: S) {
+		self.init()
+		for (k, v) in seq {
+			self[k] = v
 		}
-		return d
 	}
 
 	/// MARK: Query

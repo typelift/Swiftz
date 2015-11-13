@@ -187,8 +187,22 @@ class ArrayExtSpec : XCTestCase {
 
 			return Discard()
 		}
+		
+		property("mapLabelPairs and label behave") <- forAll { (xs : [Int]) in
+			let keyForInt: Int -> String = { "key\($0)" }
+			let dictionary1: [String: Int] = xs.mapLabelPairs { (keyForInt($0), $0) }
+			let dictionary2: [String: Int] = xs.mapLabel { keyForInt($0) }
+			
+			for v in xs {
+				let k = keyForInt(v)
+				if dictionary1[k] == nil || dictionary2[k] == nil {
+					return false
+				}
+			}
+			
+			return dictionary1 == dictionary2
+		}
 	}
-
 
 	func testAny() {
 		let withArray = Array([1,4,5,7])
