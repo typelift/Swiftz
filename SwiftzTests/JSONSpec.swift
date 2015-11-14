@@ -415,3 +415,23 @@ extension JSONSpec {
 		XCTAssert("{\"accessLevel\":1,\"userRole\":\"admin\"}" == jsonString)
 	}
 }
+
+struct UserAccessLog: JSONDecodable {
+	let lastUpdated: NSDate
+	
+	static func fromJSON(x : JSONValue) -> UserAccessLog? {
+		let p1 : NSDate? = x <? "lastUpdated"
+		return UserAccessLog.init <^> p1
+	}
+}
+
+extension JSONSpec {
+	func testDateJSONDecodable() {
+		let timestampInMilliseconds: Double = 1443769200000
+		let date = NSDate(timeIntervalSince1970: timestampInMilliseconds / 1000.0)
+		let json = "{\"lastUpdated\":\(timestampInMilliseconds)}"
+		let userAccessLog = JSONValue.decode(json) >>- UserAccessLog.fromJSON
+		XCTAssertNotNil(userAccessLog)
+		XCTAssert(userAccessLog?.lastUpdated == date)
+	}
+}

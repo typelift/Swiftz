@@ -342,6 +342,21 @@ extension String : JSON {
 	}
 }
 
+extension NSDate : JSON {
+	public static func fromJSON(x : JSONValue) -> NSDate? {
+		switch x {
+		case .JSONNumber(let value):
+			return NSDate(timeIntervalSince1970: value.doubleValue / 1000.0)
+		default:
+			return nil
+		}
+	}
+	
+	public static func toJSON(date: NSDate) -> JSONValue {
+		return JSONValue.JSONNumber(date.timeIntervalSince1970 * 1000.0)
+	}
+}
+
 // or unit...
 extension NSNull : JSON {
 	public class func fromJSON(x : JSONValue) -> NSNull? {
