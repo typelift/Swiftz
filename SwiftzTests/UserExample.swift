@@ -10,7 +10,7 @@ import Swiftz
 
 // A user example
 // an example of why we need SYB, Generics or macros
-class User {
+final class User {
 	let id : UInt64
 	let name : String
 	let age : Int
