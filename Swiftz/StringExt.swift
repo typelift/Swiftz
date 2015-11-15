@@ -189,7 +189,7 @@ extension String : Applicative {
 	}
 }
 
-public func <*> (f : Array<(Character -> Character)>, l : String) -> String {
+public func <*> (f : [(Character -> Character)], l : String) -> String {
 	return l.ap(f)
 }
 

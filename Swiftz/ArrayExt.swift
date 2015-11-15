@@ -44,7 +44,8 @@ extension Array : ApplicativeOps {
 	public typealias FD = [D]
 
 	public static func liftA<B>(f : A -> B) -> [A] -> [B] {
-		return { a in Array<A -> B>.pure(f) <*> a }
+		typealias FAB = A -> B
+		return { a in [FAB].pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
@@ -76,36 +77,36 @@ extension Array : MonadOps {
 	}
 }
 
-public func >>->> <A, B, C>(f : A -> Array<B>, g : B -> Array<C>) -> (A -> Array<C>) {
+public func >>->> <A, B, C>(f : A -> [B], g : B -> [C]) -> (A -> [C]) {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <A, B, C>(g : B -> Array<C>, f : A -> Array<B>) -> (A -> Array<C>) {
+public func <<-<< <A, B, C>(g : B -> [C], f : A -> [B]) -> (A -> [C]) {
 	return f >>->> g
 }
 
 extension Array : MonadPlus {
-	public static var mzero : Array<Element> {
+	public static var mzero : [Element] {
 		return []
 	}
 
-	public func mplus(other : Array<Element>) -> Array<Element> {
+	public func mplus(other : [Element]) -> [Element] {
 		return self + other
 	}
 }
 
 extension Array : MonadZip {
-	public typealias FTAB = Array<(A, B)>
+	public typealias FTAB = [(A, B)]
 
-	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
-		return Array<(A, B)>(zip(self, ma))
+	public func mzip<B>(ma : [B]) -> [(A, B)] {
+		return [(A, B)](zip(self, ma))
 	}
 
-	public func mzipWith<B, C>(other : Array<B>, _ f : A -> B -> C) -> Array<C> {
+	public func mzipWith<B, C>(other : [B], _ f : A -> B -> C) -> [C] {
 		return self.mzip(other).map(uncurry(f))
 	}
 
-	public static func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
+	public static func munzip<B>(ftab : [(A, B)]) -> ([A], [B]) {
 		return (ftab.map(fst), ftab.map(snd))
 	}
 }
