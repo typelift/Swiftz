@@ -10,7 +10,7 @@ import Foundation
 
 public enum JSONValue : CustomStringConvertible {
 	case JSONArray([JSONValue])
-	case JSONObject(Dictionary<String, JSONValue>)
+	case JSONObject([String: JSONValue])
 	case JSONString(String)
 	case JSONNumber(NSNumber)
 	case JSONNull()
@@ -449,7 +449,7 @@ public struct JArray<A, B : JSON where B.J == A> : JSON {
 
 
 public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodable {
-	public typealias J = Dictionary<String, A>
+	public typealias J = [String: A]
 
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
@@ -464,7 +464,7 @@ public struct JDictionaryFrom<A, B : JSONDecodable where B.J == A> : JSONDecodab
 }
 
 public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable {
-	public typealias J = Dictionary<String, A>
+	public typealias J = [String: A]
 
 	public static func toJSON(xs : J) -> JSONValue {
 		return JSONValue.JSONObject(Dictionary.fromList(xs.map({ k, x -> (String, JSONValue) in
@@ -474,12 +474,12 @@ public struct JDictionaryTo<A, B : JSONEncodable where B.J == A> : JSONEncodable
 }
 
 public struct JDictionary<A, B : JSON where B.J == A> : JSON {
-	public typealias J = Dictionary<String, A>
+	public typealias J = [String: A]
 
 	public static func fromJSON(x : JSONValue) -> J? {
 		switch x {
 		case let .JSONObject(xs):
-			return Dictionary<String, A>.fromList(xs.map({ k, x in
+			return [String: A].fromList(xs.map({ k, x in
 				return (k, B.fromJSON(x)!)
 			}))
 		default:
@@ -497,7 +497,7 @@ public struct JDictionary<A, B : JSON where B.J == A> : JSON {
 
 /// MARK: Implementation Details
 
-private func resolveKeypath(lhs : Dictionary<String, JSONValue>, rhs : JSONKeypath) -> JSONValue? {
+private func resolveKeypath(lhs : [String: JSONValue], rhs : JSONKeypath) -> JSONValue? {
 	if rhs.path.isEmpty {
 		return nil
 	}
