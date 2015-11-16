@@ -16,14 +16,14 @@ class ArrayExtSpec : XCTestCase {
 			return mapFlatten(xs0.map({ $0.getOptional })) == xs0.filter({ $0.getOptional != nil }).map({ $0.getOptional! })
 		}
 
-		property("indexArray is safe") <- forAll { (l : Array<Int>) in
+		property("indexArray is safe") <- forAll { (l : [Int]) in
 			if l.isEmpty {
 				return l.safeIndex(0) == nil
 			}
 			return l.safeIndex(0) != nil
 		}
 
-		property("Array fmap is the same as map") <- forAll { (xs : Array<Int>) in
+		property("Array fmap is the same as map") <- forAll { (xs : [Int]) in
 			return (+1 <^> xs) == xs.map(+1)
 		}
 
@@ -31,7 +31,7 @@ class ArrayExtSpec : XCTestCase {
 			return Array.pure(x) == [x]
 		}
 
-		property("Array bind works like a map then a concat") <- forAll { (xs : Array<Int>) in
+		property("Array bind works like a map then a concat") <- forAll { (xs : [Int]) in
 			func fs(x : Int) -> [Int] {
 				return [x, x+1, x+2]
 			}
@@ -39,17 +39,17 @@ class ArrayExtSpec : XCTestCase {
 			return (xs >>- fs) == xs.map(fs).reduce([], combine: +)
 		}
 
-		property("Array obeys the Functor identity law") <- forAll { (x : Array<Int>) in
+		property("Array obeys the Functor identity law") <- forAll { (x : [Int]) in
 			return (x.map(identity)) == identity(x)
 		}
 
 		property("Array obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
-			return forAll { (x : Array<Int>) in
+			return forAll { (x : [Int]) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.map(g.getArrow).map(f.getArrow))
 			}
 		}
 
-		property("Array obeys the Applicative identity law") <- forAll { (x : Array<Int>) in
+		property("Array obeys the Applicative identity law") <- forAll { (x : [Int]) in
 			return (Array.pure(identity) <*> x) == x
 		}
 
@@ -70,14 +70,14 @@ class ArrayExtSpec : XCTestCase {
 			return (Array.pure(a) >>- f) == f(a)
 		}
 
-		property("Array obeys the Monad right identity law") <- forAll { (m : Array<Int>) in
+		property("Array obeys the Monad right identity law") <- forAll { (m : [Int]) in
 			return (m >>- Array.pure) == m
 		}
 
 		property("Array obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>) in
 			let f = { $0.getArray } • fa.getArrow
 			let g = { $0.getArray } • ga.getArrow
-			return forAll { (m : Array<Int>) in
+			return forAll { (m : [Int]) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
 		}
@@ -90,7 +90,7 @@ class ArrayExtSpec : XCTestCase {
 			return ([] <> x) == x
 		}
 
-		property("scanl behaves") <- forAll { (withArray : Array<Int>) in
+		property("scanl behaves") <- forAll { (withArray : [Int]) in
 			let scanned = withArray.scanl(0, r: +)
 			if withArray.isEmpty {
 				return scanned == [0]
@@ -98,7 +98,7 @@ class ArrayExtSpec : XCTestCase {
 			return scanned == [0] + [Int](withArray[1..<withArray.count]).scanl(0 + withArray.first!, r: +)
 		}
 
-		property("intersperse behaves") <- forAll { (withArray : Array<Int>) in
+		property("intersperse behaves") <- forAll { (withArray : [Int]) in
 			let inter = withArray.intersperse(1)
 			if withArray.isEmpty {
 				return inter.isEmpty
@@ -106,40 +106,40 @@ class ArrayExtSpec : XCTestCase {
 			return TestResult.succeeded // TODO: Test non-empty case
 		}
 
-		property("find either finds or nils") <- forAll { (withArray : Array<Int>) in
+		property("find either finds or nils") <- forAll { (withArray : [Int]) in
 			if let found = withArray.find(==4) {
 				return found == 4
 			}
 			return true
 		}
 
-		property("and behaves") <- forAll { (withArray : Array<Bool>) in
+		property("and behaves") <- forAll { (withArray : [Bool]) in
 			if let _ = withArray.find(==false) {
 				return !withArray.and
 			}
 			return withArray.and
 		}
 
-		property("or behaves") <- forAll { (withArray : Array<Bool>) in
+		property("or behaves") <- forAll { (withArray : [Bool]) in
 			if let _ = withArray.find(==true) {
 				return withArray.or
 			}
 			return !withArray.or
 		}
 
-		property("take behaves") <- forAll { (array : Array<Int>) in
+		property("take behaves") <- forAll { (array : [Int]) in
 			return forAll { (limit : Positive<Int>) in
 				return array.take(limit.getPositive).count <= limit.getPositive
 			}
 		}
 
-		property("drop behaves") <- forAll { (array : Array<Int>) in
+		property("drop behaves") <- forAll { (array : [Int]) in
 			return forAll { (limit : Positive<Int>) in
 				return array.drop(limit.getPositive).count == max(0, array.count - limit.getPositive)
 			}
 		}
 
-		property("span behaves") <- forAll { (xs : Array<Int>) in
+		property("span behaves") <- forAll { (xs : [Int]) in
 			return forAll { (pred : ArrowOf<Int, Bool>) in
 				let p = xs.span(pred.getArrow)
 				let t = (xs.takeWhile(pred.getArrow), xs.dropWhile(pred.getArrow))
@@ -147,7 +147,7 @@ class ArrayExtSpec : XCTestCase {
 			}
 		}
 
-		property("extreme behaves") <- forAll { (xs : Array<Int>) in
+		property("extreme behaves") <- forAll { (xs : [Int]) in
 			return forAll { (pred : ArrowOf<Int, Bool>) in
 				let p = xs.extreme(pred.getArrow)
 				let t = xs.span((!) • pred.getArrow)
@@ -155,16 +155,16 @@ class ArrayExtSpec : XCTestCase {
 			}
 		}
 
-		property("intercalate behaves") <- forAll { (xs : Array<Int>, xxsa : Array<ArrayOf<Int>>) in
+		property("intercalate behaves") <- forAll { (xs : [Int], xxsa : Array<ArrayOf<Int>>) in
 			let xxs = xxsa.map { $0.getArray }
 			return intercalate(xs, nested: xxs) == concat(xxs.intersperse(xs))
 		}
 
-		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : Array<Int>) in
+		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : [Int]) in
 			return xs.group == xs.groupBy { $0 == $1 }
 		}
 
-		property("isPrefixOf behaves") <- forAll { (s1 : Array<Int>, s2 : Array<Int>) in
+		property("isPrefixOf behaves") <- forAll { (s1 : [Int], s2 : [Int]) in
 			if s1.isPrefixOf(s2) {
 				return s1.stripPrefix(s2) != nil
 			}
@@ -176,7 +176,7 @@ class ArrayExtSpec : XCTestCase {
 			return Discard()
 		}
 
-		property("isSuffixOf behaves") <- forAll { (s1 : Array<Int>, s2 : Array<Int>) in
+		property("isSuffixOf behaves") <- forAll { (s1 : [Int], s2 : [Int]) in
 			if s1.isSuffixOf(s2) {
 				return s1.stripSuffix(s2) != nil
 			}
