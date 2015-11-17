@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+import Foundation
+
 /// An enum representing the possible values a string can match against.
 public enum StringMatcher {
 	/// The empty string.
