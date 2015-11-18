@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-import Foundation
-
 /// An enum representing the possible values a string can match against.
 public enum StringMatcher {
 	/// The empty string.
@@ -19,7 +17,11 @@ public enum StringMatcher {
 extension String {
 	/// Returns an array of strings at newlines.
 	public func lines() -> [String] {
-		return self.componentsSeparatedByString("\n")
+		return componentsSeparatedByString("\n")
+	}
+	
+	public func componentsSeparatedByString(token: Character) -> [String] {
+		return characters.split(Int.max, allowEmptySlices: true) { $0 == token }.map { String($0) }
 	}
 
 	/// Concatenates an array of strings into a single string containing newlines between each
