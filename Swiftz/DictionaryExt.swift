@@ -151,9 +151,9 @@ extension Dictionary {
 
 	/// Maps a function over all values in the receiver.
 	public func map<Value2>(f : Value -> Value2) -> [Key: Value2] {
-		return self.mapWithKey({ (_, x) -> Value2 in
+		return self.mapWithKey { (_, x) -> Value2 in
 			return f(x)
-		})
+		}
 	}
 
 	/// Maps a function over all keys and values in the receiver.
@@ -177,6 +177,30 @@ extension Dictionary {
 			d[f(k)] = v
 		}
 		return d
+	}
+
+	/// Map values and collect the '.Some' results.
+	public func mapMaybe<Value2>(f : Value -> Value2?) -> [Key : Value2] {
+		return self.mapMaybeWithKey { (_, x) -> Value2? in
+			return f(x)
+		}
+	}
+
+	/// Map a function over all keys and values and collect the '.Some' results.
+	public func mapMaybeWithKey<B>(f : (Key, Value) -> B?) -> [Key : B] {
+		return self.mapMaybeWithKey(curry(f))
+	}
+
+	/// Map a function over all keys and values and collect the '.Some' results.
+	public func mapMaybeWithKey<B>(f : Key -> Value -> B?) -> [Key : B] {
+		var b = [Key : B]()
+
+		for (k, v) in self.mapWithKey(f) {
+			if let v = v {
+				b[k] = v
+			}
+		}
+		return b
 	}
 
 	/// MARK: Partition
