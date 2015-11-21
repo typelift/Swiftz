@@ -1,21 +1,5 @@
 language: objective-c
-osx_image: xcode7
-
-env:
-    - TEST_CONFIG="RELEASE"
-#   - TEST_CONFIG="CARTHAGE"
-    - TEST_CONFIG="PODS"
-
-before_install:
-    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet; fi
-    - if [[ "$TEST_CONFIG" == "CARTHAGE" ]]; then brew install carthage; fi
-
-install:
-    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then git submodule update -i --recursive; fi
-
-script:
-    - set -o pipefail
-    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then xcodebuild -project Swiftz.xcodeproj -scheme Swiftz -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test | xcpretty -c -f `xcpretty-travis-formatter`; fi
-    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then xcodebuild -project Swiftz.xcodeproj -scheme Swiftz-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test | xcpretty -c -f `xcpretty-travis-formatter`; fi
-    - if [[ "$TEST_CONFIG" == "CARTHAGE" ]]; then carthage update --verbose --no-use-binaries && carthage build --no-skip-current --configuration Debug; fi
-    - if [[ "$TEST_CONFIG" == "PODS" ]]; then pod lib lint; fi
+osx_image: xcode7.1
+before_install: true
+install: true
+script: script/cibuild Swiftz Swiftz-iOS
