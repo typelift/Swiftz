@@ -1,5 +1,11 @@
 language: objective-c
 osx_image: xcode7.1
+env:
+    - TEST_CONFIG="RELEASE"
+    - TEST_CONFIG="PODS"
+
 before_install: true
 install: true
-script: script/cibuild Swiftz Swiftz-iOS
+script: 
+    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then script/cibuild Swiftz Swiftz-iOS ; fi
+    - if [[ "$TEST_CONFIG" == "PODS" ]]; then pod lib lint; fi
