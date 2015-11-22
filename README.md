@@ -102,6 +102,10 @@ let left = divideLeftMultiplyRight.apply(.Left(4)) // 2
 let right = divideLeftMultiplyRight.apply(.Right(7)) // 14
 ``` 
 
+**Operators**
+
+See [Operators](https://github.com/typelift/Operadics#operators) for a list of supported operators.
+
 Setup
 -----
 
