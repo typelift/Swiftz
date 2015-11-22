@@ -484,6 +484,23 @@ extension Array where Element : BooleanType {
 	}
 }
 
+/// MARK: Sequence and SequenceType extensions
+
+extension SequenceType {
+	/// Maps the array of  to a dictionary given a transformer function that returns
+	/// a (Key, Value) pair for the dictionary, if nil is returned then the value is
+	/// not added to the dictionary.
+	public func mapAssociate<Key : Hashable, Value>(f : Generator.Element -> (Key, Value)?) -> [Key : Value] {
+		return Dictionary(flatMap(f))
+	}
+	
+	/// Creates a dictionary of Key-Value pairs generated from the transformer function returning the key (the label)
+	/// and pairing it with that element.
+	public func mapAssociateLabel<Key : Hashable>(f : Generator.Element -> Key) -> [Key : Generator.Element] {
+		return Dictionary(map { (f($0), $0) })
+	}
+}
+
 /// Maps a function over a list of Optionals, applying the function of the optional is Some,
 /// discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs : [A?]) -> [A] {

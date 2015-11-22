@@ -187,6 +187,21 @@ class ArrayExtSpec : XCTestCase {
 
 			return Discard()
 		}
+		
+		property("mapAssociate and mapAssociateLabel behave") <- forAll { (xs : [Int]) in
+			let keyForInt: Int -> String = { "key\($0)" }
+			let dictionary1: [String: Int] = xs.mapAssociate { (keyForInt($0), $0) }
+			let dictionary2: [String: Int] = xs.mapAssociateLabel { keyForInt($0) }
+
+			for v in xs {
+				let k = keyForInt(v)
+				if dictionary1[k] == nil || dictionary2[k] == nil {
+					return false
+				}
+			}
+
+			return dictionary1 == dictionary2
+		}
 	}
 
 
