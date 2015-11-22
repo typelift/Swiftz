@@ -200,12 +200,16 @@ class ArrayExtSpec : XCTestCase {
 
 	func testAny() {
 		let withArray = Array([1,4,5,7])
+		let withSet = Set(withArray)
 		XCTAssert(withArray.any(>4), "Should be false")
+		XCTAssert(withSet.any(>4), "Should be false")
 	}
 
 	func testAll() {
 		let array = [1,3,24,5]
+		let set = Set(array)
 		XCTAssert(array.all(<=24), "Should be true")
+		XCTAssert(set.all(<=24), "Should be true")
 	}
 
 	func testSplitAt() {

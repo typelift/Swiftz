@@ -312,18 +312,6 @@ extension Array {
 		}
 	}
 
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
-	/// least once by an element of the list.
-	public func any(f : (Element -> Bool)) -> Bool {
-		return self.map(f).or
-	}
-
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
-	/// all elemenets of the list.
-	public func all(f : (Element -> Bool)) -> Bool {
-		return self.map(f).and
-	}
-
 	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
 	/// given predicate and the second element is the remainder of the list:
 	///
@@ -417,6 +405,20 @@ extension Array {
 			}
 			return []
 		}
+	}
+}
+
+extension SequenceType {
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+	/// least once by an element of the list.
+	public func any(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).or
+	}
+	
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+	/// all elemenets of the list.
+	public func all(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).and
 	}
 }
 

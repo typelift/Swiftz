@@ -14,8 +14,8 @@ class DictionaryExtSpec : XCTestCase {
     func testProperties() {
         property("Dictionary init maps key-value pairs from a sequence of that type") <- forAll { (xs : [Int]) in
             return forAll { (f : ArrowOf<Int, String>) in
-                let pairs: [(String, Int)] = xs.map { (f.getArrow($0), $0) }
-                let dictionary = Dictionary<String, Int>(pairs)
+                let pairs = xs.map { (f.getArrow($0), $0) }
+                let dictionary = Dictionary(pairs)
                 return xs.all { dictionary[f.getArrow($0)] == $0 }
             }
         }
