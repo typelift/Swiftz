@@ -187,17 +187,29 @@ class ArrayExtSpec : XCTestCase {
 
 			return Discard()
 		}
+		
+		property("mapAssociate and mapAssociateLabel behave") <- forAll { (xs : [Int]) in
+			 return forAll { (f : ArrowOf<Int, String>) in
+				let dictionary1 = xs.mapAssociate { (f.getArrow($0), $0) }
+				let dictionary2 = xs.mapAssociateLabel { f.getArrow($0) }
+				return xs.all { dictionary1[f.getArrow($0)] != nil && dictionary2[f.getArrow($0)] != nil && dictionary1[f.getArrow($0)] == dictionary2[f.getArrow($0)] }
+			 }
+		}
 	}
 
 
 	func testAny() {
 		let withArray = Array([1,4,5,7])
+		let withSet = Set(withArray)
 		XCTAssert(withArray.any(>4), "Should be false")
+		XCTAssert(withSet.any(>4), "Should be false")
 	}
 
 	func testAll() {
 		let array = [1,3,24,5]
+		let set = Set(array)
 		XCTAssert(array.all(<=24), "Should be true")
+		XCTAssert(set.all(<=24), "Should be true")
 	}
 
 	func testSplitAt() {

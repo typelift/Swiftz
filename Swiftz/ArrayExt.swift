@@ -312,18 +312,6 @@ extension Array {
 		}
 	}
 
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
-	/// least once by an element of the list.
-	public func any(f : (Element -> Bool)) -> Bool {
-		return self.map(f).or
-	}
-
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
-	/// all elemenets of the list.
-	public func all(f : (Element -> Bool)) -> Bool {
-		return self.map(f).and
-	}
-
 	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
 	/// given predicate and the second element is the remainder of the list:
 	///
@@ -420,6 +408,20 @@ extension Array {
 	}
 }
 
+extension SequenceType {
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+	/// least once by an element of the list.
+	public func any(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).or
+	}
+	
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+	/// all elemenets of the list.
+	public func all(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).and
+	}
+}
+
 extension Array where Element : Equatable {
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
 	public func isPrefixOf(r : [Element]) -> Bool {
@@ -481,6 +483,23 @@ extension Array where Element : BooleanType {
 	/// Returns the dijunction of a list of Booleans.
 	public var or : Bool {
 		return self.reduce(false) { $0.boolValue || $1.boolValue }
+	}
+}
+
+/// MARK: Sequence and SequenceType extensions
+
+extension SequenceType {
+	/// Maps the array of  to a dictionary given a transformer function that returns
+	/// a (Key, Value) pair for the dictionary, if nil is returned then the value is
+	/// not added to the dictionary.
+	public func mapAssociate<Key : Hashable, Value>(f : Generator.Element -> (Key, Value)?) -> [Key : Value] {
+		return Dictionary(flatMap(f))
+	}
+	
+	/// Creates a dictionary of Key-Value pairs generated from the transformer function returning the key (the label)
+	/// and pairing it with that element.
+	public func mapAssociateLabel<Key : Hashable>(f : Generator.Element -> Key) -> [Key : Generator.Element] {
+		return Dictionary(map { (f($0), $0) })
 	}
 }
 
