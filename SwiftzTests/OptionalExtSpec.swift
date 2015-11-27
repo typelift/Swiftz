@@ -99,5 +99,10 @@ class OptionalExtSpec : XCTestCase {
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
 		}
+		
+		property("Optional toEither behaves") <- forAll { (m : Optional<Int>) in
+			let defaultValue = 0
+			return (m.toEither(defaultValue).isLeft && m == nil) || ((m.toEither(defaultValue).isRight && m != nil))
+		}
 	}
 }
