@@ -29,6 +29,17 @@ extension Optional {
 			return x
 		}
 	}
+	
+	/// Case analysis for the Optional type to the Either type. Given a maybe, a default value in case it is None that maps to Either.Left, and
+	/// if there is a value in the Maybe it maps to Either.Right.
+	public func toEither<L>(`default` : L) -> Either<L, Wrapped> {
+		switch self {
+		case .None:
+			return .Left(`default`)
+		case .Some(let x):
+			return .Right(x)
+		}
+	}
 }
 
 /// MARK: Instances
