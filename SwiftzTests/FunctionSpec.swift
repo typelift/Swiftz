@@ -11,6 +11,29 @@ import Swiftz
 import SwiftCheck
 
 class FunctionSpec : XCTestCase {
+	func testCategoryLaws() {
+		property("Function obeys the Category left identity law") <- forAll { (fa : ArrowOf<Int, Int>) in
+			return forAll { (x : Int) in
+				return (Function.arr(fa.getArrow) • Function<Int, Int>.id()).apply(x) == Function.arr(fa.getArrow).apply(x)
+			}
+		}
+
+		property("Function obeys the Category right identity law") <- forAll { (fa : ArrowOf<Int, Int>) in
+			return forAll { (x : Int) in
+				return (Function<Int, Int>.id() • Function.arr(fa.getArrow)).apply(x) == Function.arr(fa.getArrow).apply(x)
+			}
+		}
+
+		property("Function obeys the Category associativity law") <- forAll { (fa : ArrowOf<Int8, Int16>, ga : ArrowOf<Int16, Int32>, ha : ArrowOf<Int32, Int64>) in
+			return forAll { (x : Int8) in
+				let f = Function.arr(fa.getArrow)
+				let g = Function.arr(ga.getArrow)
+				let h = Function.arr(ha.getArrow)
+				return ((h • g) • f).apply(x) == (h • (g • f)).apply(x)
+			}
+		}
+	}
+
 	func testArrowLaws() {
 		func assoc<A, B, C>(t : ((A, B), C)) -> (A, (B, C)) {
 			return (t.0.0, (t.0.1, t.1))
