@@ -87,6 +87,25 @@ class ProxySpec : XCTestCase {
 			let g = { $0.getArray } • ga.getArrow
 			return ((m.getArray >>- f) >>- g) == (m.getArray >>- { x in f(x) >>- g })
 		}
+
+		property("Proxy obeys the Comonad identity law") <- forAll { (x : Proxy<Int>) in
+			return x.extend({ $0.extract() }) == x
+		}
+
+		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
+			return forAll { (x : Proxy<Int>) in
+				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
+				return x.extend(f).extract() == f(x)
+			}
+		}
+
+		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
+			return forAll { (x : Proxy<Int>) in
+				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
+				let g : Proxy<Int> -> Int = gg.getArrow • const(0)
+				return x.extend(f).extend(g) == x.extend({ f($0.extend(g)) })
+			}
+		}
 	}
 }
 

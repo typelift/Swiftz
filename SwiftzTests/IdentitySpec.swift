@@ -83,5 +83,24 @@ class IdentitySpec : XCTestCase {
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
 		}
+
+		property("Identity obeys the Comonad identity law") <- forAll { (x : Identity<Int>) in
+			return x.extend({ $0.extract() }) == x
+		}
+
+		property("Identity obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
+			return forAll { (x : Identity<Int>) in
+				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
+				return x.extend(f).extract() == f(x)
+			}
+		}
+
+		property("Identity obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
+			return forAll { (x : Identity<Int>) in
+				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
+				let g : Identity<Int> -> Int = gg.getArrow • { $0.runIdentity }
+				return x.extend(f).extend(g) == x.extend({ f($0.extend(g)) })
+			}
+		}
 	}
 }
