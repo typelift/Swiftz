@@ -53,6 +53,17 @@ class ArrayExtSpec : XCTestCase {
 			return (Array.pure(identity) <*> x) == x
 		}
 
+		property("Array obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (Array.pure(f.getArrow) <*> Array.pure(x)) == Array.pure(f.getArrow(x))
+		}
+
+		property("Array obeys the Applicative interchange law") <- forAll { (fu : Array<ArrowOf<Int, Int>>) in
+			return forAll { (y : Int) in
+				let u = fu.fmap { $0.getArrow }
+				return (u <*> Array.pure(y)) == (Array.pure({ f in f(y) }) <*> u)
+			}
+		}
+
 		property("Array obeys the first Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })

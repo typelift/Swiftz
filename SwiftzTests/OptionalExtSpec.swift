@@ -65,6 +65,17 @@ class OptionalExtSpec : XCTestCase {
 			return (Optional.pure(identity) <*> x) == x
 		}
 
+		property("Optional obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (Optional.pure(f.getArrow) <*> Optional.pure(x)) == Optional.pure(f.getArrow(x))
+		}
+
+		property("Optional obeys the Applicative interchange law") <- forAll { (fu : Optional<ArrowOf<Int, Int>>) in
+			return forAll { (y : Int) in
+				let u = fu.fmap { $0.getArrow }
+				return (u <*> Optional.pure(y)) == (Optional.pure({ f in f(y) }) <*> u)
+			}
+		}
+
 		property("Optional obeys the first Applicative composition law") <- forAll { (fl : Optional<ArrowOf<Int8, Int8>>, gl : Optional<ArrowOf<Int8, Int8>>, x : Optional<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })

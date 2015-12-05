@@ -57,6 +57,14 @@ class ProxySpec : XCTestCase {
 			return (Proxy.pure(identity) <*> x) == x
 		}
 
+		property("Proxy obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (Proxy.pure(f.getArrow) <*> Proxy.pure(x)) == Proxy.pure(f.getArrow(x))
+		}
+
+		property("Proxy obeys the Applicative interchange law") <- forAll { (u : Proxy<Int -> Int>, y : Int) in
+			return (u <*> Proxy.pure(y)) == (Proxy.pure({ f in f(y) }) <*> u)
+		}
+
 		property("Proxy obeys the first Applicative composition law") <- forAll { (f : Proxy<Int -> Int>, g : Proxy<Int -> Int>, x : Proxy<Int>) in
 			return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
 		}
