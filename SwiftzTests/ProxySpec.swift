@@ -92,12 +92,13 @@ class ProxySpec : XCTestCase {
 			return x.extend({ $0.extract() }) == x
 		}
 
-		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
-			return forAll { (x : Proxy<Int>) in
-				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
-				return x.extend(f).extract() == f(x)
-			}
-		}
+// Can't test ⊥ == ⊥ in this language.
+//		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
+//			return forAll { (x : Proxy<Int>) in
+//				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
+//				return x.extend(f).extract() == f(x)
+//			}
+//		}
 
 		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
 			return forAll { (x : Proxy<Int>) in
