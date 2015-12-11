@@ -143,6 +143,10 @@
 		84DF75CF1B0BD1D400C912B0 /* TupleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A8900D1A71DFC5003D53CF /* TupleExt.swift */; };
 		84DF76301B0BDCE800C912B0 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84DF762F1B0BDCE800C912B0 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84DF76311B0BDCE800C912B0 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 84DF762F1B0BDCE800C912B0 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DE37D66C1C066E6000D6289B /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37D66B1C066E6000D6289B /* Reader.swift */; };
+		DE37D66D1C066E6000D6289B /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37D66B1C066E6000D6289B /* Reader.swift */; };
+		DE37D6711C06BE9C00D6289B /* ReaderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37D6701C06BE9C00D6289B /* ReaderSpec.swift */; };
+		DE37D6721C06BE9C00D6289B /* ReaderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37D6701C06BE9C00D6289B /* ReaderSpec.swift */; };
 		DEC686D71C0260C70057B393 /* DictionaryExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC686D61C0260C70057B393 /* DictionaryExtSpec.swift */; };
 		DEC686D81C0260C70057B393 /* DictionaryExtSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC686D61C0260C70057B393 /* DictionaryExtSpec.swift */; };
 /* End PBXBuildFile section */
@@ -302,6 +306,8 @@
 		84DF751E1B0BD17700C912B0 /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DF75281B0BD17700C912B0 /* Swiftz-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftz-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DF762F1B0BDCE800C912B0 /* Swiftz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Swiftz.h; path = Swiftz/Swiftz.h; sourceTree = "<group>"; usesTabs = 1; };
+		DE37D66B1C066E6000D6289B /* Reader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reader.swift; sourceTree = "<group>"; };
+		DE37D6701C06BE9C00D6289B /* ReaderSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSpec.swift; sourceTree = "<group>"; };
 		DEC686D61C0260C70057B393 /* DictionaryExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -483,6 +489,7 @@
 				84A8900B1A71DFC5003D53CF /* Those.swift */,
 				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
 				828BB55B1B7E71B600D3327A /* Writer.swift */,
+				DE37D66B1C066E6000D6289B /* Reader.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -515,6 +522,7 @@
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
 				828BB5601B7E77C700D3327A /* WriterSpec.swift */,
+				DE37D6701C06BE9C00D6289B /* ReaderSpec.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -776,6 +784,7 @@
 				8496F0E71B37571F00896D26 /* Foldable.swift in Sources */,
 				84A890391A71DFC5003D53CF /* StringExt.swift in Sources */,
 				84A8904D1A71DFE5003D53CF /* Nothing.swift in Sources */,
+				DE37D66C1C066E6000D6289B /* Reader.swift in Sources */,
 				84A890131A71DFC5003D53CF /* Bounded.swift in Sources */,
 				84A890141A71DFC5003D53CF /* Category.swift in Sources */,
 				84A890481A71DFE5003D53CF /* Array.swift in Sources */,
@@ -792,6 +801,7 @@
 				84A88FDC1A71DFA0003D53CF /* TupleExtSpec.swift in Sources */,
 				84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */,
 				84A88FCF1A71DFA0003D53CF /* HListSpec.swift in Sources */,
+				DE37D6711C06BE9C00D6289B /* ReaderSpec.swift in Sources */,
 				82F317631B81090B007B80E2 /* ArrowExtSpec.swift in Sources */,
 				826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				8273EFAA1B84D9CC008BA037 /* IdentitySpec.swift in Sources */,
@@ -855,6 +865,7 @@
 				84DF75C61B0BD1D400C912B0 /* Those.swift in Sources */,
 				84DF75C71B0BD1D400C912B0 /* Tuple.swift in Sources */,
 				84DF75C81B0BD1D400C912B0 /* ArrayExt.swift in Sources */,
+				DE37D66D1C066E6000D6289B /* Reader.swift in Sources */,
 				84DF75C91B0BD1D400C912B0 /* CharacterExt.swift in Sources */,
 				84DF75CA1B0BD1D400C912B0 /* DictionaryExt.swift in Sources */,
 				84DF75CD1B0BD1D400C912B0 /* OptionalExt.swift in Sources */,
@@ -871,6 +882,7 @@
 				84A53D741B1A900900E8A107 /* EitherSpec.swift in Sources */,
 				84A53D751B1A900900E8A107 /* FunctorSpec.swift in Sources */,
 				84A53D761B1A900900E8A107 /* HListSpec.swift in Sources */,
+				DE37D6721C06BE9C00D6289B /* ReaderSpec.swift in Sources */,
 				82F317641B81090B007B80E2 /* ArrowExtSpec.swift in Sources */,
 				826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				8273EFAB1B84D9CC008BA037 /* IdentitySpec.swift in Sources */,
