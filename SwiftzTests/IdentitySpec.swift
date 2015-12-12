@@ -99,7 +99,7 @@ class IdentitySpec : XCTestCase {
 			return forAll { (x : Identity<Int>) in
 				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
 				let g : Identity<Int> -> Int = gg.getArrow • { $0.runIdentity }
-				return x.extend(f).extend(g) == x.extend({ f($0.extend(g)) })
+				return x.extend(f).extend(g) == x.extend({ g($0.extend(f)) })
 			}
 		}
 	}
