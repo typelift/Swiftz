@@ -55,7 +55,7 @@ class ReaderSpec : XCTestCase {
         })("Banana")
         XCTAssert(lengthResult == 6)
         
-        let length: String -> Int = { $0.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) }
+        let length : String -> Int = { $0.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) }
         
         let lengthResult2 = runReader(reader(length))("Banana")
         XCTAssert(lengthResult2 == 6)
