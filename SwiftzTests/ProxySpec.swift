@@ -41,7 +41,7 @@ class ProxySpec : XCTestCase {
 			return (x != y) == !(x == y)
 		}
 
-		property("Proxies bounds are unique") <- forAll { (x : Proxy<Int>) in
+		property("Proxy's bounds are unique") <- forAll { (x : Proxy<Int>) in
 			return (Proxy.minBound() == x) == (Proxy.maxBound() == x)
 		}
 
