@@ -11,7 +11,7 @@ public struct Reader<R, A> {
     /// The function that modifies the environment
     public let reader : R -> A
     
-    init(_ reader : R -> A) {
+    public init(_ reader : R -> A) {
         self.reader = reader
     }
     
