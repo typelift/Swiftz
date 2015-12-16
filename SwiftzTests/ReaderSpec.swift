@@ -7,8 +7,8 @@
 //
 
 import XCTest
-import SwiftCheck
 import Swiftz
+import SwiftCheck
 
 class ReaderSpec : XCTestCase {
     func testReader() {
