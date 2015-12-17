@@ -44,6 +44,14 @@ class MonoidSpec : XCTestCase {
 			return (Last(i) <> Last.mempty).value() == i
 		}
 
+		property("Unit obeys left identity") <- forAll { (i : Unit) in
+			return (Unit.mempty <> i) == i
+		}
+
+		property("Unit obeys right identity") <- forAll { (i : Unit) in
+			return (i <> Unit.mempty) == i
+		}
+
 		property("Proxy obeys left identity") <- forAll { (i : Proxy<Int>) in
 			return (Proxy.mempty <> i) == i
 		}

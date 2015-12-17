@@ -23,6 +23,10 @@ public func == <T : Equatable>(l : Identity<T>, r : Identity<T>) -> Bool {
 	return l.runIdentity == r.runIdentity
 }
 
+public func != <T : Equatable>(l : Identity<T>, r : Identity<T>) -> Bool {
+	return !(l == r)
+}
+
 extension Identity : Functor {
 	public typealias A = T
 	public typealias B = Any

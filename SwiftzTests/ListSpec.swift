@@ -76,6 +76,17 @@ class ListSpec : XCTestCase {
 			return (List.pure(identity) <*> x) == x
 		}
 
+		property("List obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (List.pure(f.getArrow) <*> List.pure(x)) == List.pure(f.getArrow(x))
+		}
+
+		property("List obeys the Applicative interchange law") <- forAll { (fu : List<ArrowOf<Int, Int>>) in
+			return forAll { (y : Int) in
+				let u = fu.fmap { $0.getArrow }
+				return (u <*> List.pure(y)) == (List.pure({ f in f(y) }) <*> u)
+			}
+		}
+
 		// Swift unroller can't handle our scale; Use only small lists.
 		property("List obeys the first Applicative composition law") <- forAll { (fl : List<ArrowOf<Int8, Int8>>, gl : List<ArrowOf<Int8, Int8>>, x : List<Int8>) in
 			return (fl.count <= 3 && gl.count <= 3) ==> {

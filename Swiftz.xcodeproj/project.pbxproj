@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8202480A1C1BA8A50020B7EF /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820248091C1BA8A50020B7EF /* Unit.swift */; };
+		8202480B1C1BA8A50020B7EF /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820248091C1BA8A50020B7EF /* Unit.swift */; };
+		8202480F1C1BA8F60020B7EF /* UnitSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202480E1C1BA8F60020B7EF /* UnitSpec.swift */; };
+		820248101C1BA8F60020B7EF /* UnitSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202480E1C1BA8F60020B7EF /* UnitSpec.swift */; };
 		821B76B01BC43C1000AF97D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B76AF1BC43C1000AF97D6 /* Operators.swift */; };
 		821B76C51BC43DF000AF97D6 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821B76BC1BC43DE100AF97D6 /* SwiftCheck.framework */; };
 		821B76C81BC43DF900AF97D6 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821B76BC1BC43DE100AF97D6 /* SwiftCheck.framework */; };
@@ -234,6 +238,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		820248091C1BA8A50020B7EF /* Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
+		8202480E1C1BA8F60020B7EF /* UnitSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSpec.swift; sourceTree = "<group>"; };
 		821B76AF1BC43C1000AF97D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		821B76B41BC43DE100AF97D6 /* SwiftCheck.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftCheck.xcodeproj; path = Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj; sourceTree = SOURCE_ROOT; };
 		825C0E421B85681C0026E738 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -488,6 +494,7 @@
 				84A8900A1A71DFC5003D53CF /* SYB.swift */,
 				84A8900B1A71DFC5003D53CF /* Those.swift */,
 				84A8900C1A71DFC5003D53CF /* Tuple.swift */,
+				820248091C1BA8A50020B7EF /* Unit.swift */,
 				828BB55B1B7E71B600D3327A /* Writer.swift */,
 				DE37D66B1C066E6000D6289B /* Reader.swift */,
 			);
@@ -521,6 +528,7 @@
 				82E51BA41B5D96BD003CA361 /* ProxySpec.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
+				8202480E1C1BA8F60020B7EF /* UnitSpec.swift */,
 				828BB5601B7E77C700D3327A /* WriterSpec.swift */,
 				DE37D6701C06BE9C00D6289B /* ReaderSpec.swift */,
 			);
@@ -763,6 +771,7 @@
 				84A8904B1A71DFE5003D53CF /* Error.swift in Sources */,
 				825C0E541B859D020026E738 /* Identity.swift in Sources */,
 				84A890111A71DFC5003D53CF /* Arrow.swift in Sources */,
+				8202480A1C1BA8A50020B7EF /* Unit.swift in Sources */,
 				84A890271A71DFC5003D53CF /* Kinds.swift in Sources */,
 				84A8903D1A71DFC5003D53CF /* TupleExt.swift in Sources */,
 				84A8902C1A71DFC5003D53CF /* Monoid.swift in Sources */,
@@ -797,6 +806,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8202480F1C1BA8F60020B7EF /* UnitSpec.swift in Sources */,
 				828BB5611B7E77C700D3327A /* WriterSpec.swift in Sources */,
 				84A88FDC1A71DFA0003D53CF /* TupleExtSpec.swift in Sources */,
 				84BB57641AA12D2200214BC5 /* StateSpec.swift in Sources */,
@@ -844,6 +854,7 @@
 				84DF75B71B0BD1D400C912B0 /* Copointed.swift in Sources */,
 				825C0E551B859D020026E738 /* Identity.swift in Sources */,
 				84DF75B81B0BD1D400C912B0 /* Function.swift in Sources */,
+				8202480B1C1BA8A50020B7EF /* Unit.swift in Sources */,
 				84DF75B91B0BD1D400C912B0 /* Functor.swift in Sources */,
 				84DF75BA1B0BD1D400C912B0 /* HList.swift in Sources */,
 				84DF75BD1B0BD1D400C912B0 /* List.swift in Sources */,
@@ -878,6 +889,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				820248101C1BA8F60020B7EF /* UnitSpec.swift in Sources */,
 				828BB5621B7E77C700D3327A /* WriterSpec.swift in Sources */,
 				84A53D741B1A900900E8A107 /* EitherSpec.swift in Sources */,
 				84A53D751B1A900900E8A107 /* FunctorSpec.swift in Sources */,

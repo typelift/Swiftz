@@ -94,6 +94,42 @@ class NonEmptyListSpec : XCTestCase {
 			}
 		}
 
+		property("NonEmptyList obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
+			let f : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
+			return (NonEmptyList<Int>.pure(a) >>- f) == f(a)
+		}
+
+		property("NonEmptyList obeys the Monad right identity law") <- forAll { (m : NonEmptyList<Int>) in
+			return (m >>- NonEmptyList<Int>.pure) == m
+		}
+
+		property("NonEmptyList obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
+			let f : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
+			let g : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • ga.getArrow
+			return forAll { (m : NonEmptyList<Int>) in
+				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
+			}
+		}
+
+		property("NonEmptyList obeys the Comonad identity law") <- forAll { (x : NonEmptyList<Int>) in
+			return x.extend({ $0.extract() }) == x
+		}
+
+		property("NonEmptyList obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
+			return forAll { (x : Identity<Int>) in
+				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
+				return x.extend(f).extract() == f(x)
+			}
+		}
+
+		property("NonEmptyList obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
+			return forAll { (x : NonEmptyList<Int>) in
+				let f : NonEmptyList<Int> -> Int = ff.getArrow • { $0.head }
+				let g : NonEmptyList<Int> -> Int = gg.getArrow • { $0.head }
+				return x.extend(f).extend(g) == x.extend({ g($0.extend(f)) })
+			}
+		}
+
 		property("head behaves") <- forAll { (x : Int) in
 			return forAll { (xs : List<Int>) in
 				return NonEmptyList(x, xs).head == x
