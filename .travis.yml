@@ -8,7 +8,10 @@ before_install: true
 install: true
 script: 
     - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then script/cibuild Swiftz Swiftz-iOS ; fi
+    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 1080p' ; fi
+    - if [[ "$TEST_CONFIG" == "RELEASE" ]]; then xcodebuild build -scheme Swiftz-watchOS -destination 'platform=watchOS Simulator,name=Apple Watch - 42mm' ; fi
     - if [[ "$TEST_CONFIG" == "PODS" ]]; then pod lib lint; fi
+    
 notifications:
   webhooks:
     urls:
