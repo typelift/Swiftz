@@ -19,7 +19,7 @@ public enum ListMatcher<Element> {
 /// A List is typically constructed by two primitives: Nil and Cons.  Due to limitations of the
 /// language, we instead provide a nullary constructor for Nil and a Cons Constructor and an actual
 /// static function named `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
-/// isomorphic to the traditional inductive definition.  As such, the method `match()` is provided
+/// isomorphic to the traditional inductive definition.  As such, the computed property `match` is provided
 /// that allows the list to be destructured into a more traditional `Nil | Cons(Element, List<Element>)`
 /// form that is also compatible with switch-case blocks.
 ///

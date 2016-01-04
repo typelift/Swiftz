@@ -46,7 +46,7 @@ extension String {
 
 	/// Destructures a string.  If the string is empty the result is .Nil, otherwise the result is
 	/// .Cons(head, tail).
-	public func match() -> StringMatcher {
+	public var match: StringMatcher {
 		if self.characters.count == 0 {
 			return .Nil
 		} else if self.characters.count == 1 {
@@ -62,7 +62,7 @@ extension String {
 
 	/// Maps a function over the characters of a string and returns a new string of those values.
 	public func map(f : Character -> Character) -> String {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return ""
 		case let .Cons(hd, tl):
@@ -72,7 +72,7 @@ extension String {
 
 	/// Removes characters from the receiver that do not satisfy a given predicate.
 	public func filter(p : Character -> Bool) -> String {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return ""
 		case let .Cons(x, xs):
@@ -82,7 +82,7 @@ extension String {
 
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
 	public func reduce<B>(f : B -> Character -> B, initial : B) -> B {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return initial
 		case let .Cons(x, xs):
@@ -92,7 +92,7 @@ extension String {
 
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
 	public func reduce<B>(f : (B, Character) -> B, initial : B) -> B {
-		switch self.match() {
+		switch self.match {
 		case .Nil:
 			return initial
 		case let .Cons(x, xs):
@@ -102,7 +102,7 @@ extension String {
 
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
 	public func isPrefixOf(r : String) -> Bool {
-		switch (self.match(), r.match()) {
+		switch (self.match, r.match) {
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
 			return xs.isPrefixOf(ys)
 		case (.Nil, _):
@@ -132,7 +132,7 @@ extension String {
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
 	public func stripPrefix(r : String) -> Optional<String> {
-		switch (self.match(), r.match()) {
+		switch (self.match, r.match) {
 		case (.Nil, _):
 			return .Some(r)
 		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
