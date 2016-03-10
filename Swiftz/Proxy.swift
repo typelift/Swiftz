@@ -171,3 +171,14 @@ extension Proxy : Comonad {
 public func asProxyTypeOf<T>(x : T, _ proxy : Proxy<T>) -> T {
 	return const(x)(proxy)
 }
+
+public func sequence<A>(ms: [Proxy<A>]) -> Proxy<[A]> {
+	return ms.reduce(Proxy<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Proxy<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}
+

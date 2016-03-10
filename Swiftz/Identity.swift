@@ -143,3 +143,13 @@ extension Identity : Comonad {
 		return self.duplicate().fmap(f)
 	}
 }
+
+public func sequence<A>(ms: [Identity<A>]) -> Identity<[A]> {
+	return ms.reduce(Identity<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Identity<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}

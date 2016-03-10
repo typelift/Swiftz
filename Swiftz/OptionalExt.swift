@@ -144,6 +144,16 @@ extension Optional : SequenceType {
 	}
 }
 
+public func sequence<A>(ms: [Optional<A>]) -> Optional<[A]> {
+	return ms.reduce(Optional<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Optional<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}
+
 /// Forbidden by Swift 1.2; see ~( http://stackoverflow.com/a/29750368/945847 ))
 /// Given one or more Optional values, returns the first Optional value that is not nil
 /// when evaulated from left to right

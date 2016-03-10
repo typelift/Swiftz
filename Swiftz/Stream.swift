@@ -335,3 +335,13 @@ extension Stream : CustomStringConvertible {
 		return "[\(self.head), ...]"
 	}
 }
+
+public func sequence<A>(ms: [Stream<A>]) -> Stream<[A]> {
+	return ms.reduce(Stream<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Stream<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}

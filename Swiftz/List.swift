@@ -700,3 +700,13 @@ extension List : MonadPlus {
 		return self + other
 	}
 }
+
+public func sequence<A>(ms: [List<A>]) -> List<[A]> {
+	return ms.reduce(List<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return List<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}

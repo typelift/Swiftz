@@ -158,3 +158,12 @@ public func != <W : protocol<Monoid, Equatable>, A : Equatable>(l : Writer<W, A>
 	return !(l == r)
 }
 
+public func sequence<W, A>(ms: [Writer<W, A>]) -> Writer<W, [A]> {
+	return ms.reduce(Writer<W, [A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Writer<W, [A]>.pure(xs + [x])
+			}
+		}
+	})
+}
