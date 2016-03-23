@@ -20,7 +20,8 @@ public struct Writer<W : Monoid, T> {
 
 	/// Returns a `Writer` that applies the function to its current value and environment.
 	public func mapWriter<U, V : Monoid>(f : (T, W) -> (U, V)) -> Writer<V, U> {
-		return Writer<V, U>(f(self.runWriter))
+		let (t, w) = self.runWriter
+		return Writer<V, U>(f(t, w))
 	}
 
 	/// Extracts the current environment from the receiver.

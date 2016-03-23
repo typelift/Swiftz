@@ -8,6 +8,6 @@
 
 /// Functors equipped with a copoint that yields a value.
 public protocol Copointed {
-	typealias A
+	associatedtype A
 	func extract() -> A
 }
