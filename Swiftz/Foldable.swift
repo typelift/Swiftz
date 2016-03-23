@@ -8,8 +8,8 @@
 
 /// A `Foldable` type admits a way of "summarizing" its entire structure.
 public protocol Foldable {
-	typealias A
-	typealias B
+	associatedtype A
+	associatedtype B
 
 	/// Summarizes the receiver right-associatively.
 	func foldr(folder : A -> B -> B, _ initial : B) -> B

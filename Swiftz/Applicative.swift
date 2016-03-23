@@ -13,7 +13,7 @@
 /// needing to unwrap or map over their contents.
 public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
-	typealias FAB = K1<A -> B>
+	associatedtype FAB = K1<A -> B>
 
 	/// Applies the function encapsulated by the Functor to the value encapsulated by the receiver.
 	func ap(f : FAB) -> FB
@@ -21,10 +21,10 @@ public protocol Applicative : Pointed, Functor {
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.
 public protocol ApplicativeOps : Applicative {
-	typealias C
-	typealias FC = K1<C>
-	typealias D
-	typealias FD = K1<D>
+	associatedtype C
+	associatedtype FC = K1<C>
+	associatedtype D
+	associatedtype FD = K1<D>
 
 	/// Lift a function to a Functorial action.
 	static func liftA(f : A -> B) -> Self -> FB

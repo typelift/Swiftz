@@ -44,25 +44,25 @@
 /// Arrows inherit from Category so we can get Composition For Free™.
 public protocol Arrow : Category {
 	/// Some arbitrary target our arrow can compose with.
-	typealias D
+	associatedtype D
 	/// Some arbitrary target our arrow can compose with.
-	typealias E
+	associatedtype E
 
 	/// Type of the result of first().
-	typealias FIRST = K2<(A, D), (B, D)>
+	associatedtype FIRST = K2<(A, D), (B, D)>
 	/// Type of the result of second().
-	typealias SECOND = K2<(D, A), (D, B)>
+	associatedtype SECOND = K2<(D, A), (D, B)>
 
 	/// Some arrow with an arbitrary target and source.  Used in split().
-	typealias ADE = K2<D, E>
+	associatedtype ADE = K2<D, E>
 	/// Type of the result of ***.
-	typealias SPLIT = K2<(A, D), (B, E)>
+	associatedtype SPLIT = K2<(A, D), (B, E)>
 
 	/// Some arrow from our target to some other arbitrary target.  Used in fanout().
-	typealias ABD = K2<A, D>
+	associatedtype ABD = K2<A, D>
 
 	/// Type of the result of &&&.
-	typealias FANOUT = K2<B, (B, D)>
+	associatedtype FANOUT = K2<B, (B, D)>
 
 	/// Lift a function to an arrow.
 	static func arr(_ : A -> B) -> Self
@@ -92,7 +92,7 @@ public protocol Arrow : Category {
 /// Arrows that can produce an identity arrow.
 public protocol ArrowZero : Arrow {
 	/// An arrow from A -> B.  Colloquially, the "zero arrow".
-	typealias ABC = K2<A, B>
+	associatedtype ABC = K2<A, B>
 
 	/// The identity arrow.
 	static func zeroArrow() -> ABC
@@ -132,17 +132,17 @@ public protocol ArrowPlus : ArrowZero {
 ///
 public protocol ArrowChoice : Arrow {
 	/// The result of left
-	typealias LEFT = K2<Either<A, D>, Either<B, D>>
+	associatedtype LEFT = K2<Either<A, D>, Either<B, D>>
 	/// The result of right
-	typealias RIGHT = K2<Either<D, A>, Either<D, B>>
+	associatedtype RIGHT = K2<Either<D, A>, Either<D, B>>
 
 	/// The result of +++
-	typealias SPLAT = K2<Either<A, D>, Either<B, E>>
+	associatedtype SPLAT = K2<Either<A, D>, Either<B, E>>
 
 	/// Some arrow from a different source and target for fanin.
-	typealias ACD = K2<B, D>
+	associatedtype ACD = K2<B, D>
 	/// The result of |||
-	typealias FANIN = K2<Either<A, B>, D>
+	associatedtype FANIN = K2<Either<A, B>, D>
 
 	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the
 	/// output.
@@ -169,7 +169,7 @@ public protocol ArrowChoice : Arrow {
 ///          a -------> a - •
 ///
 public protocol ArrowApply : Arrow {
-	typealias APP = K2<(Self, A), B>
+	associatedtype APP = K2<(Self, A), B>
 	static func app() -> APP
 }
 
@@ -185,7 +185,7 @@ public protocol ArrowApply : Arrow {
 ///           d-------•
 ///
 public protocol ArrowLoop : Arrow {
-	typealias LOOP = K2<(A, D), (B, D)>
+	associatedtype LOOP = K2<(A, D), (B, D)>
 
 	static func loop(_ : LOOP) -> Self
 }

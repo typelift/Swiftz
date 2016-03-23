@@ -10,11 +10,11 @@
 /// in another set.
 public protocol Functor {
 	/// Source
-	typealias A
+	associatedtype A
 	/// Target
-	typealias B
+	associatedtype B
 	/// A Target Functor
-	typealias FB = K1<B>
+	associatedtype FB = K1<B>
 
 	/// Map a function over the value encapsulated by the Functor.
 	func fmap(f : A -> B) -> FB

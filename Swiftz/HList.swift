@@ -14,8 +14,8 @@
 /// element, and compatible operations on said elements exist fully at compile time.  HLists, like
 /// regular lists, support folds, maps, and appends, only at the type rather than term level.
 public protocol HList {
-	typealias Head
-	typealias Tail
+	associatedtype Head
+	associatedtype Tail
 
 	static var isNil : Bool { get }
 	static var length : Int { get }

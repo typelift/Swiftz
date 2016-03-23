@@ -10,7 +10,7 @@
 ///
 /// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Copointed, Functor {
-	typealias FFA = K1<Self>
+	associatedtype FFA = K1<Self>
 
 	/// Duplicates the surrounding comonadic context and embeds the receiver in it.
 	func duplicate() -> FFA

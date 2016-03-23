@@ -57,7 +57,7 @@ extension String {
 
 	/// Returns a string containing the characters of the receiver in reverse order.
 	public func reverse() -> String {
-		return self.reduce(flip(String.cons), initial: "")
+		return self.reduce(flip(curry(String.cons)), initial: "")
 	}
 
 	/// Maps a function over the characters of a string and returns a new string of those values.

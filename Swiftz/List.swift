@@ -395,7 +395,7 @@ public struct List<Element> {
 	///
 	/// For infinite lists this function will diverge.
 	public func reverse() -> List<Element> {
-		return self.reduce(flip(List.cons), initial: [])
+		return self.reduce(flip(curry(List.cons)), initial: [])
 	}
 
 	/// Given a predicate, searches the list until it find the first match, and returns that,
