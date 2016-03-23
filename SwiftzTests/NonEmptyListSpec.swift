@@ -12,7 +12,7 @@ import SwiftCheck
 
 extension NonEmptyList where Element : Arbitrary {
 	public static var arbitrary : Gen<NonEmptyList<Element>> {
-		return [Element].arbitrary.suchThat({ !$0.isEmpty }).fmap { NonEmptyList<Element>(List(fromArray: $0))! }
+		return [Element].arbitrary.suchThat({ !$0.isEmpty }).map { NonEmptyList<Element>(List(fromArray: $0))! }
 	}
 
 	public static func shrink(xs : NonEmptyList<Element>) -> [NonEmptyList<Element>] {
@@ -25,7 +25,7 @@ extension NonEmptyList where Element : Arbitrary {
 extension NonEmptyList : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element)(pf : (NonEmptyList<Element> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element, pf : (NonEmptyList<Element> -> Testable)) -> Property {
 		return forAllShrink(NonEmptyList<A>.arbitrary, shrinker: NonEmptyList<A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})

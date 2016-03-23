@@ -24,7 +24,7 @@ extension Writer where T : Arbitrary {
 extension Writer : WitnessedArbitrary {
 	public typealias Param = T
 
-	public static func forAllWitnessed<W : Monoid, A : Arbitrary>(wit : A -> T)(pf : (Writer<W, T> -> Testable)) -> Property {
+	public static func forAllWitnessed<W : Monoid, A : Arbitrary>(wit : A -> T, pf : (Writer<W, T> -> Testable)) -> Property {
 		return forAllShrink(Writer<W, A>.arbitrary, shrinker: Writer<W, A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})

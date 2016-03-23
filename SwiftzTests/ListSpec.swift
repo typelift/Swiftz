@@ -24,7 +24,7 @@ extension List where Element : Arbitrary {
 extension List : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element)(pf : (List<Element> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element, pf : (List<Element> -> Testable)) -> Property {
 		return forAllShrink(List<A>.arbitrary, shrinker: List<A>.shrink, f: { bl in
 			return pf(bl.map(wit))
 		})

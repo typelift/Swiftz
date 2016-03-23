@@ -19,7 +19,7 @@ extension Identity where T : Arbitrary {
 extension Identity : WitnessedArbitrary {
 	public typealias Param = T
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> T)(pf : (Identity<T> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(wit : A -> T, pf : (Identity<T> -> Testable)) -> Property {
 		return forAllShrink(Identity<A>.arbitrary, shrinker: const([]), f: { bl in
 			return pf(bl.fmap(wit))
 		})
