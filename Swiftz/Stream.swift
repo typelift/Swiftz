@@ -89,7 +89,7 @@ public struct Stream<Element> {
 	public var tails : Stream<Stream<Element>> {
 		return Stream<Stream<Element>> { (self, self.step().tail.tails) }
 	}
-
+	
 	/// Returns a pair of the first n elements and the remaining eleemnts in a `Stream`.
 	public func splitAt(n : UInt) -> ([Element], Stream<Element>) {
 		if n == 0 {
@@ -128,7 +128,7 @@ public struct Stream<Element> {
 		if n == 0 {
 			return self
 		}
-		return self.step().tail.tail.drop(n - 1)
+		return self.step().tail.drop(n - 1)
 	}
 
 	/// Removes elements from the `Stream` that do not satisfy a given predicate.

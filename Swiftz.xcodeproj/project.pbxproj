@@ -11,6 +11,9 @@
 		8202480B1C1BA8A50020B7EF /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820248091C1BA8A50020B7EF /* Unit.swift */; };
 		8202480F1C1BA8F60020B7EF /* UnitSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202480E1C1BA8F60020B7EF /* UnitSpec.swift */; };
 		820248101C1BA8F60020B7EF /* UnitSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202480E1C1BA8F60020B7EF /* UnitSpec.swift */; };
+		8214F6851CBB56FE004AF6F2 /* StreamSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8214F6841CBB56FE004AF6F2 /* StreamSpec.swift */; };
+		8214F6861CBB56FE004AF6F2 /* StreamSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8214F6841CBB56FE004AF6F2 /* StreamSpec.swift */; };
+		8214F6871CBB56FE004AF6F2 /* StreamSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8214F6841CBB56FE004AF6F2 /* StreamSpec.swift */; };
 		821B76B01BC43C1000AF97D6 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B76AF1BC43C1000AF97D6 /* Operators.swift */; };
 		821B76C51BC43DF000AF97D6 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821B76BC1BC43DE100AF97D6 /* SwiftCheck.framework */; };
 		821B76C81BC43DF900AF97D6 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821B76BC1BC43DE100AF97D6 /* SwiftCheck.framework */; };
@@ -387,6 +390,7 @@
 /* Begin PBXFileReference section */
 		820248091C1BA8A50020B7EF /* Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		8202480E1C1BA8F60020B7EF /* UnitSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSpec.swift; sourceTree = "<group>"; };
+		8214F6841CBB56FE004AF6F2 /* StreamSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamSpec.swift; sourceTree = "<group>"; };
 		821B76AF1BC43C1000AF97D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		821B76B41BC43DE100AF97D6 /* SwiftCheck.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftCheck.xcodeproj; path = Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8240CD1C1C3A395F00EF4D29 /* Swiftz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swiftz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -703,6 +707,7 @@
 				82E5A65B1B53666000255137 /* NonEmptyListSpec.swift */,
 				82E51BA41B5D96BD003CA361 /* ProxySpec.swift */,
 				84BB57631AA12D2200214BC5 /* StateSpec.swift */,
+				8214F6841CBB56FE004AF6F2 /* StreamSpec.swift */,
 				84A88FC61A71DFA0003D53CF /* ThoseSpec.swift */,
 				8202480E1C1BA8F60020B7EF /* UnitSpec.swift */,
 				828BB5601B7E77C700D3327A /* WriterSpec.swift */,
@@ -1107,6 +1112,7 @@
 				8240CD691C3A398B00EF4D29 /* IdentitySpec.swift in Sources */,
 				8240CD6A1C3A398B00EF4D29 /* ListSpec.swift in Sources */,
 				8240CD6B1C3A398B00EF4D29 /* MonoidSpec.swift in Sources */,
+				8214F6871CBB56FE004AF6F2 /* StreamSpec.swift in Sources */,
 				8240CD6C1C3A398B00EF4D29 /* NonEmptyListSpec.swift in Sources */,
 				8240CD6D1C3A398B00EF4D29 /* ProxySpec.swift in Sources */,
 				8240CD6E1C3A398B00EF4D29 /* StateSpec.swift in Sources */,
@@ -1244,6 +1250,7 @@
 				84A88FCF1A71DFA0003D53CF /* HListSpec.swift in Sources */,
 				DE37D6711C06BE9C00D6289B /* ReaderSpec.swift in Sources */,
 				82F317631B81090B007B80E2 /* ArrowExtSpec.swift in Sources */,
+				8214F6851CBB56FE004AF6F2 /* StreamSpec.swift in Sources */,
 				826A12F11B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				8273EFAA1B84D9CC008BA037 /* IdentitySpec.swift in Sources */,
 				84A88FDB1A71DFA0003D53CF /* ThoseSpec.swift in Sources */,
@@ -1326,6 +1333,7 @@
 				84A53D761B1A900900E8A107 /* HListSpec.swift in Sources */,
 				DE37D6721C06BE9C00D6289B /* ReaderSpec.swift in Sources */,
 				82F317641B81090B007B80E2 /* ArrowExtSpec.swift in Sources */,
+				8214F6861CBB56FE004AF6F2 /* StreamSpec.swift in Sources */,
 				826A12F21B3DF9A300547FD4 /* FunctionSpec.swift in Sources */,
 				8273EFAB1B84D9CC008BA037 /* IdentitySpec.swift in Sources */,
 				84A53D781B1A900900E8A107 /* ListSpec.swift in Sources */,
