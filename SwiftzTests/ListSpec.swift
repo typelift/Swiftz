@@ -184,5 +184,12 @@ class ListSpec : XCTestCase {
 				return scanned == rig
 			}
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(List.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.head! == xs
+			}
+		}
 	}
 }

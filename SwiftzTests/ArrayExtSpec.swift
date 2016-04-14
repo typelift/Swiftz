@@ -206,6 +206,13 @@ class ArrayExtSpec : XCTestCase {
 				return xs.all { dictionary1[f.getArrow($0)] != nil && dictionary2[f.getArrow($0)] != nil && dictionary1[f.getArrow($0)] == dictionary2[f.getArrow($0)] }
 			 }
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Array.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.first ?? ss == xs
+			}
+		}
 	}
 
 

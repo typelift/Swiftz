@@ -102,5 +102,13 @@ class IdentitySpec : XCTestCase {
 				return x.extend(f).extend(g) == x.extend({ g($0.extend(f)) })
 			}
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Identity.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.runIdentity == xs
+			}
+		}
+
 	}
 }

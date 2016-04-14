@@ -115,5 +115,12 @@ class OptionalExtSpec : XCTestCase {
 			let defaultValue = 0
 			return (m.toEither(defaultValue).isLeft && m == nil) || ((m.toEither(defaultValue).isRight && m != nil))
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Optional.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss! == xs
+			}
+		}
 	}
 }

@@ -87,5 +87,13 @@ class WriterSpec : XCTestCase {
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let ws: [Writer<String, String>] = xs.map(Writer<String, String>.pure)
+			let seq = sequence(ws)
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.runWriter.0 == xs
+			}
+		}
 	}
 }
