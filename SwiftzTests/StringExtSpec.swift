@@ -118,5 +118,13 @@ class StringExtSpec : XCTestCase {
 
 			return Discard()
 		}
+
+		property("sequence occurs in order") <- forAll { (xs : [Character]) in
+			let seq = sequence(xs.map { String.init($0) })
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				let a = (ss.first?.characters).map { c in Array(c) }
+				return a ?? [] == xs
+			}
+		}
 	}
 }

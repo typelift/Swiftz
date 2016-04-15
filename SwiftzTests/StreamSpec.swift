@@ -149,5 +149,12 @@ class StreamSpec : XCTestCase {
 				}
 			}
 		}
-	}
+
+        property("sequence occurs in order") <- forAll { (xs : [String]) in
+            let seq = sequence(xs.map({ x in Stream.pure(x).take(1) }))
+            return forAllNoShrink(Gen.pure(seq)) { ss in
+                return ss.first ?? [] == xs
+            }
+        }
+    }
 }

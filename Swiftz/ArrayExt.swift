@@ -518,3 +518,15 @@ public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 public func concat<T>(list : [[T]]) -> [T] {
 	return list.reduce([], combine: +)
 }
+
+public func sequence<A>(ms: [Array<A>]) -> Array<[A]> {
+	if ms.isEmpty { return [] }
+	
+	return ms.reduce(Array<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Array<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}

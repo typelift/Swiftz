@@ -69,6 +69,13 @@ class EitherSpec : XCTestCase {
 			}
 		}
 
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Either<NSError, String>.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.right! == xs
+			}
+		}
+
 		// TODO: How in hell does this typecheck?
 		// either
 		XCTAssert(Either.Left("foo").either(onLeft: { l in l+"!" }, onRight: { r in r+1 }) == "foo!")

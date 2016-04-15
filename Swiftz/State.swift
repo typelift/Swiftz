@@ -146,3 +146,13 @@ public func >>->> <S, A, B, C>(f : A -> State<S, B>, g : B -> State<S, C>) -> (A
 public func <<-<< <S, A, B, C>(g : B -> State<S, C>, f : A -> State<S, B>) -> (A -> State<S, C>) {
 	return f >>->> g
 }
+
+public func sequence<S, A>(ms: [State<S, A>]) -> State<S, [A]> {
+	return ms.reduce(State<S, [A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return State<S, [A]>.pure(xs + [x])
+			}
+		}
+	})
+}

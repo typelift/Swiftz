@@ -130,3 +130,13 @@ extension Either : Foldable {
 		}
 	}
 }
+
+public func sequence<L, R>(ms: [Either<L, R>]) -> Either<L, [R]> {
+	return ms.reduce(Either<L, [R]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Either<L, [R]>.pure(xs + [x])
+			}
+		}
+	})
+}

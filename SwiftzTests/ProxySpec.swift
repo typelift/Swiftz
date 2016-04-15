@@ -107,6 +107,14 @@ class ProxySpec : XCTestCase {
 				return x.extend(f).extend(g) == x.extend({ f($0.extend(g)) })
 			}
 		}
+
+		// Proxy throws away its contents, and just acts as a Proxy for a type.
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Proxy.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.self == Proxy.pure(xs).self
+			}
+		}
 	}
 }
 

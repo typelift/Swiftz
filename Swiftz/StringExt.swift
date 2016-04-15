@@ -206,3 +206,8 @@ extension String : Monad {
 public func >>- (l : String, f : Character -> String) -> String {
 	return l.bind(f)
 }
+
+public func sequence(ms: [String]) -> [String] {
+	return sequence(ms.map { m in Array(m.characters) }).map(String.init)
+}
+

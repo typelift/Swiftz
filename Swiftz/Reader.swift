@@ -135,3 +135,14 @@ public func >>->> <R, A, B, C>(f : A -> Reader<R, B>, g : B -> Reader<R, C>) -> 
 public func <<-<< <R, A, B, C>(g : B -> Reader<R, C>, f : A -> Reader<R, B>) -> (A -> Reader<R, C>) {
     return f >>->> g
 }
+
+// Can't get this to type check.
+//public func sequence<R, A>(ms: [Reader<R, A>]) -> Reader<R, [A]> {
+//    return ms.reduce(Reader<R, [A]>.pure([]), combine: { n, m in
+//        return n.bind { xs in
+//            return  m.bind { x in
+//                return Reader<R, [A]>.pure(xs + [x])
+//            }
+//        }
+//    })
+//}
