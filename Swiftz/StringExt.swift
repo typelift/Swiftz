@@ -208,6 +208,6 @@ public func >>- (l : String, f : Character -> String) -> String {
 }
 
 public func sequence(ms: [String]) -> [String] {
-	return sequence(ms.map { m in Array(m.characters) }).map(String.init)
+	return sequence(ms.map { (m : String) in Array(m.characters) }).map(String.init)
 }
 

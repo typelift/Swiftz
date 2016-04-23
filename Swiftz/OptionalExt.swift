@@ -76,15 +76,15 @@ extension Optional : ApplicativeOps {
 	public typealias FD = Optional<D>
 
 	public static func liftA<B>(f : A -> B) -> Optional<A> -> Optional<B> {
-		return { a in Optional<A -> B>.pure(f) <*> a }
+		return { (a : Optional<A>) -> Optional<B> in Optional<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Optional<A> -> Optional<B> -> Optional<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : Optional<A>) -> Optional<B> -> Optional<C> in { (b : Optional<B>) -> Optional<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Optional<A> -> Optional<B> -> Optional<C> -> Optional<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : Optional<A>) -> Optional<B> -> Optional<C> -> Optional<D> in { (b : Optional<B>) -> Optional<C> -> Optional<D> in { (c : Optional<C>) -> Optional<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -96,15 +96,15 @@ extension Optional : Monad {
 
 extension Optional : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Optional<A> -> Optional<B> {
-		return { m1 in m1 >>- { x1 in Optional<B>.pure(f(x1)) } }
+		return { (m1 : Optional<A>) -> Optional<B>  in m1 >>- { (x1 : A) in Optional<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Optional<A> -> Optional<B> -> Optional<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Optional<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Optional<A>) -> Optional<B> -> Optional<C> in { (m2 : Optional<B>) -> Optional<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Optional<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Optional<A> -> Optional<B> -> Optional<C> -> Optional<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Optional<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Optional<A>) -> Optional<B> -> Optional<C> -> Optional<D> in { (m2 : Optional<B>) -> Optional<C> -> Optional<D> in { (m3 : Optional<C>) -> Optional<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Optional<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 

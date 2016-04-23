@@ -128,15 +128,15 @@ public func >>- <W, A, B>(x : Writer<W, A>, f : A -> Writer<W, B>) -> Writer<W,B
 
 extension Writer : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Writer<W, A> -> Writer<W, B> {
-		return { m1 in m1 >>- { x1 in Writer<W, B>.pure(f(x1)) } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> in m1 >>- { (x1 : A) in Writer<W, B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Writer<W, C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> -> Writer<W, C> in { (m2 : Writer<W, B>) -> Writer<W, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Writer<W, C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Writer<W, D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> in { (m2 : Writer<W, B>) -> Writer<W, C> -> Writer<W, D> in { (m3 : Writer<W, C>) -> Writer<W, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Writer<W, D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 

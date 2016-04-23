@@ -62,15 +62,15 @@ extension Identity : ApplicativeOps {
 	public typealias FD = Identity<D>
 
 	public static func liftA<B>(f : A -> B) -> Identity<A> -> Identity<B> {
-		return { a in Identity<A -> B>.pure(f) <*> a }
+		return { (a : Identity<A>) -> Identity<B> in Identity<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Identity<A> -> Identity<B> -> Identity<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : Identity<A>) -> Identity<B> -> Identity<C> in { (b : Identity<B>) -> Identity<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Identity<A> -> Identity<B> -> Identity<C> -> Identity<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : Identity<A>) -> Identity<B> -> Identity<C> -> Identity<D> in { (b : Identity<B>) -> Identity<C> -> Identity<D> in { (c : Identity<C>) -> Identity<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -90,15 +90,15 @@ public func >>- <A, B>(m : Identity<A>, f : A -> Identity<B>) -> Identity<B> {
 
 extension Identity : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Identity<A> -> Identity<B> {
-		return { m1 in m1 >>- { x1 in Identity<B>.pure(f(x1)) } }
+		return { (m1 : Identity<A>) -> Identity<B> in m1 >>- { (x1 : A) in Identity<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Identity<A> -> Identity<B> -> Identity<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Identity<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Identity<A>) -> Identity<B> -> Identity<C> in { (m2 : Identity<B>) -> Identity<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 :B) in Identity<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Identity<A> -> Identity<B> -> Identity<C> -> Identity<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Identity<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Identity<A>) -> Identity<B> -> Identity<C> -> Identity<D> in { (m2 : Identity<B>) -> Identity<C> -> Identity<D> in { (m3 : Identity<C>) -> Identity<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Identity<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 

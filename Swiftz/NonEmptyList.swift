@@ -139,15 +139,15 @@ extension NonEmptyList : ApplicativeOps {
 	public typealias FD = NonEmptyList<D>
 
 	public static func liftA<B>(f : A -> B) -> NonEmptyList<A> -> NonEmptyList<B> {
-		return { a in NonEmptyList<A -> B>.pure(f) <*> a }
+		return { (a : NonEmptyList<A>) -> NonEmptyList<B> in NonEmptyList<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : NonEmptyList<A>) -> NonEmptyList<B> -> NonEmptyList<C> in { (b : NonEmptyList<B>) -> NonEmptyList<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a :  NonEmptyList<A>) -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> in { (b : NonEmptyList<B>) -> NonEmptyList<C> -> NonEmptyList<D> in { (c : NonEmptyList<C>) -> NonEmptyList<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -160,15 +160,15 @@ extension NonEmptyList : Monad {
 
 extension NonEmptyList : MonadOps {
 	public static func liftM<B>(f : A -> B) -> NonEmptyList<A> -> NonEmptyList<B> {
-		return { m1 in m1 >>- { x1 in NonEmptyList<B>.pure(f(x1)) } }
+		return { (m1 : NonEmptyList<A>) -> NonEmptyList<B> in m1 >>- { (x1 : A) in NonEmptyList<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in NonEmptyList<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : NonEmptyList<A>) -> NonEmptyList<B> -> NonEmptyList<C> in { (m2 : NonEmptyList<B>) -> NonEmptyList<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in NonEmptyList<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> NonEmptyList<A> -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in NonEmptyList<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : NonEmptyList<A>) -> NonEmptyList<B> -> NonEmptyList<C> -> NonEmptyList<D> in { (m2 : NonEmptyList<B>) -> NonEmptyList<C> -> NonEmptyList<D> in { (m3 :  NonEmptyList<C>) -> NonEmptyList<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in NonEmptyList<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 

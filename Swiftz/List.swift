@@ -634,15 +634,15 @@ extension List : ApplicativeOps {
 	public typealias FD = List<D>
 
 	public static func liftA<B>(f : A -> B) -> List<A> -> List<B> {
-		return { a in List<A -> B>.pure(f) <*> a }
+		return { (a : List<A>) -> List<B> in List<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : List<A>) -> List<B> -> List<C> in { (b : List<B>) -> List<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : List<A>) -> List<B> -> List<C> -> List<D> in { (b : List<B>) -> List<C> -> List<D> in { (c : List<C>) -> List<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -671,15 +671,15 @@ public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 
 extension List : MonadOps {
 	public static func liftM<B>(f : A -> B) -> List<A> -> List<B> {
-		return { m1 in m1 >>- { x1 in List<B>.pure(f(x1)) } }
+		return { (m1 : List<A>) -> List<B> in m1 >>- { (x1 : A) in List<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in List<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : List<A>) -> List<B> -> List<C> in { (m2 : List<B>) -> List<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in List<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : List<A>) -> List<B> -> List<C> -> List<D> in { (m2 : List<B>) -> List<C> -> List<D> in { (m3 : List<C>) -> List<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
