@@ -62,15 +62,15 @@ extension Either : ApplicativeOps {
 	public typealias FD = Either<L, D>
 
 	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
-		return { a in Either<L, A -> B>.pure(f) <*> a }
+		return { (a :  Either<L, A>) -> Either<L, B> in Either<L, A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : Either<L, A>) -> Either<L, B> -> Either<L, C> in { (b : Either<L, B>) -> Either<L, C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : Either<L, A>) -> Either<L, B> -> Either<L, C> -> Either<L, D> in { (b : Either<L, B>) -> Either<L, C> -> Either<L, D> in { (c : Either<L, C>) -> Either<L, D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -82,15 +82,15 @@ extension Either : Monad {
 
 extension Either : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
-		return { m1 in m1 >>- { x1 in Either<L, B>.pure(f(x1)) } }
+		return { (m1 : Either<L, A>) -> Either<L, B> in m1 >>- { (x1 : A) -> Either<L, B> in Either<L, B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Either<L, C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Either<L, A>) -> Either<L, B> -> Either<L, C> in { (m2 :  Either<L, B>) -> Either<L, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Either<L, C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Either<L, D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Either<L, A>) -> Either<L, B> -> Either<L, C> -> Either<L, D> in { (m2 : Either<L, B>) -> Either<L, C> -> Either<L, D> in { (m3 : Either<L, C>) -> Either<L, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Either<L, D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 

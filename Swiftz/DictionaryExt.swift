@@ -44,7 +44,7 @@ extension Dictionary {
 	/// a combining function.  If the receiver does not contain a value for the given key this
 	/// function is equivalent to an `insert`.
 	public func insertWith(k : Key, v : Value, combiner : Value -> Value -> Value) -> [Key: Value] {
-		return self.insertWithKey(k, v: v, combiner: { (_, newValue, oldValue) -> Value in
+		return self.insertWithKey(k, v: v, combiner: { (_ : Key, newValue : Value, oldValue : Value) -> Value in
 			return combiner(newValue)(oldValue)
 		})
 	}

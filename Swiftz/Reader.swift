@@ -88,15 +88,15 @@ extension Reader : ApplicativeOps {
     public typealias FD = Reader<R, D>
     
     public static func liftA(f : A -> B) -> Reader<R, A> -> Reader<R, B> {
-        return { a in Reader<R, A -> B>.pure(f) <*> a }
+        return { (a : Reader<R, A>) -> Reader<R, B> in Reader<R, A -> B>.pure(f) <*> a }
     }
     
     public static func liftA2(f : A -> B -> C) -> Reader<R, A> -> Reader<R, B> -> Reader<R, C> {
-        return { a in { b in f <^> a <*> b  } }
+        return { (a : Reader<R, A>) -> Reader<R, B> -> Reader<R, C> in { (b : Reader<R, B>) -> Reader<R, C> in f <^> a <*> b  } }
     }
     
     public static func liftA3(f : A -> B -> C -> D) -> Reader<R, A> -> Reader<R, B> -> Reader<R, C> -> Reader<R, D> {
-        return { a in { b in { c in f <^> a <*> b <*> c } } }
+        return { (a : Reader<R, A>) -> Reader<R, B> -> Reader<R, C> -> Reader<R, D> in { (b : Reader<R, B>) -> Reader<R, C> -> Reader<R, D> in { (c : Reader<R, C>) -> Reader<R, D> in f <^> a <*> b <*> c } } }
     }
 }
 
@@ -116,15 +116,15 @@ public func >>- <R, A, B>(r : Reader<R, A>, f : A -> Reader<R, B>) -> Reader<R, 
 
 extension Reader : MonadOps {
     public static func liftM(f : A -> B) -> Reader<R, A> -> Reader<R, B> {
-        return { m1 in m1 >>- { x1 in Reader<R, B>.pure(f(x1)) } }
+        return { (m1 : Reader<R, A>) -> Reader<R, B> in m1 >>- { (x1 : A) in Reader<R, B>.pure(f(x1)) } }
     }
     
     public static func liftM2(f : A -> B -> C) -> Reader<R, A> -> Reader<R, B> -> Reader<R, C> {
-        return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Reader<R, C>.pure(f(x1)(x2)) } } } }
+        return { (m1 : Reader<R, A>) -> Reader<R, B> -> Reader<R, C> in { (m2 : Reader<R, B>) -> Reader<R, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Reader<R, C>.pure(f(x1)(x2)) } } } }
     }
     
     public static func liftM3(f : A -> B -> C -> D) -> Reader<R, A> -> Reader<R, B> -> Reader<R, C> -> Reader<R, D> {
-        return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Reader<R, D>.pure(f(x1)(x2)(x3)) } } } } } }
+        return { (m1 : Reader<R, A>) -> Reader<R, B> -> Reader<R, C> -> Reader<R, D> in { (m2 : Reader<R, B>) -> Reader<R, C> -> Reader<R, D> in { (m3 : Reader<R, C>) -> Reader<R, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Reader<R, D>.pure(f(x1)(x2)(x3)) } } } } } }
     }
 }
 

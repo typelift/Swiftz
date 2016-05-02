@@ -100,15 +100,15 @@ extension State : ApplicativeOps {
 	public typealias FD = State<S, D>
 
 	public static func liftA<B>(f : A -> B) -> State<S, A> -> State<S, B> {
-		return { a in State<S, A -> B>.pure(f) <*> a }
+		return { (a : State<S, A>) -> State<S, B> in State<S, A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> State<S, A> -> State<S, B> -> State<S, C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : State<S, A>) -> State<S, B> -> State<S, C> in { (b : State<S, B>) -> State<S, C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> State<S, A> -> State<S, B> -> State<S, C> -> State<S, D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : State<S, A>) -> State<S, B> -> State<S, C> -> State<S, D> in { (b : State<S, B>) -> State<S, C> -> State<S, D> in { (c : State<S, C>) -> State<S, D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -127,15 +127,15 @@ public func >>- <S, A, B>(xs : State<S, A>, f : A -> State<S, B>) -> State<S, B>
 
 extension State : MonadOps {
 	public static func liftM<B>(f : A -> B) -> State<S, A> -> State<S, B> {
-		return { m1 in m1 >>- { x1 in State<S, B>.pure(f(x1)) } }
+		return { (m1 : State<S, A>) -> State<S, B> in m1 >>- { (x1 : A) in State<S, B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> State<S, A> -> State<S, B> -> State<S, C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in State<S, C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : State<S, A>) -> State<S, B> -> State<S, C> in { (m2 : State<S, B>) -> State<S, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in State<S, C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> State<S, A> -> State<S, B> -> State<S, C> -> State<S, D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in State<S, D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : State<S, A>) -> State<S, B> -> State<S, C> -> State<S, D> in { (m2 : State<S, B>) -> State<S, C> -> State<S, D> in { (m3 : State<S, C>) -> State<S, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in State<S, D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
