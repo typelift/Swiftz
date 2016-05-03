@@ -95,6 +95,18 @@ public func <*> <W : Monoid, A, B>(wfs : Writer<W, A -> B>, xs : Writer<W, A>) -
 	return wfs.bind(Writer.fmap(xs))
 }
 
+extension Writer : Cartesian {
+	public typealias FTOP = Writer<W, ()>
+	public typealias FTAB = Writer<W, (A, B)>
+	
+	public static var unit : Writer<W, ()> { return Writer<W, ()>(((), W.mempty)) }
+	public func product<B>(r : Writer<W, B>) -> Writer<W, (A, B)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		return Writer<W, (A, B)>(((l1, l2), m1 <> m2))
+	}
+}
+
 extension Writer : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Writer<W, C>

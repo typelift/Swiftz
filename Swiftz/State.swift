@@ -93,6 +93,20 @@ public func <*> <S, A, B>(f : State<S, A -> B> , s : State<S, A>) -> State<S, B>
 	return s.ap(f)
 }
 
+extension State : Cartesian {
+	public typealias FTOP = State<S, ()>
+	public typealias FTAB = State<S, (A, B)>
+	
+	public static var unit : State<S, ()> { return State<S, ()> { s in ((), s) } }
+	public func product<B>(r : State<S, B>) -> State<S, (A, B)> {
+		return State<S, (A, B)> { c in
+			let (d, _) = r.runState(c)
+			let (e, f) = self.runState(c)
+			return ((e, d), f)
+		}
+	}
+}
+
 extension State : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = State<S, C>

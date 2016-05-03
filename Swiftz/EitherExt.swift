@@ -56,6 +56,26 @@ extension Either : Applicative {
 	}
 }
 
+extension Either : Cartesian {
+	public typealias FTOP = Either<L, ()>
+	public typealias FTAB = Either<L, (A, B)>
+	
+	public static var unit : Either<L, ()> { return .Right(()) }
+	public func product<B>(r : Either<L, B>) -> Either<L, (A, B)> {
+		switch self {
+		case let .Left(c):
+			return .Left(c)
+		case let .Right(d):
+			switch r {
+			case let .Left(e):
+				return .Left(e)
+			case let .Right(f):
+				return .Right((d, f))
+			}
+		}
+	}
+}
+
 extension Either : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Either<L, C>

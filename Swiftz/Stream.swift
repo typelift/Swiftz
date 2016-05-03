@@ -215,6 +215,16 @@ public func <*> <A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return o.ap(f)
 }
 
+extension Stream : Cartesian {
+	public typealias FTOP = Stream<()>
+	public typealias FTAB = Stream<(A, B)>
+	
+	public static var unit : Stream<()> { return Stream<()>.`repeat`(()) }
+	public func product<B>(r : Stream<B>) -> Stream<(A, B)> {
+		return zipWith(self, r, { x in { y in (x, y) } })
+	}
+}
+
 extension Stream : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Stream<C>

@@ -37,6 +37,16 @@ extension Array : Applicative {
 	}
 }
 
+extension Array : Cartesian {
+	public typealias FTOP = Array<()>
+	public typealias FTAB = Array<(A, B)>
+	
+	public static var unit : Array<()> { return [()] }
+	public func product<B>(r : Array<B>) -> Array<(A, B)> {
+		return self.mzip(r)
+	}
+}
+
 extension Array : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = [C]
@@ -96,7 +106,7 @@ extension Array : MonadPlus {
 }
 
 extension Array : MonadZip {
-	public typealias FTAB = [(A, B)]
+	public typealias FTABL = [(A, B)]
 
 	public func mzip<B>(ma : [B]) -> [(A, B)] {
 		return [(A, B)](zip(self, ma))

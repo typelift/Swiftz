@@ -66,11 +66,11 @@ class StringExtSpec : XCTestCase {
 //			return (pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
 //		}
 
-		property("String obeys the Monoidal left identity law") <- forAll { (x : String) in
+		property("String obeys the Cartesian left identity law") <- forAll { (x : String) in
 			return (x + String.mempty) == x
 		}
 
-		property("String obeys the Monoidal right identity law") <- forAll { (x : String) in
+		property("String obeys the Cartesian right identity law") <- forAll { (x : String) in
 			return (String.mempty + x) == x
 		}
 

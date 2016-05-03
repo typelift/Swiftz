@@ -40,16 +40,16 @@ public protocol MonadZip : Monad {
 	associatedtype FC = K1<C>
 
 	/// A Monad containing a zipped tuple.
-	associatedtype FTAB = K1<(A, B)>
+	associatedtype FTABL = K1<(A, B)>
 
 	/// Zip for monads.
-	func mzip(_ : FB) -> FTAB
+	func mzip(_ : FB) -> FTABL
 
 	/// ZipWith for monads.
 	func mzipWith(_ : FB, _ : A -> B -> C) -> FC
 
 	/// Unzip for monads.
-	static func munzip(_ : FTAB) -> (Self, FB)
+	static func munzip(_ : FTABL) -> (Self, FB)
 }
 
 /// A monoid for monads.
