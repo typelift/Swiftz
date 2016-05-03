@@ -75,16 +75,11 @@ extension Optional : Cartesian {
 	
 	public static var unit : Optional<()> { return .Some(()) }
 	public func product<B>(r : Optional<B>) -> Optional<(A, B)> {
-		switch self {
-		case .None:
+		switch (self, r) {
+		case let (.Some(l), .Some(r)):
+			return .Some((l, r))
+		default:
 			return .None
-		case let .Some(l):
-			switch r {
-			case .None:
-				return .None
-			case let .Some(r):
-				return .Some((l, r))
-			}
 		}
 	}
 }
