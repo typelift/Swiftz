@@ -135,10 +135,20 @@ public func <*> <A, B>(f : NonEmptyList<(A -> B)>, l : NonEmptyList<A>) -> NonEm
 extension NonEmptyList : Cartesian {
 	public typealias FTOP = NonEmptyList<()>
 	public typealias FTAB = NonEmptyList<(A, B)>
-	
+	public typealias FTABC = NonEmptyList<(A, B, C)>
+	public typealias FTABCD = NonEmptyList<(A, B, C, D)>
+
 	public static var unit : NonEmptyList<()> { return [()] }
 	public func product<B>(r : NonEmptyList<B>) -> NonEmptyList<(A, B)> {
 		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : NonEmptyList<B>, _ s : NonEmptyList<C>) -> NonEmptyList<(A, B, C)> {
+		return NonEmptyList<(A, B, C)>(self.toList().product(r.toList(), s.toList()))!
+	}
+	
+	public func product<B, C, D>(r : NonEmptyList<B>, _ s : NonEmptyList<C>, _ t : NonEmptyList<D>) -> NonEmptyList<(A, B, C, D)> {
+		return NonEmptyList<(A, B, C, D)>(self.toList().product(r.toList(), s.toList(), t.toList()))!
 	}
 }
 
@@ -172,7 +182,7 @@ extension NonEmptyList : MonadZip {
 	public typealias FTABL = NonEmptyList<(A, B)>
 	
 	public func mzip<B>(ma : NonEmptyList<B>) -> NonEmptyList<(A, B)> {
-		return NonEmptyList<(A, B)>(List(fromArray: zip(self, ma).map(identity)))!
+		return NonEmptyList<(A, B)>(self.toList().product(ma.toList()))!
 	}
 	
 	public func mzipWith<B, C>(other : NonEmptyList<B>, _ f : A -> B -> C) -> NonEmptyList<C> {

@@ -58,10 +58,20 @@ extension Identity : Applicative {
 extension Identity : Cartesian {
 	public typealias FTOP = Identity<()>
 	public typealias FTAB = Identity<(A, B)>
-	
+	public typealias FTABC = Identity<(A, B, C)>
+	public typealias FTABCD = Identity<(A, B, C, D)>
+
 	public static var unit : Identity<()> { return Identity<()>(()) }
 	public func product<B>(r : Identity<B>) -> Identity<(A, B)> {
 		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : Identity<B>, _ s : Identity<C>) -> Identity<(A, B, C)> {
+		return { x in { y in { z in (x, y, z) } } } <^> self <*> r <*> s
+	}
+	
+	public func product<B, C, D>(r : Identity<B>, _ s : Identity<C>, _ t : Identity<D>) -> Identity<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
 	}
 }
 

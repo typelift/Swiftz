@@ -218,10 +218,20 @@ public func <*> <A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 extension Stream : Cartesian {
 	public typealias FTOP = Stream<()>
 	public typealias FTAB = Stream<(A, B)>
-	
+	public typealias FTABC = Stream<(A, B, C)>
+	public typealias FTABCD = Stream<(A, B, C, D)>
+
 	public static var unit : Stream<()> { return Stream<()>.`repeat`(()) }
 	public func product<B>(r : Stream<B>) -> Stream<(A, B)> {
 		return zipWith(self, r, { x in { y in (x, y) } })
+	}
+	
+	public func product<B, C>(r : Stream<B>, _ s : Stream<C>) -> Stream<(A, B, C)> {
+		return Stream.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
+	}
+	
+	public func product<B, C, D>(r : Stream<B>, _ s : Stream<C>, _ t : Stream<D>) -> Stream<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
 	}
 }
 

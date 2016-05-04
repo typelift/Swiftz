@@ -662,10 +662,20 @@ public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
 extension List : Cartesian {
 	public typealias FTOP = List<()>
 	public typealias FTAB = List<(A, B)>
-	
+	public typealias FTABC = List<(A, B, C)>
+	public typealias FTABCD = List<(A, B, C, D)>
+
 	public static var unit : List<()> { return [()] }
 	public func product<B>(r : List<B>) -> List<(A, B)> {
 		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : List<B>, _ s : List<C>) -> List<(A, B, C)> {
+		return List.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
+	}
+	
+	public func product<B, C, D>(r : List<B>, _ s : List<C>, _ t : List<D>) -> List<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
 	}
 }
 

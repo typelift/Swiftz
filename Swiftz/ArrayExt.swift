@@ -40,10 +40,20 @@ extension Array : Applicative {
 extension Array : Cartesian {
 	public typealias FTOP = Array<()>
 	public typealias FTAB = Array<(A, B)>
-	
+	public typealias FTABC = Array<(A, B, C)>
+	public typealias FTABCD = Array<(A, B, C, D)>
+
 	public static var unit : Array<()> { return [()] }
 	public func product<B>(r : Array<B>) -> Array<(A, B)> {
 		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : Array<B>, _ s : Array<C>) -> Array<(A, B, C)> {
+		return { x in { y in { z in (x, y, z) } } } <^> self <*> r <*> s
+	}
+	
+	public func product<B, C, D>(r : Array<B>, _ s : Array<C>, _ t : Array<D>) -> Array<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
 	}
 }
 
