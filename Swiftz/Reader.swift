@@ -81,6 +81,32 @@ public func <*> <R, A, B>(rfs : Reader<R, A -> B>, xs : Reader<R, A>) -> Reader<
 	}
 }
 
+extension Reader : Cartesian {
+	public typealias FTOP = Reader<R, ()>
+	public typealias FTAB = Reader<R, (A, B)>
+	public typealias FTABC = Reader<R, (A, B, C)>
+	public typealias FTABCD = Reader<R, (A, B, C, D)>
+	
+	public static var unit : Reader<R, ()> { return Reader<R, ()> { _ in () } }
+	public func product<B>(r : Reader<R, B>) -> Reader<R, (A, B)> {
+		return Reader<R, (A, B)> { c in
+			return (self.runReader(c), r.runReader(c))
+		}
+	}
+	
+	public func product<B, C>(r : Reader<R, B>, _ s : Reader<R, C>) -> Reader<R, (A, B, C)> {
+		return Reader<R, (A, B, C)> { c in
+			return (self.runReader(c), r.runReader(c), s.runReader(c))
+		}
+	}
+	
+	public func product<B, C, D>(r : Reader<R, B>, _ s : Reader<R, C>, _ t : Reader<R, D>) -> Reader<R, (A, B, C, D)> {
+		return Reader<R, (A, B, C, D)> { c in
+			return (self.runReader(c), r.runReader(c), s.runReader(c), t.runReader(c))
+		}
+	}
+}
+
 extension Reader : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Reader<R, C>
@@ -138,10 +164,10 @@ public func <<-<< <R, A, B, C>(g : B -> Reader<R, C>, f : A -> Reader<R, B>) -> 
 
 // Can't get this to type check.
 //public func sequence<R, A>(ms: [Reader<R, A>]) -> Reader<R, [A]> {
-//    return ms.reduce(Reader<R, [A]>.pure([]), combine: { n, m in
+//    return ms.reduce(Reader.pure([]), combine: { n, m in
 //        return n.bind { xs in
 //            return  m.bind { x in
-//                return Reader<R, [A]>.pure(xs + [x])
+//                return Reader.pure(xs + [x])
 //            }
 //        }
 //    })
