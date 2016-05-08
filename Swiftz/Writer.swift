@@ -95,6 +95,35 @@ public func <*> <W : Monoid, A, B>(wfs : Writer<W, A -> B>, xs : Writer<W, A>) -
 	return wfs.bind(Writer.fmap(xs))
 }
 
+extension Writer : Cartesian {
+	public typealias FTOP = Writer<W, ()>
+	public typealias FTAB = Writer<W, (A, B)>
+	public typealias FTABC = Writer<W, (A, B, C)>
+	public typealias FTABCD = Writer<W, (A, B, C, D)>
+
+	public static var unit : Writer<W, ()> { return Writer<W, ()>(((), W.mempty)) }
+	public func product<B>(r : Writer<W, B>) -> Writer<W, (A, B)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		return Writer<W, (A, B)>(((l1, l2), m1 <> m2))
+	}
+	
+	public func product<B, C>(r : Writer<W, B>, _ s : Writer<W, C>) -> Writer<W, (A, B, C)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		let (l3, m3) = s.runWriter
+		return Writer<W, (A, B, C)>(((l1, l2, l3), m1 <> m2 <> m3))
+	}
+	
+	public func product<B, C, D>(r : Writer<W, B>, _ s : Writer<W, C>, _ t : Writer<W, D>) -> Writer<W, (A, B, C, D)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		let (l3, m3) = s.runWriter
+		let (l4, m4) = t.runWriter
+		return Writer<W, (A, B, C, D)>(((l1, l2, l3, l4), m1 <> m2 <> m3 <> m4))
+	}
+}
+
 extension Writer : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Writer<W, C>

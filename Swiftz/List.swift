@@ -659,6 +659,26 @@ public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
 	return l.ap(f)
 }
 
+extension List : Cartesian {
+	public typealias FTOP = List<()>
+	public typealias FTAB = List<(A, B)>
+	public typealias FTABC = List<(A, B, C)>
+	public typealias FTABCD = List<(A, B, C, D)>
+
+	public static var unit : List<()> { return [()] }
+	public func product<B>(r : List<B>) -> List<(A, B)> {
+		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : List<B>, _ s : List<C>) -> List<(A, B, C)> {
+		return List.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
+	}
+	
+	public func product<B, C, D>(r : List<B>, _ s : List<C>, _ t : List<D>) -> List<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
+	}
+}
+
 extension List : Monad {
 	public func bind<B>(f : A -> List<B>) -> List<B> {
 		return self.concatMap(f)
@@ -709,4 +729,20 @@ public func sequence<A>(ms: [List<A>]) -> List<[A]> {
 			}
 		}
 	})
+}
+
+extension List : MonadZip {
+	public typealias FTABL = List<(A, B)>
+	
+	public func mzip<B>(ma : List<B>) -> List<(A, B)> {
+		return List<(A, B)>(fromArray: zip(self, ma).map(identity))
+	}
+	
+	public func mzipWith<B, C>(other : List<B>, _ f : A -> B -> C) -> List<C> {
+		return self.mzip(other).map(uncurry(f))
+	}
+	
+	public static func munzip<B>(ftab : List<(A, B)>) -> (List<A>, List<B>) {
+		return (ftab.map(fst), ftab.map(snd))
+	}
 }

@@ -77,6 +77,26 @@ extension Proxy : Applicative {
 	}
 }
 
+extension Proxy : Cartesian {
+	public typealias FTOP = Proxy<()>
+	public typealias FTAB = Proxy<(A, B)>
+	public typealias FTABC = Proxy<(A, B, C)>
+	public typealias FTABCD = Proxy<(A, B, C, D)>
+
+	public static var unit : Proxy<()> { return Proxy<()>() }
+	public func product<B>(_ : Proxy<B>) -> Proxy<(A, B)> {
+		return Proxy<(A, B)>()
+	}
+	
+	public func product<B, C>(r : Proxy<B>, _ s : Proxy<C>) -> Proxy<(A, B, C)> {
+		return Proxy<(A, B, C)>()
+	}
+	
+	public func product<B, C, D>(r : Proxy<B>, _ s : Proxy<C>, _ t : Proxy<D>) -> Proxy<(A, B, C, D)> {
+		return Proxy<(A, B, C, D)>()
+	}
+}
+
 extension Proxy : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Proxy<C>
@@ -133,7 +153,7 @@ public func <<-<< <A, B, C>(g : B -> Proxy<C>, f : A -> Proxy<B>) -> (A -> Proxy
 }
 
 extension Proxy : MonadZip {
-	public typealias FTAB = Proxy<(A, B)>
+	public typealias FTABL = Proxy<(A, B)>
 
 	public func mzip<B>(_ : Proxy<T>) -> Proxy<(A, B)> {
 		return Proxy<(A, B)>()

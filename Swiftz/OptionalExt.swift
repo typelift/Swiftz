@@ -69,6 +69,41 @@ extension Optional : Applicative {
 	}
 }
 
+extension Optional : Cartesian {
+	public typealias FTOP = Optional<()>
+	public typealias FTAB = Optional<(A, B)>
+	public typealias FTABC = Optional<(A, B, C)>
+	public typealias FTABCD = Optional<(A, B, C, D)>
+	
+	public static var unit : Optional<()> { return .Some(()) }
+	public func product<B>(r : Optional<B>) -> Optional<(A, B)> {
+		switch (self, r) {
+		case let (.Some(l), .Some(r)):
+			return .Some((l, r))
+		default:
+			return .None
+		}
+	}
+	
+	public func product<B, C>(r : Optional<B>, _ s : Optional<C>) -> Optional<(A, B, C)> {
+		switch (self, r, s) {
+		case let (.Some(l), .Some(r), .Some(s)):
+			return .Some((l, r, s))
+		default:
+			return .None
+		}
+	}
+	
+	public func product<B, C, D>(r : Optional<B>, _ s : Optional<C>, _ t : Optional<D>) -> Optional<(A, B, C, D)> {
+		switch (self, r, s, t) {
+		case let (.Some(l), .Some(r), .Some(s), .Some(t)):
+			return .Some((l, r, s, t))
+		default:
+			return .None
+		}
+	}
+}
+
 extension Optional : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Optional<C>

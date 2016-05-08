@@ -55,6 +55,26 @@ extension Identity : Applicative {
 	}
 }
 
+extension Identity : Cartesian {
+	public typealias FTOP = Identity<()>
+	public typealias FTAB = Identity<(A, B)>
+	public typealias FTABC = Identity<(A, B, C)>
+	public typealias FTABCD = Identity<(A, B, C, D)>
+
+	public static var unit : Identity<()> { return Identity<()>(()) }
+	public func product<B>(r : Identity<B>) -> Identity<(A, B)> {
+		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : Identity<B>, _ s : Identity<C>) -> Identity<(A, B, C)> {
+		return { x in { y in { z in (x, y, z) } } } <^> self <*> r <*> s
+	}
+	
+	public func product<B, C, D>(r : Identity<B>, _ s : Identity<C>, _ t : Identity<D>) -> Identity<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
+	}
+}
+
 extension Identity : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Identity<C>
@@ -111,7 +131,7 @@ public func <<-<< <A, B, C>(g : B -> Identity<C>, f : A -> Identity<B>) -> (A ->
 }
 
 extension Identity : MonadZip {
-	public typealias FTAB = Identity<(A, B)>
+	public typealias FTABL = Identity<(A, B)>
 
 	public func mzip<B>(other : Identity<B>) -> Identity<(A, B)> {
 		return Identity<(A, B)>((self.runIdentity, other.runIdentity))

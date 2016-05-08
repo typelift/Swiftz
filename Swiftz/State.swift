@@ -93,6 +93,41 @@ public func <*> <S, A, B>(f : State<S, A -> B> , s : State<S, A>) -> State<S, B>
 	return s.ap(f)
 }
 
+extension State : Cartesian {
+	public typealias FTOP = State<S, ()>
+	public typealias FTAB = State<S, (A, B)>
+	public typealias FTABC = State<S, (A, B, C)>
+	public typealias FTABCD = State<S, (A, B, C, D)>
+
+	public static var unit : State<S, ()> { return State<S, ()> { s in ((), s) } }
+	public func product<B>(r : State<S, B>) -> State<S, (A, B)> {
+		return State<S, (A, B)> { c in
+			let (d, _) = r.runState(c)
+			let (e, f) = self.runState(c)
+			return ((e, d), f)
+		}
+	}
+	
+	public func product<B, C>(r : State<S, B>, _ s : State<S, C>) -> State<S, (A, B, C)> {
+		return State<S, (A, B, C)> { c in
+			let (d, _) = s.runState(c)
+			let (e, _) = r.runState(c)
+			let (f, g) = self.runState(c)
+			return ((f, e, d), g)
+		}
+	}
+	
+	public func product<B, C, D>(r : State<S, B>, _ s : State<S, C>, _ t : State<S, D>) -> State<S, (A, B, C, D)> {
+		return State<S, (A, B, C, D)> { c in
+			let (d, _) = t.runState(c)
+			let (e, _) = s.runState(c)
+			let (f, _) = r.runState(c)
+			let (g, h) = self.runState(c)
+			return ((g, f, e, d), h)
+		}
+	}
+}
+
 extension State : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = State<S, C>
