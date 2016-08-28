@@ -8,6 +8,6 @@
 
 /// Functors equipped with a point taking values to instances of themselves.
 public protocol Pointed {
-	typealias A
+	associatedtype A
 	static func pure(_ : A) -> Self
 }

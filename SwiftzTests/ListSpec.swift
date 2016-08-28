@@ -24,7 +24,7 @@ extension List where Element : Arbitrary {
 extension List : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element)(pf : (List<Element> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element, pf : (List<Element> -> Testable)) -> Property {
 		return forAllShrink(List<A>.arbitrary, shrinker: List<A>.shrink, f: { bl in
 			return pf(bl.map(wit))
 		})
@@ -76,28 +76,48 @@ class ListSpec : XCTestCase {
 			return (List.pure(identity) <*> x) == x
 		}
 
-		// Swift unroller can't handle our scale; Use only small lists.
-		property("List obeys the first Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-					return (fl.count <= 3 && gl.count <= 3) ==> {
-						let f = fl.fmap({ $0.getArrow })
-						let g = gl.fmap({ $0.getArrow })
-						return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
-					}
-				}
+		property("List obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (List.pure(f.getArrow) <*> List.pure(x)) == List.pure(f.getArrow(x))
+		}
+
+		property("List obeys the Applicative interchange law") <- forAll { (fu : List<ArrowOf<Int, Int>>) in
+			return forAll { (y : Int) in
+				let u = fu.fmap { $0.getArrow }
+				return (u <*> List.pure(y)) == (List.pure({ f in f(y) }) <*> u)
 			}
 		}
 
-		property("List obeys the second Applicative composition law") <- forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { fl in
-			return forAllShrink(List<ArrowOf<Int8, Int8>>.arbitrary, shrinker: List.shrink) { gl in
-				return forAllShrink(List<Int8>.arbitrary, shrinker: List<Int8>.shrink) { x in
-					return (fl.count <= 3 && gl.count <= 3) ==> {
-						let f = fl.fmap({ $0.getArrow })
-						let g = gl.fmap({ $0.getArrow })
-						return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
-					}
-				}
+		// Swift unroller can't handle our scale; Use only small lists.
+		property("List obeys the first Applicative composition law") <- forAll { (fl : List<ArrowOf<Int8, Int8>>, gl : List<ArrowOf<Int8, Int8>>, x : List<Int8>) in
+			return (fl.count <= 3 && gl.count <= 3) ==> {
+				let f = fl.fmap({ $0.getArrow })
+				let g = gl.fmap({ $0.getArrow })
+				return (curry(•) <^> f <*> g <*> x) == (f <*> (g <*> x))
+			}
+		}
+
+		property("List obeys the second Applicative composition law") <- forAll { (fl : List<ArrowOf<Int8, Int8>>, gl : List<ArrowOf<Int8, Int8>>, x : List<Int8>) in
+			return (fl.count <= 3 && gl.count <= 3) ==> {
+				let f = fl.fmap({ $0.getArrow })
+				let g = gl.fmap({ $0.getArrow })
+				return (List.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+			}
+		}
+
+		property("List obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
+			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
+			return (List<Int>.pure(a) >>- f) == f(a)
+		}
+
+		property("List obeys the Monad right identity law") <- forAll { (m : List<Int>) in
+			return (m >>- List<Int>.pure) == m
+		}
+
+		property("List obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
+			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
+			let g : Int -> List<Int> = List<Int>.pure • ga.getArrow
+			return forAll { (m : List<Int>) in
+				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
 		}
 
@@ -162,6 +182,13 @@ class ListSpec : XCTestCase {
 			case let .Cons(x, xs):
 				let rig = (List.pure(0) + xs.scanl(curry(+), initial: 0 + x))
 				return scanned == rig
+			}
+		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(List.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.head! == xs
 			}
 		}
 	}

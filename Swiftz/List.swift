@@ -19,7 +19,7 @@ public enum ListMatcher<Element> {
 /// A List is typically constructed by two primitives: Nil and Cons.  Due to limitations of the
 /// language, we instead provide a nullary constructor for Nil and a Cons Constructor and an actual
 /// static function named `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
-/// isomorphic to the traditional inductive definition.  As such, the method `match()` is provided
+/// isomorphic to the traditional inductive definition.  As such, the computed property `match` is provided
 /// that allows the list to be destructured into a more traditional `Nil | Cons(Element, List<Element>)`
 /// form that is also compatible with switch-case blocks.
 ///
@@ -395,7 +395,7 @@ public struct List<Element> {
 	///
 	/// For infinite lists this function will diverge.
 	public func reverse() -> List<Element> {
-		return self.reduce(flip(List.cons), initial: [])
+		return self.reduce(flip(curry(List.cons)), initial: [])
 	}
 
 	/// Given a predicate, searches the list until it find the first match, and returns that,
@@ -634,15 +634,15 @@ extension List : ApplicativeOps {
 	public typealias FD = List<D>
 
 	public static func liftA<B>(f : A -> B) -> List<A> -> List<B> {
-		return { a in List<A -> B>.pure(f) <*> a }
+		return { (a : List<A>) -> List<B> in List<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : List<A>) -> List<B> -> List<C> in { (b : List<B>) -> List<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : List<A>) -> List<B> -> List<C> -> List<D> in { (b : List<B>) -> List<C> -> List<D> in { (c : List<C>) -> List<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -659,6 +659,26 @@ public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
 	return l.ap(f)
 }
 
+extension List : Cartesian {
+	public typealias FTOP = List<()>
+	public typealias FTAB = List<(A, B)>
+	public typealias FTABC = List<(A, B, C)>
+	public typealias FTABCD = List<(A, B, C, D)>
+
+	public static var unit : List<()> { return [()] }
+	public func product<B>(r : List<B>) -> List<(A, B)> {
+		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : List<B>, _ s : List<C>) -> List<(A, B, C)> {
+		return List.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
+	}
+	
+	public func product<B, C, D>(r : List<B>, _ s : List<C>, _ t : List<D>) -> List<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
+	}
+}
+
 extension List : Monad {
 	public func bind<B>(f : A -> List<B>) -> List<B> {
 		return self.concatMap(f)
@@ -671,15 +691,15 @@ public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 
 extension List : MonadOps {
 	public static func liftM<B>(f : A -> B) -> List<A> -> List<B> {
-		return { m1 in m1 >>- { x1 in List<B>.pure(f(x1)) } }
+		return { (m1 : List<A>) -> List<B> in m1 >>- { (x1 : A) in List<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in List<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : List<A>) -> List<B> -> List<C> in { (m2 : List<B>) -> List<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in List<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : List<A>) -> List<B> -> List<C> -> List<D> in { (m2 : List<B>) -> List<C> -> List<D> in { (m3 : List<C>) -> List<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
@@ -698,5 +718,31 @@ extension List : MonadPlus {
 
 	public func mplus(other : List<A>) -> List<A> {
 		return self + other
+	}
+}
+
+public func sequence<A>(ms: [List<A>]) -> List<[A]> {
+	return ms.reduce(List<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return List<[A]>.pure(xs + [x])
+			}
+		}
+	})
+}
+
+extension List : MonadZip {
+	public typealias FTABL = List<(A, B)>
+	
+	public func mzip<B>(ma : List<B>) -> List<(A, B)> {
+		return List<(A, B)>(fromArray: zip(self, ma).map(identity))
+	}
+	
+	public func mzipWith<B, C>(other : List<B>, _ f : A -> B -> C) -> List<C> {
+		return self.mzip(other).map(uncurry(f))
+	}
+	
+	public static func munzip<B>(ftab : List<(A, B)>) -> (List<A>, List<B>) {
+		return (ftab.map(fst), ftab.map(snd))
 	}
 }

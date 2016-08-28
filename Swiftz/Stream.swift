@@ -89,7 +89,7 @@ public struct Stream<Element> {
 	public var tails : Stream<Stream<Element>> {
 		return Stream<Stream<Element>> { (self, self.step().tail.tails) }
 	}
-
+	
 	/// Returns a pair of the first n elements and the remaining eleemnts in a `Stream`.
 	public func splitAt(n : UInt) -> ([Element], Stream<Element>) {
 		if n == 0 {
@@ -128,7 +128,7 @@ public struct Stream<Element> {
 		if n == 0 {
 			return self
 		}
-		return self.step().tail.tail.drop(n - 1)
+		return self.step().tail.drop(n - 1)
 	}
 
 	/// Removes elements from the `Stream` that do not satisfy a given predicate.
@@ -215,6 +215,26 @@ public func <*> <A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return o.ap(f)
 }
 
+extension Stream : Cartesian {
+	public typealias FTOP = Stream<()>
+	public typealias FTAB = Stream<(A, B)>
+	public typealias FTABC = Stream<(A, B, C)>
+	public typealias FTABCD = Stream<(A, B, C, D)>
+
+	public static var unit : Stream<()> { return Stream<()>.`repeat`(()) }
+	public func product<B>(r : Stream<B>) -> Stream<(A, B)> {
+		return zipWith(self, r, { x in { y in (x, y) } })
+	}
+	
+	public func product<B, C>(r : Stream<B>, _ s : Stream<C>) -> Stream<(A, B, C)> {
+		return Stream.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
+	}
+	
+	public func product<B, C, D>(r : Stream<B>, _ s : Stream<C>, _ t : Stream<D>) -> Stream<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
+	}
+}
+
 extension Stream : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Stream<C>
@@ -222,15 +242,15 @@ extension Stream : ApplicativeOps {
 	public typealias FD = Stream<D>
 
 	public static func liftA<B>(f : A -> B) -> Stream<A> -> Stream<B> {
-		return { a in Stream<A -> B>.pure(f) <*> a }
+		return { (a : Stream<A>) -> Stream<B> in Stream<A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : Stream<A>) -> Stream<B> -> Stream<C> in { (b : Stream<B>) -> Stream<C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : Stream<A>) -> Stream<B> -> Stream<C> -> Stream<D> in { (b : Stream<B>) -> Stream<C> -> Stream<D> in { (c : Stream<C>) -> Stream<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -250,15 +270,15 @@ public func >>- <A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
 
 extension Stream : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Stream<A> -> Stream<B> {
-		return { m1 in m1 >>- { x1 in Stream<B>.pure(f(x1)) } }
+		return { (m1 : Stream<A>) -> Stream<B> in m1 >>- { (x1 : A) in Stream<B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Stream<C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Stream<A>) -> Stream<B> -> Stream<C> in { (m2 : Stream<B>) -> Stream<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Stream<C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Stream<D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Stream<A>) -> Stream<B> -> Stream<C> -> Stream<D> in { (m2 : Stream<B>) -> Stream<C> -> Stream<D> in { (m3 : Stream<C>) -> Stream<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Stream<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
@@ -334,4 +354,14 @@ extension Stream : CustomStringConvertible {
 	public var description : String {
 		return "[\(self.head), ...]"
 	}
+}
+
+public func sequence<A>(ms: [Stream<A>]) -> Stream<[A]> {
+	return ms.reduce(Stream<[A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Stream<[A]>.pure(xs + [x])
+			}
+		}
+	})
 }

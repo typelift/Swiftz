@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84A88F971A71DF7F003D53CF"
+               BlueprintIdentifier = "8240CD1B1C3A395F00EF4D29"
                BuildableName = "Swiftz.framework"
-               BlueprintName = "Swiftz"
-               ReferencedContainer = "container:Swiftz.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84A88FA21A71DF7F003D53CF"
-               BuildableName = "SwiftzTests.xctest"
-               BlueprintName = "SwiftzTests"
+               BlueprintName = "Swiftz-tvOS"
                ReferencedContainer = "container:Swiftz.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84A88FA21A71DF7F003D53CF"
-               BuildableName = "SwiftzTests.xctest"
-               BlueprintName = "SwiftzTests"
+               BlueprintIdentifier = "8240CD241C3A396000EF4D29"
+               BuildableName = "Swiftz-tvOSTests.xctest"
+               BlueprintName = "Swiftz-tvOSTests"
                ReferencedContainer = "container:Swiftz.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "84A88F971A71DF7F003D53CF"
+            BlueprintIdentifier = "8240CD1B1C3A395F00EF4D29"
             BuildableName = "Swiftz.framework"
-            BlueprintName = "Swiftz"
+            BlueprintName = "Swiftz-tvOS"
             ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "84A88F971A71DF7F003D53CF"
+            BlueprintIdentifier = "8240CD1B1C3A395F00EF4D29"
             BuildableName = "Swiftz.framework"
-            BlueprintName = "Swiftz"
+            BlueprintName = "Swiftz-tvOS"
             ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +82,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "84A88F971A71DF7F003D53CF"
+            BlueprintIdentifier = "8240CD1B1C3A395F00EF4D29"
             BuildableName = "Swiftz.framework"
-            BlueprintName = "Swiftz"
+            BlueprintName = "Swiftz-tvOS"
             ReferencedContainer = "container:Swiftz.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

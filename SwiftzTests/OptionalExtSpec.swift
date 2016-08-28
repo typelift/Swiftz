@@ -65,6 +65,17 @@ class OptionalExtSpec : XCTestCase {
 			return (Optional.pure(identity) <*> x) == x
 		}
 
+		property("Optional obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+			return (Optional.pure(f.getArrow) <*> Optional.pure(x)) == Optional.pure(f.getArrow(x))
+		}
+
+		property("Optional obeys the Applicative interchange law") <- forAll { (fu : Optional<ArrowOf<Int, Int>>) in
+			return forAll { (y : Int) in
+				let u = fu.fmap { $0.getArrow }
+				return (u <*> Optional.pure(y)) == (Optional.pure({ f in f(y) }) <*> u)
+			}
+		}
+
 		property("Optional obeys the first Applicative composition law") <- forAll { (fl : Optional<ArrowOf<Int8, Int8>>, gl : Optional<ArrowOf<Int8, Int8>>, x : Optional<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })
@@ -97,6 +108,18 @@ class OptionalExtSpec : XCTestCase {
 			let g = { $0.getOptional } • ga.getArrow
 			return forAll { (m : Optional<Int>) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
+			}
+		}
+		
+		property("Optional toEither behaves") <- forAll { (m : Optional<Int>) in
+			let defaultValue = 0
+			return (m.toEither(defaultValue).isLeft && m == nil) || ((m.toEither(defaultValue).isRight && m != nil))
+		}
+
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map(Optional.pure))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss! == xs
 			}
 		}
 	}

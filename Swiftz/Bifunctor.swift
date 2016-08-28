@@ -11,14 +11,14 @@
 /// FIXME: Something in swiftc doesn't like it when conforming instances use a generic <D> in
 /// definitions of rightMap.  It has been removed in all instances for now.
 public protocol Bifunctor {
-	typealias L
-	typealias B
-	typealias R
-	typealias D
-	typealias PAC = K2<L, R>
-	typealias PAD = K2<L, D>
-	typealias PBC = K2<B, R>
-	typealias PBD = K2<B, D>
+	associatedtype L
+	associatedtype B
+	associatedtype R
+	associatedtype D
+	associatedtype PAC = K2<L, R>
+	associatedtype PAD = K2<L, D>
+	associatedtype PBC = K2<B, R>
+	associatedtype PBD = K2<B, D>
 
 	/// Map two functions individually over both sides of the bifunctor at the same time.
 	func bimap(f : L -> B, _ g : R -> D) -> PBD

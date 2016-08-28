@@ -56,21 +56,86 @@ extension Either : Applicative {
 	}
 }
 
+extension Either : Cartesian {
+	public typealias FTOP = Either<L, ()>
+	public typealias FTAB = Either<L, (A, B)>
+	public typealias FTABC = Either<L, (A, B, C)>
+	public typealias FTABCD = Either<L, (A, B, C, D)>
+
+	public static var unit : Either<L, ()> { return .Right(()) }
+	public func product<B>(r : Either<L, B>) -> Either<L, (A, B)> {
+		switch self {
+		case let .Left(c):
+			return .Left(c)
+		case let .Right(d):
+			switch r {
+			case let .Left(e):
+				return .Left(e)
+			case let .Right(f):
+				return .Right((d, f))
+			}
+		}
+	}
+	
+	public func product<B, C>(r : Either<L, B>, _ s : Either<L, C>) -> Either<L, (A, B, C)> {
+		switch self {
+		case let .Left(c):
+			return .Left(c)
+		case let .Right(d):
+			switch r {
+			case let .Left(e):
+				return .Left(e)
+			case let .Right(f):
+				switch s {
+				case let .Left(g):
+					return .Left(g)
+				case let .Right(h):
+					return .Right((d, f, h))
+				}
+			}
+		}
+	}
+	
+	public func product<B, C, D>(r : Either<L, B>, _ s : Either<L, C>, _ t : Either<L, D>) -> Either<L, (A, B, C, D)> {
+		switch self {
+		case let .Left(c):
+			return .Left(c)
+		case let .Right(d):
+			switch r {
+			case let .Left(e):
+				return .Left(e)
+			case let .Right(f):
+				switch s {
+				case let .Left(g):
+					return .Left(g)
+				case let .Right(h):
+					switch t {
+					case let .Left(i):
+						return .Left(i)
+					case let .Right(j):
+						return .Right((d, f, h, j))
+					}
+				}
+			}
+		}
+	}
+}
+
 extension Either : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Either<L, C>
 	public typealias FD = Either<L, D>
 
 	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
-		return { a in Either<L, A -> B>.pure(f) <*> a }
+		return { (a :  Either<L, A>) -> Either<L, B> in Either<L, A -> B>.pure(f) <*> a }
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
-		return { a in { b in f <^> a <*> b  } }
+		return { (a : Either<L, A>) -> Either<L, B> -> Either<L, C> in { (b : Either<L, B>) -> Either<L, C> in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+		return { (a : Either<L, A>) -> Either<L, B> -> Either<L, C> -> Either<L, D> in { (b : Either<L, B>) -> Either<L, C> -> Either<L, D> in { (c : Either<L, C>) -> Either<L, D> in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -82,15 +147,15 @@ extension Either : Monad {
 
 extension Either : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
-		return { m1 in m1 >>- { x1 in Either<L, B>.pure(f(x1)) } }
+		return { (m1 : Either<L, A>) -> Either<L, B> in m1 >>- { (x1 : A) -> Either<L, B> in Either<L, B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Either<L, C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Either<L, A>) -> Either<L, B> -> Either<L, C> in { (m2 :  Either<L, B>) -> Either<L, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Either<L, C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Either<L, D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Either<L, A>) -> Either<L, B> -> Either<L, C> -> Either<L, D> in { (m2 : Either<L, B>) -> Either<L, C> -> Either<L, D> in { (m3 : Either<L, C>) -> Either<L, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Either<L, D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
@@ -129,4 +194,14 @@ extension Either : Foldable {
 			return f(y)
 		}
 	}
+}
+
+public func sequence<L, R>(ms: [Either<L, R>]) -> Either<L, [R]> {
+	return ms.reduce(Either<L, [R]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Either<L, [R]>.pure(xs + [x])
+			}
+		}
+	})
 }

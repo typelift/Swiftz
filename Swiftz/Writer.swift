@@ -20,7 +20,8 @@ public struct Writer<W : Monoid, T> {
 
 	/// Returns a `Writer` that applies the function to its current value and environment.
 	public func mapWriter<U, V : Monoid>(f : (T, W) -> (U, V)) -> Writer<V, U> {
-		return Writer<V, U>(f(self.runWriter))
+		let (t, w) = self.runWriter
+		return Writer<V, U>(f(t, w))
 	}
 
 	/// Extracts the current environment from the receiver.
@@ -94,6 +95,35 @@ public func <*> <W : Monoid, A, B>(wfs : Writer<W, A -> B>, xs : Writer<W, A>) -
 	return wfs.bind(Writer.fmap(xs))
 }
 
+extension Writer : Cartesian {
+	public typealias FTOP = Writer<W, ()>
+	public typealias FTAB = Writer<W, (A, B)>
+	public typealias FTABC = Writer<W, (A, B, C)>
+	public typealias FTABCD = Writer<W, (A, B, C, D)>
+
+	public static var unit : Writer<W, ()> { return Writer<W, ()>(((), W.mempty)) }
+	public func product<B>(r : Writer<W, B>) -> Writer<W, (A, B)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		return Writer<W, (A, B)>(((l1, l2), m1 <> m2))
+	}
+	
+	public func product<B, C>(r : Writer<W, B>, _ s : Writer<W, C>) -> Writer<W, (A, B, C)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		let (l3, m3) = s.runWriter
+		return Writer<W, (A, B, C)>(((l1, l2, l3), m1 <> m2 <> m3))
+	}
+	
+	public func product<B, C, D>(r : Writer<W, B>, _ s : Writer<W, C>, _ t : Writer<W, D>) -> Writer<W, (A, B, C, D)> {
+		let (l1, m1) = self.runWriter
+		let (l2, m2) = r.runWriter
+		let (l3, m3) = s.runWriter
+		let (l4, m4) = t.runWriter
+		return Writer<W, (A, B, C, D)>(((l1, l2, l3, l4), m1 <> m2 <> m3 <> m4))
+	}
+}
+
 extension Writer : ApplicativeOps {
 	public typealias C = Any
 	public typealias FC = Writer<W, C>
@@ -127,15 +157,15 @@ public func >>- <W, A, B>(x : Writer<W, A>, f : A -> Writer<W, B>) -> Writer<W,B
 
 extension Writer : MonadOps {
 	public static func liftM<B>(f : A -> B) -> Writer<W, A> -> Writer<W, B> {
-		return { m1 in m1 >>- { x1 in Writer<W, B>.pure(f(x1)) } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> in m1 >>- { (x1 : A) in Writer<W, B>.pure(f(x1)) } }
 	}
 
 	public static func liftM2<B, C>(f : A -> B -> C) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Writer<W, C>.pure(f(x1)(x2)) } } } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> -> Writer<W, C> in { (m2 : Writer<W, B>) -> Writer<W, C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in Writer<W, C>.pure(f(x1)(x2)) } } } }
 	}
 
 	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Writer<W, A> -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Writer<W, D>.pure(f(x1)(x2)(x3)) } } } } } }
+		return { (m1 : Writer<W, A>) -> Writer<W, B> -> Writer<W, C> -> Writer<W, D> in { (m2 : Writer<W, B>) -> Writer<W, C> -> Writer<W, D> in { (m3 : Writer<W, C>) -> Writer<W, D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in Writer<W, D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
@@ -157,3 +187,12 @@ public func != <W : protocol<Monoid, Equatable>, A : Equatable>(l : Writer<W, A>
 	return !(l == r)
 }
 
+public func sequence<W, A>(ms: [Writer<W, A>]) -> Writer<W, [A]> {
+	return ms.reduce(Writer<W, [A]>.pure([]), combine: { n, m in
+		return n.bind { xs in
+			return m.bind { x in
+				return Writer<W, [A]>.pure(xs + [x])
+			}
+		}
+	})
+}

@@ -14,10 +14,10 @@ public protocol Monad : Applicative {
 }
 
 public protocol MonadOps : Monad {
-	typealias C
-	typealias FC = K1<C>
-	typealias D
-	typealias FD = K1<D>
+	associatedtype C
+	associatedtype FC = K1<C>
+	associatedtype D
+	associatedtype FD = K1<D>
 
 	/// Lift a function to a Monadic action.
 	static func liftM(f : A -> B) -> Self -> FB
@@ -35,21 +35,21 @@ public protocol MonadOps : Monad {
 /// Monads that allow zipping.
 public protocol MonadZip : Monad {
 	/// An arbitrary domain.  Usually Any.
-	typealias C
+	associatedtype C
 	/// A monad with an arbitrary domain.
-	typealias FC = K1<C>
+	associatedtype FC = K1<C>
 
 	/// A Monad containing a zipped tuple.
-	typealias FTAB = K1<(A, B)>
+	associatedtype FTABL = K1<(A, B)>
 
 	/// Zip for monads.
-	func mzip(_ : FB) -> FTAB
+	func mzip(_ : FB) -> FTABL
 
 	/// ZipWith for monads.
 	func mzipWith(_ : FB, _ : A -> B -> C) -> FC
 
 	/// Unzip for monads.
-	static func munzip(_ : FTAB) -> (Self, FB)
+	static func munzip(_ : FTABL) -> (Self, FB)
 }
 
 /// A monoid for monads.

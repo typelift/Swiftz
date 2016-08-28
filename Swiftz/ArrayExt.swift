@@ -16,7 +16,7 @@ public enum ArrayMatcher<A> {
 extension Array : Functor {
 	public typealias A = Element
 	public typealias B = Any
-	public typealias FB = Array<B>
+	public typealias FB = [B]
 
 	public func fmap<B>(f : A -> B) -> [B] {
 		return self.map(f)
@@ -30,29 +30,50 @@ extension Array : Pointed {
 }
 
 extension Array : Applicative {
-	public typealias FAB = Array<A -> B>
+	public typealias FAB = [A -> B]
 
 	public func ap<B>(f : [A -> B]) -> [B] {
 		return f <*> self
 	}
 }
 
+extension Array : Cartesian {
+	public typealias FTOP = Array<()>
+	public typealias FTAB = Array<(A, B)>
+	public typealias FTABC = Array<(A, B, C)>
+	public typealias FTABCD = Array<(A, B, C, D)>
+
+	public static var unit : Array<()> { return [()] }
+	public func product<B>(r : Array<B>) -> Array<(A, B)> {
+		return self.mzip(r)
+	}
+	
+	public func product<B, C>(r : Array<B>, _ s : Array<C>) -> Array<(A, B, C)> {
+		return { x in { y in { z in (x, y, z) } } } <^> self <*> r <*> s
+	}
+	
+	public func product<B, C, D>(r : Array<B>, _ s : Array<C>, _ t : Array<D>) -> Array<(A, B, C, D)> {
+		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
+	}
+}
+
 extension Array : ApplicativeOps {
 	public typealias C = Any
-	public typealias FC = Array<C>
+	public typealias FC = [C]
 	public typealias D = Any
-	public typealias FD = Array<D>
+	public typealias FD = [D]
 
-	public static func liftA<B>(f : A -> B) -> Array<A> -> Array<B> {
-		return { a in Array<A -> B>.pure(f) <*> a }
+	public static func liftA<B>(f : A -> B) -> [A] -> [B] {
+		typealias FAB = A -> B
+		return { (a : [A]) -> [B] in [FAB].pure(f) <*> a }
 	}
 
-	public static func liftA2<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
-		return { a in { b in f <^> a <*> b  } }
+	public static func liftA2<B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
+		return { (a : [A]) -> [B] -> [C] in { (b : [B]) -> [C] in f <^> a <*> b  } }
 	}
 
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Array<A> -> Array<B> -> Array<C> -> Array<D> {
-		return { a in { b in { c in f <^> a <*> b <*> c } } }
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
+		return { (a : [A]) -> [B] -> [C] -> [D] in { (b : [B]) -> [C] -> [D] in { (c : [C]) -> [D] in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -63,49 +84,49 @@ extension Array : Monad {
 }
 
 extension Array : MonadOps {
-	public static func liftM<B>(f : A -> B) -> Array<A> -> Array<B> {
-		return { m1 in m1 >>- { x1 in Array<B>.pure(f(x1)) } }
+	public static func liftM<B>(f : A -> B) -> [A] -> [B] {
+		return { (m1 : [A]) -> [B] in m1 >>- { (x1 : A) in [B].pure(f(x1)) } }
 	}
 
-	public static func liftM2<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
-		return { m1 in { m2 in m1 >>- { x1 in m2 >>- { x2 in Array<C>.pure(f(x1)(x2)) } } } }
+	public static func liftM2<B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
+		return { (m1 : [A]) -> [B] -> [C] in { (m2 : [B]) -> [C] in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in [C].pure(f(x1)(x2)) } } } }
 	}
 
-	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> Array<A> -> Array<B> -> Array<C> -> Array<D> {
-		return { m1 in { m2 in { m3 in m1 >>- { x1 in m2 >>- { x2 in m3 >>- { x3 in Array<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
+		return { (m1 : [A]) -> [B] -> [C] -> [D] in { (m2 : [B]) -> [C] -> [D] in { (m3 : [C]) -> [D] in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in [D].pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
-public func >>->> <A, B, C>(f : A -> Array<B>, g : B -> Array<C>) -> (A -> Array<C>) {
+public func >>->> <A, B, C>(f : A -> [B], g : B -> [C]) -> (A -> [C]) {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <A, B, C>(g : B -> Array<C>, f : A -> Array<B>) -> (A -> Array<C>) {
+public func <<-<< <A, B, C>(g : B -> [C], f : A -> [B]) -> (A -> [C]) {
 	return f >>->> g
 }
 
 extension Array : MonadPlus {
-	public static var mzero : Array<Element> {
+	public static var mzero : [Element] {
 		return []
 	}
 
-	public func mplus(other : Array<Element>) -> Array<Element> {
+	public func mplus(other : [Element]) -> [Element] {
 		return self + other
 	}
 }
 
 extension Array : MonadZip {
-	public typealias FTAB = Array<(A, B)>
+	public typealias FTABL = [(A, B)]
 
-	public func mzip<B>(ma : Array<B>) -> Array<(A, B)> {
-		return Array<(A, B)>(zip(self, ma))
+	public func mzip<B>(ma : [B]) -> [(A, B)] {
+		return [(A, B)](zip(self, ma))
 	}
 
-	public func mzipWith<B, C>(other : Array<B>, _ f : A -> B -> C) -> Array<C> {
+	public func mzipWith<B, C>(other : [B], _ f : A -> B -> C) -> [C] {
 		return self.mzip(other).map(uncurry(f))
 	}
 
-	public static func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
+	public static func munzip<B>(ftab : [(A, B)]) -> ([A], [B]) {
 		return (ftab.map(fst), ftab.map(snd))
 	}
 }
@@ -311,18 +332,6 @@ extension Array {
 		}
 	}
 
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
-	/// least once by an element of the list.
-	public func any(f : (Element -> Bool)) -> Bool {
-		return self.map(f).or
-	}
-
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
-	/// all elemenets of the list.
-	public func all(f : (Element -> Bool)) -> Bool {
-		return self.map(f).and
-	}
-
 	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
 	/// given predicate and the second element is the remainder of the list:
 	///
@@ -419,6 +428,20 @@ extension Array {
 	}
 }
 
+extension SequenceType {
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
+	/// least once by an element of the list.
+	public func any(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).or
+	}
+	
+	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
+	/// all elemenets of the list.
+	public func all(f : (Generator.Element -> Bool)) -> Bool {
+		return self.map(f).and
+	}
+}
+
 extension Array where Element : Equatable {
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
 	public func isPrefixOf(r : [Element]) -> Bool {
@@ -483,6 +506,23 @@ extension Array where Element : BooleanType {
 	}
 }
 
+/// MARK: Sequence and SequenceType extensions
+
+extension SequenceType {
+	/// Maps the array of  to a dictionary given a transformer function that returns
+	/// a (Key, Value) pair for the dictionary, if nil is returned then the value is
+	/// not added to the dictionary.
+	public func mapAssociate<Key : Hashable, Value>(f : Generator.Element -> (Key, Value)?) -> [Key : Value] {
+		return Dictionary(flatMap(f))
+	}
+	
+	/// Creates a dictionary of Key-Value pairs generated from the transformer function returning the key (the label)
+	/// and pairing it with that element.
+	public func mapAssociateLabel<Key : Hashable>(f : Generator.Element -> Key) -> [Key : Generator.Element] {
+		return Dictionary(map { (f($0), $0) })
+	}
+}
+
 /// Maps a function over a list of Optionals, applying the function of the optional is Some,
 /// discarding the value if it is None and returning a list of non Optional values
 public func mapFlatten<A>(xs : [A?]) -> [A] {
@@ -497,4 +537,16 @@ public func intercalate<A>(list : [A], nested : [[A]]) -> [A] {
 /// Concatenate a list of lists.
 public func concat<T>(list : [[T]]) -> [T] {
 	return list.reduce([], combine: +)
+}
+
+public func sequence<A>(ms: [Array<A>]) -> Array<[A]> {
+	if ms.isEmpty { return [] }
+	
+	return ms.reduce(Array<[A]>.pure([]), combine: { (n : [[A]], m : [A]) in
+		return n.bind { (xs : [A]) in
+			return m.bind { (x : A) in
+				return Array<[A]>.pure(xs + [x])
+			}
+		}
+	})
 }
