@@ -24,7 +24,7 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property("Array fmap is the same as map") <- forAll { (xs : [Int]) in
-			return (+1 <^> xs) == xs.map(+1)
+			return ({ $0 + 1 } <^> xs) == xs.map({ $0 + 1 })
 		}
 
 		property("Array pure give a singleton array") <- forAll { (x : Int) in
@@ -32,18 +32,18 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property("Array bind works like a map then a concat") <- forAll { (xs : [Int]) in
-			func fs(x : Int) -> [Int] {
+			func fs(_ x : Int) -> [Int] {
 				return [x, x+1, x+2]
 			}
 
-			return (xs >>- fs) == xs.map(fs).reduce([], combine: +)
+			return (xs >>- fs) == xs.map(fs).reduce([], +)
 		}
 
 		property("Array obeys the Functor identity law") <- forAll { (x : [Int]) in
 			return (x.map(identity)) == identity(x)
 		}
 
-		property("Array obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("Array obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : [Int]) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.map(g.getArrow).map(f.getArrow))
 			}
@@ -53,7 +53,7 @@ class ArrayExtSpec : XCTestCase {
 			return (Array.pure(identity) <*> x) == x
 		}
 
-		property("Array obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+		property("Array obeys the Applicative homomorphism law") <- forAll { (_ f : ArrowOf<Int, Int>, x : Int) in
 			return (Array.pure(f.getArrow) <*> Array.pure(x)) == Array.pure(f.getArrow(x))
 		}
 
@@ -102,11 +102,11 @@ class ArrayExtSpec : XCTestCase {
 		}
 
 		property("scanl behaves") <- forAll { (withArray : [Int]) in
-			let scanned = withArray.scanl(0, r: +)
+			let scanned = withArray.scanl(0, +)
 			if withArray.isEmpty {
 				return scanned == [0]
 			}
-			return scanned == [0] + [Int](withArray[1..<withArray.count]).scanl(0 + withArray.first!, r: +)
+			return scanned == [0] + [Int](withArray[1..<withArray.count]).scanl(0 + withArray.first!, +)
 		}
 
 		property("intersperse behaves") <- forAll { (withArray : [Int]) in
@@ -115,27 +115,6 @@ class ArrayExtSpec : XCTestCase {
 				return inter.isEmpty
 			}
 			return TestResult.succeeded // TODO: Test non-empty case
-		}
-
-		property("find either finds or nils") <- forAll { (withArray : [Int]) in
-			if let found = withArray.find(==4) {
-				return found == 4
-			}
-			return true
-		}
-
-		property("and behaves") <- forAll { (withArray : [Bool]) in
-			if let _ = withArray.find(==false) {
-				return !withArray.and
-			}
-			return withArray.and
-		}
-
-		property("or behaves") <- forAll { (withArray : [Bool]) in
-			if let _ = withArray.find(==true) {
-				return withArray.or
-			}
-			return !withArray.or
 		}
 
 		property("take behaves") <- forAll { (array : [Int]) in
@@ -171,10 +150,12 @@ class ArrayExtSpec : XCTestCase {
 			return intercalate(xs, nested: xxs) == concat(xxs.intersperse(xs))
 		}
 
+		/*
 		property("group for Equatable things is the same as groupBy(==)") <- forAll { (xs : [Int]) in
 			return xs.group == xs.groupBy { $0 == $1 }
 		}
-
+		*/
+		
 		property("isPrefixOf behaves") <- forAll { (s1 : [Int], s2 : [Int]) in
 			if s1.isPrefixOf(s2) {
 				return s1.stripPrefix(s2) != nil
@@ -199,8 +180,9 @@ class ArrayExtSpec : XCTestCase {
 			return Discard()
 		}
 		
+		/*
 		property("mapAssociate and mapAssociateLabel behave") <- forAll { (xs : [Int]) in
-			 return forAll { (f : ArrowOf<Int, String>) in
+			 return forAll { (_ f : ArrowOf<Int, String>) in
 				let dictionary1 = xs.mapAssociate { (f.getArrow($0), $0) }
 				let dictionary2 = xs.mapAssociateLabel { f.getArrow($0) }
 				return xs.all { dictionary1[f.getArrow($0)] != nil && dictionary2[f.getArrow($0)] != nil && dictionary1[f.getArrow($0)] == dictionary2[f.getArrow($0)] }
@@ -213,21 +195,7 @@ class ArrayExtSpec : XCTestCase {
 				return ss.first ?? ss == xs
 			}
 		}
-	}
-
-
-	func testAny() {
-		let withArray = Array([1,4,5,7])
-		let withSet = Set(withArray)
-		XCTAssert(withArray.any(>4), "Should be false")
-		XCTAssert(withSet.any(>4), "Should be false")
-	}
-
-	func testAll() {
-		let array = [1,3,24,5]
-		let set = Set(array)
-		XCTAssert(array.all(<=24), "Should be true")
-		XCTAssert(set.all(<=24), "Should be true")
+		*/
 	}
 
 	func testSplitAt() {

@@ -10,7 +10,7 @@
 public struct Const<V, I> {
 	private let a :  () -> V
 
-	public init(@autoclosure(escaping) _ aa : () -> V) {
+	public init(_ aa : @autoclosure @escaping () -> V) {
 		a = aa
 	}
 
@@ -19,7 +19,7 @@ public struct Const<V, I> {
 	}
 }
 
-extension Const : Bifunctor {
+extension Const /*: Bifunctor*/ {
 	public typealias L = V
 	public typealias R = I
 	public typealias D = Any
@@ -29,25 +29,25 @@ extension Const : Bifunctor {
 	public typealias PBC = Const<B, R>
 	public typealias PBD = Const<B, D>
 
-	public func bimap<B, D>(f : V -> B, _ : I -> D) -> Const<B, D> {
+	public func bimap<B, D>(_ f : @escaping (V) -> B, _ : (I) -> D) -> Const<B, D> {
 		return Const<B, D>(f(self.runConst))
 	}
 
-	public func leftMap<B>(f : V -> B) -> Const<B, I> {
+	public func leftMap<B>(_ f : @escaping (V) -> B) -> Const<B, I> {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap<D>(g : I -> D) -> Const<V, D> {
+	public func rightMap<D>(g : @escaping (I) -> D) -> Const<V, D> {
 		return self.bimap(identity, g)
 	}
 }
 
-extension Const : Functor {
+extension Const /*: Functor*/ {
 	public typealias A = V
 	public typealias B = Any
 	public typealias FB = Const<V, I>
 
-	public func fmap<B>(f : V -> B) -> Const<V, I> {
+	public func fmap<B>(_ f : (V) -> B) -> Const<V, I> {
 		return Const<V, I>(self.runConst)
 	}
 }

@@ -12,19 +12,19 @@ import SwiftCheck
 
 extension Writer where T : Arbitrary {
 	public static var arbitrary : Gen<Writer<W, T>> {
-		return Writer.init <^> Gen<()>.zip(T.arbitrary, Gen.pure(W.mempty))
+		return Gen<()>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
 	}
 
-	public static func shrink(xs : Writer<W, T>) -> [Writer<W, T>] {
+	public static func shrink(_ xs : Writer<W, T>) -> [Writer<W, T>] {
 		let xs = T.shrink(xs.runWriter.0)
-		return zip(xs, Array(count: xs.count, repeatedValue: W.mempty)).map(Writer.init)
+		return zip(xs, Array(repeating: W.mempty, count: xs.count)).map(Writer.init)
 	}
 }
 
 extension Writer : WitnessedArbitrary {
 	public typealias Param = T
 
-	public static func forAllWitnessed<W : Monoid, A : Arbitrary>(wit : A -> T, pf : (Writer<W, T> -> Testable)) -> Property {
+	public static func forAllWitnessed<W : Monoid, A : Arbitrary>(_ wit : @escaping (A) -> T, pf : ((Writer<W, T>) -> Testable)) -> Property {
 		return forAllShrink(Writer<W, A>.arbitrary, shrinker: Writer<W, A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})
@@ -42,7 +42,7 @@ class WriterSpec : XCTestCase {
 		}
 
 		property("Writers obey transitivity") <- forAll { (x : Writer<String, Int>, y : Writer<String, Int>, z : Writer<String, Int>) in
-			return (x == y) && (y == z) ==> (x == z)
+			return ((x == y) && (y == z)) ==> (x == z)
 		}
 
 		property("Writers obey negation") <- forAll { (x : Writer<String, Int>, y : Writer<String, Int>) in
@@ -53,7 +53,7 @@ class WriterSpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-		property("Writer obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("Writer obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : Writer<String, Int>) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(g.getArrow).fmap(f.getArrow))
 			}
@@ -72,7 +72,7 @@ class WriterSpec : XCTestCase {
 		}
 
 		property("Writer obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
-			let f : Int -> Writer<String, Int> = Writer<String, Int>.pure • fa.getArrow
+			let f : (Int) -> Writer<String, Int> = Writer<String, Int>.pure • fa.getArrow
 			return (Writer<String, Int>.pure(a) >>- f) == f(a)
 		}
 
@@ -81,8 +81,8 @@ class WriterSpec : XCTestCase {
 		}
 
 		property("Writer obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
-			let f : Int -> Writer<String, Int> = Writer<String, Int>.pure • fa.getArrow
-			let g : Int -> Writer<String, Int> = Writer<String, Int>.pure • ga.getArrow
+			let f : (Int) -> Writer<String, Int> = Writer<String, Int>.pure • fa.getArrow
+			let g : (Int) -> Writer<String, Int> = Writer<String, Int>.pure • ga.getArrow
 			return forAll { (m : Writer<String, Int>) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}

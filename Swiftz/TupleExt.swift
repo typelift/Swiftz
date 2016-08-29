@@ -7,12 +7,12 @@
 //
 
 /// Extracts the first value from a pair.
-public func fst<A, B>(ab : (A, B)) -> A {
+public func fst<A, B>(_ ab : (A, B)) -> A {
 	return ab.0
 }
 
 /// Extracts the second value from a pair.
-public func snd<A, B>(ab : (A, B)) -> B {
+public func snd<A, B>(_ ab : (A, B)) -> B {
 	return ab.1
 }
 

@@ -35,13 +35,13 @@ public protocol Category {
 	/// Composition of categories.
 	///
 	/// If you peek behind the types, it's just plain old composition.
-	func •(c : CBC, c2 : Self) -> CAC
+	static func •(c : CBC, c2 : Self) -> CAC
 
 	/// Right-to-left composition.
-	func >>> (_ : Self, _ : CBC) -> CAC
+	static func >>> (_ : Self, _ : CBC) -> CAC
 
 	/// Left-to-right composition.
 	///
 	/// Usually an alias for •
-	func <<< (_ : CBC, _ : Self) -> CAC
+	static func <<< (_ : CBC, _ : Self) -> CAC
 }

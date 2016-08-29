@@ -22,13 +22,13 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 	}
 
 	static var arbitrary : Gen<EitherOf<A, B>> {
-		return EitherOf.init <^> Gen.oneOf([
-			Either.Left <^> A.arbitrary,
-			Either.Right <^> B.arbitrary,
-		])
+		return Gen.oneOf([
+			A.arbitrary.map(Either.Left),
+			B.arbitrary.map(Either.Right),
+		]).map(EitherOf.init)
 	}
 
-	static func shrink(bl : EitherOf<A, B>) -> [EitherOf<A, B>] {
+	static func shrink(_ bl : EitherOf<A, B>) -> [EitherOf<A, B>] {
 		return bl.getEither.either(onLeft: { x in
 			return A.shrink(x).map(EitherOf.init • Either.Left)
 		}, onRight: { y in
@@ -38,7 +38,7 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 }
 
 class EitherSpec : XCTestCase {
-	func divTwoEvenly(x: Int) -> Either<String, Int> {
+	func divTwoEvenly(_ x: Int) -> Either<String, Int> {
 		if x % 2 == 0 {
 			return Either.Left("\(x) was div by 2")
 		} else {
@@ -61,11 +61,11 @@ class EitherSpec : XCTestCase {
 		}
 
 		property("Either is a bifunctor") <- forAll { (e : EitherOf<String, Int>) in
-			let y = e.getEither.bimap(identity, *2)
+			let y = e.getEither.bimap(identity, { $0 * 2 })
 			if e.getEither.isLeft {
 				return y == e.getEither
 			} else {
-				return y == ((*2) <^> e.getEither)
+				return y == ({ $0 * 2 } <^> e.getEither)
 			}
 		}
 
@@ -75,10 +75,5 @@ class EitherSpec : XCTestCase {
 				return ss.right! == xs
 			}
 		}
-
-		// TODO: How in hell does this typecheck?
-		// either
-		XCTAssert(Either.Left("foo").either(onLeft: { l in l+"!" }, onRight: { r in r+1 }) == "foo!")
-		XCTAssert(Either.Right(1).either(onLeft: { l in l+"!" }, onRight: { r in r+1 }) == 2)
 	}
 }

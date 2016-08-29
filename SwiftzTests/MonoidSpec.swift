@@ -44,11 +44,11 @@ class MonoidSpec : XCTestCase {
 			return (Last(i) <> Last.mempty).value() == i
 		}
 
-		property("Unit obeys left identity") <- forAll { (i : Unit) in
+		property("Unit obeys left identity") <- forAll { (i : Swiftz.Unit) in
 			return (Unit.mempty <> i) == i
 		}
 
-		property("Unit obeys right identity") <- forAll { (i : Unit) in
+		property("Unit obeys right identity") <- forAll { (i : Swiftz.Unit) in
 			return (i <> Unit.mempty) == i
 		}
 

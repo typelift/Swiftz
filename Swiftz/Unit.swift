@@ -57,7 +57,7 @@ extension Unit : Hashable {
 }
 
 extension Unit : Monoid {
-	public func op(other : Unit) -> Unit {
+	public func op(_ other : Unit) -> Unit {
 		return .TT
 	}
 

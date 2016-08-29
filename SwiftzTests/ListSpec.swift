@@ -13,10 +13,10 @@ import SwiftCheck
 /// Generates an array of arbitrary values.
 extension List where Element : Arbitrary {
 	public static var arbitrary : Gen<List<Element>> {
-		return List.init <^> [Element].arbitrary
+		return [Element].arbitrary.map(List.init)
 	}
 
-	public static func shrink(xs : List<Element>) -> [List<Element>] {
+	public static func shrink(_ xs : List<Element>) -> [List<Element>] {
 		return List.init <^> [Element].shrink(xs.map(identity))
 	}
 }
@@ -24,7 +24,7 @@ extension List where Element : Arbitrary {
 extension List : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element, pf : (List<Element> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : ((List<Element>) -> Testable)) -> Property {
 		return forAllShrink(List<A>.arbitrary, shrinker: List<A>.shrink, f: { bl in
 			return pf(bl.map(wit))
 		})
@@ -46,7 +46,7 @@ class ListSpec : XCTestCase {
 		property("Lists of Equatable elements obey transitivity") <- forAll { (x : List<Int>) in
 			return forAll { (y : List<Int>) in
 				let inner = forAll { (z : List<Int>) in
-					return (x == y) && (y == z) ==> (x == z)
+					return ((x == y) && (y == z)) ==> (x == z)
 				}
 				return inner
 			}
@@ -66,7 +66,7 @@ class ListSpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-		property("List obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("List obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : List<Int>) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(g.getArrow).fmap(f.getArrow))
 			}
@@ -76,7 +76,7 @@ class ListSpec : XCTestCase {
 			return (List.pure(identity) <*> x) == x
 		}
 
-		property("List obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+		property("List obeys the Applicative homomorphism law") <- forAll { (_ f : ArrowOf<Int, Int>, x : Int) in
 			return (List.pure(f.getArrow) <*> List.pure(x)) == List.pure(f.getArrow(x))
 		}
 
@@ -105,7 +105,7 @@ class ListSpec : XCTestCase {
 		}
 
 		property("List obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
-			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
+			let f : (Int) -> List<Int> = List<Int>.pure • fa.getArrow
 			return (List<Int>.pure(a) >>- f) == f(a)
 		}
 
@@ -114,8 +114,8 @@ class ListSpec : XCTestCase {
 		}
 
 		property("List obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
-			let f : Int -> List<Int> = List<Int>.pure • fa.getArrow
-			let g : Int -> List<Int> = List<Int>.pure • ga.getArrow
+			let f : (Int) -> List<Int> = List<Int>.pure • fa.getArrow
+			let g : (Int) -> List<Int> = List<Int>.pure • ga.getArrow
 			return forAll { (m : List<Int>) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
@@ -134,7 +134,7 @@ class ListSpec : XCTestCase {
 				let cycle = x.cycle()
 
 				return forAll { (n : Positive<Int>) in
-					return (0...UInt(n.getPositive)).map({ i in cycle[i] == x[(i % x.count)] }).filter(==false).isEmpty
+					return (0...UInt(n.getPositive)).map({ i in cycle[i] == x[(i % x.count)] }).filter({ $0 == false }).isEmpty
 				}
 			}
 		}
@@ -144,7 +144,7 @@ class ListSpec : XCTestCase {
 		}
 
 		property("map behaves") <- forAll { (xs : List<Int>) in
-			return xs.map(+1) == xs.fmap(+1)
+			return xs.map({ $0 + 1 }) == xs.fmap({ $0 + 1 })
 		}
 
 		property("map behaves") <- forAll { (xs : List<Int>) in

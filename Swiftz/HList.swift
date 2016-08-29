@@ -39,7 +39,7 @@ public struct HCons<H, T : HList> : HList {
 	}
 
 	public static var length : Int {
-		return Tail.length.successor()
+		return Tail.length.advanced(by: 1)
 	}
 }
 
@@ -66,7 +66,7 @@ public struct HNil : HList {
 public struct HAppend<XS, YS, XYS> {
 	public let append : (XS, YS) -> XYS
 
-	private init(_ append : (XS, YS) -> XYS) {
+	private init(_ append : @escaping (XS, YS) -> XYS) {
 		self.append = append
 	}
 
@@ -90,7 +90,7 @@ public struct HAppend<XS, YS, XYS> {
 public struct HMap<F, A, R> {
 	public let map : (F, A) -> R
 
-	public init(_ map : (F, A) -> R) {
+	public init(_ map : @escaping (F, A) -> R) {
 		self.map = map
 	}
 
@@ -102,16 +102,16 @@ public struct HMap<F, A, R> {
 	}
 
 	/// Returns an `HMap` that applies a function to the elements of an HList.
-	public static func apply<T, U>() -> HMap<T -> U, T, U> {
-		return HMap<T -> U, T, U> { (f, x) in
+	public static func apply<T, U>() -> HMap<(T) -> U, T, U> {
+		return HMap<(T) -> U, T, U> { (f, x) in
 			return f(x)
 		}
 	}
 
 	/// Returns an `HMap` that composes two functions, then applies the new function to elements of
 	/// an `HList`.
-	public static func compose<X, Y, Z>() -> HMap<(), (X -> Y, Y -> Z), X -> Z> {
-		return HMap<(), (X -> Y, Y -> Z), X -> Z> { (_, fs) in
+	public static func compose<X, Y, Z>() -> HMap<(), ((X) -> Y, (Y) -> Z), (X) -> Z> {
+		return HMap<(), ((X) -> Y, (Y) -> Z), (X) -> Z> { (_, fs) in
 			return fs.1 • fs.0
 		}
 	}
@@ -136,20 +136,20 @@ public struct HMap<F, A, R> {
 /// values of type R.
 ///
 /// Using an `HFold` necessitates defining the type of its starting and ending data.  For example, a
-/// fold that reduces `HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>` to `Int -> Int`
+/// fold that reduces `HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>` to `(Int) -> Int`
 /// through composition will define two `typealias`es:
 ///
-///     public typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
+///     public typealias FList = HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>
 ///
-///     public typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
-///     public typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+///     public typealias FBegin = HFold<(), (Int) -> Int, FList, (Int) -> Int>
+///     public typealias FEnd = HFold<(), (Int) -> Int, HNil, (Int) -> Int>
 ///
-/// The fold above doesn't depend on a context, and carries values of type `Int -> Int`, contained
-/// in a list of type `FList`, to an `HNil` node and an ending value of type `Int -> Int`.
+/// The fold above doesn't depend on a context, and carries values of type `(Int) -> Int`, contained
+/// in a list of type `FList`, to an `HNil` node and an ending value of type `(Int) -> Int`.
 public struct HFold<G, V, A, R> {
 	public let fold : (G, V, A) -> R
 
-	private init(fold : (G, V, A) -> R) {
+	private init(fold : @escaping (G, V, A) -> R) {
 		self.fold = fold
 	}
 
@@ -163,7 +163,7 @@ public struct HFold<G, V, A, R> {
 	}
 
 	/// Creates an `HFold` object that folds a function over an `HCons` node.
-	public static func makeFold<H, G, V, T : HList, R, RR>(p : HMap<G, (H, R), RR>, h : HFold<G, V, T, R>) -> HFold<G, V, HCons<H, T>, RR> {
+	public static func makeFold<H, G, V, T : HList, R, RR>(_ p : HMap<G, (H, R), RR>, _ h : HFold<G, V, T, R>) -> HFold<G, V, HCons<H, T>, RR> {
 		return HFold<G, V, HCons<H, T>, RR> { (f, v, c) in
 			return p.map(f, (c.head, h.fold(f, v, c.tail)))
 		}

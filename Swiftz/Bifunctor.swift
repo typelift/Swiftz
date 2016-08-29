@@ -21,7 +21,7 @@ public protocol Bifunctor {
 	associatedtype PBD = K2<B, D>
 
 	/// Map two functions individually over both sides of the bifunctor at the same time.
-	func bimap(f : L -> B, _ g : R -> D) -> PBD
+	func bimap(_ f : (L) -> B, _ g : (R) -> D) -> PBD
 
 	// TODO: File Radar.  Left/Right Map cannot be generalized.
 
@@ -29,16 +29,16 @@ public protocol Bifunctor {
 	///
 	/// Default definition:
 	///     bimap(f, identity)
-	func leftMap(f : L -> B) -> PBC
+	func leftMap(_ f : (L) -> B) -> PBC
 
 	/// Map over just the second argument of the bifunctor.
 	///
 	/// Default definition:
 	///     bimap(identity, g)
-	func rightMap(g : R -> D) -> PAD
+	func rightMap(_ g : (R) -> D) -> PAD
 }
 
-public struct TupleBF<L, R> : Bifunctor {
+public struct TupleBF<L, R> /*: Bifunctor*/ {
 	public typealias B = Any
 	public typealias D = Any
 	public typealias PAC = (L, R)
@@ -52,15 +52,15 @@ public struct TupleBF<L, R> : Bifunctor {
 		self.t = t
 	}
 
-	public func bimap<B, D>(f : (L -> B), _ g : (R -> D)) -> (B, D) {
+	public func bimap<B, D>(_ f : ((L) -> B), _ g : ((R) -> D)) -> (B, D) {
 		return (f(t.0), g(t.1))
 	}
 
-	public func leftMap<B>(f : L -> B) -> (B, R) {
+	public func leftMap<B>(_ f : @escaping (L) -> B) -> (B, R) {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap(g : R -> D) -> (L, D) {
+	public func rightMap(g : @escaping (R) -> D) -> (L, D) {
 		return self.bimap(identity, g)
 	}
 }

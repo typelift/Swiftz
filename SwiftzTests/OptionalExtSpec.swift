@@ -12,29 +12,8 @@ import SwiftCheck
 
 class OptionalExtSpec : XCTestCase {
 	func testProperties() {
-		property("optional map behaves") <- forAll { (x : Optional<Int>) in
-			if let r = (+1 <^> x) {
-				return r == (x! + 1)
-			}
-			return TestResult.succeeded
-		}
-
-		property("optional ap behaves") <- forAll { (x : Optional<Int>) in
-			if let r = (.Some(+1) <*> x) {
-				return r == (x! + 1)
-			}
-			return TestResult.succeeded
-		}
-
-		property("optional bind behaves") <- forAll { (x : Optional<Int>) in
-			if let r = (x >>- (Optional.pure • (+1))) {
-				return r == (x! + 1)
-			}
-			return TestResult.succeeded
-		}
-
-		property("pure creates a .Some") <- forAll { (x : Int) in
-			return Optional.pure(x) == .Some(x)
+		property("pure creates a .some") <- forAll { (x : Int) in
+			return Optional.pure(x) == .some(x)
 		}
 
 		property("getOrElse behaves") <- forAll { (x : Optional<Int>) in
@@ -46,16 +25,16 @@ class OptionalExtSpec : XCTestCase {
 
 		property("case analysis for Optionals behaves") <- forAll { (x : Optional<Int>) in
 			if let y = x {
-				return x.maybe(0, onSome: +1) == (y + 1)
+				return x.maybe(0, onSome: { $0 + 1 }) == (y + 1)
 			}
-			return x.maybe(0, onSome: +1) == 0
+			return x.maybe(0, onSome: { $0 + 1 }) == 0
 		}
 
 		property("Optional obeys the Functor identity law") <- forAll { (x : Optional<Int>) in
 			return (x.map(identity)) == identity(x)
 		}
 
-		property("Optional obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("Optional obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : Optional<Int>) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.map(g.getArrow).map(f.getArrow))
 			}
@@ -65,7 +44,7 @@ class OptionalExtSpec : XCTestCase {
 			return (Optional.pure(identity) <*> x) == x
 		}
 
-		property("Optional obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+		property("Optional obeys the Applicative homomorphism law") <- forAll { (_ f : ArrowOf<Int, Int>, x : Int) in
 			return (Optional.pure(f.getArrow) <*> Optional.pure(x)) == Optional.pure(f.getArrow(x))
 		}
 
