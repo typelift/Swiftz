@@ -17,5 +17,5 @@ public protocol Functor {
 	associatedtype FB = K1<B>
 
 	/// Map a function over the value encapsulated by the Functor.
-	func fmap(f : A -> B) -> FB
+	func fmap(_ f : (A) -> B) -> FB
 }

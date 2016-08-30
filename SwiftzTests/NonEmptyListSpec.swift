@@ -15,7 +15,7 @@ extension NonEmptyList where Element : Arbitrary {
 		return [Element].arbitrary.suchThat({ !$0.isEmpty }).map { NonEmptyList<Element>(List(fromArray: $0))! }
 	}
 
-	public static func shrink(xs : NonEmptyList<Element>) -> [NonEmptyList<Element>] {
+	public static func shrink(_ xs : NonEmptyList<Element>) -> [NonEmptyList<Element>] {
 		return List<Element>.shrink(xs.toList()).filter({ !$0.isEmpty }).flatMap { xs in
 			return NonEmptyList(xs)!
 		}
@@ -25,7 +25,7 @@ extension NonEmptyList where Element : Arbitrary {
 extension NonEmptyList : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> Element, pf : (NonEmptyList<Element> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : ((NonEmptyList<Element>) -> Testable)) -> Property {
 		return forAllShrink(NonEmptyList<A>.arbitrary, shrinker: NonEmptyList<A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})
@@ -47,7 +47,7 @@ class NonEmptyListSpec : XCTestCase {
 		property("Non-empty Lists of Equatable elements obey transitivity") <- forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { x in
 			return forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { y in
 				let inner = forAllShrink(NonEmptyList<Int>.arbitrary, shrinker: NonEmptyList<Int>.shrink) { z in
-					return (x == y) && (y == z) ==> (x == z)
+					return ((x == y) && (y == z)) ==> (x == z)
 				}
 				return inner
 			}
@@ -67,7 +67,7 @@ class NonEmptyListSpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-		property("NonEmptyList obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("NonEmptyList obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : NonEmptyList<Int>) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(g.getArrow).fmap(f.getArrow))
 			}
@@ -95,7 +95,7 @@ class NonEmptyListSpec : XCTestCase {
 		}
 
 		property("NonEmptyList obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Int>) in
-			let f : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
+			let f : (Int) -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
 			return (NonEmptyList<Int>.pure(a) >>- f) == f(a)
 		}
 
@@ -104,8 +104,8 @@ class NonEmptyListSpec : XCTestCase {
 		}
 
 		property("NonEmptyList obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
-			let f : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
-			let g : Int -> NonEmptyList<Int> = NonEmptyList<Int>.pure • ga.getArrow
+			let f : (Int) -> NonEmptyList<Int> = NonEmptyList<Int>.pure • fa.getArrow
+			let g : (Int) -> NonEmptyList<Int> = NonEmptyList<Int>.pure • ga.getArrow
 			return forAll { (m : NonEmptyList<Int>) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
@@ -117,15 +117,15 @@ class NonEmptyListSpec : XCTestCase {
 
 		property("NonEmptyList obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
 			return forAll { (x : Identity<Int>) in
-				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
+				let f : (Identity<Int>) -> Int = ff.getArrow • { $0.runIdentity }
 				return x.extend(f).extract() == f(x)
 			}
 		}
 
 		property("NonEmptyList obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
 			return forAll { (x : NonEmptyList<Int>) in
-				let f : NonEmptyList<Int> -> Int = ff.getArrow • { $0.head }
-				let g : NonEmptyList<Int> -> Int = gg.getArrow • { $0.head }
+				let f : (NonEmptyList<Int>) -> Int = ff.getArrow • { $0.head }
+				let g : (NonEmptyList<Int>) -> Int = gg.getArrow • { $0.head }
 				return x.extend(f).extend(g) == x.extend({ g($0.extend(f)) })
 			}
 		}

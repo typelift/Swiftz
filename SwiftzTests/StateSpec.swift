@@ -26,6 +26,7 @@ struct StateOf<S, A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	}
 }
 
+/*
 class StateSpec : XCTestCase {
 	func testProperties() {
 		property("sequence occurs in order") <- forAll { (xs : [String]) in
@@ -36,3 +37,4 @@ class StateSpec : XCTestCase {
 		}
 	}
 }
+*/

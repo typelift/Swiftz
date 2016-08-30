@@ -20,14 +20,15 @@ extension String {
 		return componentsSeparatedByString("\n")
 	}
 	
-	public func componentsSeparatedByString(token: Character) -> [String] {
-		return characters.split(Int.max, allowEmptySlices: true) { $0 == token }.map { String($0) }
+	public func componentsSeparatedByString(_ token: Character) -> [String] {
+		// return characters.split(Int.max, allowEmptySlices: true) { $0 == token }.map { String($0) }
+		fatalError()
 	}
 
 	/// Concatenates an array of strings into a single string containing newlines between each
 	/// element.
-	public static func unlines(xs : [String]) -> String {
-		return xs.reduce("", combine: { "\($0)\($1)\n" })
+	public static func unlines(_ xs : [String]) -> String {
+		return xs.reduce("", { "\($0)\($1)\n" })
 	}
 
 	/// Appends a character onto the front of a string.
@@ -36,10 +37,10 @@ extension String {
 	}
 
 	/// Creates a string of n repeating characters.
-	public static func replicate(n : UInt, value : Character) -> String {
+	public static func replicate(_ n : UInt, value : Character) -> String {
 		var l = ""
 		for _ in 0..<n {
-			l = String.cons(value, tail: l)
+			l = String.cons(head: value, tail: l)
 		}
 		return l
 	}
@@ -52,7 +53,7 @@ extension String {
 		} else if self.characters.count == 1 {
 			return .Cons(self[self.startIndex], "")
 		}
-		return .Cons(self[self.startIndex], self[self.startIndex.successor()..<self.endIndex])
+		return .Cons(self[self.startIndex], self[self.index(after: self.startIndex)..<self.endIndex])
 	}
 
 	/// Returns a string containing the characters of the receiver in reverse order.
@@ -61,7 +62,7 @@ extension String {
 	}
 
 	/// Maps a function over the characters of a string and returns a new string of those values.
-	public func map(f : Character -> Character) -> String {
+	public func map(_ f : (Character) -> Character) -> String {
 		switch self.match {
 		case .Nil:
 			return ""
@@ -71,7 +72,7 @@ extension String {
 	}
 
 	/// Removes characters from the receiver that do not satisfy a given predicate.
-	public func filter(p : Character -> Bool) -> String {
+	public func filter(_ p : (Character) -> Bool) -> String {
 		switch self.match {
 		case .Nil:
 			return ""
@@ -81,7 +82,7 @@ extension String {
 	}
 
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
-	public func reduce<B>(f : B -> Character -> B, initial : B) -> B {
+	public func reduce<B>(_ f : (B) -> (Character) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -91,7 +92,7 @@ extension String {
 	}
 
 	/// Applies a binary operator to reduce the characters of the receiver to a single value.
-	public func reduce<B>(f : (B, Character) -> B, initial : B) -> B {
+	public func reduce<B>(_ f : (B, Character) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -101,7 +102,7 @@ extension String {
 	}
 
 	/// Takes two lists and returns true if the first string is a prefix of the second string.
-	public func isPrefixOf(r : String) -> Bool {
+	public func isPrefixOf(_ r : String) -> Bool {
 		switch (self.match, r.match) {
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
 			return xs.isPrefixOf(ys)
@@ -113,38 +114,39 @@ extension String {
 	}
 
 	/// Takes two lists and returns true if the first string is a suffix of the second string.
-	public func isSuffixOf(r : String) -> Bool {
+	public func isSuffixOf(_ r : String) -> Bool {
 		return self.reverse().isPrefixOf(r.reverse())
 	}
 
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
-	public func isInfixOf(r : String) -> Bool {
+	public func isInfixOf(_ r : String) -> Bool {
 		func tails(l : String) -> [String] {
 			return l.reduce({ x, y in
-				return [String.cons(y, tail: x.first!)] + x
+				return [String.cons(head: y, tail: x.first!)] + x
 			}, initial: [""])
 		}
 
-		return tails(r).any(self.isPrefixOf)
+		// return tails(l: r).any(self.isPrefixOf)
+		fatalError()
 	}
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
 	/// prefix of the second string this function returns Nothing.
-	public func stripPrefix(r : String) -> Optional<String> {
+	public func stripPrefix(_ r : String) -> Optional<String> {
 		switch (self.match, r.match) {
 		case (.Nil, _):
-			return .Some(r)
+			return .some(r)
 		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
 			return xs.stripPrefix(xs)
 		default:
-			return .None
+			return .none
 		}
 	}
 
 	/// Takes two strings and drops items in the first from the end of the second.  If the first
 	/// string is not a suffix of the second string this function returns nothing.
-	public func stripSuffix(r : String) -> Optional<String> {
+	public func stripSuffix(_ r : String) -> Optional<String> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}
 }
@@ -156,7 +158,7 @@ extension String : Monoid {
 		return ""
 	}
 
-	public func op(other : String) -> String {
+	public func op(_ other : String) -> String {
 		return self + other
 	}
 }
@@ -165,49 +167,50 @@ public func <>(l : String, r : String) -> String {
 	return l + r
 }
 
-extension String : Functor {
+extension String /*: Functor*/ {
 	public typealias A = Character
 	public typealias B = Character
 	public typealias FB = String
 
-	public func fmap(f : Character -> Character) -> String {
+	public func fmap(_ f : (Character) -> Character) -> String {
 		return self.map(f)
 	}
 }
 
-public func <^> (f : Character -> Character, l : String) -> String {
+public func <^> (_ f : (Character) -> Character, l : String) -> String {
 	return l.fmap(f)
 }
 
-extension String : Pointed {
-	public static func pure(x : Character) -> String {
+extension String /*: Pointed*/ {
+	public static func pure(_ x : Character) -> String {
 		return String(x)
 	}
 }
 
-extension String : Applicative {
-	public typealias FAB = [Character -> Character]
+extension String /*: Applicative*/ {
+	public typealias FAB = [(Character) -> Character]
 
-	public func ap(a : [Character -> Character]) -> String {
-		return a.map(self.map).reduce("", combine: +)
+	public func ap(_ a : [(Character) -> Character]) -> String {
+		return a.map(self.map).reduce("", +)
 	}
 }
 
-public func <*> (f : [(Character -> Character)], l : String) -> String {
+public func <*> (_ f : [((Character) -> Character)], l : String) -> String {
 	return l.ap(f)
 }
 
-extension String : Monad {
-	public func bind(f : Character -> String) -> String {
-		return Array(self.characters).map(f).reduce("", combine: +)
+extension String /*: Monad*/ {
+	public func bind(_ f : (Character) -> String) -> String {
+		return Array(self.characters).map(f).reduce("", +)
 	}
 }
 
-public func >>- (l : String, f : Character -> String) -> String {
+public func >>- (l : String, f : (Character) -> String) -> String {
 	return l.bind(f)
 }
 
-public func sequence(ms: [String]) -> [String] {
-	return sequence(ms.map { (m : String) in Array(m.characters) }).map(String.init)
+public func sequence(_ ms: [String]) -> [String] {
+	fatalError()
+	// return sequence(ms.map { (m : String) -> [Character] in Array(m.characters) }).map(String.init)
 }
 

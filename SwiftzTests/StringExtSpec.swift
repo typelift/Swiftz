@@ -45,7 +45,7 @@ class StringExtSpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-		property("String obeys the Functor composition law") <- forAll { (f : ArrowOf<Character, Character>, g : ArrowOf<Character, Character>, x : String) in
+		property("String obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Character, Character>, g : ArrowOf<Character, Character>, x : String) in
 			return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(g.getArrow).fmap(f.getArrow))
 		}
 
@@ -75,7 +75,7 @@ class StringExtSpec : XCTestCase {
 		}
 
 		property("cons behaves") <- forAll { (c : Character, s : String) in
-			return String.cons(c, tail: s) == String(c) + s
+			return String.cons(head: c, tail: s) == String(c) + s
 		}
 
 		property("replicate behaves") <- forAll { (n : UInt, x : Character) in
@@ -87,8 +87,8 @@ class StringExtSpec : XCTestCase {
 		}
 
 		property("map behaves") <- forAll { (xs : String) in
-			let fs : Character -> String = { String.replicate(2, value: $0) }
-			return (xs >>- fs) == Array(xs.characters).map(fs).reduce("", combine: +)
+			let fs : (Character) -> String = { String.replicate(2, value: $0) }
+			return (xs >>- fs) == Array(xs.characters).map(fs).reduce("", +)
 		}
 
 		property("filter behaves") <- forAll { (xs : String, pred : ArrowOf<Character, Bool>) in

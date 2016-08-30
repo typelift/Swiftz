@@ -17,5 +17,5 @@ public protocol Comonad : Copointed, Functor {
 
 	/// Duplicates the surrounding comonadic context of the receiver and applies a function to the
 	/// receiver to yield a new value in that context.
-	func extend(fab : Self -> B) -> FB
+	func extend(_ fab : (Self) -> B) -> FB
 }

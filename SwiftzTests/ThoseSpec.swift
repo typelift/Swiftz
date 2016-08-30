@@ -16,7 +16,7 @@ class ThoseSpec : XCTestCase {
 		let both = Those<String, Int>.These("String", 1)
 
 		XCTAssert((this.isThis() && that.isThat() && both.isThese()) == true, "")
-		XCTAssert(this.toTuple("String", r: 1) == that.toTuple("String", r: 1), "")
+		XCTAssert(this.toTuple("String", 1) == that.toTuple("String", 1), "")
 
 		XCTAssert(both.bimap(identity, identity) == both, "")
 	}

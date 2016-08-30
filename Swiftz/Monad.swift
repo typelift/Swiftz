@@ -10,7 +10,7 @@
 public protocol Monad : Applicative {
 	/// Sequences and composes two monadic actions by passing the value inside the monad on the left
 	/// to a function on the right yielding a new monad.
-	func bind(f : A -> FB) -> FB
+	func bind(_ f : (A) -> FB) -> FB
 }
 
 public protocol MonadOps : Monad {
@@ -20,16 +20,16 @@ public protocol MonadOps : Monad {
 	associatedtype FD = K1<D>
 
 	/// Lift a function to a Monadic action.
-	static func liftM(f : A -> B) -> Self -> FB
+	static func liftM(_ f : @escaping (A) -> B) -> (Self) -> FB
 
 	/// Lift a binary function to a Monadic action.
-	static func liftM2(f : A -> B -> C) -> Self -> FB -> FC
+	static func liftM2(_ f : @escaping (A) -> (B) -> C) -> (Self) -> (FB) -> FC
 
 	/// Lift a ternary function to a Monadic action.
-	static func liftM3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+	static func liftM3(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Self) -> (FB) -> (FC) -> FD
 
-	func >>->> (_ : A -> FB, _ : B -> FC) -> (A -> FC)
-	func <<-<< (_ : B -> FC, _ : A -> FB) -> (A -> FC)
+	// static func >>->> (_ : (A) -> FB, _ : (B) -> FC) -> ((A) -> FC)
+	// static func <<-<< (_ : (B) -> FC, _ : (A) -> FB) -> ((A) -> FC)
 }
 
 /// Monads that allow zipping.
@@ -46,7 +46,7 @@ public protocol MonadZip : Monad {
 	func mzip(_ : FB) -> FTABL
 
 	/// ZipWith for monads.
-	func mzipWith(_ : FB, _ : A -> B -> C) -> FC
+	func mzipWith(_ : FB, _ : (A) -> (B) -> C) -> FC
 
 	/// Unzip for monads.
 	static func munzip(_ : FTABL) -> (Self, FB)

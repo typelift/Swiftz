@@ -51,11 +51,11 @@ class ReaderSpec : XCTestCase {
         XCTAssert(helloAndGoodbyeReader.runReader(input) == "Hello \(input) and Goodbye \(input)!")
         
         let lengthResult = runReader(reader { (environment: String) -> Int in
-            return environment.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+            return environment.lengthOfBytes(using: String.Encoding.utf8)
         })("Banana")
         XCTAssert(lengthResult == 6)
         
-        let length : String -> Int = { $0.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) }
+        let length : (String) -> Int = { $0.lengthOfBytes(using: String.Encoding.utf8) }
         
         let lengthResult2 = runReader(reader(length))("Banana")
         XCTAssert(lengthResult2 == 6)
@@ -77,6 +77,6 @@ class ReaderSpec : XCTestCase {
         
         // >>-
         let lengthResult7 = (asks(length) >>- runReader)?("abc")
-        XCTAssert(lengthResult7 == .Some(3))
+        XCTAssert(lengthResult7 == .some(3))
     }
 }

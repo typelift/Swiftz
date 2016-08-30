@@ -13,7 +13,7 @@ public protocol Monoid : Semigroup {
 }
 
 public func mconcat<S : Monoid>(t : [S]) -> S {
-	return sconcat(S.mempty, t: t)
+	return sconcat(S.mempty, t)
 }
 
 extension List : Monoid {
@@ -28,7 +28,7 @@ extension Array : Monoid {
 public struct Sum<N : NumericType> : Monoid {
 	public let value : () -> N
 
-	public init(@autoclosure(escaping) _ x : () -> N) {
+	public init(_ x : @autoclosure @escaping () -> N) {
 		value = x
 	}
 
@@ -36,7 +36,7 @@ public struct Sum<N : NumericType> : Monoid {
 		return Sum(N.zero)
 	}
 
-	public func op(other : Sum<N>) -> Sum<N> {
+	public func op(_ other : Sum<N>) -> Sum<N> {
 		return Sum(self.value().plus(other.value()))
 	}
 }
@@ -45,7 +45,7 @@ public struct Sum<N : NumericType> : Monoid {
 public struct Product<N : NumericType> : Monoid {
 	public let value : () -> N
 
-	public init(@autoclosure(escaping) _ x : () -> N) {
+	public init(_ x : @autoclosure @escaping () -> N) {
 		value = x
 	}
 
@@ -53,7 +53,7 @@ public struct Product<N : NumericType> : Monoid {
 		return Product(N.one)
 	}
 
-	public func op(other : Product<N>) -> Product<N> {
+	public func op(_ other : Product<N>) -> Product<N> {
 		return Product(self.value().times(other.value()))
 	}
 }
@@ -62,7 +62,7 @@ public struct Product<N : NumericType> : Monoid {
 public struct AdjoinNil<A : Semigroup> : Monoid {
 	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init(_ x : @autoclosure @escaping () -> Optional<A>) {
 		value = x
 	}
 
@@ -70,7 +70,7 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 		return AdjoinNil(nil)
 	}
 
-	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
+	public func op(_ other : AdjoinNil<A>) -> AdjoinNil<A> {
 		if let x = self.value() {
 			if let y = other.value() {
 				return AdjoinNil(x.op(y))
@@ -87,7 +87,7 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 public struct First<A : Comparable> : Monoid {
 	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init(_ x : @autoclosure @escaping () -> Optional<A>) {
 		value = x
 	}
 
@@ -95,7 +95,7 @@ public struct First<A : Comparable> : Monoid {
 		return First(nil)
 	}
 
-	public func op(other : First<A>) -> First<A> {
+	public func op(_ other : First<A>) -> First<A> {
 		if self.value() != nil {
 			return self
 		} else {
@@ -108,7 +108,7 @@ public struct First<A : Comparable> : Monoid {
 public struct Last<A : Comparable> : Monoid {
 	public let value : () -> Optional<A>
 
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init(_ x : @autoclosure @escaping () -> Optional<A>) {
 		value = x
 	}
 
@@ -116,7 +116,7 @@ public struct Last<A : Comparable> : Monoid {
 		return Last(nil)
 	}
 
-	public func op(other : Last<A>) -> Last<A> {
+	public func op(_ other : Last<A>) -> Last<A> {
 		if other.value() != nil {
 			return other
 		} else {
@@ -137,8 +137,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex.predecessor()] = Either.Left(x.op(y))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex.predecessor()] = Either.Right(x.op(y))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex.advanced(by: -1)] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex.advanced(by: -1)] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -156,7 +156,7 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		return Dither([Either.Right(y)])
 	}
 
-	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
+	public func fold<C : Monoid>(onLeft f : @escaping (A) -> C, onRight g : @escaping (B) -> C) -> C {
 		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
@@ -164,7 +164,7 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		return Dither([])
 	}
 
-	public func op(other : Dither<A, B>) -> Dither<A, B> {
+	public func op(_ other : Dither<A, B>) -> Dither<A, B> {
 		return Dither(values + other.values)
 	}
 

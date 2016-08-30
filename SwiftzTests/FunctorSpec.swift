@@ -17,7 +17,7 @@ class FunctorSpec : XCTestCase {
 			return (x.fmap(identity)).runConst == identity(x).runConst
 		}
 
-		property("Const obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("Const obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			let x = Const<Int, Int>(5)
 			return (x.fmap(f.getArrow • g.getArrow)).runConst == (x.fmap(g.getArrow).fmap(f.getArrow)).runConst
 		}

@@ -28,18 +28,18 @@ class HListSpec : XCTestCase {
 		typealias Zero = HAppend<HNil, AList, AList>
 		typealias One = HAppend<BList, AList, HCons<Bool, HCons<Int, HCons<String, HNil>>>>
 
-		typealias FList = HCons<Int -> Int, HCons<Int -> Int, HCons<Int -> Int, HNil>>>
-		typealias FComp = HMap<(), (Int -> Int, Int -> Int), Int -> Int>
-		typealias FBegin = HFold<(), Int -> Int, FList, Int -> Int>
-		typealias FEnd = HFold<(), Int -> Int, HNil, Int -> Int>
+		typealias FList = HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>
+		typealias FComp = HMap<(), ((Int) -> Int, (Int) -> Int), (Int) -> Int>
+		typealias FBegin = HFold<(), (Int) -> Int, FList, (Int) -> Int>
+		typealias FEnd = HFold<(), (Int) -> Int, HNil, (Int) -> Int>
 
-		property("A static fold can be modelled by a dynamic one") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, h : ArrowOf<Int, Int>) in
+		property("A static fold can be modelled by a dynamic one") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, h : ArrowOf<Int, Int>) in
 			let listf : FList = HCons(h: f.getArrow, t: HCons(h: g.getArrow, t: HCons(h: h.getArrow, t: HNil())))
 			let comp : FComp = HMap<(), (), ()>.compose()
 			let foldEnd : FEnd = HFold<(), (), (), ()>.makeFold()
-			let fullFold = FBegin.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: HFold<(), (), (), ()>.makeFold(comp, h: foldEnd)))
+			let fullFold = FBegin.makeFold(comp, HFold<(), (), (), ()>.makeFold(comp, HFold<(), (), (), ()>.makeFold(comp, foldEnd)))
 			return forAll { (x : Int) in
-				return fullFold.fold((), identity, listf)(x) == [f.getArrow, g.getArrow, h.getArrow].reverse().reduce(identity, combine: •)(x)
+				return fullFold.fold((), identity, listf)(x) == [f.getArrow, g.getArrow, h.getArrow].reversed().reduce(identity, •)(x)
 			}
 		}
 	}

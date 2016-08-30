@@ -10,38 +10,38 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-extension Unit : Arbitrary {
-	public static var arbitrary : Gen<Unit> {
+extension Swiftz.Unit : Arbitrary {
+	public static var arbitrary : Gen<Swiftz.Unit> {
 		return Gen.pure(.TT)
 	}
 }
 
-extension Unit : CoArbitrary {
-	public static func coarbitrary<C>(_ : Unit) -> (Gen<C> -> Gen<C>) {
+extension Swiftz.Unit : CoArbitrary {
+	public static func coarbitrary<C>(_ : Swiftz.Unit) -> ((Gen<C>) -> Gen<C>) {
 		return identity
 	}
 }
 
 class UnitSpec : XCTestCase {
 	func testProperties() {
-		property("Unit obeys reflexivity") <- forAll { (l : Unit) in
+		property("Swiftz.Unit obeys reflexivity") <- forAll { (l : Swiftz.Unit) in
 			return l == l
 		}
 
-		property("Unit obeys symmetry") <- forAll { (x : Unit, y : Unit) in
+		property("Swiftz.Unit obeys symmetry") <- forAll { (x : Swiftz.Unit, y : Swiftz.Unit) in
 			return (x == y) == (y == x)
 		}
 
-		property("Unit obeys transitivity") <- forAll { (x : Unit, y : Unit, z : Unit) in
-			return (x == y) && (y == z) ==> (x == z)
+		property("Swiftz.Unit obeys transitivity") <- forAll { (x : Swiftz.Unit, y : Swiftz.Unit, z : Swiftz.Unit) in
+			return ((x == y) && (y == z)) ==> (x == z)
 		}
 
-		property("Unit obeys negation") <- forAll { (x : Unit, y : Unit) in
+		property("Swiftz.Unit obeys negation") <- forAll { (x : Swiftz.Unit, y : Swiftz.Unit) in
 			return (x != y) == !(x == y)
 		}
 
-		property("Unit's bounds are unique") <- forAll { (x : Unit) in
-			return (Unit.minBound() == x) == (Unit.maxBound() == x)
+		property("Swiftz.Unit's bounds are unique") <- forAll { (x : Swiftz.Unit) in
+			return (Swiftz.Unit.minBound() == x) == (Swiftz.Unit.maxBound() == x)
 		}
 	}
 }

@@ -12,14 +12,14 @@ import SwiftCheck
 
 extension Identity where T : Arbitrary {
 	public static var arbitrary : Gen<Identity<A>> {
-		return Identity.pure <^> A.arbitrary
+		return A.arbitrary.map(Identity.pure)
 	}
 }
 
 extension Identity : WitnessedArbitrary {
 	public typealias Param = T
 
-	public static func forAllWitnessed<A : Arbitrary>(wit : A -> T, pf : (Identity<T> -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> T, pf : ((Identity<T>) -> Testable)) -> Property {
 		return forAllShrink(Identity<A>.arbitrary, shrinker: const([]), f: { bl in
 			return pf(bl.fmap(wit))
 		})
@@ -32,7 +32,7 @@ class IdentitySpec : XCTestCase {
 			return (x.fmap(identity)) == identity(x)
 		}
 
-		property("Identity obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
+		property("Identity obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>) in
 			return forAll { (x : Identity<Int>) in
 				return ((f.getArrow • g.getArrow) <^> x) == (x.fmap(g.getArrow).fmap(f.getArrow))
 			}
@@ -42,7 +42,7 @@ class IdentitySpec : XCTestCase {
 			return (Identity.pure(identity) <*> x) == x
 		}
 
-		property("Identity obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+		property("Identity obeys the Applicative homomorphism law") <- forAll { (_ f : ArrowOf<Int, Int>, x : Int) in
 			return (Identity.pure(f.getArrow) <*> Identity.pure(x)) == Identity.pure(f.getArrow(x))
 		}
 
@@ -90,15 +90,15 @@ class IdentitySpec : XCTestCase {
 
 		property("Identity obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
 			return forAll { (x : Identity<Int>) in
-				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
+				let f : (Identity<Int>) -> Int = ff.getArrow • { $0.runIdentity }
 				return x.extend(f).extract() == f(x)
 			}
 		}
 
 		property("Identity obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
 			return forAll { (x : Identity<Int>) in
-				let f : Identity<Int> -> Int = ff.getArrow • { $0.runIdentity }
-				let g : Identity<Int> -> Int = gg.getArrow • { $0.runIdentity }
+				let f : (Identity<Int>) -> Int = ff.getArrow • { $0.runIdentity }
+				let g : (Identity<Int>) -> Int = gg.getArrow • { $0.runIdentity }
 				return x.extend(f).extend(g) == x.extend({ g($0.extend(f)) })
 			}
 		}

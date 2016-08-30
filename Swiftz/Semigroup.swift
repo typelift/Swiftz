@@ -10,31 +10,31 @@
 public protocol Semigroup {
 
 	/// An associative binary operator.
-	func op(other : Self) -> Self
+	func op(_ other : Self) -> Self
 }
 
 public func <> <A : Semigroup>(lhs : A, rhs : A) -> A {
 	return lhs.op(rhs)
 }
 
-public func sconcat<S: Semigroup>(h : S, t : [S]) -> S {
+public func sconcat<S: Semigroup>(_ h : S, _ t : [S]) -> S {
 	return t.reduce(h) { $0.op($1) }
 }
 
 extension List : Semigroup {
-	public func op(other : List<A>) -> List<A> {
+	public func op(_ other : List<A>) -> List<A> {
 		return self + other
 	}
 }
 
 extension NonEmptyList : Semigroup {
-	public func op(other : NonEmptyList<A>) -> NonEmptyList<A> {
+	public func op(_ other : NonEmptyList<A>) -> NonEmptyList<A> {
 		return NonEmptyList(self.head, self.tail + other.toList())
 	}
 }
 
 extension Array : Semigroup {
-	public func op(other : [Element]) -> [Element] {
+	public func op(_ other : [Element]) -> [Element] {
 		return self + other
 	}
 }
@@ -43,11 +43,11 @@ extension Array : Semigroup {
 public struct Min<A: Comparable>: Semigroup {
 	public let value : () -> A
 
-	public init(@autoclosure(escaping) _ x : () -> A) {
+	public init(_ x : @autoclosure @escaping () -> A) {
 		value = x
 	}
 
-	public func op(other : Min<A>) -> Min<A> {
+	public func op(_ other : Min<A>) -> Min<A> {
 		if self.value() < other.value() {
 			return self
 		} else {
@@ -60,11 +60,11 @@ public struct Min<A: Comparable>: Semigroup {
 public struct Max<A: Comparable> : Semigroup {
 	public let value : () -> A
 
-	public init(@autoclosure(escaping) _ x : () -> A) {
+	public init(_ x : @autoclosure @escaping () -> A) {
 		value = x
 	}
 
-	public func op(other : Max<A>) -> Max<A> {
+	public func op(_ other : Max<A>) -> Max<A> {
 		if other.value() < self.value() {
 			return self
 		} else {
@@ -85,8 +85,8 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex.predecessor()] = Either.Left(x.op(y))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex.predecessor()] = Either.Right(x.op(y))
+				case let (.Left(x), .Left(y)): vals[vals.endIndex.advanced(by: -1)] = Either.Left(x.op(y))
+				case let (.Right(x), .Right(y)): vals[vals.endIndex.advanced(by: -1)] = Either.Right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -104,11 +104,11 @@ public struct Vacillate<A : Semigroup, B : Semigroup> : Semigroup {
 		return Vacillate([Either.Right(y)])
 	}
 
-	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
+	public func fold<C : Monoid>(onLeft f : @escaping (A) -> C, onRight g : @escaping (B) -> C) -> C {
 		return values.foldRight(C.mempty) { v, acc in v.either(onLeft: f, onRight: g).op(acc) }
 	}
 
-	public func op(other : Vacillate<A, B>) -> Vacillate<A, B> {
+	public func op(_ other : Vacillate<A, B>) -> Vacillate<A, B> {
 		return Vacillate(values + other.values)
 	}
 }

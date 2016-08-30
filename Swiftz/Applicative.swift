@@ -13,10 +13,10 @@
 /// needing to unwrap or map over their contents.
 public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
-	associatedtype FAB = K1<A -> B>
+	associatedtype FAB = K1<(A) -> B>
 
 	/// Applies the function encapsulated by the Functor to the value encapsulated by the receiver.
-	func ap(f : FAB) -> FB
+	func ap(_ f : FAB) -> FB
 }
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.
@@ -27,11 +27,11 @@ public protocol ApplicativeOps : Applicative {
 	associatedtype FD = K1<D>
 
 	/// Lift a function to a Functorial action.
-	static func liftA(f : A -> B) -> Self -> FB
+	static func liftA(_ f : @escaping (A) -> B) -> (Self) -> FB
 
 	/// Lift a binary function to a Functorial action.
-	static func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+	static func liftA2(_ f : @escaping (A) -> (B) -> C) -> (Self) -> (FB) -> FC
 
 	/// Lift a ternary function to a Functorial action.
-	static func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+	static func liftA3(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Self) -> (FB) -> (FC) -> FD
 }

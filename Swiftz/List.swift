@@ -35,7 +35,7 @@ public struct List<Element> {
 	let next : () -> (head : Element, tail : List<Element>)
 
 	/// Constructs a potentially infinite list.
-	init(@autoclosure(escaping) _ next : () -> (head : Element, tail : List<Element>), isEmpty : Bool = false) {
+	init(_ next : @autoclosure @escaping () -> (head : Element, tail : List<Element>), isEmpty : Bool = false) {
 		self.len = isEmpty ? 0 : -1
 		self.next = next
 	}
@@ -52,7 +52,7 @@ public struct List<Element> {
 		if tail.len == -1 {
 			self.len = -1
 		} else {
-			self.len = tail.len.successor()
+			self.len = tail.len.advanced(by: 1)
 		}
 		self.next = { (head, tail) }
 	}
@@ -82,7 +82,7 @@ public struct List<Element> {
 		case let .Cons(x, _) where n == 0:
 			return x
 		case let .Cons(_, xs):
-			return xs[n.predecessor()]
+			return xs[n.advanced(by: -1)]
 		}
 	}
 
@@ -97,10 +97,10 @@ public struct List<Element> {
 	}
 
 	/// Creates a list of n repeating values.
-	public static func replicate(n : UInt, value : Element) -> List<Element> {
+	public static func replicate(_ n : UInt, value : Element) -> List<Element> {
 		var l = List<Element>()
 		for _ in 0..<n {
-			l = List.cons(value, tail: l)
+			l = List.cons(head: value, tail: l)
 		}
 		return l
 	}
@@ -109,9 +109,9 @@ public struct List<Element> {
 	public var head : Optional<Element> {
 		switch self.match {
 		case .Nil:
-			return .None
+			return .none
 		case let .Cons(head, _):
-			return .Some(head)
+			return .some(head)
 		}
 	}
 
@@ -119,24 +119,24 @@ public struct List<Element> {
 	public var tail : Optional<List<Element>> {
 		switch self.match {
 		case .Nil:
-			return .None
+			return .none
 		case let .Cons(_, tail):
-			return .Some(tail)
+			return .some(tail)
 		}
 	}
 
 	/// Returns an array of all initial segments of the receiver, shortest first
 	public var inits : List<List<Element>> {
-		return self.reduce(List<List<Element>>(), combine: { xss, x in
+		return self.reduce(List<List<Element>>()) { xss, x in
 			return List<List<Element>>([], xss.map { List(x, $0) })
-		})
+		}
 	}
 
 	/// Returns an array of all final segments of the receiver, longest first
 	public var tails : List<List<Element>> {
-		return self.reduce(List<List<Element>>(), combine: { x, y in
+		return self.reduce(List<List<Element>>()) { x, y in
 			return List<List<Element>>.pure(List(y, x.head!)) + x
-		})
+		}
 	}
 
 	/// Returns whether or not the receiver is the empty list.
@@ -153,7 +153,7 @@ public struct List<Element> {
 	}
 
 	/// Yields a new list by applying a function to each element of the receiver.
-	public func map<B>(f : A -> B) -> List<B> {
+	public func map<B>(_ f : (A) -> B) -> List<B> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -165,22 +165,22 @@ public struct List<Element> {
 	/// Appends two lists together.
 	///
 	/// If the receiver is infinite, the result of this function will be the receiver itself.
-	public func append(rhs : List<Element>) -> List<Element> {
+	public func append(_ rhs : List<Element>) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return rhs
 		case let .Cons(x, xs):
-			return List.cons(x, tail: xs.append(rhs))
+			return List.cons(head: x, tail: xs.append(rhs))
 		}
 	}
 
 	/// Maps a function over a list and concatenates the results.
-	public func concatMap<B>(f : Element -> List<B>) -> List<B> {
+	public func concatMap<B>(_ f : @escaping (Element) -> List<B>) -> List<B> {
 		return self.reduce({ l, r in l.append(f(r)) }, initial: List<B>())
 	}
 
 	/// Returns a list of elements satisfying a predicate.
-	public func filter(p : Element -> Bool) -> List<Element> {
+	public func filter(_ p : (Element) -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -190,7 +190,7 @@ public struct List<Element> {
 	}
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
-	public func reduce<B>(f : B -> Element -> B, initial : B) -> B {
+	public func reduce<B>(_ f : (B) -> (Element) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -200,7 +200,7 @@ public struct List<Element> {
 	}
 
 	/// Applies a binary operator to reduce the elements of the receiver to a single value.
-	public func reduce<B>(f : (B, Element) -> B, initial : B) -> B {
+	public func reduce<B>(_ f : (B, Element) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
 			return initial
@@ -216,12 +216,12 @@ public struct List<Element> {
 	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z)(x0), f(f(z)(x0))(x1), f(f(f(z)(x2))(x1))(x0)]
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
-	public func scanl<B>(f : B -> Element -> B, initial : B) -> List<B> {
+	public func scanl<B>(_ f : (B) -> (Element) -> B, initial : B) -> List<B> {
 		switch self.match {
 		case .Nil:
 			return List<B>(initial)
 		case let .Cons(x, xs):
-			return List<B>.cons(initial, tail: xs.scanl(f, initial: f(initial)(x)))
+			return List<B>.cons(head: initial, tail: xs.scanl(f, initial: f(initial)(x)))
 		}
 	}
 
@@ -232,17 +232,17 @@ public struct List<Element> {
 	///     [x0, x1, x2, ...].scanl(f, initial: z) == [z, f(z, x0), f(f(z, x0), x1), f(f(f(z, x2), x1), x0)]
 	///       [1, 2, 3, 4, 5].scanl(+, initial: 0) == [0, 1, 3, 6, 10, 15]
 	///
-	public func scanl<B>(f : (B, Element) -> B, initial : B) -> List<B> {
+	public func scanl<B>(_ f : (B, Element) -> B, initial : B) -> List<B> {
 		switch self.match {
 		case .Nil:
 			return List<B>(initial)
 		case let .Cons(x, xs):
-			return List<B>.cons(initial, tail: xs.scanl(f, initial: f(initial, x)))
+			return List<B>.cons(head: initial, tail: xs.scanl(f, initial: f(initial, x)))
 		}
 	}
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
-	public func scanl1(f : Element -> Element -> Element) -> List<Element> {
+	public func scanl1(_ f : (Element) -> (Element) -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -252,7 +252,7 @@ public struct List<Element> {
 	}
 
 	/// Like scanl but draws its initial value from the first element of the receiver itself.
-	public func scanl1(f : (Element, Element) -> Element) -> List<Element> {
+	public func scanl1(_ f : (Element, Element) -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -262,7 +262,7 @@ public struct List<Element> {
 	}
 
 	/// Returns the first n elements of the receiver.
-	public func take(n : UInt) -> List<Element> {
+	public func take(_ n : UInt) -> List<Element> {
 		if n == 0 {
 			return []
 		}
@@ -271,12 +271,12 @@ public struct List<Element> {
 		case .Nil:
 			return []
 		case let .Cons(x, xs):
-			return List.cons(x, tail: xs.take(n.predecessor()))
+			return List.cons(head: x, tail: xs.take(n.advanced(by: -1)))
 		}
 	}
 
 	/// Returns the remaining list after dropping n elements from the receiver.
-	public func drop(n : UInt) -> List<Element> {
+	public func drop(_ n : UInt) -> List<Element> {
 		if n == 0 {
 			return self
 		}
@@ -285,43 +285,43 @@ public struct List<Element> {
 		case .Nil:
 			return []
 		case let .Cons(_, xs):
-			return xs.drop(n.predecessor())
+			return xs.drop(n.advanced(by: -1))
 		}
 	}
 
 	/// Returns a tuple of the first n elements and the remainder of the list.
-	public func splitAt(n : UInt) -> (List<Element>, List<Element>) {
+	public func splitAt(_ n : UInt) -> (List<Element>, List<Element>) {
 		return (self.take(n), self.drop(n))
 	}
 
 	/// Takes a separator and a list and intersperses that element throughout the list.
 	///
 	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
-	public func intersperse(item : Element) -> List<Element> {
+	public func intersperse(_ item : Element) -> List<Element> {
 		func prependToAll(sep : Element, l : List<Element>) -> List<Element> {
 			switch l.match {
 			case .Nil:
 				return List()
 			case.Cons(let x, let xs):
-				return List(sep, List(x, prependToAll(sep, l: xs)))
+				return List(sep, List(x, prependToAll(sep: sep, l: xs)))
 			}
 		}
 		switch self.match {
 		case .Nil:
 			return List()
 		case .Cons(let x, let xs):
-			return List(x, prependToAll(item, l: xs))
+			return List(x, prependToAll(sep: item, l: xs))
 		}
 	}
 
 	/// Returns a list of the longest prefix of elements satisfying a predicate.
-	public func takeWhile(p : Element -> Bool) -> List<Element> {
+	public func takeWhile(_ p : (Element) -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
 		case .Cons(let x, let xs):
 			if p(x) {
-				return List.cons(x, tail: xs.takeWhile(p))
+				return List.cons(head: x, tail: xs.takeWhile(p))
 			}
 			return []
 		}
@@ -329,7 +329,7 @@ public struct List<Element> {
 
 	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
 	/// predicate has been removed.
-	public func dropWhile(p : Element -> Bool) -> List<Element> {
+	public func dropWhile(_ p : (Element) -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -343,7 +343,7 @@ public struct List<Element> {
 
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : Element -> Element -> Bool) -> List<List<Element>> {
+	public func groupBy(_ p : (Element) -> (Element) -> Bool) -> List<List<Element>> {
 		switch self.match {
 		case .Nil:
 			return []
@@ -356,7 +356,7 @@ public struct List<Element> {
 
 	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 	/// other according to an equality predicate.
-	public func groupBy(p : (Element, Element) -> Bool) -> List<List<Element>> {
+	public func groupBy(_ p : @escaping (Element, Element) -> Bool) -> List<List<Element>> {
 		return self.groupBy(curry(p))
 	}
 
@@ -368,7 +368,7 @@ public struct List<Element> {
 	///     [1, 2, 3].span(<0)                == ([],[1, 2, 3])
 	///
 	///     span(list, p) == (takeWhile(list, p), dropWhile(list, p))
-	public func span(p : Element -> Bool) -> (List<Element>, List<Element>) {
+	public func span(_ p : (Element) -> Bool) -> (List<Element>, List<Element>) {
 		switch self.match {
 		case .Nil:
 			return ([], [])
@@ -387,7 +387,7 @@ public struct List<Element> {
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
 	///
 	///     self.extreme(p) == self.span((!) • p)
-	public func extreme(p : Element -> Bool) -> (List<Element>, List<Element>) {
+	public func extreme(_ p : @escaping (Element) -> Bool) -> (List<Element>, List<Element>) {
 		return self.span { ((!) • p)($0) }
 	}
 
@@ -402,7 +402,7 @@ public struct List<Element> {
 	/// or None if no match was found.
 	///
 	/// For infinite lists this function will diverge.
-	public func find(pred: Element -> Bool) -> Optional<Element> {
+	public func find(_ pred: (Element) -> Bool) -> Optional<Element> {
 		for x in self {
 			if pred(x) {
 				return x
@@ -414,13 +414,13 @@ public struct List<Element> {
 	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity
 	/// function) and a key and returns the value for the given key, if there is one, or None
 	/// otherwise.
-	public func lookup<K : Equatable, V>(ev : Element -> (K, V), key : K) -> Optional<V> {
+	public func lookup<K : Equatable, V>(_ ev : @escaping (Element) -> (K, V), key : K) -> Optional<V> {
 		return (snd • ev) <^> self.find({ ev($0).0 == key })
 	}
 
 	/// Returns a List of an infinite number of iteratations of applications of a function to an
 	/// initial value.
-	public static func iterate(f : Element -> Element, initial : Element) -> List<Element> {
+	public static func iterate(_ f : @escaping (Element) -> Element, initial : Element) -> List<Element> {
 		return List((initial, self.iterate(f, initial: f(initial))))
 	}
 
@@ -428,18 +428,6 @@ public struct List<Element> {
 	public func cycle() -> List<Element> {
 		let (hd, tl) = self.next()
 		return List((hd, (tl + [hd]).cycle()))
-	}
-
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at
-	/// least once by an element of the list.
-	public func any(f : (Element -> Bool)) -> Bool {
-		return self.map(f).or
-	}
-
-	/// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied by
-	/// all elemenets of the list.
-	public func all(f : (Element -> Bool)) -> Bool {
-		return self.map(f).and
 	}
 }
 
@@ -475,11 +463,11 @@ public struct List<Element> {
 //	public func stripPrefix(r : List<Element>) -> Optional<List<Element>> {
 //		switch (self.match, r.match) {
 //		case (.Nil, _):
-//			return .Some(r)
+//			return .some(r)
 //		case (.Cons(let x, let xs), .Cons(let y, _)) where x == y:
 //			return xs.stripPrefix(xs)
 //		default:
-//			return .None
+//			return .none
 //		}
 //	}
 //
@@ -498,20 +486,8 @@ public struct List<Element> {
 //	}
 //}
 
-extension List where Element : BooleanType {
-	/// Returns the conjunction of a list of Booleans.
-	public var and : Bool {
-		return self.reduce(true) { $0.boolValue && $1.boolValue }
-	}
-
-	/// Returns the dijunction of a list of Booleans.
-	public var or : Bool {
-		return self.reduce(false) { $0.boolValue || $1.boolValue }
-	}
-}
-
 /// Flattens a list of lists into a single lists.
-public func concat<A>(xss : List<List<A>>) -> List<A> {
+public func concat<A>(_ xss : List<List<A>>) -> List<A> {
 	return xss.reduce(+, initial: [])
 }
 
@@ -540,16 +516,16 @@ public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 
 /// MARK: Collection Protocols
 
-extension List : ArrayLiteralConvertible {
+extension List : ExpressibleByArrayLiteral {
 	public init(fromArray arr : [Element]) {
 		var xs : [A] = []
-		var g = arr.generate()
+		var g = arr.makeIterator()
 		while let x : A = g.next() {
 			xs.append(x)
 		}
 
 		var l = List()
-		for x in xs.reverse() {
+		for x in xs.reversed() {
 			l = List(x, l)
 		}
 		self = l
@@ -560,7 +536,7 @@ extension List : ArrayLiteralConvertible {
 	}
 }
 
-public final class ListGenerator<Element> : GeneratorType {
+public final class ListIterator<Element> : IteratorProtocol {
 	var l : List<Element>
 
 	public func next() -> Optional<Element> {
@@ -578,15 +554,19 @@ public final class ListGenerator<Element> : GeneratorType {
 	}
 }
 
-extension List : SequenceType {
-	public typealias Generator = ListGenerator<Element>
+extension List : Sequence {
+	public typealias Iterator = ListIterator<Element>
 
-	public func generate() -> ListGenerator<Element> {
-		return ListGenerator(self)
+	public func makeIterator() -> ListIterator<Element> {
+		return ListIterator(self)
 	}
 }
 
-extension List : CollectionType {
+extension List : Collection {
+    public func index(after i: UInt) -> UInt {
+        return i + 1
+    }
+
 	public typealias Index = UInt
 
 	public var startIndex : UInt { return 0 }
@@ -599,7 +579,7 @@ extension List : CollectionType {
 extension List : CustomStringConvertible {
 	public var description : String {
 		if self.isFinite {
-			return self.map({ String.init($0) }).intersperse(", ").reduce("", combine: +)
+			return self.map({ String(describing: $0) }).intersperse(", ").reduce("", +)
 		}
 		return "[...]"
 	}
@@ -607,142 +587,142 @@ extension List : CustomStringConvertible {
 
 /// MARK: Control.*
 
-extension List : Functor {
+extension List /*: Functor*/ {
 	public typealias B = Any
 	public typealias FB = List<B>
 
-	public func fmap<B>(f : (A -> B)) -> List<B> {
+	public func fmap<B>(_ f : @escaping (A) -> B) -> List<B> {
 		return self.map(f)
 	}
 }
 
-public func <^> <A, B>(f : A -> B, l : List<A>) -> List<B> {
+public func <^> <A, B>(_ f : @escaping (A) -> B, l : List<A>) -> List<B> {
 	return l.fmap(f)
 }
 
-extension List : Pointed {
+extension List /*: Pointed*/ {
 	public typealias A = Element
-	public static func pure(a : A) -> List<Element> {
+	public static func pure(_ a : A) -> List<Element> {
 		return List(a, [])
 	}
 }
 
-extension List : ApplicativeOps {
+extension List /*: ApplicativeOps*/ {
 	public typealias C = Any
 	public typealias FC = List<C>
 	public typealias D = Any
 	public typealias FD = List<D>
 
-	public static func liftA<B>(f : A -> B) -> List<A> -> List<B> {
-		return { (a : List<A>) -> List<B> in List<A -> B>.pure(f) <*> a }
+	public static func liftA<B>(_ f : @escaping (A) -> B) -> (List<A>) -> List<B> {
+		return { (a : List<A>) -> List<B> in List<(A) -> B>.pure(f) <*> a }
 	}
 
-	public static func liftA2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { (a : List<A>) -> List<B> -> List<C> in { (b : List<B>) -> List<C> in f <^> a <*> b  } }
+	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (List<A>) -> (List<B>) -> List<C> {
+		return { (a : List<A>) -> (List<B>) -> List<C> in { (b : List<B>) -> List<C> in f <^> a <*> b  } }
 	}
 
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { (a : List<A>) -> List<B> -> List<C> -> List<D> in { (b : List<B>) -> List<C> -> List<D> in { (c : List<C>) -> List<D> in f <^> a <*> b <*> c } } }
+	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (List<A>) -> (List<B>) -> (List<C>) -> List<D> {
+		return { (a : List<A>) -> (List<B>) -> (List<C>) -> List<D> in { (b : List<B>) -> (List<C>) -> List<D> in { (c : List<C>) -> List<D> in f <^> a <*> b <*> c } } }
 	}
 }
 
-extension List : Applicative {
+extension List /*: Applicative*/ {
 	public typealias FA = List<Element>
-	public typealias FAB = List<A -> B>
+	public typealias FAB = List<(A) -> B>
 
-	public func ap<B>(f : List<A -> B>) -> List<B> {
+	public func ap<B>(_ f : List<(A) -> B>) -> List<B> {
 		return concat(f.map(self.map))
 	}
 }
 
-public func <*> <A, B>(f : List<(A -> B)>, l : List<A>) -> List<B> {
+public func <*> <A, B>(_ f : List<((A) -> B)>, l : List<A>) -> List<B> {
 	return l.ap(f)
 }
 
-extension List : Cartesian {
+extension List /*: Cartesian*/ {
 	public typealias FTOP = List<()>
 	public typealias FTAB = List<(A, B)>
 	public typealias FTABC = List<(A, B, C)>
 	public typealias FTABCD = List<(A, B, C, D)>
 
 	public static var unit : List<()> { return [()] }
-	public func product<B>(r : List<B>) -> List<(A, B)> {
+	public func product<B>(_ r : List<B>) -> List<(A, B)> {
 		return self.mzip(r)
 	}
 	
-	public func product<B, C>(r : List<B>, _ s : List<C>) -> List<(A, B, C)> {
+	public func product<B, C>(_ r : List<B>, _ s : List<C>) -> List<(A, B, C)> {
 		return List.liftA3({ x in { y in { z in (x, y, z) } } })(self)(r)(s)
 	}
 	
-	public func product<B, C, D>(r : List<B>, _ s : List<C>, _ t : List<D>) -> List<(A, B, C, D)> {
+	public func product<B, C, D>(_ r : List<B>, _ s : List<C>, _ t : List<D>) -> List<(A, B, C, D)> {
 		return { x in { y in { z in { w in (x, y, z, w) } } } } <^> self <*> r <*> s <*> t
 	}
 }
 
-extension List : Monad {
-	public func bind<B>(f : A -> List<B>) -> List<B> {
+extension List /*: Monad*/ {
+	public func bind<B>(_ f : @escaping (A) -> List<B>) -> List<B> {
 		return self.concatMap(f)
 	}
 }
 
-public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
+public func >>- <A, B>(l : List<A>, f : @escaping (A) -> List<B>) -> List<B> {
 	return l.bind(f)
 }
 
-extension List : MonadOps {
-	public static func liftM<B>(f : A -> B) -> List<A> -> List<B> {
+extension List /*: MonadOps*/ {
+	public static func liftM<B>(_ f : @escaping (A) -> B) -> (List<A>) -> List<B> {
 		return { (m1 : List<A>) -> List<B> in m1 >>- { (x1 : A) in List<B>.pure(f(x1)) } }
 	}
 
-	public static func liftM2<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
-		return { (m1 : List<A>) -> List<B> -> List<C> in { (m2 : List<B>) -> List<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in List<C>.pure(f(x1)(x2)) } } } }
+	public static func liftM2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (List<A>) -> (List<B>) -> List<C> {
+		return { (m1 : List<A>) -> (List<B>) -> List<C> in { (m2 : List<B>) -> List<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in List<C>.pure(f(x1)(x2)) } } } }
 	}
 
-	public static func liftM3<B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> List<C> -> List<D> {
-		return { (m1 : List<A>) -> List<B> -> List<C> -> List<D> in { (m2 : List<B>) -> List<C> -> List<D> in { (m3 : List<C>) -> List<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
+	public static func liftM3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (List<A>) -> (List<B>) -> (List<C>) -> List<D> {
+		return { (m1 : List<A>) -> (List<B>) -> (List<C>) -> List<D> in { (m2 : List<B>) -> (List<C>) -> List<D> in { (m3 : List<C>) -> List<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in List<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
 }
 
-public func >>->> <A, B, C>(f : A -> List<B>, g : B -> List<C>) -> (A -> List<C>) {
+public func >>->> <A, B, C>(_ f : @escaping (A) -> List<B>, g : @escaping (B) -> List<C>) -> ((A) -> List<C>) {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <A, B, C>(g : B -> List<C>, f : A -> List<B>) -> (A -> List<C>) {
+public func <<-<< <A, B, C>(g : @escaping (B) -> List<C>, f : @escaping (A) -> List<B>) -> ((A) -> List<C>) {
 	return f >>->> g
 }
 
-extension List : MonadPlus {
+extension List /*: MonadPlus*/ {
 	public static var mzero : List<A> {
 		return []
 	}
 
-	public func mplus(other : List<A>) -> List<A> {
+	public func mplus(_ other : List<A>) -> List<A> {
 		return self + other
 	}
 }
 
-public func sequence<A>(ms: [List<A>]) -> List<[A]> {
-	return ms.reduce(List<[A]>.pure([]), combine: { n, m in
+public func sequence<A>(_ ms: [List<A>]) -> List<[A]> {
+	return ms.reduce(List<[A]>.pure([])) { n, m in
 		return n.bind { xs in
 			return m.bind { x in
 				return List<[A]>.pure(xs + [x])
 			}
 		}
-	})
+	}
 }
 
-extension List : MonadZip {
+extension List /*: MonadZip*/ {
 	public typealias FTABL = List<(A, B)>
 	
-	public func mzip<B>(ma : List<B>) -> List<(A, B)> {
+	public func mzip<B>(_ ma : List<B>) -> List<(A, B)> {
 		return List<(A, B)>(fromArray: zip(self, ma).map(identity))
 	}
 	
-	public func mzipWith<B, C>(other : List<B>, _ f : A -> B -> C) -> List<C> {
+	public func mzipWith<B, C>(_ other : List<B>, _ f : @escaping (A) -> (B) -> C) -> List<C> {
 		return self.mzip(other).map(uncurry(f))
 	}
 	
-	public static func munzip<B>(ftab : List<(A, B)>) -> (List<A>, List<B>) {
+	public static func munzip<B>(_ ftab : List<(A, B)>) -> (List<A>, List<B>) {
 		return (ftab.map(fst), ftab.map(snd))
 	}
 }

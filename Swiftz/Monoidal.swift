@@ -24,11 +24,11 @@ public protocol Cartesian : Functor {
 	static var unit : FTOP { get }
 	
 	/// Returns the 2-ary product functor of the receiver and the other given functor.
-	func product(r : FB) -> FTAB
+	func product(_ r : FB) -> FTAB
 	
 	/// Returns the 3-ary product functor of the receiver and the 2 other given functors.
-	func product(r : FB, _ s : FC) -> FTABC
+	func product(_ r : FB, _ s : FC) -> FTABC
 	
 	/// Returns the 4-ary product functor of the receiver and the 3 other given functors.
-	func product(r : FB, _ s : FC, _ t : FD) -> FTABCD
+	func product(_ r : FB, _ s : FC, _ t : FD) -> FTABCD
 }

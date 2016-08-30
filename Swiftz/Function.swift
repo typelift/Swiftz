@@ -12,13 +12,13 @@ public struct Function<T, U> {
 	public typealias B = U
 	public typealias C = Any
 
-	let ap : T -> U
+	let ap : (T) -> U
 
-	public init(_ apply : T -> U) {
+	public init(_ apply : @escaping (T) -> U) {
 		self.ap = apply
 	}
 
-	public func apply(x : T) -> U {
+	public func apply(_ x : T) -> U {
 		return self.ap(x)
 	}
 }
@@ -45,9 +45,9 @@ public func >>> <A, B, C>(c1 : Function<A, B>, c2 : Function<B, C>) -> Function<
 	return c2 • c1
 }
 
-extension Function : Arrow {
+extension Function /*: Arrow*/ {
 	public typealias D = T
-	public typealias E = Swift.Any
+	public typealias E = Any
 
 	public typealias FIRST = Function<(A, D), (B, D)>
 	public typealias SECOND = Function<(D, A), (D, B)>
@@ -58,7 +58,7 @@ extension Function : Arrow {
 	public typealias ABD = Function<A, D>
 	public typealias FANOUT = Function<A, (B, D)>
 
-	public static func arr(f : T -> U) -> Function<A, B> {
+	public static func arr(_ f : @escaping (T) -> U) -> Function<A, B> {
 		return Function<A, B>(f)
 	}
 
@@ -71,15 +71,15 @@ extension Function : Arrow {
 	}
 }
 
-public func *** <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<(B, D), (C, E)> {
+public func *** <B, C, D, E>(_ f : Function<B, C>, g : Function<D, E>) -> Function<(B, D), (C, E)> {
 	return Function.arr { (x, y) in  (f.apply(x), g.apply(y)) }
 }
 
-public func &&& <A, B, C>(f : Function<A, B>, g : Function<A, C>) -> Function<A, (B, C)> {
+public func &&& <A, B, C>(_ f : Function<A, B>, g : Function<A, C>) -> Function<A, (B, C)> {
 	return Function.arr { b in (b, b) } >>> f *** g
 }
 
-extension Function : ArrowChoice {
+extension Function /*: ArrowChoice*/ {
 	public typealias LEFT = Function<Either<A, D>, Either<B, D>>
 	public typealias RIGHT = Function<Either<D, A>, Either<D, B>>
 
@@ -97,15 +97,15 @@ extension Function : ArrowChoice {
 	}
 }
 
-public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
+public func +++<B, C, D, E>(_ f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
 	return Function.arr(Either.Left • f.apply) ||| Function.arr(Either.Right • g.apply)
 }
 
-public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
+public func |||<B, C, D>(_ f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
 	return Function.arr({ e in e.either(onLeft: f.apply, onRight: g.apply) })
 }
 
-extension Function : ArrowApply {
+extension Function /*: ArrowApply*/ {
 	public typealias APP = Function<(Function<A, B>, A), B>
 
 	public static func app() -> Function<(Function<T, U>, A), B> {
@@ -113,10 +113,10 @@ extension Function : ArrowApply {
 	}
 }
 
-extension Function : ArrowLoop {
+extension Function /*: ArrowLoop*/ {
 	public typealias LOOP = Function<(A, D), (B, D)>
 
-	public static func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
+	public static func loop<B, C>(_ f : Function<(B, D), (C, D)>) -> Function<B, C> {
 		return Function<B, C>.arr(Function.loop(f).apply)
 	}
 }

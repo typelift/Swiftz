@@ -1,13 +1,52 @@
-language: objective-c
-osx_image: xcode7.3
-script: 
-    - pod lib lint
-    - set -o pipefail
-    - xcodebuild test -scheme Swiftz -configuration Debug | xcpretty -c
-    - xcodebuild test -scheme Swiftz-iOS -configuration Debug -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 6s" | xcpretty -c
-    - xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 1080p' | xcpretty -c
-    - xcodebuild build -scheme Swiftz-watchOS -destination 'platform=watchOS Simulator,name=Apple Watch - 42mm' | xcpretty -c
-
+env:
+  global:
+    - LC_CTYPE=en_US.UTF-8
+matrix:
+  include:
+    - os: osx
+      language: objective-c
+      osx_image: xcode8
+      before_install:
+        - git submodule update --init --recursive
+      script:
+      # Restore pod build before shipping for 3.0 
+      # - pod lib lint
+        - carthage build --no-skip-current
+    - os: osx
+      language: objective-c
+      osx_image: xcode8
+      before_install:
+        - git submodule update --init --recursive
+      script:
+        - set -o pipefail
+        - xcodebuild test -scheme Swiftz | xcpretty -c
+        # -- Start iOS --
+        # !!!: Make sure desired device name & OS version are suitable for the Xcode version installed on osx_image
+        - iOS_DEVICE_NAME="iPad Pro (12.9 inch)"
+        - iOS_RUNTIME_VERSION="10.0"
+        # Get simulator identifier for desired device/runtime pair
+        - SIMULATOR_ID=$(xcrun instruments -s | grep -o "${iOS_DEVICE_NAME} (${iOS_RUNTIME_VERSION}) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
+        - echo $SIMULATOR_ID
+        - echo $iOS_DEVICE_NAME
+        - echo $iOS_RUNTIME_VERSION
+        # !!!: Start simulator w/ desired device—helps avoid issues w/ Xcode timing out when waiting for simulator to become ready
+        - open -b com.apple.iphonesimulator --args -CurrentDeviceUDID $SIMULATOR_ID
+        - xcodebuild test -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=${iOS_DEVICE_NAME},OS=${iOS_RUNTIME_VERSION}" | xcpretty -c
+        # -- End iOS --
+        - xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 1080p' | xcpretty -c
+    - os: linux
+      language: generic
+      sudo: required
+      dist: trusty
+      before_install:
+        - git submodule update --init --recursive
+        - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
+        - wget https://swift.org/builds/swift-3.0-preview-6/ubuntu1404/swift-3.0-PREVIEW-6/swift-3.0-PREVIEW-6-ubuntu14.04.tar.gz
+        - tar xzf swift-3.0-PREVIEW-6-ubuntu14.04.tar.gz
+        - export PATH=${PWD}/swift-3.0-PREVIEW-6-ubuntu14.04/usr/bin:"${PATH}"
+      script:
+        # Uncomment when releasing Swift 3.0
+        # - swift build
 notifications:
   webhooks:
     urls:
@@ -15,3 +54,4 @@ notifications:
     on_success: always
     on_failure: always
     on_start: always
+

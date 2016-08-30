@@ -18,7 +18,7 @@ class ArrowExtSpec : XCTestCase {
 			}
 		}
 
-		property("Arrow obeys the Functor composition law") <- forAll { (f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ArrowOf<Int, Int>) in
+		property("Arrow obeys the Functor composition law") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, x : ArrowOf<Int, Int>) in
 			return forAll { (pt : Int) in
 				return ((f.getArrow • g.getArrow) <^> x.getArrow)(pt) == (f.getArrow <^> g.getArrow <^> x.getArrow)(pt)
 			}
@@ -30,7 +30,7 @@ class ArrowExtSpec : XCTestCase {
 			}
 		}
 		
-		property("Arrow obeys the Applicative homomorphism law") <- forAll { (f : ArrowOf<Int, Int>, x : Int) in
+		property("Arrow obeys the Applicative homomorphism law") <- forAll { (_ f : ArrowOf<Int, Int>, x : Int) in
 			return forAll { (pt : Int) in
 				return (const(f.getArrow) <*> const(x))(pt) == const(f.getArrow(x))(pt)
 			}

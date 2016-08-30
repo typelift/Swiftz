@@ -9,12 +9,12 @@
 // MARK: - Control.Arrow
 
 /// Right-to-Left Function Composition | Function composition.
-public func <<< <A, B, C>(f : (B -> C), g : (A -> B)) -> (A -> C) {
+public func <<< <A, B, C>(_ f : ((B) -> C), g : ((A) -> B)) -> ((A) -> C) {
 	return f • g
 }
 
 /// Left-to-Right Function Composition | Function composition, backwards.
-public func >>> <A, B, C>(f : (A -> B), g : (B -> C)) -> (A -> C) {
+public func >>> <A, B, C>(_ f : ((A) -> B), g : ((B) -> C)) -> ((A) -> C) {
 	return g • f
 }
 
@@ -24,7 +24,7 @@ public func >>> <A, B, C>(f : (A -> B), g : (B -> C)) -> (A -> C) {
 /// environment.
 ///
 /// Function composition.
-public func <^> <A, B, R>(f : A -> B, g : R -> A) -> (R -> B) {
+public func <^> <A, B, R>(_ f : @escaping (A) -> B, g : @escaping (R) -> A) -> ((R) -> B) {
 	return f • g
 }
 
@@ -34,7 +34,7 @@ public func <^> <A, B, R>(f : A -> B, g : R -> A) -> (R -> B) {
 /// the former function.
 ///
 /// "Share Environment"
-public func <*> <A, B, R>(f : (R -> (A -> B)), g : (R -> A)) -> (R -> B) {
+public func <*> <A, B, R>(_ f : ((R) -> ((A) -> B)), g : ((R) -> A)) -> ((R) -> B) {
 	return { x in f(x)(g(x)) }
 }
 
@@ -44,6 +44,6 @@ public func <*> <A, B, R>(f : (R -> (A -> B)), g : (R -> A)) -> (R -> B) {
 /// result of the application.
 ///
 /// "Kontinue Environment"
-public func >>- <A, B, R>(f : (R -> A), k : (A -> (R -> B))) -> (R -> B) {
+public func >>- <A, B, R>(_ f : ((R) -> A), k : ((A) -> ((R) -> B))) -> ((R) -> B) {
 	return { r in k(f(r))(r) }
 }

@@ -15,7 +15,7 @@ public typealias Rational = Ratio<Int>
 public struct Ratio<T : IntegralType> {
 	public let numerator, denominator : () -> T
 
-	public init(@autoclosure(escaping) numerator : () -> T, @autoclosure(escaping) denominator : () -> T) {
+	public init(numerator : @autoclosure @escaping () -> T, denominator : @autoclosure @escaping () -> T) {
 		self.numerator = numerator
 		self.denominator = denominator
 	}
@@ -31,7 +31,7 @@ public struct Ratio<T : IntegralType> {
 
 extension Ratio : Equatable { }
 
-public func == <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func == <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	let lred = reduce(l.numerator(), d: l.denominator())
 	let rred = reduce(r.numerator(), d: r.denominator())
 	return (lred.numerator() == rred.numerator()) && (rred.denominator() == rred.denominator())
@@ -39,19 +39,19 @@ public func == <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T
 
 extension Ratio : Comparable { }
 
-public func < <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func < <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) < (r.numerator().times(l.denominator()))
 }
 
-public func <= <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func <= <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) <= (r.numerator().times(l.denominator()))
 }
 
-public func >= <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func >= <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l < r)
 }
 
-public func > <T : protocol<Equatable, IntegralType>>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func > <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l <= r)
 }
 
@@ -62,22 +62,22 @@ extension Ratio : NumericType {
 	public var signum : Ratio<T> { return Ratio(numerator: self.numerator().signum, denominator: T.one) }
 	public var negate : Ratio<T> { return Ratio(numerator: self.numerator().negate, denominator: self.denominator()) }
 
-	public func plus(other : Ratio<T>) -> Ratio<T> {
-		return reduce(self.numerator().times(other.denominator()).plus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
+	public func plus(_ other  : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other .denominator()).plus(other .numerator().times(self.denominator())), d: self.denominator().times(other .denominator()))
 	}
 
-	public func minus(other : Ratio<T>) -> Ratio<T> {
-		return reduce(self.numerator().times(other.denominator()).minus(other.numerator().times(self.denominator())), d: self.denominator().times(other.denominator()))
+	public func minus(_ other  : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other .denominator()).minus(other .numerator().times(self.denominator())), d: self.denominator().times(other .denominator()))
 	}
 
-	public func times(other : Ratio<T>) -> Ratio<T> {
-		return reduce(self.numerator().times(other.numerator()), d: self.denominator().times(other.denominator()))
+	public func times(_ other  : Ratio<T>) -> Ratio<T> {
+		return reduce(self.numerator().times(other .numerator()), d: self.denominator().times(other .denominator()))
 	}
 }
 
 /// Implementation Details Follow
 
-private func reduce<T : IntegralType>(n : T, d : T) -> Ratio<T> {
+private func reduce<T : IntegralType>(_ n : T, d : T) -> Ratio<T> {
 	if d == T.zero {
 		return undefined()
 	}
