@@ -24,7 +24,7 @@
 public struct Stream<Element> {
 	fileprivate let step : () -> (Element, Stream<Element>)
 
-	private init(_ step : @escaping () -> (Element, Stream<Element>)) {
+	fileprivate init(_ step : @escaping () -> (Element, Stream<Element>)) {
 		self.step = step
 	}
 
@@ -166,14 +166,12 @@ public struct Stream<Element> {
 public func transpose<T>(_ ss : Stream<Stream<T>>) -> Stream<Stream<T>> {
 	let xs = ss.head
 	let yss = ss.tail
-	//	return Stream({ (Stream({ (xs.head, yss.fmap{ $0.head }) }), transpose(Stream({ (xs.tail, yss.fmap{ $0.tail }) }) )) })
-	fatalError()
+	return Stream({ (Stream({ (xs.head, yss.fmap{ $0.head }) }), transpose(Stream({ (xs.tail, yss.fmap{ $0.tail }) }) )) })
 }
 
 /// Zips two `Stream`s into a third Stream using a combining function.
 public func zipWith<A, B, C>(_ s1 : Stream<A>, _ s2 : Stream<B>, _ f : @escaping (A) -> (B) -> C) -> Stream<C> {
-	// return Stream({ (f(s1.head)(s2.head), zipWith(s1.tail, s2.tail, f)) })
-	fatalError()
+	return Stream({ (f(s1.head)(s2.head), zipWith(s1.tail, s2.tail, f)) })
 }
 
 /// Unzips a `Stream` of pairs into a pair of Streams.
@@ -187,8 +185,7 @@ extension Stream /*: Functor*/ {
 	public typealias FB = Stream<B>
 
 	public func fmap<B>(_ f : @escaping (A) -> B) -> Stream<B> {
-		// return Stream<B>({ (f(self.head), self.tail.fmap(f)) })
-		fatalError()
+		return Stream<B>({ (f(self.head), self.tail.fmap(f)) })
 	}
 }
 
@@ -210,8 +207,7 @@ extension Stream /*: Applicative*/ {
 		let fs = fab.tail
 		let x = self.head
 		let xss = self.tail
-		// return Stream<B>({ (f(x), (fs <*> xss)) })
-		fatalError()
+		return Stream<B>({ (f(x), (fs <*> xss)) })
 	}
 }
 
@@ -308,8 +304,7 @@ extension Stream /*: Comonad*/ {
 	}
 
 	public func extend<B>(_ f : @escaping (Stream<A>) -> B) -> Stream<B> {
-		// return Stream<B>({ (f(self), self.tail.extend(f)) })
-		fatalError()
+		return Stream<B>({ (f(self), self.tail.extend(f)) })
 	}
 }
 
