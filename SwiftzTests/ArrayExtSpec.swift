@@ -168,10 +168,10 @@ class ArrayExtSpec : XCTestCase {
 			return Discard()
 		}
 		
-		property("sequence occurs in order") <- forAll { (xs : [String]) in
+		property("sequence occurs in order") <- forAll { (xs : [Int]) in
 			let seq = sequence(xs.map(Array.pure))
 			return forAllNoShrink(Gen.pure(seq)) { ss in
-				return ss.first ?? [] == xs
+				return (ss.first ?? []) == xs
 			}
 		}
 	}
