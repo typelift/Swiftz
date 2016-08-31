@@ -136,9 +136,8 @@ extension Array /*: Foldable*/ {
 		switch self.match {
 		case .Nil:
 			return i
-		case .Cons(let x, let xs):
-			// return k(x)(xs.foldr(i, k))
-			fatalError()
+		case let .Cons(x, xs):
+			return k(x)(xs.foldr(k, i))
 		}
 	}
 
@@ -147,8 +146,7 @@ extension Array /*: Foldable*/ {
 	}
 
 	public func foldMap<M : Monoid>(_ f : @escaping (A) -> M) -> M {
-		// return self.foldr(M.mempty, curry(<>) • f)
-		fatalError()
+		return self.foldr(curry(<>) • f, M.mempty)
 	}
 }
 
@@ -190,34 +188,6 @@ extension Array {
 		return self.reduce([[Element]]()) { x, y in
 			return [x.first!.cons(y)] + x
 		}
-	}
-
-	/// Takes, at most, a specified number of elements from a list and returns that sublist.
-	///
-	///     [1,2].take(3)  == [1,2]
-	///     [1,2].take(-1) == []
-	///     [1,2].take(0)  == []
-	public func take(_ n : Int) -> [Element] {
-		if n <= 0 {
-			return []
-		}
-
-		// return Array(self[0 ..< UInt(min(n, self.count))])
-		fatalError()
-	}
-
-	/// Drops, at most, a specified number of elements from a list and returns that sublist.
-	///
-	///     [1,2].drop(3)  == []
-	///     [1,2].drop(-1) == [1,2]
-	///     [1,2].drop(0)  == [1,2]
-	public func drop(_ n : Int) -> [Element] {
-		if n <= 0 {
-			return self
-		}
-
-		// return Array(self[UInt(min(n, self.count)) ..< UInt(self.count)])
-		fatalError()
 	}
 
 	/// Returns an array consisting of the receiver with a given element appended to the front.
@@ -286,18 +256,6 @@ extension Array {
 			arr.append(reduced)
 		}
 		return arr
-	}
-
-	/// Returns a tuple containing the first n elements of a list first and the remaining elements
-	/// second.
-	///
-	///     [1,2,3,4,5].splitAt(3) == ([1, 2, 3],[4, 5])
-	///     [1,2,3].splitAt(1)     == ([1], [2, 3])
-	///     [1,2,3].splitAt(3)     == ([1, 2, 3], [])
-	///     [1,2,3].splitAt(4)     == ([1, 2, 3], [])
-	///     [1,2,3].splitAt(0)     == ([], [1, 2, 3])
-	public func splitAt(_ n : Int) -> ([Element], [Element]) {
-		return (self.take(n), self.drop(n))
 	}
 
 	/// Takes a separator and a list and intersperses that element throughout the list.
@@ -442,8 +400,10 @@ extension Array where Element : Equatable {
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
 	public func isInfixOf(_ r : [Element]) -> Bool {
-		// return r.tails.lazy(self.isPrefixOf)
-		fatalError()
+		if let _ = r.tails.first(where: self.isPrefixOf) {
+			return true
+		}
+		return false
 	}
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a

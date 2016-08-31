@@ -117,18 +117,6 @@ class ArrayExtSpec : XCTestCase {
 			return TestResult.succeeded // TODO: Test non-empty case
 		}
 
-		property("take behaves") <- forAll { (array : [Int]) in
-			return forAll { (limit : Positive<Int>) in
-				return array.take(limit.getPositive).count <= limit.getPositive
-			}
-		}
-
-		property("drop behaves") <- forAll { (array : [Int]) in
-			return forAll { (limit : Positive<Int>) in
-				return array.drop(limit.getPositive).count == max(0, array.count - limit.getPositive)
-			}
-		}
-
 		property("span behaves") <- forAll { (xs : [Int]) in
 			return forAll { (pred : ArrowOf<Int, Bool>) in
 				let p = xs.span(pred.getArrow)
@@ -180,36 +168,11 @@ class ArrayExtSpec : XCTestCase {
 			return Discard()
 		}
 		
-		/*
-		property("mapAssociate and mapAssociateLabel behave") <- forAll { (xs : [Int]) in
-			 return forAll { (_ f : ArrowOf<Int, String>) in
-				let dictionary1 = xs.mapAssociate { (f.getArrow($0), $0) }
-				let dictionary2 = xs.mapAssociateLabel { f.getArrow($0) }
-				return xs.all { dictionary1[f.getArrow($0)] != nil && dictionary2[f.getArrow($0)] != nil && dictionary1[f.getArrow($0)] == dictionary2[f.getArrow($0)] }
-			 }
-		}
-
-		property("sequence occurs in order") <- forAll { (xs : [String]) in
+		property("sequence occurs in order") <- forAll { (xs : [Int]) in
 			let seq = sequence(xs.map(Array.pure))
 			return forAllNoShrink(Gen.pure(seq)) { ss in
-				return ss.first ?? ss == xs
+				return (ss.first ?? []) == xs
 			}
 		}
-		*/
-	}
-
-	func testSplitAt() {
-		let withArray = [1,2,3,4]
-
-		let tuple = withArray.splitAt(2)
-		XCTAssert(tuple.0 == [1,2] && tuple.1 == [3,4], "Should be equal")
-
-		XCTAssert(withArray.splitAt(0).0 == Array() && withArray.splitAt(0).1 == [1,2,3,4], "Should be equal")
-		XCTAssert(withArray.splitAt(1).0 == [1] && withArray.splitAt(1).1 == [2,3,4], "Should be equal")
-		XCTAssert(withArray.splitAt(3).0 == [1,2,3] && withArray.splitAt(3).1 == [4], "Should be equal")
-		XCTAssert(withArray.splitAt(4).0 == [1,2,3,4] && withArray.splitAt(4).1 == Array(), "Should be equal")
-		XCTAssert(withArray.splitAt(5).0 == [1,2,3,4] && withArray.splitAt(5).1 == Array(), "Should be equal")
-
-		XCTAssert(withArray == [1,2,3,4], "Should be equal(immutablility test)")
 	}
 }

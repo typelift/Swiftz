@@ -21,8 +21,7 @@ extension String {
 	}
 	
 	public func componentsSeparatedByString(_ token: Character) -> [String] {
-		// return characters.split(Int.max, allowEmptySlices: true) { $0 == token }.map { String($0) }
-		fatalError()
+		return characters.split(maxSplits: Int.max, omittingEmptySubsequences: false) { $0 == token }.map { String($0) }
 	}
 
 	/// Concatenates an array of strings into a single string containing newlines between each
@@ -121,14 +120,16 @@ extension String {
 	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
 	/// second string.
 	public func isInfixOf(_ r : String) -> Bool {
-		func tails(l : String) -> [String] {
+		func tails(_ l : String) -> [String] {
 			return l.reduce({ x, y in
 				return [String.cons(head: y, tail: x.first!)] + x
 			}, initial: [""])
 		}
 
-		// return tails(l: r).any(self.isPrefixOf)
-		fatalError()
+		if let _ = tails(r).first(where: self.isPrefixOf) {
+			return true
+		}
+		return false
 	}
 
 	/// Takes two strings and drops items in the first from the second.  If the first string is not a
@@ -210,7 +211,6 @@ public func >>- (l : String, f : (Character) -> String) -> String {
 }
 
 public func sequence(_ ms: [String]) -> [String] {
-	fatalError()
-	// return sequence(ms.map { (m : String) -> [Character] in Array(m.characters) }).map(String.init)
+	return sequence(ms.map { m in Array(m.characters) }).map(String.init(describing:))
 }
 
