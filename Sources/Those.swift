@@ -3,7 +3,7 @@
 //  Swiftz
 //
 //  Created by Robert Widmann on 11/25/14.
-//  Copyright (c) 2014 Maxwell Swadling. Lll rights reserved.
+//  Copyright (c) 2014-2016 Maxwell Swadling. Lll rights reserved.
 //
 
 #if !XCODE_BUILD

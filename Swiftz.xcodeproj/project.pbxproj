@@ -218,10 +218,6 @@
 		821BEFDE1D8F3EF8009F8D58 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 821BEF4B1D8F3EF8009F8D58 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		821BEFDF1D8F3EF8009F8D58 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 821BEF4B1D8F3EF8009F8D58 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		821BEFE01D8F3EF8009F8D58 /* Swiftz.h in Headers */ = {isa = PBXBuildFile; fileRef = 821BEF4B1D8F3EF8009F8D58 /* Swiftz.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		821BEFE11D8F3EF8009F8D58 /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4C1D8F3EF8009F8D58 /* SYB.swift */; };
-		821BEFE21D8F3EF8009F8D58 /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4C1D8F3EF8009F8D58 /* SYB.swift */; };
-		821BEFE31D8F3EF8009F8D58 /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4C1D8F3EF8009F8D58 /* SYB.swift */; };
-		821BEFE41D8F3EF8009F8D58 /* SYB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4C1D8F3EF8009F8D58 /* SYB.swift */; };
 		821BEFE51D8F3EF8009F8D58 /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4D1D8F3EF8009F8D58 /* Those.swift */; };
 		821BEFE61D8F3EF8009F8D58 /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4D1D8F3EF8009F8D58 /* Those.swift */; };
 		821BEFE71D8F3EF8009F8D58 /* Those.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821BEF4D1D8F3EF8009F8D58 /* Those.swift */; };
@@ -440,7 +436,6 @@
 		821BEF491D8F3EF8009F8D58 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stream.swift; path = Sources/Stream.swift; sourceTree = SOURCE_ROOT; };
 		821BEF4A1D8F3EF8009F8D58 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExt.swift; path = Sources/StringExt.swift; sourceTree = SOURCE_ROOT; };
 		821BEF4B1D8F3EF8009F8D58 /* Swiftz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Swiftz.h; path = Sources/Swiftz.h; sourceTree = SOURCE_ROOT; };
-		821BEF4C1D8F3EF8009F8D58 /* SYB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SYB.swift; path = Sources/SYB.swift; sourceTree = SOURCE_ROOT; };
 		821BEF4D1D8F3EF8009F8D58 /* Those.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Those.swift; path = Sources/Those.swift; sourceTree = SOURCE_ROOT; };
 		821BEF4E1D8F3EF8009F8D58 /* TupleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TupleExt.swift; path = Sources/TupleExt.swift; sourceTree = SOURCE_ROOT; };
 		821BEF4F1D8F3EF8009F8D58 /* Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Unit.swift; path = Sources/Unit.swift; sourceTree = SOURCE_ROOT; };
@@ -597,7 +592,6 @@
 				821BEF471D8F3EF8009F8D58 /* Semigroup.swift */,
 				821BEF481D8F3EF8009F8D58 /* State.swift */,
 				821BEF491D8F3EF8009F8D58 /* Stream.swift */,
-				821BEF4C1D8F3EF8009F8D58 /* SYB.swift */,
 				821BEF4D1D8F3EF8009F8D58 /* Those.swift */,
 				821BEF4F1D8F3EF8009F8D58 /* Unit.swift */,
 				821BEF501D8F3EF8009F8D58 /* Writer.swift */,
@@ -1053,7 +1047,6 @@
 				821BEF7B1D8F3EF8009F8D58 /* Copointed.swift in Sources */,
 				821BEFDB1D8F3EF8009F8D58 /* StringExt.swift in Sources */,
 				821BEFF31D8F3EF8009F8D58 /* Writer.swift in Sources */,
-				821BEFE31D8F3EF8009F8D58 /* SYB.swift in Sources */,
 				821BEFB71D8F3EF8009F8D58 /* Num.swift in Sources */,
 				821BEF9F1D8F3EF8009F8D58 /* Kinds.swift in Sources */,
 				821BEF5B1D8F3EF8009F8D58 /* Arrow.swift in Sources */,
@@ -1162,7 +1155,6 @@
 				821BEF881D8F3EF8009F8D58 /* EitherExt.swift in Sources */,
 				821BEF841D8F3EF8009F8D58 /* DictionaryExt.swift in Sources */,
 				821BEFB41D8F3EF8009F8D58 /* NonEmptyList.swift in Sources */,
-				821BEFE41D8F3EF8009F8D58 /* SYB.swift in Sources */,
 				821BEF5C1D8F3EF8009F8D58 /* Arrow.swift in Sources */,
 				821BEFE81D8F3EF8009F8D58 /* Those.swift in Sources */,
 				821BEFD41D8F3EF8009F8D58 /* State.swift in Sources */,
@@ -1215,7 +1207,6 @@
 				821BEF851D8F3EF8009F8D58 /* EitherExt.swift in Sources */,
 				821BEF811D8F3EF8009F8D58 /* DictionaryExt.swift in Sources */,
 				821BEFB11D8F3EF8009F8D58 /* NonEmptyList.swift in Sources */,
-				821BEFE11D8F3EF8009F8D58 /* SYB.swift in Sources */,
 				821BEF591D8F3EF8009F8D58 /* Arrow.swift in Sources */,
 				821BEFE51D8F3EF8009F8D58 /* Those.swift in Sources */,
 				821BEFD11D8F3EF8009F8D58 /* State.swift in Sources */,
@@ -1296,7 +1287,6 @@
 				821BEF861D8F3EF8009F8D58 /* EitherExt.swift in Sources */,
 				821BEF821D8F3EF8009F8D58 /* DictionaryExt.swift in Sources */,
 				821BEFB21D8F3EF8009F8D58 /* NonEmptyList.swift in Sources */,
-				821BEFE21D8F3EF8009F8D58 /* SYB.swift in Sources */,
 				821BEF5A1D8F3EF8009F8D58 /* Arrow.swift in Sources */,
 				821BEFE61D8F3EF8009F8D58 /* Those.swift in Sources */,
 				821BEFD21D8F3EF8009F8D58 /* State.swift in Sources */,

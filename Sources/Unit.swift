@@ -3,7 +3,7 @@
 //  Swiftz
 //
 //  Created by Robert Widmann on 12/11/15.
-//  Copyright © 2015 TypeLift. All rights reserved.
+//  Copyright © 2015-2016 TypeLift. All rights reserved.
 //
 
 /// A unit type defined as an enum with a single case.

@@ -3,7 +3,7 @@
 //  Swiftz
 //
 //  Created by Maxwell Swadling on 15/06/2014.
-//  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
+//  Copyright (c) 2014-2016 Maxwell Swadling. All rights reserved.
 //
 
 /// Applicative sits in the middle distance between a Functor and a Monad.  An Applicative Functor

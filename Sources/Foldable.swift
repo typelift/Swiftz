@@ -3,7 +3,7 @@
 //  Swiftz
 //
 //  Created by Robert Widmann on 6/21/15.
-//  Copyright © 2015 TypeLift. All rights reserved.
+//  Copyright © 2015-2016 TypeLift. All rights reserved.
 //
 
 /// A `Foldable` type admits a way of "summarizing" its entire structure.

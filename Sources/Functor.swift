@@ -3,7 +3,7 @@
 //  Swiftz
 //
 //  Created by Josh Abernathy on 6/7/2014.
-//  Copyright (c) 2014 Josh Abernathy. All rights reserved.
+//  Copyright (c) 2014-2016 Josh Abernathy. All rights reserved.
 //
 
 /// Functors are mappings from the functions and objects in one set to the functions and objects
