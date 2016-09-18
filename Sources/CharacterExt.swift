@@ -59,27 +59,47 @@ extension Character {
 
 	/// Returns whether the receiver is a valid Unicode lowercase character ([a-z])
 	public var isLower : Bool {
-		return iswlower(Int32(self.unicodeValue)) != 0
+		#if os(Linux)
+			return islower(Int32(self.unicodeValue)) != 0
+		#else
+			return iswlower(Int32(self.unicodeValue)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a valid Unicode uppercase character ([A-Z])
 	public var isUpper : Bool {
-		return iswupper(Int32(self.unicodeValue)) != 0
+		#if os(Linux)
+			return isupper(Int32(self.unicodeValue)) != 0
+		#else
+			return iswupper(Int32(self.unicodeValue)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a Unicode space character.
 	public var isSpace : Bool {
-		return iswspace(Int32(self.unicodeValue)) != 0
+		#if os(Linux)
+			return isspace(Int32(self.unicodeValue)) != 0
+		#else
+			return iswspace(Int32(self.unicodeValue)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a Latin1 control character.
 	public var isControl : Bool {
-		return iswcntrl(Int32(self.unicodeValue)) != 0
+		#if os(Linux)
+			return iscntrl(Int32(self.unicodeValue)) != 0
+		#else
+			return iswcntrl(Int32(self.unicodeValue)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a printable Unicode character.
 	public var isPrintable : Bool {
-		return iswprint(Int32(self.unicodeValue)) != 0
+		#if os(Linux)
+			return isprint(Int32(self.unicodeValue)) != 0
+		#else
+			return iswprint(Int32(self.unicodeValue)) != 0
+		#endif
 	}
 
 	/// Converts the receiver to its corresponding uppercase letter, if any.
@@ -131,36 +151,64 @@ extension UnicodeScalar {
 
 	/// Returns whether the receiver is a valid Unicode lowercase character ([a-z])
 	public var isLower : Bool {
-		return iswlower(Int32(self.value)) != 0
+		#if os(Linux)
+			return islower(Int32(self.value)) != 0
+		#else
+			return iswlower(Int32(self.value)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a valid Unicode uppercase character ([A-Z])
 	public var isUpper : Bool {
-		return iswupper(Int32(self.value)) != 0
+		#if os(Linux)
+			return isupper(Int32(self.value)) != 0
+		#else
+			return iswupper(Int32(self.value)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a Unicode space character.
 	public var isSpace : Bool {
-		return iswspace(Int32(self.value)) != 0 || self == "\u{21A1}" || self == "\u{000B}"
+		#if os(Linux)
+			return isspace(Int32(self.value)) != 0 || self == "\u{21A1}" || self == "\u{000B}"
+		#else
+			return iswspace(Int32(self.value)) != 0 || self == "\u{21A1}" || self == "\u{000B}"
+		#endif
 	}
 
 	/// Returns whether the receiver is a Latin1 control character.
 	public var isControl : Bool {
-		return iswcntrl(Int32(self.value)) != 0
+		#if os(Linux)
+			return iscntrl(Int32(self.value)) != 0
+		#else
+			return iswcntrl(Int32(self.value)) != 0
+		#endif
 	}
 
 	/// Returns whether the receiver is a printable Unicode character.
 	public var isPrintable : Bool {
-		return iswprint(Int32(self.value)) != 0
+		#if os(Linux)
+			return isprint(Int32(self.value)) != 0
+		#else
+			return iswprint(Int32(self.value)) != 0
+		#endif
 	}
 
 	/// Converts the receiver to its corresponding uppercase letter, if any.
 	public var toUpper : UnicodeScalar {
-		return UnicodeScalar(UInt32(towupper(Int32(self.value))))!
+		#if os(Linux)
+			return UnicodeScalar(UInt32(toupper(Int32(self.value))))!
+		#else
+			return UnicodeScalar(UInt32(towupper(Int32(self.value))))!
+		#endif
 	}
 
 	/// Converts the receiver to its corresponding lowercase letter, if any.
 	public var toLower : UnicodeScalar {
-		return UnicodeScalar(UInt32(towlower(Int32(self.value))))!
+		#if os(Linux)
+			return UnicodeScalar(UInt32(tolower(Int32(self.value))))!
+		#else
+			return UnicodeScalar(UInt32(towlower(Int32(self.value))))!
+		#endif
 	}
 }
