@@ -6,7 +6,11 @@
 //  Copyright (c) 2014-2016 Maxwell Swadling. All rights reserved.
 //
 
-import Darwin
+#if os(Linux)
+	import Glibc
+#else
+	import Darwin
+#endif
 
 /// Bounded types are types that have definable upper and lower limits.  For 
 /// types like Int and Float, their limits are the minimum and maximum possible 

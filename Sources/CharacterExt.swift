@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
-import Darwin
+#if os(Linux)
+	import Glibc
+#else
+	import Darwin
+#endif
 
 extension Character {
 	/// Returns the unicode codepoint value for the first unicode value in the 
