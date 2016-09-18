@@ -12,10 +12,11 @@
 public protocol Comonad : Copointed, Functor {
 	associatedtype FFA = K1<Self>
 
-	/// Duplicates the surrounding comonadic context and embeds the receiver in it.
+	/// Duplicates the surrounding comonadic context and embeds the receiver in 
+	/// it.
 	func duplicate() -> FFA
 
-	/// Duplicates the surrounding comonadic context of the receiver and applies a function to the
-	/// receiver to yield a new value in that context.
+	/// Duplicates the surrounding comonadic context of the receiver and applies
+	/// a function to the receiver to yield a new value in that context.
 	func extend(_ fab : (Self) -> B) -> FB
 }

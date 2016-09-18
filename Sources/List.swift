@@ -21,20 +21,23 @@ public enum ListMatcher<Element> {
 
 /// A lazy ordered sequence of homogenous values.
 ///
-/// A List is typically constructed by two primitives: Nil and Cons.  Due to limitations of the
-/// language, we instead provide a nullary constructor for Nil and a Cons Constructor and an actual
-/// static function named `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
-/// isomorphic to the traditional inductive definition.  As such, the computed property `match` is provided
-/// that allows the list to be destructured into a more traditional `Nil | Cons(Element, List<Element>)`
-/// form that is also compatible with switch-case blocks.
+/// A List is typically constructed by two primitives: Nil and Cons.  Due to 
+/// limitations of the language, we instead provide a nullary constructor for 
+/// Nil and a Cons Constructor and an actual static function named 
+/// `cons(: tail:)` for Cons.  Nonetheless this representation of a list is
+/// isomorphic to the traditional inductive definition.  As such, the computed 
+/// property `match` is provided that allows the list to be destructured into a
+/// more traditional `Nil | Cons(Element, List<Element>)` form that is also 
+/// compatible with switch-case blocks.
 ///
-/// This kind of list is optimized for access to its length, which always occurs in O(1), and
-/// modifications to its head, which always occur in O(1).  Access to the elements occurs in O(n).
+/// This kind of list is optimized for access to its length, which always occurs
+/// in O(1), and modifications to its head, which always occur in O(1).  Access 
+/// to the elements occurs in O(n).
 ///
-/// Unlike an Array, a List can potentially represent an infinite sequence of values.  Because the
-/// List holds these values in a lazy manner, certain primitives like iteration or reversing the
-/// list will force evaluation of the entire list.  For infinite lists this can lead to a program
-/// diverging.
+/// Unlike an Array, a List can potentially represent an infinite sequence of 
+/// values.  Because the List holds these values in a lazy manner, certain 
+/// primitives like iteration or reversing the list will force evaluation of the
+/// entire list.  For infinite lists this can lead to a program diverging.
 public struct List<Element> {
 	let len : Int
 	let next : () -> (head : Element, tail : List<Element>)
@@ -47,7 +50,8 @@ public struct List<Element> {
 
 	/// Constructs the empty list.
 	///
-	/// Attempts to access the head or tail of this list in an unsafe manner will throw an exception.
+	/// Attempts to access the head or tail of this list in an unsafe manner 
+	/// will throw an exception.
 	public init() {
 		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")), isEmpty: true)
 	}
@@ -67,8 +71,8 @@ public struct List<Element> {
 		return List(head, tail)
 	}
 
-	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
-	/// the result is Cons(head, tail).
+	/// Destructures a list.  If the list is empty, the result is Nil.  If the 
+	/// list contains a value the result is Cons(head, tail).
 	public var match : ListMatcher<Element> {
 		if self.len == 0 {
 			return .Nil
@@ -151,8 +155,8 @@ public struct List<Element> {
 
 	/// Returns whether or not the receiver has a countable number of elements.
 	///
-	/// It may be dangerous to attempt to iterate over an infinite list of values because the loop
-	/// will never terminate.
+	/// It may be dangerous to attempt to iterate over an infinite list of 
+	/// values because the loop will never terminate.
 	public var isFinite : Bool {
 		return self.len != -1
 	}
@@ -169,7 +173,8 @@ public struct List<Element> {
 
 	/// Appends two lists together.
 	///
-	/// If the receiver is infinite, the result of this function will be the receiver itself.
+	/// If the receiver is infinite, the result of this function will be the 
+	/// receiver itself.
 	public func append(_ rhs : List<Element>) -> List<Element> {
 		switch self.match {
 		case .Nil:
@@ -194,7 +199,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of the receiver to a single value.
+	/// Applies a binary operator to reduce the elements of the receiver to a 
+	/// single value.
 	public func reduce<B>(_ f : (B) -> (Element) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
@@ -204,7 +210,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Applies a binary operator to reduce the elements of the receiver to a single value.
+	/// Applies a binary operator to reduce the elements of the receiver to a 
+	/// single value.
 	public func reduce<B>(_ f : (B, Element) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
@@ -214,7 +221,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of the receiver.
+	/// Returns a list of successive applications of a function to the elements 
+	/// of the receiver.
 	///
 	/// e.g.
 	///
@@ -230,7 +238,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Returns a list of successive applications of a function to the elements of the receiver.
+	/// Returns a list of successive applications of a function to the elements 
+	/// of the receiver.
 	///
 	/// e.g.
 	///
@@ -246,7 +255,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the receiver itself.
+	/// Like scanl but draws its initial value from the first element of the 
+	/// receiver itself.
 	public func scanl1(_ f : (Element) -> (Element) -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
@@ -256,7 +266,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Like scanl but draws its initial value from the first element of the receiver itself.
+	/// Like scanl but draws its initial value from the first element of the 
+	/// receiver itself.
 	public func scanl1(_ f : (Element, Element) -> Element) -> List<Element> {
 		switch self.match {
 		case .Nil:
@@ -299,7 +310,8 @@ public struct List<Element> {
 		return (self.take(n), self.drop(n))
 	}
 
-	/// Takes a separator and a list and intersperses that element throughout the list.
+	/// Takes a separator and a list and intersperses that element throughout 
+	/// the list.
 	///
 	///     ["a","b","c","d","e"].intersperse(",") == ["a",",","b",",","c",",","d",",","e"]
 	public func intersperse(_ item : Element) -> List<Element> {
@@ -332,8 +344,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Returns a list of the remaining elements after the longest prefix of elements satisfying a
-	/// predicate has been removed.
+	/// Returns a list of the remaining elements after the longest prefix of 
+	/// elements satisfying a predicate has been removed.
 	public func dropWhile(_ p : (Element) -> Bool) -> List<Element> {
 		switch self.match {
 		case .Nil:
@@ -346,8 +358,8 @@ public struct List<Element> {
 		}
 	}
 
-	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
-	/// other according to an equality predicate.
+	/// Takes a list and groups its arguments into sublists of duplicate 
+	/// elements found next to each other according to an equality predicate.
 	public func groupBy(_ p : (Element) -> (Element) -> Bool) -> List<List<Element>> {
 		switch self.match {
 		case .Nil:
@@ -359,14 +371,15 @@ public struct List<Element> {
 		}
 	}
 
-	/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
-	/// other according to an equality predicate.
+	/// Takes a list and groups its arguments into sublists of duplicate 
+	/// elements found next to each other according to an equality predicate.
 	public func groupBy(_ p : @escaping (Element, Element) -> Bool) -> List<List<Element>> {
 		return self.groupBy(curry(p))
 	}
 
-	/// Returns a tuple where the first element is the longest prefix of elements that satisfy a
-	/// given predicate and the second element is the remainder of the list:
+	/// Returns a tuple where the first element is the longest prefix of 
+	/// elements that satisfy a given predicate and the second element is the 
+	/// remainder of the list:
 	///
 	///     [1, 2, 3, 4, 1, 2, 3, 4].span(<3) == ([1, 2],[3, 4, 1, 2, 3, 4])
 	///     [1, 2, 3].span(<9)                == ([1, 2, 3],[])
@@ -386,8 +399,9 @@ public struct List<Element> {
 		}
 	}
 
-	/// Returns a tuple where the first element is the longest prefix of elements that do not
-	/// satisfy a given predicate and the second element is the remainder of the list:
+	/// Returns a tuple where the first element is the longest prefix of 
+	/// elements that do not satisfy a given predicate and the second element is
+	/// the remainder of the list:
 	///
 	/// `extreme(_:)` is the dual to span(_:)` and satisfies the law
 	///
@@ -403,8 +417,8 @@ public struct List<Element> {
 		return self.reduce(flip(curry(List.cons)), initial: [])
 	}
 
-	/// Given a predicate, searches the list until it find the first match, and returns that,
-	/// or None if no match was found.
+	/// Given a predicate, searches the list until it find the first match, and
+	/// returns that, or None if no match was found.
 	///
 	/// For infinite lists this function will diverge.
 	public func find(_ pred: (Element) -> Bool) -> Optional<Element> {
@@ -416,15 +430,15 @@ public struct List<Element> {
 		return nil
 	}
 
-	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function (pass the identity
-	/// function) and a key and returns the value for the given key, if there is one, or None
-	/// otherwise.
+	/// For an associated list, such as [(1,"one"),(2,"two")], takes a function 
+	/// (pass the identity function) and a key and returns the value for the 
+	/// given key, if there is one, or None otherwise.
 	public func lookup<K : Equatable, V>(_ ev : @escaping (Element) -> (K, V), key : K) -> Optional<V> {
 		return (snd • ev) <^> self.find({ ev($0).0 == key })
 	}
 
-	/// Returns a List of an infinite number of iteratations of applications of a function to an
-	/// initial value.
+	/// Returns a List of an infinite number of iteratations of applications of 
+	/// a function to an initial value.
 	public static func iterate(_ f : @escaping (Element) -> Element, initial : Element) -> List<Element> {
 		return List((initial, self.iterate(f, initial: f(initial))))
 	}

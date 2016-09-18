@@ -13,19 +13,21 @@
 
 /// A lazy infinite sequence of values.
 ///
-/// A `Stream` can be thought of as a function indexed by positions - stopping points at which the
-/// the function yields a value back.  Rather than hold the entire domain and range of the function
-/// in memory, the `Stream` is aware of the current initial point and a way of garnering any
-/// subsequent points.
+/// A `Stream` can be thought of as a function indexed by positions - stopping 
+/// points at which the the function yields a value back.  Rather than hold the 
+/// entire domain and range of the function in memory, the `Stream` is aware of 
+/// the current initial point and a way of garnering any subsequent points.
 ///
-/// A Stream is optimized for access to its head, which occurs in O(1).  Element access is O(index)
-/// and is made even more expensive by implicit repeated evaluation of complex streams.
+/// A Stream is optimized for access to its head, which occurs in O(1).  Element
+/// access is O(index) and is made even more expensive by implicit repeated 
+/// evaluation of complex streams.
 ///
-/// Because `Stream`s and their assorted operations are lazy, building up a `Stream` from a large
-/// amount of combinators will necessarily increase the cost of forcing the stream down the line.
-/// In addition, due to the fact that a `Stream` is an infinite structure, attempting to traverse
-/// the `Stream` in a non-lazy manner will diverge e.g. invoking `.forEach(_:)` or using `zip` with
-/// an eager structure and a `Stream`.
+/// Because `Stream`s and their assorted operations are lazy, building up a 
+/// `Stream` from a large amount of combinators will necessarily increase the 
+/// cost of forcing the stream down the line. In addition, due to the fact that 
+/// a `Stream` is an infinite structure, attempting to traverse the `Stream` in
+/// a non-lazy manner will diverge e.g. invoking `.forEach(_:)` or using `zip` 
+/// with an eager structure and a `Stream`.
 public struct Stream<Element> {
 	fileprivate let step : () -> (Element, Stream<Element>)
 
@@ -35,7 +37,8 @@ public struct Stream<Element> {
 
 	/// Uses function to construct a `Stream`.
 	///
-	/// Unlike unfold for lists, unfolds to construct a `Stream` have no base case.
+	/// Unlike unfold for lists, unfolds to construct a `Stream` have no base 
+	/// case.
 	public static func unfold<A>(_ initial : A, _ f : @escaping (A) -> (Element, A)) -> Stream<Element> {
 		let (x, d) = f(initial)
 		return Stream { (x, Stream.unfold(d, f)) }
@@ -46,7 +49,8 @@ public struct Stream<Element> {
 		return Stream { (x, `repeat`(x: x)) }
 	}
 
-	/// Returns a `Stream` of an infinite number of iteratations of applications of a function to a value.
+	/// Returns a `Stream` of an infinite number of iteratations of applications
+	/// of a function to a value.
 	public static func iterate(_ initial : Element, _ f : @escaping (Element) -> Element)-> Stream<Element> {
 		return Stream { (initial, Stream.iterate(f(initial), f)) }
 	}
@@ -95,7 +99,8 @@ public struct Stream<Element> {
 		return Stream<Stream<Element>> { (self, self.tail.tails) }
 	}
 	
-	/// Returns a pair of the first n elements and the remaining eleemnts in a `Stream`.
+	/// Returns a pair of the first n elements and the remaining eleemnts in a 
+	/// `Stream`.
 	public func splitAt(_ n : UInt) -> ([Element], Stream<Element>) {
 		if n == 0 {
 			return ([], self)
@@ -104,7 +109,8 @@ public struct Stream<Element> {
 		return (p.cons(self.head), r)
 	}
 
-	/// Returns the longest prefix of values in a `Stream` for which a predicate holds.
+	/// Returns the longest prefix of values in a `Stream` for which a predicate
+	/// holds.
 	public func takeWhile(_ p : (Element) -> Bool) -> [Element] {
 		if p(self.head) {
 			return self.tail.takeWhile(p).cons(self.head)
@@ -151,7 +157,8 @@ public struct Stream<Element> {
 		return Stream { (self.head, s2.interleaveWith(s2: self.tail)) }
 	}
 
-	/// Creates a `Stream` alternating an element in between the values of another Stream.
+	/// Creates a `Stream` alternating an element in between the values of 
+	/// another Stream.
 	public func intersperse(x : Element) -> Stream<Element> {
 		return Stream { (self.head, Stream { (x, self.tail.intersperse(x: x)) } ) }
 	}

@@ -11,7 +11,8 @@
 	import Swiftx
 #endif
 
-/// A `Reader` monad with `R` for environment and `A` to represent the modified environment.
+/// A `Reader` monad with `R` for environment and `A` to represent the modified 
+/// environment.
 public struct Reader<R, A> {
 	/// The function that modifies the environment
 	public let reader : (R) -> A
@@ -35,7 +36,8 @@ public func runReader<R, A>(_ reader : Reader<R, A>) -> (R) -> A {
 	return reader.runReader
 }
 
-/// Runs the reader and extracts the final value from it. This provides a global function for running a reader.
+/// Runs the reader and extracts the final value from it. This provides a global
+/// function for running a reader.
 public func reader<R, A>(_ f : @escaping (R) -> A) -> Reader<R, A> {
 	return Reader(f)
 }

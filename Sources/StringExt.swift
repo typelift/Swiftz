@@ -29,8 +29,8 @@ extension String {
 		return characters.split(maxSplits: Int.max, omittingEmptySubsequences: false) { $0 == token }.map { String($0) }
 	}
 
-	/// Concatenates an array of strings into a single string containing newlines between each
-	/// element.
+	/// Concatenates an array of strings into a single string containing 
+	/// newlines between each element.
 	public static func unlines(_ xs : [String]) -> String {
 		return xs.reduce("", { "\($0)\($1)\n" })
 	}
@@ -49,9 +49,9 @@ extension String {
 		return l
 	}
 
-	/// Destructures a string.  If the string is empty the result is .Nil, otherwise the result is
-	/// .Cons(head, tail).
-	public var match: StringMatcher {
+	/// Destructures a string.  If the string is empty the result is .Nil, 
+	/// otherwise the result is .Cons(head, tail).
+	public var match : StringMatcher {
 		if self.characters.count == 0 {
 			return .Nil
 		} else if self.characters.count == 1 {
@@ -60,12 +60,14 @@ extension String {
 		return .Cons(self[self.startIndex], self[self.index(after: self.startIndex)..<self.endIndex])
 	}
 
-	/// Returns a string containing the characters of the receiver in reverse order.
+	/// Returns a string containing the characters of the receiver in reverse 
+	/// order.
 	public func reverse() -> String {
 		return self.reduce(flip(curry(String.cons)), initial: "")
 	}
 
-	/// Maps a function over the characters of a string and returns a new string of those values.
+	/// Maps a function over the characters of a string and returns a new string
+	/// of those values.
 	public func map(_ f : (Character) -> Character) -> String {
 		switch self.match {
 		case .Nil:
@@ -85,7 +87,8 @@ extension String {
 		}
 	}
 
-	/// Applies a binary operator to reduce the characters of the receiver to a single value.
+	/// Applies a binary operator to reduce the characters of the receiver to a 
+	/// single value.
 	public func reduce<B>(_ f : (B) -> (Character) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
@@ -95,7 +98,8 @@ extension String {
 		}
 	}
 
-	/// Applies a binary operator to reduce the characters of the receiver to a single value.
+	/// Applies a binary operator to reduce the characters of the receiver to a 
+	/// single value.
 	public func reduce<B>(_ f : (B, Character) -> B, initial : B) -> B {
 		switch self.match {
 		case .Nil:
@@ -105,7 +109,8 @@ extension String {
 		}
 	}
 
-	/// Takes two lists and returns true if the first string is a prefix of the second string.
+	/// Takes two lists and returns true if the first string is a prefix of the 
+	/// second string.
 	public func isPrefixOf(_ r : String) -> Bool {
 		switch (self.match, r.match) {
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
@@ -117,13 +122,14 @@ extension String {
 		}
 	}
 
-	/// Takes two lists and returns true if the first string is a suffix of the second string.
+	/// Takes two lists and returns true if the first string is a suffix of the 
+	/// second string.
 	public func isSuffixOf(_ r : String) -> Bool {
 		return self.reverse().isPrefixOf(r.reverse())
 	}
 
-	/// Takes two lists and returns true if the first string is contained entirely anywhere in the
-	/// second string.
+	/// Takes two lists and returns true if the first string is contained 
+	/// entirely anywhere in the second string.
 	public func isInfixOf(_ r : String) -> Bool {
 		func tails(_ l : String) -> [String] {
 			return l.reduce({ x, y in
@@ -137,8 +143,9 @@ extension String {
 		return false
 	}
 
-	/// Takes two strings and drops items in the first from the second.  If the first string is not a
-	/// prefix of the second string this function returns Nothing.
+	/// Takes two strings and drops items in the first from the second.  If the 
+	/// first string is not a prefix of the second string this function returns 
+	/// `.none`.
 	public func stripPrefix(_ r : String) -> Optional<String> {
 		switch (self.match, r.match) {
 		case (.Nil, _):
@@ -150,8 +157,9 @@ extension String {
 		}
 	}
 
-	/// Takes two strings and drops items in the first from the end of the second.  If the first
-	/// string is not a suffix of the second string this function returns nothing.
+	/// Takes two strings and drops items in the first from the end of the 
+	/// second.  If the first string is not a suffix of the second string this 
+	/// function returns `.none`.
 	public func stripSuffix(_ r : String) -> Optional<String> {
 		return self.reverse().stripPrefix(r.reverse()).map({ $0.reverse() })
 	}

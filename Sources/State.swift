@@ -11,24 +11,25 @@
 	import Swiftx
 #endif
 
-/// The State Monad represents a computation that threads a piece of state through each step.
+/// The State Monad represents a computation that threads a piece of state 
+/// through each step.
 public struct State<S, A> {
 	public let runState : (S) -> (A, S)
 
-	/// Creates a new State Monad given a function from a piece of state to a value and an updated
-	/// state.
+	/// Creates a new State Monad given a function from a piece of state to a 
+	/// value and an updated state.
 	public init(_ runState : @escaping (S) -> (A, S)) {
 		self.runState = runState
 	}
 
-	/// Evaluates the computation given an initial state then returns a final value after running
-	/// each step.
+	/// Evaluates the computation given an initial state then returns a final 
+	/// value after running each step.
 	public func eval(s : S) -> A {
 		return self.runState(s).0
 	}
 
-	/// Evaluates the computation given an initial state then returns the final state after running
-	/// each step.
+	/// Evaluates the computation given an initial state then returns the final 
+	/// state after running each step.
 	public func exec(s : S) -> S {
 		return self.runState(s).1
 	}

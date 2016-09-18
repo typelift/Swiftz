@@ -8,8 +8,8 @@
 
 /// Converts an uncurried function to a curried function.
 ///
-/// A curried function is a function that always returns another function or a value when applied
-/// as opposed to an uncurried function which may take tuples.
+/// A curried function is a function that always returns another function or a 
+/// value when applied as opposed to an uncurried function which may take tuples.
 
 
 public func curry<A, B, C>(_ f : @escaping (A, B) -> C) -> (A) -> (B) -> C {

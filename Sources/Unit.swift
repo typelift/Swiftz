@@ -8,7 +8,8 @@
 
 /// A unit type defined as an enum with a single case.
 ///
-/// This type is a stand-in for the actual unit in Swift () because we can't actually extend ().
+/// This type is a stand-in for the actual unit in Swift () because we can't 
+/// actually extend ().
 public enum Unit { case TT }
 
 extension Unit {

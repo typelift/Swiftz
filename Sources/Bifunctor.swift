@@ -12,8 +12,9 @@
 
 /// A Functor where the first and second arguments are covariant.
 ///
-/// FIXME: Something in swiftc doesn't like it when conforming instances use a generic <D> in
-/// definitions of rightMap.  It has been removed in all instances for now.
+/// FIXME: Something in swiftc doesn't like it when conforming instances use a 
+/// generic <D> in definitions of rightMap.  It has been removed in all 
+/// instances for now.
 public protocol Bifunctor {
 	associatedtype L
 	associatedtype B
@@ -24,7 +25,8 @@ public protocol Bifunctor {
 	associatedtype PBC = K2<B, R>
 	associatedtype PBD = K2<B, D>
 
-	/// Map two functions individually over both sides of the bifunctor at the same time.
+	/// Map two functions individually over both sides of the bifunctor at the 
+	/// same time.
 	func bimap(_ f : (L) -> B, _ g : (R) -> D) -> PBD
 
 	// TODO: File Radar.  Left/Right Map cannot be generalized.

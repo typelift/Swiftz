@@ -9,7 +9,8 @@
 import Darwin
 
 extension Character {
-	/// Returns the unicode codepoint value for the first unicode value in the grapheme cluster.
+	/// Returns the unicode codepoint value for the first unicode value in the 
+	/// grapheme cluster.
 	public var unicodeValue : UInt32 {
 		for s in String(self).unicodeScalars {
 			return s.value

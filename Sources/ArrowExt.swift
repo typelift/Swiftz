@@ -25,8 +25,8 @@ public func >>> <A, B, C>(_ f : @escaping (A) -> B, g : @escaping (B) -> C) -> (
 
 // MARK: - Data.Functor
 
-/// Fmap | Returns a function that applies the given transformation to any arguments drawn from its
-/// environment.
+/// Fmap | Returns a function that applies the given transformation to any 
+/// arguments drawn from its environment.
 ///
 /// Function composition.
 public func <^> <A, B, R>(_ f : @escaping (A) -> B, g : @escaping (R) -> A) -> ((R) -> B) {
@@ -35,8 +35,8 @@ public func <^> <A, B, R>(_ f : @escaping (A) -> B, g : @escaping (R) -> A) -> (
 
 // MARK: - Control.Applicative
 
-/// Ap | Uses the latter function to draw an argument from the environment that is then applied to
-/// the former function.
+/// Ap | Uses the latter function to draw an argument from the environment that 
+/// is then applied to the former function.
 ///
 /// "Share Environment"
 public func <*> <A, B, R>(_ f : @escaping (R) -> ((A) -> B), g : @escaping (R) -> A) -> ((R) -> B) {
@@ -45,8 +45,8 @@ public func <*> <A, B, R>(_ f : @escaping (R) -> ((A) -> B), g : @escaping (R) -
 
 // MARK: - Control.Monad
 
-/// Bind | Draws a value from the environment, applies it to the continuation, then returns the
-/// result of the application.
+/// Bind | Draws a value from the environment, applies it to the continuation, 
+/// then returns the result of the application.
 ///
 /// "Kontinue Environment"
 public func >>- <A, B, R>(_ f : @escaping (R) -> A, k : @escaping (A) -> ((R) -> B)) -> ((R) -> B) {

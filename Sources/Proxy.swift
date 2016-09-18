@@ -11,8 +11,9 @@
 	import Swiftx
 #endif
 
-/// A `Proxy` type is used to bear witness to some type variable. It is used when you want to pass
-/// around proxy values for doing things like modelling type applications or faking GADTs as in
+/// A `Proxy` type is used to bear witness to some type variable. It is used 
+/// when you want to pass around proxy values for doing things like modelling 
+/// type applications or faking GADTs as in
 /// ~(https://gist.github.com/jckarter/cff22c8b1dcb066eaeb2).
 public struct Proxy<T> { public init() {} }
 

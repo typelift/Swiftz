@@ -135,9 +135,9 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 	public let values : [Either<A, B>]
 
 	public init(_ vs : [Either<A, B>]) {
-		//	if vs.isEmpty {
-		//		error("Cannot construct a \(Vacillate<A, B>.self) with no elements.")
-		//	}
+//		if vs.isEmpty {
+//			error("Cannot construct a \(Vacillate<A, B>.self) with no elements.")
+//		}
 		var vals = [Either<A, B>]()
 		for v in vs {
 			if let z = vals.last {

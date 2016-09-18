@@ -23,12 +23,15 @@ public protocol Cartesian : Functor {
 	/// Returns the unit tuple functor.
 	static var unit : FTOP { get }
 	
-	/// Returns the 2-ary product functor of the receiver and the other given functor.
+	/// Returns the 2-ary product functor of the receiver and the other given 
+	/// functor.
 	func product(_ r : FB) -> FTAB
 	
-	/// Returns the 3-ary product functor of the receiver and the 2 other given functors.
+	/// Returns the 3-ary product functor of the receiver and the 2 other given 
+	/// functors.
 	func product(_ r : FB, _ s : FC) -> FTABC
 	
-	/// Returns the 4-ary product functor of the receiver and the 3 other given functors.
+	/// Returns the 4-ary product functor of the receiver and the 3 other given 
+	/// functors.
 	func product(_ r : FB, _ s : FC, _ t : FD) -> FTABCD
 }

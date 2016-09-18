@@ -12,8 +12,8 @@
 #endif
 
 extension Optional {
-	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
-	/// a function, maps the function over the value in the Maybe.
+	/// Case analysis for the Optional type.  Given a maybe, a default value in 
+	/// case it is None, and a function, maps the function over the value in the Maybe.
 	public func maybe<B>(_ def : B, onSome : (Wrapped) -> B) -> B {
 		switch self {
 		case .none:
@@ -24,8 +24,8 @@ extension Optional {
 	}
 
 
-	/// Given an Optional and a default value returns the value of the Optional when it is Some, else
-	/// this function returns the default value.
+	/// Given an Optional and a default value returns the value of the Optional 
+	/// when it is Some, else this function returns the default value.
 	public func getOrElse(_ def : Wrapped) -> Wrapped {
 		switch self {
 		case .none:
@@ -35,8 +35,9 @@ extension Optional {
 		}
 	}
 	
-	/// Case analysis for the Optional type to the Either type. Given a maybe, a default value in case it is None that maps to Either.Left, and
-	/// if there is a value in the Maybe it maps to Either.Right.
+	/// Case analysis for the Optional type to the Either type. Given a maybe, a
+	/// default value in case it is None that maps to Either.Left, and if there
+	/// is a value in the Maybe it maps to Either.Right.
 	public func toEither<L>(_ def : L) -> Either<L, Wrapped> {
 		switch self {
 		case .none:

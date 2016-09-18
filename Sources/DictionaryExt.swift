@@ -29,37 +29,42 @@ extension Dictionary {
 		return !self.isMember(k)
 	}
 
-	/// Looks up a value in the receiver.  If one is not found the default is used.
+	/// Looks up a value in the receiver.  If one is not found the default is 
+	/// used.
 	public func lookup(_ k : Key, def : Value) -> Value {
 		return self[k] ?? def
 	}
 
-	/// Returns a copy of the receiver with the given key associated with the given value.
+	/// Returns a copy of the receiver with the given key associated with the 
+	/// given value.
 	public func insert(_ k : Key, v : Value) -> [Key: Value] {
 		var d = self
 		d[k] = v
 		return d
 	}
 
-	/// Returns a copy of the receiver with the given key associated with the value returned from
-	/// a combining function.  If the receiver does not contain a value for the given key this
-	/// function is equivalent to an `insert`.
+	/// Returns a copy of the receiver with the given key associated with the 
+	/// value returned from a combining function.  If the receiver does not 
+	/// contain a value for the given key this function is equivalent to an 
+	/// `insert`.
 	public func insertWith(_ k : Key, v : Value, combiner : (Value) -> (Value) -> Value) -> [Key: Value] {
 		return self.insertWithKey(k, v: v, combiner: { (_ : Key, newValue : Value, oldValue : Value) -> Value in
 			return combiner(newValue)(oldValue)
 		})
 	}
 
-	/// Returns a copy of the receiver with the given key associated with the value returned from
-	/// a combining function.  If the receiver does not contain a value for the given key this
-	/// function is equivalent to an `insert`.
+	/// Returns a copy of the receiver with the given key associated with the 
+	/// value returned from a combining function.  If the receiver does not 
+	/// contain a value for the given key this function is equivalent to an 
+	/// `insert`.
 	public func insertWith(_ k : Key, v : Value, combiner : @escaping (_ new : Value, _ old : Value) -> Value) -> [Key: Value] {
 		return self.insertWith(k, v: v, combiner: curry(combiner))
 	}
 
-	/// Returns a copy of the receiver with the given key associated with the value returned from
-	/// a combining function.  If the receiver does not contain a value for the given key this
-	/// function is equivalent to an `insert`.
+	/// Returns a copy of the receiver with the given key associated with the 
+	/// value returned from a combining function.  If the receiver does not 
+	/// contain a value for the given key this function is equivalent to an 
+	/// `insert`.
 	public func insertWithKey(_ k : Key, v : Value, combiner : (Key) -> (Value) -> (Value) -> Value) -> [Key: Value] {
 		if let oldV = self[k] {
 			return self.insert(k, v: combiner(k)(v)(oldV))
@@ -67,9 +72,10 @@ extension Dictionary {
 		return self.insert(k, v: v)
 	}
 
-	/// Returns a copy of the receiver with the given key associated with the value returned from
-	/// a combining function.  If the receiver does not contain a value for the given key this
-	/// function is equivalent to an `insert`.
+	/// Returns a copy of the receiver with the given key associated with the 
+	/// value returned from a combining function.  If the receiver does not 
+	/// contain a value for the given key this function is equivalent to an 
+	/// `insert`.
 	public func insertWithKey(_ k : Key, v : Value, combiner : (_ key : Key, _ newValue : Value, _ oldValue : Value) -> Value) -> [Key: Value] {
 		if let oldV = self[k] {
 			return self.insert(k, v: combiner(k, v, oldV))
@@ -91,40 +97,45 @@ extension Dictionary {
 		return d
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the key is not in the receiver this function is equivalent
+	/// to `identity`.
 	public func adjust(_ k : Key, adjustment : @escaping (Value) -> Value) -> [Key: Value] {
 		return self.adjustWithKey(k, adjustment: { (_, x) -> Value in
 			return adjustment(x)
 		})
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the key is not in the receiver this function is equivalent
+	/// to `identity`.
 	public func adjustWithKey(_ k : Key, adjustment : @escaping (Key) -> (Value) -> Value) -> [Key: Value] {
 		return self.updateWithKey(k, update: { (k, x) -> Optional<Value> in
 			return .some(adjustment(k)(x))
 		})
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the key is not in the receiver this function is equivalent 
+	/// to `identity`.
 	public func adjustWithKey(_ k : Key, adjustment : @escaping (Key, Value) -> Value) -> [Key: Value] {
 		return self.adjustWithKey(k, adjustment: curry(adjustment))
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the result of
-	/// the function is `.none`, the value associated with the given key is removed.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the result of the function is `.none`, the value 
+	/// associated with the given key is removed.  If the key is not in the 
+	/// receiver this function is equivalent to `identity`.
 	public func update(_ k : Key, update : @escaping (Value) -> Optional<Value>) -> [Key: Value] {
 		return self.updateWithKey(k, update: { (_, x) -> Optional<Value> in
 			return update(x)
 		})
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the result of
-	/// the function is `.none`, the value associated with the given key is removed.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the result of the function is `.none`, the value 
+	/// associated with the given key is removed.  If the key is not in the 
+	/// receiver this function is equivalent to `identity`.
 	public func updateWithKey(_ k : Key, update : (Key) -> (Value) -> Optional<Value>) -> [Key: Value] {
 		if let oldV = self[k], let newV = update(k)(oldV) {
 			return self.insert(k, v: newV)
@@ -132,15 +143,17 @@ extension Dictionary {
 		return self.delete(k)
 	}
 
-	/// Updates a value at the given key with the result of the function provided.  If the result of
-	/// the function is `.none`, the value associated with the given key is removed.  If the key is
-	/// not in the receiver this function is equivalent to `identity`.
+	/// Updates a value at the given key with the result of the function 
+	/// provided.  If the result of the function is `.none`, the value 
+	/// associated with the given key is removed.  If the key is not in the 
+	/// receiver this function is equivalent to `identity`.
 	public func updateWithKey(_ k : Key, update : @escaping (Key, Value) -> Optional<Value>) -> [Key: Value] {
 		return self.updateWithKey(k, update: curry(update))
 	}
 
-	/// Alters the value (if any) for a given key with the result of the function provided.  If the
-	/// result of the function is `.none`, the value associated with the given key is removed.
+	/// Alters the value (if any) for a given key with the result of the 
+	/// function provided.  If the result of the function is `.none`, the value 
+	/// associated with the given key is removed.
 	public func alter(_ k : Key, alteration : (Optional<Value>) -> Optional<Value>) -> [Key: Value] {
 		if let newV = alteration(self[k]) {
 			return self.insert(k, v: newV)
@@ -206,14 +219,16 @@ extension Dictionary {
 
 	/// MARK: Partition
 
-	/// Filters all values that do not satisfy a given predicate from the receiver.
+	/// Filters all values that do not satisfy a given predicate from the 
+	/// receiver.
 	public func filter(_ pred : @escaping (Value) -> Bool) -> [Key: Value] {
 		return self.filterWithKey({ (_, x) -> Bool in
 			return pred(x)
 		})
 	}
 
-	/// Filters all keys and values that do not satisfy a given predicate from the receiver.
+	/// Filters all keys and values that do not satisfy a given predicate from 
+	/// the receiver.
 	public func filterWithKey(_ pred : (Key) -> (Value) -> Bool) -> [Key: Value] {
 		var d = [Key: Value]()
 		self.forEach { (k, v) in
@@ -225,21 +240,24 @@ extension Dictionary {
 		return d
 	}
 
-	/// Filters all keys and values that do not satisfy a given predicate from the receiver.
+	/// Filters all keys and values that do not satisfy a given predicate from 
+	/// the receiver.
 	public func filterWithKey(_ pred : @escaping (Key, Value) -> Bool) -> [Key: Value] {
 		return self.filterWithKey(curry(pred))
 	}
 
-	/// Partitions the receiver into a Dictionary of values that passed the given predicate and a
-	/// Dictionary of values that failed the given predicate.
+	/// Partitions the receiver into a Dictionary of values that passed the 
+	/// given predicate and a Dictionary of values that failed the given 
+	/// predicate.
 	public func partition(_ pred : @escaping (Value) -> Bool) -> (passed : [Key: Value], failed : [Key: Value]) {
 		return self.partitionWithKey({ (_, x) -> Bool in
 			return pred(x)
 		})
 	}
 
-	/// Partitions the receiver into a Dictionary of values that passed the given predicate and a
-	/// Dictionary of values that failed the given predicate.
+	/// Partitions the receiver into a Dictionary of values that passed the 
+	/// given predicate and a Dictionary of values that failed the given 
+	/// predicate.
 	public func partitionWithKey(_ pred : (Key) -> (Value) -> Bool) -> (passed : [Key: Value], failed : [Key: Value]) {
 		var pass = [Key: Value]()
 		var fail = [Key: Value]()
@@ -254,8 +272,9 @@ extension Dictionary {
 		return (pass, fail)
 	}
 
-	/// Partitions the receiver into a Dictionary of values that passed the given predicate and a
-	/// Dictionary of values that failed the given predicate.
+	/// Partitions the receiver into a Dictionary of values that passed the 
+	/// given predicate and a Dictionary of values that failed the given 
+	/// predicate.
 	public func partitionWithKey(_ pred : @escaping (Key, Value) -> Bool) -> (passed : [Key: Value], failed : [Key: Value]) {
 		return self.partitionWithKey(curry(pred))
 	}

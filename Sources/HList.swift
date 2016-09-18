@@ -11,13 +11,15 @@
 	import Swiftx
 #endif
 
-/// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
-/// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
-/// in convenience they gain in flexibility.
+/// An HList can be thought of like a tuple, but with list-like operations on 
+/// the types.  Unlike tuples there is no simple construction syntax as with the
+/// `(,)` operator.  But what HLists lack in convenience they gain in 
+/// flexibility.
 ///
-/// An HList is a purely static entity.  All its attributes including its length, the type of each
-/// element, and compatible operations on said elements exist fully at compile time.  HLists, like
-/// regular lists, support folds, maps, and appends, only at the type rather than term level.
+/// An HList is a purely static entity.  All its attributes including its 
+/// length, the type of each element, and compatible operations on said elements
+/// exist fully at compile time.  HLists, like regular lists, support folds, 
+/// maps, and appends, only at the type rather than term level.
 public protocol HList {
 	associatedtype Head
 	associatedtype Tail
@@ -64,10 +66,10 @@ public struct HNil : HList {
 	}
 }
 
-/// `HAppend` is a type-level append of two `HList`s.  They are instantiated with the type of the
-/// first list (XS), the type of the second list (YS) and the type of the result (XYS).  When
-/// constructed, `HAppend` provides a safe append operation that yields the appropriate HList for
-/// the given types.
+/// `HAppend` is a type-level append of two `HList`s.  They are instantiated 
+/// with the type of the first list (XS), the type of the second list (YS) and 
+/// the type of the result (XYS).  When constructed, `HAppend` provides a safe 
+/// append operation that yields the appropriate HList for the given types.
 public struct HAppend<XS, YS, XYS> {
 	public let append : (XS, YS) -> XYS
 
@@ -88,10 +90,11 @@ public struct HAppend<XS, YS, XYS> {
 	}
 }
 
-/// `HMap` is a type-level map of a function (F) over an `HList`.  An `HMap` must, at the very least,
-/// takes values of its input type (A) to values of its output type (R).  The function parameter (F)
-/// does not necessarily have to be a function, and can be used as an index for extra information
-/// that the map function may need in its computation.
+/// `HMap` is a type-level map of a function (F) over an `HList`.  An `HMap` 
+/// must, at the very least, takes values of its input type (A) to values of its
+/// output type (R).  The function parameter (F) does not necessarily have to be
+/// a function, and can be used as an index for extra information that the map 
+/// function may need in its computation.
 public struct HMap<F, A, R> {
 	public let map : (F, A) -> R
 
@@ -113,22 +116,24 @@ public struct HMap<F, A, R> {
 		}
 	}
 
-	/// Returns an `HMap` that composes two functions, then applies the new function to elements of
-	/// an `HList`.
+	/// Returns an `HMap` that composes two functions, then applies the new 
+	/// function to elements of an `HList`.
 	public static func compose<X, Y, Z>() -> HMap<(), ((X) -> Y, (Y) -> Z), (X) -> Z> {
 		return HMap<(), ((X) -> Y, (Y) -> Z), (X) -> Z> { (_, fs) in
 			return fs.1 • fs.0
 		}
 	}
 
-	/// Returns an `HMap` that creates an `HCons` node out of a tuple of the head and tail of an `HList`.
+	/// Returns an `HMap` that creates an `HCons` node out of a tuple of the 
+	/// head and tail of an `HList`.
 	public static func hcons<H, T : HList>() -> HMap<(), (H, T), HCons<H, T>> {
 		return HMap<(), (H, T), HCons<H, T>> { (_, p) in
 			return HCons(h: p.0, t: p.1)
 		}
 	}
 
-	/// Returns an `HMap` that uses an `HAppend` operation to append two `HList`s together.
+	/// Returns an `HMap` that uses an `HAppend` operation to append two 
+	/// `HList`s together.
 	public static func happend<A, B, C>() -> HMap<HAppend<A, B, C>, (A, B), C> {
 		return HMap<HAppend<A, B, C>, (A, B), C> { (f, p) in
 			return f.append(p.0, p.1)
@@ -136,21 +141,23 @@ public struct HMap<F, A, R> {
 	}
 }
 
-/// `HFold` is a type-level right fold over the values in an `HList`.  Like an `HMap`, an HFold
-/// carries a context (of type G).  The actual fold takes values of type V and an accumulator A to
-/// values of type R.
+/// `HFold` is a type-level right fold over the values in an `HList`.  Like an 
+/// `HMap`, an HFold carries a context (of type G).  The actual fold takes 
+/// values of type V and an accumulator A to values of type R.
 ///
-/// Using an `HFold` necessitates defining the type of its starting and ending data.  For example, a
-/// fold that reduces `HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>` to `(Int) -> Int`
-/// through composition will define two `typealias`es:
+/// Using an `HFold` necessitates defining the type of its starting and ending 
+/// data.  For example, a fold that reduces 
+/// `HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>` to 
+/// `(Int) -> Int` through composition will define two `typealias`es:
 ///
 ///     public typealias FList = HCons<(Int) -> Int, HCons<(Int) -> Int, HCons<(Int) -> Int, HNil>>>
 ///
 ///     public typealias FBegin = HFold<(), (Int) -> Int, FList, (Int) -> Int>
 ///     public typealias FEnd = HFold<(), (Int) -> Int, HNil, (Int) -> Int>
 ///
-/// The fold above doesn't depend on a context, and carries values of type `(Int) -> Int`, contained
-/// in a list of type `FList`, to an `HNil` node and an ending value of type `(Int) -> Int`.
+/// The fold above doesn't depend on a context, and carries values of type 
+/// `(Int) -> Int`, contained in a list of type `FList`, to an `HNil` node and 
+/// an ending value of type `(Int) -> Int`.
 public struct HFold<G, V, A, R> {
 	public let fold : (G, V, A) -> R
 

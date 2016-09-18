@@ -11,15 +11,16 @@
 	import Swiftx
 #endif
 
-/// An Arrow is most famous for being a "Generalization of a Monad".  They're probably better
-/// described as a more general view of computation.  Where a monad M<A> yields a value of type A
-/// given some context, an Arrow A<B, C> is a function from B -> C in some context A.  Functions are
-/// the simplest kind of Arrow (pun intended).  Their context parameter, A, is essentially empty.
-/// From there, the B -> C part of the arrow gets alpha-reduced to the A -> B part of the function
-/// type.
+/// An Arrow is most famous for being a "Generalization of a Monad".  They're 
+/// probably better described as a more general view of computation.  Where a 
+/// monad M<A> yields a value of type A given some context, an Arrow A<B, C> is 
+/// a function from B -> C in some context A.  Functions are the simplest kind 
+/// of Arrow (pun intended).  Their context parameter, A, is essentially empty.
+/// From there, the B -> C part of the arrow gets alpha-reduced to the A -> B 
+/// part of the function type.
 ///
-/// Arrows can be modelled with circuit-esque diagrams, and indeed that can often be a better way to
-/// envision the various arrow operators.
+/// Arrows can be modelled with circuit-esque diagrams, and indeed that can 
+/// often be a better way to envision the various arrow operators.
 ///
 /// - >>>       a -> [ f ] -> b -> [ g ] -> c
 /// - <<<       a -> [ g ] -> b -> [ f ] -> c
@@ -63,7 +64,8 @@ public protocol Arrow : Category {
 	/// Type of the result of ***.
 	associatedtype SPLIT = K2<(A, D), (B, E)>
 
-	/// Some arrow from our target to some other arbitrary target.  Used in fanout().
+	/// Some arrow from our target to some other arbitrary target.  Used in 
+	/// fanout().
 	associatedtype ABD = K2<A, D>
 
 	/// Type of the result of &&&.
@@ -72,25 +74,27 @@ public protocol Arrow : Category {
 	/// Lift a function to an arrow.
 	static func arr(_ : (A) -> B) -> Self
 
-	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
-	/// argument on the "left side" and sends the "right side" through unchanged.
+	/// Splits the arrow into two tuples that model a computation that applies 
+	/// our Arrow to an argument on the "left side" and sends the "right side" 
+	/// through unchanged.
 	///
 	/// The mirror image of second().
 	func first() -> FIRST
 
-	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
-	/// argument on the "right side" and sends the "left side" through unchanged.
+	/// Splits the arrow into two tuples that model a computation that applies 
+	/// our Arrow to an argument on the "right side" and sends the "left side" 
+	/// through unchanged.
 	///
 	/// The mirror image of first().
 	func second() -> SECOND
 
-	/// Split | Splits two computations and combines the result into one Arrow yielding a tuple of
-	/// the result of each side.
+	/// Split | Splits two computations and combines the result into one Arrow 
+	/// yielding a tuple of the result of each side.
 	static func ***(_ : Self, _ : ADE) -> SPLIT
 
-	/// Fanout | Given two functions with the same source but different targets, this function
-	/// splits the computation and combines the result of each Arrow into a tuple of the result of
-	/// each side.
+	/// Fanout | Given two functions with the same source but different targets,
+	/// this function splits the computation and combines the result of each 
+	/// Arrow into a tuple of the result of each side.
 	static func &&&(_ : Self, _ : ABD) -> FANOUT
 }
 
@@ -109,7 +113,8 @@ public protocol ArrowPlus : ArrowZero {
 	// static func <+>(_ : ABC, _ : ABC) -> ABC
 }
 
-/// Arrows that permit "choice" or selecting which side of the input to apply themselves to.
+/// Arrows that permit "choice" or selecting which side of the input to apply 
+/// themselves to.
 ///
 /// - left                     a - - [ f ] - - > b
 ///                            |
@@ -149,23 +154,24 @@ public protocol ArrowChoice : Arrow {
 	/// The result of |||
 	associatedtype FANIN = K2<Either<A, B>, D>
 
-	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the
-	/// output.
+	/// Feed marked inputs through the argument arrow, passing the rest through 
+	/// unchanged to the output.
 	func left() -> LEFT
 
 	/// The mirror image of left.
 	func right() -> RIGHT
 
-	/// Splat | Split the input between both argument arrows, then retag and merge their outputs
-	/// into Eithers.
+	/// Splat | Split the input between both argument arrows, then retag and 
+	/// merge their outputs into Eithers.
 	static func +++(_ : Self, _ : ADE) -> SPLAT
 
-	/// Fanin | Split the input between two argument arrows and merge their ouputs.
+	/// Fanin | Split the input between two argument arrows and merge their 
+	/// ouputs.
 	// static func |||(_ : ABD, _ : ACD) -> FANIN
 }
 
-/// Arrows that allow application of arrow inputs to other inputs.  Such arrows are equivalent to
-/// monads.
+/// Arrows that allow application of arrow inputs to other inputs.  Such arrows 
+/// are equivalent to monads.
 ///
 /// - app    (_ f : a -> b) - •
 ///                          \
@@ -180,8 +186,8 @@ public protocol ArrowApply : Arrow {
 
 /// Arrows that admit right-tightening recursion.
 ///
-/// The 'loop' operator expresses computations in which an output value is fed back as input,
-/// although the computation occurs only once.
+/// The 'loop' operator expresses computations in which an output value is fed 
+/// back as input, although the computation occurs only once.
 ///
 ///           •-------•
 ///           |       |

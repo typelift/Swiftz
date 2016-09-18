@@ -11,8 +11,8 @@
 	import Swiftx
 #endif
 
-/// Represents a value with three possiblities: a left value, a right value, or both a left and
-/// right value (This, That, and These respectively).
+/// Represents a value with three possiblities: a left value, a right value, or 
+/// both a left and right value (This, That, and These respectively).
 public enum Those<L, R> {
 	case This(L)
 	case That(R)
@@ -48,9 +48,10 @@ public enum Those<L, R> {
 		}
 	}
 
-	/// Case analysis for the Those type.  If there is a left value the first function is applied
-	/// to it to yield a result.  If there is a right value the middle function is applied.  If
-	/// there is both a left and right value the last function is applied to both.
+	/// Case analysis for the Those type.  If there is a left value the first 
+	/// function is applied to it to yield a result.  If there is a right value 
+	/// the middle function is applied.  If there is both a left and right value
+	/// the last function is applied to both.
 	public func fold<C>(this : (L) -> C, that : (R) -> C, these : (L, R) -> C) -> C {
 		switch self {
 		case let .This(x):
@@ -62,7 +63,8 @@ public enum Those<L, R> {
 		}
 	}
 
-	/// Extracts values from the receiver filling in any missing values with given default ones.
+	/// Extracts values from the receiver filling in any missing values with 
+	/// given default ones.
 	public func toTuple(_ l : L, _ r : R) -> (L, R) {
 		switch self {
 		case let .This(x):
@@ -75,7 +77,8 @@ public enum Those<L, R> {
 	}
 }
 
-/// Merges a those with the same type on the Left and Right into a singular value of that same type.
+/// Merges a those with the same type on the Left and Right into a singular 
+/// value of that same type.
 public func merge<L>(_ f : @escaping (L) -> (L) -> L) -> (Those<L, L>) -> L {
 	return { $0.fold(this: identity, that: identity, these: uncurry(f)) }
 }
