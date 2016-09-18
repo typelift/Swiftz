@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// The State Monad represents a computation that threads a piece of state through each step.
 public struct State<S, A> {
 	public let runState : (S) -> (A, S)

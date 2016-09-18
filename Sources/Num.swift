@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Swiftx
+#endif
 
 /// Numeric types.
 public protocol NumericType : Comparable {

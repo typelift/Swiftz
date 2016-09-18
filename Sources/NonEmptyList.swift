@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// A list that may not ever be empty.
 ///
 /// Traditionally partial operations on regular lists are total with non-empty lists.

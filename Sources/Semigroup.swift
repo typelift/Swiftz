@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// A Semigroup is a type with a closed, associative, binary operator.
 public protocol Semigroup {
 

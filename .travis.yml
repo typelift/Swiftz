@@ -37,12 +37,11 @@ matrix:
       before_install:
         - git submodule update --init --recursive
         - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
-        - wget https://swift.org/builds/swift-3.0-preview-6/ubuntu1404/swift-3.0-PREVIEW-6/swift-3.0-PREVIEW-6-ubuntu14.04.tar.gz
-        - tar xzf swift-3.0-PREVIEW-6-ubuntu14.04.tar.gz
-        - export PATH=${PWD}/swift-3.0-PREVIEW-6-ubuntu14.04/usr/bin:"${PATH}"
+        - wget https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu14.04.tar.gz 
+        - tar xzf swift-3.0-RELEASE-ubuntu14.04.tar.gz 
+        - export PATH=${PWD}/swift-3.0-RELEASE-ubuntu14.04/usr/bin:"${PATH}" 
       script:
-        # Uncomment when releasing Swift 3.0
-        # - swift build
+        - swift build
 notifications:
   webhooks:
     urls:

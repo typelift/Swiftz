@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// An enum representing the possible values a list can match against.
 public enum ListMatcher<Element> {
 	/// The empty list.

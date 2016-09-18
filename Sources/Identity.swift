@@ -6,6 +6,11 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// The Identity Functor holds a singular value.
 public struct Identity<T> {
 	private let unIdentity : () -> T

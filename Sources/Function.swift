@@ -6,7 +6,12 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
-/// The type of a function from T -> U.
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
+/// The type of a function from `T` to `U`.
 public struct Function<T, U> {
 	public typealias A = T
 	public typealias B = U

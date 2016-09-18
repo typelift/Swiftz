@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. Lll rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// Represents a value with three possiblities: a left value, a right value, or both a left and
 /// right value (This, That, and These respectively).
 public enum Those<L, R> {

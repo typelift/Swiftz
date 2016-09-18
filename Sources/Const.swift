@@ -6,6 +6,10 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Swiftx
+#endif
+
 // The Constant Functor ignores fmap.
 public struct Const<V, I> {
 	private let a :  () -> V

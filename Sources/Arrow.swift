@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// An Arrow is most famous for being a "Generalization of a Monad".  They're probably better
 /// described as a more general view of computation.  Where a monad M<A> yields a value of type A
 /// given some context, an Arrow A<B, C> is a function from B -> C in some context A.  Functions are

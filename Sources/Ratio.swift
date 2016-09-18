@@ -6,6 +6,10 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Swiftx
+#endif
+
 /// "Arbitrary-Precision" ratios of integers.
 ///
 /// While Int has arbitrary precision in Swift, operations beyond 64-bits are O(inf).

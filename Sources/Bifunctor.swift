@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Swiftx
+#endif
+
 /// A Functor where the first and second arguments are covariant.
 ///
 /// FIXME: Something in swiftc doesn't like it when conforming instances use a generic <D> in

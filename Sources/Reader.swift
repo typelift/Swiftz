@@ -6,6 +6,11 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// A `Reader` monad with `R` for environment and `A` to represent the modified environment.
 public struct Reader<R, A> {
 	/// The function that modifies the environment

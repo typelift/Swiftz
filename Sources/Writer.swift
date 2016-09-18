@@ -6,6 +6,11 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// The `Writer` Monad represents a computation that appends (writes) to an associated `Monoid`
 /// value as it evaluates.
 ///

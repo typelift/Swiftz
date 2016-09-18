@@ -25,7 +25,7 @@ extension NonEmptyList where Element : Arbitrary {
 extension NonEmptyList : WitnessedArbitrary {
 	public typealias Param = Element
 
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : ((NonEmptyList<Element>) -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : @escaping (NonEmptyList<Element>) -> Testable) -> Property {
 		return forAllShrink(NonEmptyList<A>.arbitrary, shrinker: NonEmptyList<A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})

@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 extension Optional {
 	/// Case analysis for the Optional type.  Given a maybe, a default value in case it is None, and
 	/// a function, maps the function over the value in the Maybe.

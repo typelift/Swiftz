@@ -6,6 +6,11 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 extension Either /*: Bifunctor*/ {
 	public typealias B = Any
 	public typealias D = Any

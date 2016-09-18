@@ -6,6 +6,11 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// A lazy infinite sequence of values.
 ///
 /// A `Stream` can be thought of as a function indexed by positions - stopping points at which the

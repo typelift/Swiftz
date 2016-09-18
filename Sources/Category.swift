@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+#endif
+
 /// A Category is an algebraic structure consisting of a set of objects and a set of morphisms
 /// between those objects.  Each object includes an identity morphism, and composition of morphisms
 /// is the primary reason categories are such powerful abstractions.

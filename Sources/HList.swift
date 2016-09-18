@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
+
 /// An HList can be thought of like a tuple, but with list-like operations on the types.  Unlike
 /// tuples there is no simple construction syntax as with the `(,)` operator.  But what HLists lack
 /// in convenience they gain in flexibility.
@@ -45,8 +50,8 @@ public struct HCons<H, T : HList> : HList {
 
 /// The Nil HList node.
 public struct HNil : HList {
-	public typealias Head = Nothing
-	public typealias Tail = Nothing
+	public typealias Head = Never
+	public typealias Tail = Never
 
 	public init() {}
 
