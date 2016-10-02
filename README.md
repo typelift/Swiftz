@@ -137,8 +137,11 @@ To add Swiftz to your application:
  
 **Using Swift Package Manager**
 
-- Add '.Package(url: "https://github.com/typelift/Swiftz", majorVersion: 0, minor: 6)' to 'dependencies' of your Package.swift file. For more information, read [SPM reference](https://github.com/apple/swift-package-manager/blob/master/Documentation/Reference.md#package-manifest-file-format-reference).
-- Run 'swift build'.
+- Add Swiftz to your `Package.swift` file's `dependencies` section:
+
+```swift
+.Package(url: "https://github.com/typelift/Swiftz", versions: Version(0,6,0)..<Version(1,0,0))
+```
 
 System Requirements
 ===================
