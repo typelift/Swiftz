@@ -22,7 +22,7 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 	}
 
 	static var arbitrary : Gen<EitherOf<A, B>> {
-		return Gen.oneOf([
+		return Gen.one(of: [
 			A.arbitrary.map(Either.Left),
 			B.arbitrary.map(Either.Right),
 		]).map(EitherOf.init)
