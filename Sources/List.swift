@@ -440,7 +440,7 @@ public struct List<Element> {
 	/// Returns a List of an infinite number of iteratations of applications of 
 	/// a function to an initial value.
 	public static func iterate(_ f : @escaping (Element) -> Element, initial : Element) -> List<Element> {
-		return List((initial, self.iterate(f, initial: f(initial))))
+		return List(initial, self.iterate(f, initial: f(initial)))
 	}
 
 	/// Cycles a finite list into an infinite list.
