@@ -11,6 +11,3 @@ let package = Package(
 	]
 )
 
-let libSwiftz = Product(name: "Swiftz", type: .Library(.Dynamic), modules: "Swiftz")
-products.append(libSwiftz)
-
