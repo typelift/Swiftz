@@ -1,4 +1,4 @@
-github "typelift/Swiftx" "master"
+github "typelift/Swiftx" 
 github "typelift/SwiftCheck"
 github "typelift/Operadics"
 
