@@ -149,21 +149,21 @@ extension Int64 : Bounded {
 #if os(OSX)
 	extension Float : Bounded {
 		public static func minBound() -> Float {
-			return FLT_MIN
+			return Float.leastNormalMagnitude
 		}
 
 		public static func maxBound() -> Float {
-			return FLT_MAX
+			return Float.greatestFiniteMagnitude
 		}
 	}
 
 	extension Double : Bounded {
 		public static func minBound() -> Double {
-			return DBL_MIN
+			return Double.leastNormalMagnitude
 		}
 
 		public static func maxBound() -> Double {
-			return DBL_MAX
+			return Double.greatestFiniteMagnitude
 		}
 	}
 #endif
