@@ -7,10 +7,10 @@ matrix:
       language: objective-c
       osx_image: xcode8.3
       before_install:
+        - gem install cocoapods -v '1.1.1'
         - git submodule update --init --recursive
       script:
-      # Restore pod build before shipping for 3.0 
-      # - pod lib lint
+        - pod lib lint
         - carthage build --no-skip-current
     - os: osx
       language: objective-c
