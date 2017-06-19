@@ -376,7 +376,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		821B76AF1BC43C1000AF97D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		821B76AF1BC43C1000AF97D6 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Operators.swift; path = Carthage/Checkouts/Operadics/Sources/Operators.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		821B76B41BC43DE100AF97D6 /* SwiftCheck.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftCheck.xcodeproj; path = Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj; sourceTree = SOURCE_ROOT; };
 		821BEED21D8F3EA5009F8D58 /* ArrayExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArrayExtSpec.swift; path = Tests/SwiftzTests/ArrayExtSpec.swift; sourceTree = SOURCE_ROOT; };
 		821BEED31D8F3EA5009F8D58 /* ArrowExtSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArrowExtSpec.swift; path = Tests/SwiftzTests/ArrowExtSpec.swift; sourceTree = SOURCE_ROOT; };
@@ -605,8 +605,8 @@
 				821BEF4B1D8F3EF8009F8D58 /* Swiftz.h */,
 				821BEF3B1D8F3EF8009F8D58 /* Kinds.swift */,
 				821B76AF1BC43C1000AF97D6 /* Operators.swift */,
-				84A88F9A1A71DF7F003D53CF /* Swiftz */,
-				84A88FA71A71DF7F003D53CF /* SwiftzTests */,
+				84A88F9A1A71DF7F003D53CF /* Sources */,
+				84A88FA71A71DF7F003D53CF /* Tests */,
 				84A88F991A71DF7F003D53CF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -625,7 +625,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		84A88F9A1A71DF7F003D53CF /* Swiftz */ = {
+		84A88F9A1A71DF7F003D53CF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				84A890521A71E138003D53CF /* Core */,
@@ -634,7 +634,7 @@
 				821BEFF51D8F3F15009F8D58 /* Ext */,
 				84A88F9B1A71DF7F003D53CF /* Supporting Files */,
 			);
-			path = Swiftz;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		84A88F9B1A71DF7F003D53CF /* Supporting Files */ = {
@@ -645,14 +645,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		84A88FA71A71DF7F003D53CF /* SwiftzTests */ = {
+		84A88FA71A71DF7F003D53CF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				84A8905A1A71E1EE003D53CF /* Data */,
 				821BEF271D8F3EBF009F8D58 /* Ext */,
 				84A88FA81A71DF7F003D53CF /* Supporting Files */,
 			);
-			path = SwiftzTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		84A88FA81A71DF7F003D53CF /* Supporting Files */ = {

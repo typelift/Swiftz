@@ -185,7 +185,7 @@ extension Dictionary {
 	}
 
 	/// Maps a function over all keys in the receiver.
-	public func mapKeys<Key2 : Hashable>(_ f : (Key) -> Key2) -> [Key2: Value] {
+	public func mapKeys<Key2>(_ f : (Key) -> Key2) -> [Key2: Value] {
 		var d = [Key2: Value]()
 		self.forEach { (k, v) in
 			d[f(k)] = v

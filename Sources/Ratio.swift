@@ -35,7 +35,7 @@ public struct Ratio<T : IntegralType> {
 
 extension Ratio : Equatable { }
 
-public func == <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func == <T>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	let lred = reduce(l.numerator(), d: l.denominator())
 	let rred = reduce(r.numerator(), d: r.denominator())
 	return (lred.numerator() == rred.numerator()) && (rred.denominator() == rred.denominator())
@@ -43,19 +43,19 @@ public func == <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Boo
 
 extension Ratio : Comparable { }
 
-public func < <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func < <T>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) < (r.numerator().times(l.denominator()))
 }
 
-public func <= <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func <= <T>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return (l.numerator().times(r.denominator())) <= (r.numerator().times(l.denominator()))
 }
 
-public func >= <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func >= <T>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l < r)
 }
 
-public func > <T : Equatable & IntegralType>(l : Ratio<T>, r : Ratio<T>) -> Bool {
+public func > <T>(l : Ratio<T>, r : Ratio<T>) -> Bool {
 	return !(l <= r)
 }
 
@@ -81,7 +81,7 @@ extension Ratio : NumericType {
 
 /// Implementation Details Follow
 
-private func reduce<T : IntegralType>(_ n : T, d : T) -> Ratio<T> {
+private func reduce<T>(_ n : T, d : T) -> Ratio<T> {
 	if d == T.zero {
 		return undefined()
 	}
