@@ -11,6 +11,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 extension Proxy : Arbitrary {
 	public static var arbitrary : Gen<Proxy<T>> {
 		return Gen.pure(Proxy())
@@ -118,5 +123,11 @@ class ProxySpec : XCTestCase {
 			}
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testProperties", testProperties)
+    ])
+    #endif
 }
 

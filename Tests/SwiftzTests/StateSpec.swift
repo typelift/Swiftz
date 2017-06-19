@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 struct StateOf<S, A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	let getState : State<S, A>
 

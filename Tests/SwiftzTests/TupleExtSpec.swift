@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class TupleExtSpec : XCTestCase {
 	func testProperties() {
 		property("fst behaves") <- forAll { (x : Int, y : Int) in

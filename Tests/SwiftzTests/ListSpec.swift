@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 /// Generates an array of arbitrary values.
 extension List where Element : Arbitrary {
 	public static var arbitrary : Gen<List<Element>> {
@@ -134,7 +139,11 @@ class ListSpec : XCTestCase {
 				let cycle = x.cycle()
 
 				return forAll { (n : Positive<Int>) in
-					return (0...UInt(n.getPositive)).map({ i in cycle[i] == x[(i % x.count)] }).filter({ $0 == false }).isEmpty
+                    // broken up as 'too complex' for compiler
+                    let range = (0...UInt(n.getPositive))
+                    let transform = { i in cycle[i] == x[(i % x.count)] }
+                    let filter = { $0 == false }
+					return range.map(transform).filter(filter).isEmpty
 				}
 			}
 		}
@@ -154,7 +163,7 @@ class ListSpec : XCTestCase {
 
 		property("filter behaves") <- forAll { (pred : ArrowOf<Int, Bool>) in
 			return forAll { (xs : List<Int>) in
-				return xs.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
+				return xs.filter(pred.getArrow).reduce({ acc, i in acc && pred.getArrow(i) }, initial: true)
 			}
 		}
 
@@ -192,4 +201,10 @@ class ListSpec : XCTestCase {
 			}
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testProperties", testProperties),
+    ])
+    #endif
 }

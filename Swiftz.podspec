@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source   = { :git => "https://github.com/typelift/Swiftz.git", :tag => "#{s.version}", :submodules => true }
   s.compiler_flags = '-D XCODE_BUILD'
   s.xcconfig = { "OTHER_SWIFT_FLAGS" => '-DXCODE_BUILD' }
-  s.source_files = "Swiftz/Sources/*.swift", "Carthage/Checkouts/Swiftx/Sources/*.swift", "Carthage/Checkouts/Operadics/Operators.swift"
+  s.source_files = "Swiftz/Sources/Swiftz/*.swift", "Carthage/Checkouts/Swiftx/Sources/*.swift", "Carthage/Checkouts/Operadics/Operators.swift"
 end

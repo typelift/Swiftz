@@ -3,7 +3,7 @@
 	url = https://github.com/tcldr/Swiftx.git
 [submodule "Carthage/Checkouts/SwiftCheck"]
 	path = Carthage/Checkouts/SwiftCheck
-	url = https://github.com/tcldr/SwiftCheck.git
+	url = https://github.com/typelift/SwiftCheck.git
 [submodule "Carthage/Checkouts/Operadics"]
 	path = Carthage/Checkouts/Operadics
 	url = https://github.com/typelift/Operadics.git

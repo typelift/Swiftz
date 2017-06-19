@@ -128,7 +128,7 @@ extension Array /*: MonadZip*/ {
 	}
 
 	public func mzipWith<B, C>(_ other : [B], _ f : @escaping (A) -> (B) -> C) -> [C] {
-		return self.mzip(other).map(uncurry(f))
+        return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 
 	public static func munzip<B>(ftab : [(A, B)]) -> ([A], [B]) {
@@ -207,7 +207,7 @@ extension Array {
 		case .Nil:
 			return .none
 		case let .Cons(x, xs):
-			return .some(x, xs)
+			return .some((x, xs))
 		}
 	}
 	/// Safely indexes into an array by converting out of bounds errors to nils.
@@ -221,7 +221,7 @@ extension Array {
 
 	/// Maps a function over an array that takes pairs of (index, element) to a different element.
 	public func mapWithIndex<U>(_ f : (Int, Element) -> U) -> [U] {
-		return zip((self.startIndex ..< self.endIndex), self).map(f)
+        return zip((self.startIndex ..< self.endIndex), self).map { let (i, e) = $0; return f(i, e) }
 	}
 
 	public func mapMaybe<U>(_ f : (Element) -> Optional<U>) -> [U] {

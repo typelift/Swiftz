@@ -1,3 +1,3 @@
-github "tcldr/SwiftCheck" "5453a5482bf5d92aa6b45f536a87f0a4bf802115"
-github "tcldr/Swiftx" "6b45a61be2380cdafa0d4ab57ef1f06c3909a5e3"
-github "typelift/Operadics" "0.2.3"
+github "tcldr/Swiftx" "bddef5576e169320eca9d27cc7f272a22ea64856"
+github "typelift/Operadics" "0.3.0"
+github "typelift/SwiftCheck" "0.8.1"

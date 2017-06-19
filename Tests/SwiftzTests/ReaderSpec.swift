@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class ReaderSpec : XCTestCase {
     func testReader() {
         func addOne() -> Reader<Int, Int> {
@@ -61,7 +66,7 @@ class ReaderSpec : XCTestCase {
         XCTAssert(lengthResult2 == 6)
     
         // Ask        
-        let lengthResult3 = (reader { 1234 } >>- runReader)?()
+        let lengthResult3 = (reader({ _ in 1234 }) >>- runReader)?(())
         XCTAssert(lengthResult3 == 1234)
         
         let lengthResult4 = hello() >>- runReader
@@ -79,4 +84,10 @@ class ReaderSpec : XCTestCase {
         let lengthResult7 = (asks(length) >>- runReader)?("abc")
         XCTAssert(lengthResult7 == .some(3))
     }
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testReader", testReader)
+    ])
+    #endif
 }

@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 extension Writer where T : Arbitrary {
 	public static var arbitrary : Gen<Writer<W, T>> {
 		return Gen<()>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
@@ -96,4 +101,10 @@ class WriterSpec : XCTestCase {
 			}
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testWriterProperties", testWriterProperties)
+    ])
+    #endif
 }

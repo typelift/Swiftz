@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 extension NonEmptyList where Element : Arbitrary {
 	public static var arbitrary : Gen<NonEmptyList<Element>> {
 		return [Element].arbitrary.suchThat({ !$0.isEmpty }).map { NonEmptyList<Element>(List(fromArray: $0))! }
@@ -165,4 +170,10 @@ class NonEmptyListSpec : XCTestCase {
 			return l.reverse().reverse() == l
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testProperties", testProperties)
+    ])
+    #endif
 }

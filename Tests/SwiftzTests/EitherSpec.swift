@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 	let getEither : Either<A, B>
 
@@ -76,4 +81,12 @@ class EitherSpec : XCTestCase {
 			}
 		}
 	}
+    
+    
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testProperties", testProperties),
+    ])
+    #endif
 }
