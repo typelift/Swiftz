@@ -135,6 +135,26 @@ To add Swiftz to your application:
 - Set the directory to `Frameworks`
 - Click the + and add Swiftz
  
+**Using Swift Package Manager**
+
+- Add Swiftz to your `Package.swift` within your project's `Package` definition:
+
+```swift
+let package = Package(
+	name: "MyProject",
+	...
+	dependencies: [
+		.package(url: "https://github.com/typelift/Swiftz.git", from: "0.0.0")
+		...
+	],
+	targets: [
+		.target(
+            name: "MyProject",
+            dependencies: ["Swiftz"]),
+        ...
+	]
+)
+```
 
 System Requirements
 ===================
