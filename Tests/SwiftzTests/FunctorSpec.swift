@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class FunctorSpec : XCTestCase {
 	func testProperties() {
 		property("Const obeys the Functor identity law") <- forAll { (s : String) in
@@ -33,4 +38,10 @@ class FunctorSpec : XCTestCase {
 			return x.bimap(f1.getArrow, g1.getArrow).bimap(f2.getArrow, g2.getArrow).runConst == (x.bimap(f2.getArrow • f1.getArrow, g1.getArrow • g2.getArrow)).runConst
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testProperties", testProperties),
+    ])
+    #endif
 }

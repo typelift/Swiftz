@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 /*
 /// Generates a Swiftz.Stream of arbitrary values.
 extension Swiftz.Stream where Element : Arbitrary {

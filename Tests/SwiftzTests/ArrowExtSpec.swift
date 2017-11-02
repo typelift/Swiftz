@@ -10,6 +10,11 @@ import Swiftz
 import SwiftCheck
 import XCTest
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class ArrowExtSpec : XCTestCase {
 	func testProperties() {
 		property("Arrow obeys the Functor identity law") <- forAll { (x : ArrowOf<Int, Int>) in

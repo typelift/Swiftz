@@ -83,7 +83,7 @@ public struct HAppend<XS, YS, XYS> {
 	}
 
 	/// Creates an HAppend that appends two non-HNil HLists.
-	public static func makeAppend<T, A : HList, B : HList, C : HList>(h : HAppend<A, B, C>) -> HAppend<HCons<T, A>, B, HCons<T, C>> {
+	public static func makeAppend<T, A, B : HList, C>(h : HAppend<A, B, C>) -> HAppend<HCons<T, A>, B, HCons<T, C>> {
 		return HAppend<HCons<T, A>, B, HCons<T, C>> { (c, l) in
 			return HCons(h: c.head, t: h.append(c.tail, l))
 		}
@@ -126,7 +126,7 @@ public struct HMap<F, A, R> {
 
 	/// Returns an `HMap` that creates an `HCons` node out of a tuple of the 
 	/// head and tail of an `HList`.
-	public static func hcons<H, T : HList>() -> HMap<(), (H, T), HCons<H, T>> {
+	public static func hcons<H, T>() -> HMap<(), (H, T), HCons<H, T>> {
 		return HMap<(), (H, T), HCons<H, T>> { (_, p) in
 			return HCons(h: p.0, t: p.1)
 		}
@@ -175,7 +175,7 @@ public struct HFold<G, V, A, R> {
 	}
 
 	/// Creates an `HFold` object that folds a function over an `HCons` node.
-	public static func makeFold<H, G, V, T : HList, R, RR>(_ p : HMap<G, (H, R), RR>, _ h : HFold<G, V, T, R>) -> HFold<G, V, HCons<H, T>, RR> {
+	public static func makeFold<H, G, V, T, R, RR>(_ p : HMap<G, (H, R), RR>, _ h : HFold<G, V, T, R>) -> HFold<G, V, HCons<H, T>, RR> {
 		return HFold<G, V, HCons<H, T>, RR> { (f, v, c) in
 			return p.map(f, (c.head, h.fold(f, v, c.tail)))
 		}

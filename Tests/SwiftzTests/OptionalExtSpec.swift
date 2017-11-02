@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class OptionalExtSpec : XCTestCase {
 	func testProperties() {
 		property("pure creates a .some") <- forAll { (x : Int) in

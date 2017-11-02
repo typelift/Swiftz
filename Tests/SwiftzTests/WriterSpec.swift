@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 extension Writer where T : Arbitrary {
 	public static var arbitrary : Gen<Writer<W, T>> {
 		return Gen<()>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
@@ -24,7 +29,7 @@ extension Writer where T : Arbitrary {
 extension Writer : WitnessedArbitrary {
 	public typealias Param = T
 
-	public static func forAllWitnessed<W : Monoid, A : Arbitrary>(_ wit : @escaping (A) -> T, pf : @escaping (Writer<W, T>) -> Testable) -> Property {
+	public static func forAllWitnessed<W, A : Arbitrary>(_ wit : @escaping (A) -> T, pf : @escaping (Writer<W, T>) -> Testable) -> Property {
 		return forAllShrink(Writer<W, A>.arbitrary, shrinker: Writer<W, A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})
@@ -96,4 +101,10 @@ class WriterSpec : XCTestCase {
 			}
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testWriterProperties", testWriterProperties)
+    ])
+    #endif
 }

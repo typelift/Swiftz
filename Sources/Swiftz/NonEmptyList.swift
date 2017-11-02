@@ -195,7 +195,7 @@ extension NonEmptyList /*: MonadZip*/ {
 	}
 	
 	public func mzipWith<B, C>(_ other : NonEmptyList<B>, _ f : @escaping (A) -> (B) -> C) -> NonEmptyList<C> {
-		return self.mzip(other).fmap(uncurry(f))
+        return self.mzip(other).fmap { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 	
 	public static func munzip<B>(_ ftab : NonEmptyList<(A, B)>) -> (NonEmptyList<A>, NonEmptyList<B>) {

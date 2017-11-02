@@ -23,3 +23,7 @@ DerivedData
 Carthage/Build
 Carthage/Checkouts
 
+# Docker
+.dockerignore
+Dockerfile
+

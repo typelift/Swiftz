@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class HListSpec : XCTestCase {
 	func testHList() {
 		typealias AList = HCons<Int, HCons<String, HNil>>
@@ -43,4 +48,10 @@ class HListSpec : XCTestCase {
 			}
 		}
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    ("testHList", testHList),
+    ])
+    #endif
 }

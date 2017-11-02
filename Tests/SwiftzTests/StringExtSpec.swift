@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if !XCODE_BUILD
+    import Operadics
+    import Swiftx
+#endif
+
 class StringExtSpec : XCTestCase {
 	func testProperties() {
 		property("unlines • lines === ('\n' • id)") <- forAll { (x : String) in
@@ -92,7 +97,7 @@ class StringExtSpec : XCTestCase {
 		}
 
 		property("filter behaves") <- forAll { (xs : String, pred : ArrowOf<Character, Bool>) in
-			return xs.filter(pred.getArrow).reduce({ $0.0 && pred.getArrow($0.1) }, initial: true)
+            return xs.filter(pred.getArrow).reduce({ acc, i in acc && pred.getArrow(i) }, initial: true)
 		}
 
 		property("isPrefixOf behaves") <- forAll { (s1 : String, s2 : String) in

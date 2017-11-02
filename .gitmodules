@@ -7,3 +7,6 @@
 [submodule "Carthage/Checkouts/Operadics"]
 	path = Carthage/Checkouts/Operadics
 	url = https://github.com/typelift/Operadics.git
+[submodule "Carthage/Checkouts/FileCheck"]
+	path = Carthage/Checkouts/FileCheck
+	url = https://github.com/trill-lang/FileCheck.git

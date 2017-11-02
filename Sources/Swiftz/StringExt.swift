@@ -57,7 +57,7 @@ extension String {
 		} else if self.characters.count == 1 {
 			return .Cons(self[self.startIndex], "")
 		}
-		return .Cons(self[self.startIndex], self[self.index(after: self.startIndex)..<self.endIndex])
+        return .Cons(self[self.startIndex], String(self[self.index(after: self.startIndex)..<self.endIndex]))
 	}
 
 	/// Returns a string containing the characters of the receiver in reverse 

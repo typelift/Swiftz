@@ -526,7 +526,7 @@ public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 		return false
 	}
 
-	return zip(lhs, rhs).map(==).reduce(true) { $0 && $1 }
+    return zip(lhs, rhs).map{ let (lhs, rhs) = $0; return lhs == rhs }.reduce(true) { $0 && $1 }
 }
 
 public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
@@ -738,7 +738,7 @@ extension List /*: MonadZip*/ {
 	}
 	
 	public func mzipWith<B, C>(_ other : List<B>, _ f : @escaping (A) -> (B) -> C) -> List<C> {
-		return self.mzip(other).map(uncurry(f))
+        return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 	
 	public static func munzip<B>(_ ftab : List<(A, B)>) -> (List<A>, List<B>) {
