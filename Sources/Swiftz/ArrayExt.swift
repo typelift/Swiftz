@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -128,7 +128,7 @@ extension Array /*: MonadZip*/ {
 	}
 
 	public func mzipWith<B, C>(_ other : [B], _ f : @escaping (A) -> (B) -> C) -> [C] {
-        return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
+		return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 
 	public static func munzip<B>(ftab : [(A, B)]) -> ([A], [B]) {
@@ -221,7 +221,7 @@ extension Array {
 
 	/// Maps a function over an array that takes pairs of (index, element) to a different element.
 	public func mapWithIndex<U>(_ f : (Int, Element) -> U) -> [U] {
-        return zip((self.startIndex ..< self.endIndex), self).map { let (i, e) = $0; return f(i, e) }
+		return zip((self.startIndex ..< self.endIndex), self).map { let (i, e) = $0; return f(i, e) }
 	}
 
 	public func mapMaybe<U>(_ f : (Element) -> Optional<U>) -> [U] {

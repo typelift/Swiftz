@@ -6,7 +6,7 @@
 //  Copyright © 2015-2016 TypeLift. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -45,8 +45,8 @@ public struct Stream<Element> {
 	}
 
 	/// Repeats a value into a constant stream of that same value.
-	public static func `repeat`(x : Element) -> Stream<Element> {
-		return Stream { (x, `repeat`(x: x)) }
+	public static func `repeat`(_ x : Element) -> Stream<Element> {
+		return Stream { (x, `repeat`(x)) }
 	}
 
 	/// Returns a `Stream` of an infinite number of iteratations of applications
@@ -68,15 +68,15 @@ public struct Stream<Element> {
 	}
 
 	public subscript(n : UInt) -> Element {
-		return self.index(n: n)
+		return self.index(n)
 	}
 
 	/// Looks up the nth element of a `Stream`.
-	public func index(n : UInt) -> Element {
+	public func index(_ n : UInt) -> Element {
 		if n == 0 {
 			return self.head
 		}
-		return self.tail.index(n: n.advanced(by: -1))
+		return self.tail.index(n.advanced(by: -1))
 	}
 
 	/// Returns the first element of a `Stream`.
@@ -145,32 +145,32 @@ public struct Stream<Element> {
 	/// Removes elements from the `Stream` that do not satisfy a given predicate.
 	///
 	/// If there are no elements that satisfy this predicate this function will diverge.
-	public func filter(p : @escaping (Element) -> Bool) -> Stream<Element> {
-		if p(self.head) {
-			return Stream { (self.head, self.tail.filter(p: p)) }
+	public func filter(_ predicate : @escaping (Element) -> Bool) -> Stream<Element> {
+		if predicate(self.head) {
+			return Stream { (self.head, self.tail.filter(predicate)) }
 		}
-		return self.tail.filter(p: p)
+		return self.tail.filter(predicate)
 	}
 
 	/// Returns a `Stream` of alternating elements from each Stream.
-	public func interleaveWith(s2 : Stream<Element>) -> Stream<Element> {
-		return Stream { (self.head, s2.interleaveWith(s2: self.tail)) }
+	public func interleaveWith(_ s2 : Stream<Element>) -> Stream<Element> {
+		return Stream { (self.head, s2.interleaveWith(self.tail)) }
 	}
 
 	/// Creates a `Stream` alternating an element in between the values of 
 	/// another Stream.
-	public func intersperse(x : Element) -> Stream<Element> {
-		return Stream { (self.head, Stream { (x, self.tail.intersperse(x: x)) } ) }
+	public func intersperse(_ x : Element) -> Stream<Element> {
+		return Stream { (self.head, Stream { (x, self.tail.intersperse(x)) } ) }
 	}
 
 	/// Returns a `Stream` of successive reduced values.
-	public func scanl<A>(initial : A, combine : @escaping (A) -> (Element) -> A) -> Stream<A> {
-		return Stream<A> { (initial, self.tail.scanl(initial: combine(initial)(self.head), combine: combine)) }
+	public func scanl<A>(_ initial : A, combine : @escaping (A) -> (Element) -> A) -> Stream<A> {
+		return Stream<A> { (initial, self.tail.scanl(combine(initial)(self.head), combine: combine)) }
 	}
 
 	/// Returns a `Stream` of successive reduced values.
 	public func scanl1(_ f : @escaping (Element) -> (Element) -> Element) -> Stream<Element> {
-		return self.tail.scanl(initial: self.head, combine: f)
+		return self.tail.scanl(self.head, combine: f)
 	}
 }
 
@@ -207,7 +207,7 @@ public func <^> <A, B>(_ f : @escaping (A) -> B, b : Stream<A>) -> Stream<B> {
 
 extension Stream /*: Pointed*/ {
 	public static func pure(_ x : A) -> Stream<A> {
-		return `repeat`(x: x)
+		return `repeat`(x)
 	}
 }
 
@@ -233,7 +233,7 @@ extension Stream /*: Cartesian*/ {
 	public typealias FTABC = Stream<(A, B, C)>
 	public typealias FTABCD = Stream<(A, B, C, D)>
 
-	public static var unit : Stream<()> { return Stream<()>.`repeat`(x: ()) }
+	public static var unit : Stream<()> { return Stream<()>.`repeat`(()) }
 	public func product<B>(_ r : Stream<B>) -> Stream<(A, B)> {
 		return zipWith(self, r, { x in { y in (x, y) } })
 	}

@@ -1,4 +1,4 @@
-github "tcldr/Swiftx" "swift-4"
+github "typelift/Swiftx"
 github "typelift/SwiftCheck"
 github "typelift/Operadics"
 

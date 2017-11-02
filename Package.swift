@@ -5,21 +5,21 @@ import PackageDescription
 let package = Package(
 	name: "Swiftz",
 	products: [
-        .library(
-            name: "Swiftz",
-            targets: ["Swiftz"]),
-    ],
+		.library(
+			name: "Swiftz",
+			targets: ["Swiftz"]),
+		],
 	dependencies: [
-		.package(url: "https://github.com/tcldr/Swiftx.git", .branch("swift-4")),
-		.package(url: "https://github.com/typelift/SwiftCheck.git", .branch("master"))
+		.package(url: "https://github.com/typelift/Swiftx.git", from: "0.6.0"),
+		.package(url: "https://github.com/typelift/SwiftCheck.git", from: "0.9.0")
 	],
 	targets: [
 		.target(
-            name: "Swiftz",
-            dependencies: ["Swiftx"]),
-        .testTarget(
-            name: "SwiftzTests",
-            dependencies: ["Swiftz", "SwiftCheck"]),
-	]
+			name: "Swiftz",
+			dependencies: ["Swiftx"]),
+		.testTarget(
+			name: "SwiftzTests",
+			dependencies: ["Swiftz", "SwiftCheck"]),
+		]
 )
 

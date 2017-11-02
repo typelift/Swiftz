@@ -10,9 +10,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 /// Generates an array of arbitrary values.
@@ -139,10 +139,10 @@ class ListSpec : XCTestCase {
 				let cycle = x.cycle()
 
 				return forAll { (n : Positive<Int>) in
-                    // broken up as 'too complex' for compiler
-                    let range = (0...UInt(n.getPositive))
-                    let transform = { i in cycle[i] == x[(i % x.count)] }
-                    let filter = { $0 == false }
+					// broken up as 'too complex' for compiler
+					let range = (0...UInt(n.getPositive))
+					let transform = { i in cycle[i] == x[(i % x.count)] }
+					let filter = { $0 == false }
 					return range.map(transform).filter(filter).isEmpty
 				}
 			}
@@ -201,10 +201,10 @@ class ListSpec : XCTestCase {
 			}
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testProperties", testProperties),
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties),
+	])
+	#endif
 }

@@ -9,7 +9,7 @@
 import XCTest
 import Swiftz
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -28,7 +28,7 @@ class ThoseSpec : XCTestCase {
     
     #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
     static var allTests = testCase([
-    ("testThose", testThose)
+    	("testThose", testThose)
     ])
     #endif
 }

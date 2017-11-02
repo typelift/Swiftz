@@ -10,9 +10,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 class MonoidSpec : XCTestCase {
@@ -70,11 +70,11 @@ class MonoidSpec : XCTestCase {
 		let v : Dither<Product<Int8>, Sum<Int16>> = Dither([Either.Left(Product(2)), Either.Left(Product(3)), Either.Right(Sum(5)), Either.Left(Product(7))])
 		XCTAssert(v.fold(onLeft: { n in Sum(Int16(n.value())) }, onRight: identity).value() == 18, "Dither works")
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testProperties", testProperties),
-    ("testDither", testDither),
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties),
+		("testDither", testDither),
+	])
+	#endif
 }

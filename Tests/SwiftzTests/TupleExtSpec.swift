@@ -10,7 +10,7 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -25,4 +25,10 @@ class TupleExtSpec : XCTestCase {
 			return snd((x, y)) == y
 		}
 	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

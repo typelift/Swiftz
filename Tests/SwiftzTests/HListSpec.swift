@@ -10,9 +10,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 class HListSpec : XCTestCase {
@@ -21,12 +21,12 @@ class HListSpec : XCTestCase {
 		typealias BList = HCons<Bool, HNil>
 
 		property("The attributes of an HList are statically known") <- forAll { (x : Bool) in
-			let list : BList = HCons(h: false, t: HNil())
+			let list : BList = HCons(false, HNil())
 			return (list.head == false) ^&&^ (BList.length == 1)
 		}
 
 		property("The attributes of an HList are statically known") <- forAll { (x : Int, s : String) in
-			let list : AList = HCons(h: x, t: HCons(h: s, t: HNil()))
+			let list : AList = HCons(x, HCons(s, HNil()))
 			return (list.head == x) ^&&^ (list.tail.head == s) ^&&^ (AList.length == 2)
 		}
 
@@ -39,7 +39,7 @@ class HListSpec : XCTestCase {
 		typealias FEnd = HFold<(), (Int) -> Int, HNil, (Int) -> Int>
 
 		property("A static fold can be modelled by a dynamic one") <- forAll { (_ f : ArrowOf<Int, Int>, g : ArrowOf<Int, Int>, h : ArrowOf<Int, Int>) in
-			let listf : FList = HCons(h: f.getArrow, t: HCons(h: g.getArrow, t: HCons(h: h.getArrow, t: HNil())))
+			let listf : FList = HCons(f.getArrow, HCons(g.getArrow, HCons(h.getArrow, HNil())))
 			let comp : FComp = HMap<(), (), ()>.compose()
 			let foldEnd : FEnd = HFold<(), (), (), ()>.makeFold()
 			let fullFold = FBegin.makeFold(comp, HFold<(), (), (), ()>.makeFold(comp, HFold<(), (), (), ()>.makeFold(comp, foldEnd)))
@@ -48,10 +48,10 @@ class HListSpec : XCTestCase {
 			}
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testHList", testHList),
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testHList", testHList),
+	])
+	#endif
 }

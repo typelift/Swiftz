@@ -10,7 +10,7 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -52,7 +52,7 @@ class UnitSpec : XCTestCase {
     
     #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
     static var allTests = testCase([
-    ("testProperties", testProperties)
+    	("testProperties", testProperties)
     ])
     #endif
 }

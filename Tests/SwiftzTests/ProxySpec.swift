@@ -11,9 +11,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 extension Proxy : Arbitrary {
@@ -76,7 +76,7 @@ class ProxySpec : XCTestCase {
 
 		/*
 		property("Proxy obeys the second Applicative composition law") <- forAll { (_ f : Proxy<(Int) -> Int>, g : Proxy<(Int) -> Int>, x : Proxy<Int>) in
-			return (Proxy<((Int) -> Int) -> ((Int) -> Int) -> (Int) -> Int>.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+		return (Proxy<((Int) -> Int) -> ((Int) -> Int) -> (Int) -> Int>.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
 		}
 		*/
 		
@@ -99,13 +99,13 @@ class ProxySpec : XCTestCase {
 			return x.extend({ $0.extract() }) == x
 		}
 
-// Can't test ⊥ == ⊥ in this language.
-//		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
-//			return forAll { (x : Proxy<Int>) in
-//				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
-//				return x.extend(f).extract() == f(x)
-//			}
-//		}
+		// Can't test ⊥ == ⊥ in this language.
+		//		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>) in
+		//			return forAll { (x : Proxy<Int>) in
+		//				let f : Proxy<Int> -> Int = ff.getArrow • const(0)
+		//				return x.extend(f).extract() == f(x)
+		//			}
+		//		}
 
 		property("Proxy obeys the Comonad composition law") <- forAll { (ff : ArrowOf<Int, Int>, gg : ArrowOf<Int, Int>) in
 			return forAll { (x : Proxy<Int>) in
@@ -123,11 +123,11 @@ class ProxySpec : XCTestCase {
 			}
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testProperties", testProperties)
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }
 

@@ -10,9 +10,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 class FunctionSpec : XCTestCase {
@@ -61,7 +61,7 @@ class FunctionSpec : XCTestCase {
 			let la = Function.arr(f.getArrow).first()
 			let ra = Function.arr(Function.arr(f.getArrow).first().apply)
 			return forAll { (x : Int8, y : Int8) in
-                return la.apply((x, y)) == ra.apply((x, y))
+				return la.apply((x, y)) == ra.apply((x, y))
 			}
 		}
 
@@ -69,7 +69,7 @@ class FunctionSpec : XCTestCase {
 			let la = Function.arr(f.getArrow) >>> Function.arr(g.getArrow)
 			let ra = Function.arr(f.getArrow).first() >>> Function.arr(g.getArrow).first()
 			return forAll { (x : Int8, y : Int8) in
-                return la.first().apply((x, y)) == ra.apply((x, y))
+				return la.first().apply((x, y)) == ra.apply((x, y))
 			}
 		}
 
@@ -77,7 +77,7 @@ class FunctionSpec : XCTestCase {
 			let la = Function.arr(f.getArrow).first() >>> Function.arr(fst)
 			let ra = Function<(Int8, Int8), Int8>.arr(fst) >>> Function.arr(f.getArrow)
 			return forAll { (x : Int8, y : Int8) in
-                return la.apply((x, y)) == ra.apply((x, y))
+				return la.apply((x, y)) == ra.apply((x, y))
 			}
 		}
 
@@ -85,7 +85,7 @@ class FunctionSpec : XCTestCase {
 			let la = Function.arr(f.getArrow).first() >>> (Function.arr(identity) *** Function.arr(g.getArrow))
 			let ra = (Function.arr(identity) *** Function.arr(g.getArrow)) >>> Function.arr(f.getArrow).first()
 			return forAll { (x : Int8, y : Int8) in
-                return la.apply((x, y)) == ra.apply((x, y))
+				return la.apply((x, y)) == ra.apply((x, y))
 			}
 		}
 
@@ -145,29 +145,29 @@ class FunctionSpec : XCTestCase {
 			}
 		}
 
-//		property("") <- forAll { (_ f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
-//			let la = Function.arr(f.getArrow).left().left() >>> Function.arr(assocSum)
-//			let ra =  Function.arr(assocSum) >>> Function.arr(f.getArrow).left()
-//			return forAll { (e : EitherOf<Int8, Int8>) in
-//				return la.apply(e.getEither) == ra.apply(e.getEither)
-//			}
-//		}
+		//		property("") <- forAll { (_ f : ArrowOf<Int8, Int8>, g : ArrowOf<Int8, Int8>) in
+		//			let la = Function.arr(f.getArrow).left().left() >>> Function.arr(assocSum)
+		//			let ra =  Function.arr(assocSum) >>> Function.arr(f.getArrow).left()
+		//			return forAll { (e : EitherOf<Int8, Int8>) in
+		//				return la.apply(e.getEither) == ra.apply(e.getEither)
+		//			}
+		//		}
 	}
 
 	func testArrowApplyLaws() {
 		property("app") <- forAll { (x : Int8, y : Int8) in
 			let app : Function<(Function<Int8, (Int8, Int8)>, Int8), (Int8, Int8)> = Function<Int8, (Int8, Int8)>.app()
 			let la = Function<Int8, Function<Int8, (Int8, Int8)>>.arr({ x in Function.arr({ y in (x, y) }) }).first() >>> app
-            return la.apply((x, y)) == identity((x, y))
+			return la.apply((x, y)) == identity((x, y))
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testCategoryLaws", testCategoryLaws),
-    ("testArrowLaws", testArrowLaws),
-    ("testArrowChoiceLaws", testArrowChoiceLaws),
-    ("testArrowApplyLaws", testArrowApplyLaws)
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testCategoryLaws", testCategoryLaws),
+		("testArrowLaws", testArrowLaws),
+		("testArrowChoiceLaws", testArrowChoiceLaws),
+		("testArrowApplyLaws", testArrowApplyLaws)
+	])
+	#endif
 }

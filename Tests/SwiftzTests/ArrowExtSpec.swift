@@ -10,7 +10,7 @@ import Swiftz
 import SwiftCheck
 import XCTest
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -87,4 +87,10 @@ class ArrowExtSpec : XCTestCase {
 			}
 		}
 	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

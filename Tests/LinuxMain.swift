@@ -12,20 +12,27 @@ import XCTest
 
 #if !os(macOS)
 XCTMain([
-    EitherSpec.allTests,
-    FunctionSpec.allTests,
-    FunctorSpec.allTests,
-    HListSpec.allTests,
-    IdentitySpec.allTests,
-    ListSpec.allTests,
-    MonoidSpec.allTests,
-    NonEmptyListSpec.allTests,
-    ProxySpec.allTests,
-    ReaderSpec.allTests,
-//    StateSpec.allTests,
-//    StreamSpec.allTests,
-    ThoseSpec.allTests,
-    UnitSpec.allTests,
-    WriterSpec.allTests,
-    ])
+	EitherSpec.allTests,
+	FunctionSpec.allTests,
+	FunctorSpec.allTests,
+	HListSpec.allTests,
+	IdentitySpec.allTests,
+	ListSpec.allTests,
+	MonoidSpec.allTests,
+	NonEmptyListSpec.allTests,
+	ProxySpec.allTests,
+	ReaderSpec.allTests,
+//	StateSpec.allTests,
+//	StreamSpec.allTests,
+	ThoseSpec.allTests,
+	UnitSpec.allTests,
+	WriterSpec.allTests,
+
+	ArrayExtSpec.allTests,
+	ArrowExtSpec.allTests,
+	DictionaryExtSpec.allTests,
+	OptionalExtSpec.allTests,
+	StringExtSpec.allTests,
+	TupleExtSpec.allTests,
+])
 #endif

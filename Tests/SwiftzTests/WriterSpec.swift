@@ -10,14 +10,14 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 extension Writer where T : Arbitrary {
 	public static var arbitrary : Gen<Writer<W, T>> {
-		return Gen<()>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
+		return Gen<(T, W)>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
 	}
 
 	public static func shrink(_ xs : Writer<W, T>) -> [Writer<W, T>] {
@@ -101,10 +101,10 @@ class WriterSpec : XCTestCase {
 			}
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testWriterProperties", testWriterProperties)
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testWriterProperties", testWriterProperties)
+	])
+	#endif
 }

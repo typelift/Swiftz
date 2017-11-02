@@ -1,3 +1,4 @@
-github "tcldr/Swiftx" "bddef5576e169320eca9d27cc7f272a22ea64856"
+github "trill-lang/FileCheck" "0.0.4"
 github "typelift/Operadics" "0.3.0"
-github "typelift/SwiftCheck" "0.8.1"
+github "typelift/SwiftCheck" "0.9.1"
+github "typelift/Swiftx" "0.6.0"

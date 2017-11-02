@@ -6,7 +6,7 @@
 //  Copyright (c) 2014-2016 Maxwell Swadling. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -526,7 +526,7 @@ public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 		return false
 	}
 
-    return zip(lhs, rhs).map{ let (lhs, rhs) = $0; return lhs == rhs }.reduce(true) { $0 && $1 }
+	return zip(lhs, rhs).map{ let (lhs, rhs) = $0; return lhs == rhs }.reduce(true) { $0 && $1 }
 }
 
 public func != <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
@@ -582,9 +582,9 @@ extension List : Sequence {
 }
 
 extension List : Collection {
-    public func index(after i: UInt) -> UInt {
-        return i + 1
-    }
+	public func index(after i: UInt) -> UInt {
+		return i + 1
+	}
 
 	public typealias Index = UInt
 
@@ -738,7 +738,7 @@ extension List /*: MonadZip*/ {
 	}
 	
 	public func mzipWith<B, C>(_ other : List<B>, _ f : @escaping (A) -> (B) -> C) -> List<C> {
-        return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
+		return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 	
 	public static func munzip<B>(_ ftab : List<(A, B)>) -> (List<A>, List<B>) {
