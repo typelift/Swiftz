@@ -10,7 +10,7 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -31,15 +31,20 @@ struct StateOf<S, A : Arbitrary> : Arbitrary, CustomStringConvertible {
 	}
 }
 
-/*
 class StateSpec : XCTestCase {
 	func testProperties() {
 		property("sequence occurs in order") <- forAll { (xs : [String]) in
 			let seq = sequence(xs.map(State<String, String>.pure))
-			return forAllNoShrink(Gen.pure(seq)) { ss in
+			return forAllNoShrink(Gen<State<String, [String]>>.pure(seq)) { ss in
 				return ss.eval("") == xs
 			}
 		}
 	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }
-*/
+

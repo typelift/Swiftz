@@ -10,7 +10,7 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
     import Operadics
     import Swiftx
 #endif
@@ -93,7 +93,7 @@ class StringExtSpec : XCTestCase {
 
 		property("map behaves") <- forAll { (xs : String) in
 			let fs : (Character) -> String = { String.replicate(2, value: $0) }
-			return (xs >>- fs) == Array(xs.characters).map(fs).reduce("", +)
+			return (xs >>- fs) == xs.map(fs).reduce("", +)
 		}
 
 		property("filter behaves") <- forAll { (xs : String, pred : ArrowOf<Character, Bool>) in
@@ -124,4 +124,10 @@ class StringExtSpec : XCTestCase {
 			return Discard()
 		}
 	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

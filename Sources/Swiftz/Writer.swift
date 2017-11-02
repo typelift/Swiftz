@@ -6,7 +6,7 @@
 //  Copyright © 2015-2016 TypeLift. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -38,13 +38,13 @@ public struct Writer<W : Monoid, T> {
 }
 
 /// Appends the given value to the `Writer`'s environment.
-public func tell<W>(w : W) -> Writer<W, ()> {
+public func tell<W>(_ w : W) -> Writer<W, ()> {
 	return Writer(((), w))
 }
 
 /// Executes the action of the given `Writer` and adds its output to the result 
 /// of the computation.
-public func listen<W, A>(w : Writer<W, A>) -> Writer<W, (A, W)> {
+public func listen<W, A>(_ w : Writer<W, A>) -> Writer<W, (A, W)> {
 	let (a, w) = w.runWriter
 	return Writer(((a, w), w))
 }
@@ -60,7 +60,7 @@ public func listens<W, A, B>(_ f : (W) -> B, w : Writer<W, A>) -> Writer<W, (A, 
 /// Executes the action of the given `Writer` to get a value and a function.  
 /// The function is then applied to the current environment and the output added
 /// to the result of the computation.
-public func pass<W, A>(w : Writer<W, (A, (W) -> W)>) -> Writer<W, A> {
+public func pass<W, A>(_ w : Writer<W, (A, (W) -> W)>) -> Writer<W, A> {
 	let ((a, f), w) = w.runWriter
 	return Writer((a, f(w)))
 }

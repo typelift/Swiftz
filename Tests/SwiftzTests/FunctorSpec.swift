@@ -10,9 +10,9 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
 class FunctorSpec : XCTestCase {
@@ -38,10 +38,10 @@ class FunctorSpec : XCTestCase {
 			return x.bimap(f1.getArrow, g1.getArrow).bimap(f2.getArrow, g2.getArrow).runConst == (x.bimap(f2.getArrow • f1.getArrow, g1.getArrow • g2.getArrow)).runConst
 		}
 	}
-    
-    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
-    static var allTests = testCase([
-    ("testProperties", testProperties),
-    ])
-    #endif
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties),
+	])
+	#endif
 }

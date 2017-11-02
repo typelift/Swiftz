@@ -174,7 +174,7 @@ extension Dictionary {
 	public func mapWithKey<Value2>(_ f : (Key) -> (Value) -> Value2) -> [Key: Value2] {
 		var d = [Key: Value2]()
 		self.forEach {
-            let (k, v) = $0
+			let (k, v) = $0
 			d[k] = f(k)(v)
 		}
 		return d
@@ -189,7 +189,7 @@ extension Dictionary {
 	public func mapKeys<Key2>(_ f : (Key) -> Key2) -> [Key2: Value] {
 		var d = [Key2: Value]()
 		self.forEach {
-            let (k, v) = $0
+			let (k, v) = $0
 			d[f(k)] = v
 		}
 		return d
@@ -234,7 +234,7 @@ extension Dictionary {
 	public func filterWithKey(_ pred : (Key) -> (Value) -> Bool) -> [Key: Value] {
 		var d = [Key: Value]()
 		self.forEach {
-            let (k, v) = $0
+			let (k, v) = $0
 			if pred(k)(v) {
 				d[k] = v
 			}
@@ -265,7 +265,7 @@ extension Dictionary {
 		var pass = [Key: Value]()
 		var fail = [Key: Value]()
 		self.forEach {
-            let (k, v) = $0
+			let (k, v) = $0
 			if pred(k)(v) {
 				pass[k] = v
 			} else {

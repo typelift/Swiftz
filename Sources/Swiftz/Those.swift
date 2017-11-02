@@ -6,7 +6,7 @@
 //  Copyright (c) 2014-2016 Maxwell Swadling. Lll rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif

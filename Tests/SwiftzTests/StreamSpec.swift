@@ -10,12 +10,12 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
-#if !XCODE_BUILD
-    import Operadics
-    import Swiftx
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
 #endif
 
-/*
+
 /// Generates a Swiftz.Stream of arbitrary values.
 extension Swiftz.Stream where Element : Arbitrary {
 	public static var arbitrary : Gen<Swiftz.Stream<Element>> {
@@ -27,20 +27,18 @@ extension Swiftz.Stream where Element : Arbitrary {
 			}
 		}
 	}
-	
-	public static func shrink(_ xs : Swiftz.Stream) -> [Swiftz.Stream] {
-		return []
-	}
 }
 
 extension Swiftz.Stream : WitnessedArbitrary {
 	public typealias Param = Element
 	
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : (A) -> Element, pf : ((Swiftz.Stream) -> Testable)) -> Property {
+	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : @escaping ((Swiftz.Stream<Element>) -> Testable)) -> Property {
 		return forAllShrink(Swiftz.Stream<A>.arbitrary, shrinker: Swiftz.Stream<A>.shrink, f: { bl in
 			return pf(bl.fmap(wit))
 		})
 	}
+
+	public static func shrink(_ xs : Swiftz.Stream<Element>) -> [Swiftz.Stream<Element>] { return [] }
 }
 
 
@@ -49,26 +47,27 @@ class StreamSpec : XCTestCase {
 		
 		property("pure behaves") <- forAll { (i : Int) in
 			let xs = Swiftz.Stream.pure(i)
-			return [UInt](1...10).all { n in
-				return xs[n] == i
+			return [UInt](1...10).reduce(true) { (acc, n) in
+				return acc && xs[n] == i
 			}
 		}
 		
-		property("Take behaves") <- forAll { (xs : Swiftz.Stream) in
-			return [UInt](1...10).all { n in
-				return xs.take(n).count == Int(n)
+		property("Take behaves") <- forAll { (xs : Swiftz.Stream<UInt>) in
+			return [UInt](1...10).reduce(true) { (acc, n) in
+				return acc && xs.take(n).count == Int(n)
 			}
 		}
 		
-		property("Interleave behaves") <- forAll { (xs : Swiftz.Stream, ys : Swiftz.Stream) in
-			return [UInt](1...10).all { n in
+		property("Interleave behaves") <- forAll { (xs : Swiftz.Stream<Int>, ys : Swiftz.Stream<Int>) in
+			return [UInt](1...10).reduce(true) { (acc, n) in
 				let zs = xs.interleaveWith(ys)
-				return zs[2 * n] == xs[n]
+				return acc
+					&& zs[2 * n] == xs[n]
 					&& zs[2 * n + 1] == ys[n]
 			}
 		}
 		
-		property("Swiftz.Stream obeys the Functor identity law") <- forAll { (x : Swiftz.Stream) in
+		property("Swiftz.Stream obeys the Functor identity law") <- forAll { (x : Swiftz.Stream<UInt>) in
 			return forAll { (n : UInt) in
 				return (x.fmap(identity)).take(n) == identity(x).take(n)				
 			}
@@ -82,29 +81,29 @@ class StreamSpec : XCTestCase {
 			}
 		}
 		
-		property("Swiftz.Stream obeys the Applicative identity law") <- forAll { (x : Swiftz.Stream) in
+		property("Swiftz.Stream obeys the Applicative identity law") <- forAll { (x : Swiftz.Stream<UInt>) in
 			return forAll { (n : UInt) in
 				return (Swiftz.Stream.pure(identity) <*> x).take(n) == x.take(n)
 			}
 		}
 		
 		// Swift unroller can't handle our scale; Use only small lists.
-		property("Swiftz.Stream obeys the first Applicative composition law") <- forAll { (fl : Swiftz.Stream, gl : Swiftz.Stream, x : Swiftz.Stream) in
-			return forAll { (n : UInt) in
-				let f = fl.fmap({ $0.getArrow })
-				let g = gl.fmap({ $0.getArrow })
-				return (curry(•) <^> f <*> g <*> x).take(n) == (f <*> (g <*> x)).take(n)
-			}
-		}
-		
-		property("Swiftz.Stream obeys the second Applicative composition law") <- forAll { (fl : Swiftz.Stream, gl : Swiftz.Stream, x : Swiftz.Stream) in
-			return forAll { (n : UInt) in
-				let f = fl.fmap({ $0.getArrow })
-				let g = gl.fmap({ $0.getArrow })
-				return (Swiftz.Stream.pure(curry(•)) <*> f <*> g <*> x).take(n) == (f <*> (g <*> x)).take(n)
-			}
-		}
-		
+		//		property("Swiftz.Stream obeys the first Applicative composition law") <- forAll { (fl : Swiftz.Stream, gl : Swiftz.Stream, x : Swiftz.Stream) in
+		//			return forAll { (n : UInt) in
+		//				let f = fl.fmap({ $0.getArrow })
+		//				let g = gl.fmap({ $0.getArrow })
+		//				return (curry(•) <^> f <*> g <*> x).take(n) == (f <*> (g <*> x)).take(n)
+		//			}
+		//		}
+		//
+		//		property("Swiftz.Stream obeys the second Applicative composition law") <- forAll { (fl : Swiftz.Stream, gl : Swiftz.Stream, x : Swiftz.Stream) in
+		//			return forAll { (n : UInt) in
+		//				let f = fl.fmap({ $0.getArrow })
+		//				let g = gl.fmap({ $0.getArrow })
+		//				return (Swiftz.Stream.pure(curry(•)) <*> f <*> g <*> x).take(n) == (f <*> (g <*> x)).take(n)
+		//			}
+		//		}
+
 		/// These three take *forever* to execute.  It's scary how much stack 
 		/// space it takes to force these Swiftz.Streams.
 		
@@ -113,13 +112,13 @@ class StreamSpec : XCTestCase {
 			return forAll { (n : UInt) in
 				return (Swiftz.Stream<Int>.pure(a) >>- f).take(n) == f(a).take(n)
 			}
-		}.once
+			}.once
 		
 		property("Swiftz.Stream obeys the Monad right identity law") <- forAll { (m : Swiftz.Stream) in
 			return forAll { (n : UInt) in
 				return (m >>- Swiftz.Stream<Int>.pure).take(n) == m.take(n)
 			}
-		}.once
+			}.once
 		
 		property("Swiftz.Stream obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Int>, ga : ArrowOf<Int, Int>) in
 			
@@ -130,9 +129,9 @@ class StreamSpec : XCTestCase {
 					return ((m >>- f) >>- g).take(n) == (m >>- { x in f(x) >>- g }).take(n)
 				}
 			}
-		}.once
+			}.once
 		
-		property("Swiftz.Stream obeys the Comonad identity law") <- forAll { (x : Swiftz.Stream) in
+		property("Swiftz.Stream obeys the Comonad identity law") <- forAll { (x : Swiftz.Stream<UInt>) in
 			return forAll { (n : UInt) in
 				return x.extend({ $0.extract() }).take(n) == x.take(n)
 			}
@@ -157,12 +156,18 @@ class StreamSpec : XCTestCase {
 			}
 		}
 
-        property("sequence occurs in order") <- forAll { (xs : [String]) in
-            let seq = sequence(xs.map({ x in Swiftz.Stream.pure(x).take(1) }))
-            return forAllNoShrink(Gen.pure(seq)) { ss in
-                return ss.first ?? [] == xs
-            }
-        }
-    }
+		property("sequence occurs in order") <- forAll { (xs : [String]) in
+			let seq = sequence(xs.map({ x in Swiftz.Stream.pure(x).take(1) }))
+			return forAllNoShrink(Gen.pure(seq)) { ss in
+				return ss.first ?? [] == xs
+			}
+		}
+	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }
-*/
+
