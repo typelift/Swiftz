@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -128,7 +128,7 @@ extension Array /*: MonadZip*/ {
 	}
 
 	public func mzipWith<B, C>(_ other : [B], _ f : @escaping (A) -> (B) -> C) -> [C] {
-		return self.mzip(other).map(uncurry(f))
+		return self.mzip(other).map { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 
 	public static func munzip<B>(ftab : [(A, B)]) -> ([A], [B]) {
@@ -207,7 +207,7 @@ extension Array {
 		case .Nil:
 			return .none
 		case let .Cons(x, xs):
-			return .some(x, xs)
+			return .some((x, xs))
 		}
 	}
 	/// Safely indexes into an array by converting out of bounds errors to nils.
@@ -221,7 +221,7 @@ extension Array {
 
 	/// Maps a function over an array that takes pairs of (index, element) to a different element.
 	public func mapWithIndex<U>(_ f : (Int, Element) -> U) -> [U] {
-		return zip((self.startIndex ..< self.endIndex), self).map(f)
+		return zip((self.startIndex ..< self.endIndex), self).map { let (i, e) = $0; return f(i, e) }
 	}
 
 	public func mapMaybe<U>(_ f : (Element) -> Optional<U>) -> [U] {
@@ -445,13 +445,13 @@ extension Sequence {
 	/// Maps the array of  to a dictionary given a transformer function that returns
 	/// a (Key, Value) pair for the dictionary, if nil is returned then the value is
 	/// not added to the dictionary.
-	public func mapAssociate<Key : Hashable, Value>(_ f : (Iterator.Element) -> (Key, Value)?) -> [Key : Value] {
+	public func mapAssociate<Key, Value>(_ f : (Iterator.Element) -> (Key, Value)?) -> [Key : Value] {
 		return Dictionary(flatMap(f))
 	}
 	
 	/// Creates a dictionary of Key-Value pairs generated from the transformer function returning the key (the label)
 	/// and pairing it with that element.
-	public func mapAssociateLabel<Key : Hashable>(_ f : (Iterator.Element) -> Key) -> [Key : Iterator.Element] {
+	public func mapAssociateLabel<Key>(_ f : (Iterator.Element) -> Key) -> [Key : Iterator.Element] {
 		return Dictionary(map { (f($0), $0) })
 	}
 }

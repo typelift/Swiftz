@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if SWIFT_PACKAGE
+    import Operadics
+    import Swiftx
+#endif
+
 class ArrayExtSpec : XCTestCase {
 	func testProperties() {
 		property("mapFlatten is the same as removing the optionals from an array and forcing") <- forAll { (xs0 : Array<OptionalOf<Int>>) in
@@ -73,7 +78,9 @@ class ArrayExtSpec : XCTestCase {
 		property("Array obeys the second Applicative composition law") <- forAll { (fl : Array<ArrowOf<Int8, Int8>>, gl : Array<ArrowOf<Int8, Int8>>, x : Array<Int8>) in
 			let f = fl.map({ $0.getArrow })
 			let g = gl.map({ $0.getArrow })
-			return (Array.pure(curry(•)) <*> f <*> g <*> x) == (f <*> (g <*> x))
+            let lhs = Array.pure(curry(•)) <*> f <*> g <*> x
+            let rhs = f <*> (g <*> x)
+			return (lhs == rhs) // broken up as 'too complex' for compiler
 		}
 
 		property("Array obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, ArrayOf<Int>>) in
@@ -175,4 +182,10 @@ class ArrayExtSpec : XCTestCase {
 			}
 		}
 	}
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014-2016 Maxwell Swadling. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Swiftx
 #endif
 
@@ -66,7 +66,7 @@ public struct TupleBF<L, R> /*: Bifunctor*/ {
 		return self.bimap(f, identity)
 	}
 
-	public func rightMap(g : @escaping (R) -> D) -> (L, D) {
+	public func rightMap(_ g : @escaping (R) -> D) -> (L, D) {
 		return self.bimap(identity, g)
 	}
 }

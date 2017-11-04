@@ -173,7 +173,8 @@ extension Dictionary {
 	/// Maps a function over all keys and values in the receiver.
 	public func mapWithKey<Value2>(_ f : (Key) -> (Value) -> Value2) -> [Key: Value2] {
 		var d = [Key: Value2]()
-		self.forEach { (k, v) in
+		self.forEach {
+			let (k, v) = $0
 			d[k] = f(k)(v)
 		}
 		return d
@@ -185,9 +186,10 @@ extension Dictionary {
 	}
 
 	/// Maps a function over all keys in the receiver.
-	public func mapKeys<Key2 : Hashable>(_ f : (Key) -> Key2) -> [Key2: Value] {
+	public func mapKeys<Key2>(_ f : (Key) -> Key2) -> [Key2: Value] {
 		var d = [Key2: Value]()
-		self.forEach { (k, v) in
+		self.forEach {
+			let (k, v) = $0
 			d[f(k)] = v
 		}
 		return d
@@ -231,7 +233,8 @@ extension Dictionary {
 	/// the receiver.
 	public func filterWithKey(_ pred : (Key) -> (Value) -> Bool) -> [Key: Value] {
 		var d = [Key: Value]()
-		self.forEach { (k, v) in
+		self.forEach {
+			let (k, v) = $0
 			if pred(k)(v) {
 				d[k] = v
 			}
@@ -261,7 +264,8 @@ extension Dictionary {
 	public func partitionWithKey(_ pred : (Key) -> (Value) -> Bool) -> (passed : [Key: Value], failed : [Key: Value]) {
 		var pass = [Key: Value]()
 		var fail = [Key: Value]()
-		self.forEach { (k, v) in
+		self.forEach {
+			let (k, v) = $0
 			if pred(k)(v) {
 				pass[k] = v
 			} else {

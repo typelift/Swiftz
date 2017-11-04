@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if SWIFT_PACKAGE
+    import Operadics
+    import Swiftx
+#endif
+
 class OptionalExtSpec : XCTestCase {
 	func testProperties() {
 		property("pure creates a .some") <- forAll { (x : Int) in
@@ -102,4 +107,10 @@ class OptionalExtSpec : XCTestCase {
 			}
 		}
 	}
+	
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

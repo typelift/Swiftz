@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -77,7 +77,7 @@ extension Function /*: Arrow*/ {
 }
 
 public func *** <B, C, D, E>(_ f : Function<B, C>, g : Function<D, E>) -> Function<(B, D), (C, E)> {
-	return Function.arr { (x, y) in  (f.apply(x), g.apply(y)) }
+	return Function.arr { let (x, y) = $0; return (f.apply(x), g.apply(y)) }
 }
 
 public func &&& <A, B, C>(_ f : Function<A, B>, g : Function<A, C>) -> Function<A, (B, C)> {
@@ -114,7 +114,7 @@ extension Function /*: ArrowApply*/ {
 	public typealias APP = Function<(Function<A, B>, A), B>
 
 	public static func app() -> Function<(Function<T, U>, A), B> {
-		return Function<(Function<T, U>, A), B>({ (f, x) in f.apply(x) })
+		return Function<(Function<T, U>, A), B>({ let (f, x) = $0; return f.apply(x) })
 	}
 }
 

@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if SWIFT_PACKAGE
+    import Operadics
+    import Swiftx
+#endif
+
 class DictionaryExtSpec : XCTestCase {
     func testProperties() {
 		/*
@@ -40,4 +45,10 @@ class DictionaryExtSpec : XCTestCase {
 
 
     }
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties)
+	])
+	#endif
 }

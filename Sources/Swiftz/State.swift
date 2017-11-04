@@ -6,7 +6,7 @@
 //  Copyright (c) 2015-2016 TypeLift. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -24,13 +24,13 @@ public struct State<S, A> {
 
 	/// Evaluates the computation given an initial state then returns a final 
 	/// value after running each step.
-	public func eval(s : S) -> A {
+	public func eval(_ s : S) -> A {
 		return self.runState(s).0
 	}
 
 	/// Evaluates the computation given an initial state then returns the final 
 	/// state after running each step.
-	public func exec(s : S) -> S {
+	public func exec(_ s : S) -> S {
 		return self.runState(s).1
 	}
 

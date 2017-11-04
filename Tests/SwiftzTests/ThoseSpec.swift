@@ -9,6 +9,11 @@
 import XCTest
 import Swiftz
 
+#if SWIFT_PACKAGE
+    import Operadics
+    import Swiftx
+#endif
+
 class ThoseSpec : XCTestCase {
 	func testThose() {
 		let this = Those<String, Int>.This("String")
@@ -20,4 +25,10 @@ class ThoseSpec : XCTestCase {
 
 		XCTAssert(both.bimap(identity, identity) == both, "")
 	}
+    
+    #if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+    static var allTests = testCase([
+    	("testThose", testThose)
+    ])
+    #endif
 }

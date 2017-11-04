@@ -10,6 +10,11 @@ import XCTest
 import Swiftz
 import SwiftCheck
 
+#if SWIFT_PACKAGE
+	import Operadics
+	import Swiftx
+#endif
+
 struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 	let getEither : Either<A, B>
 
@@ -25,7 +30,7 @@ struct EitherOf<A : Arbitrary, B : Arbitrary> : Arbitrary {
 		return Gen.one(of: [
 			A.arbitrary.map(Either.Left),
 			B.arbitrary.map(Either.Right),
-		]).map(EitherOf.init)
+			]).map(EitherOf.init)
 	}
 
 	static func shrink(_ bl : EitherOf<A, B>) -> [EitherOf<A, B>] {
@@ -76,4 +81,12 @@ class EitherSpec : XCTestCase {
 			}
 		}
 	}
+
+
+
+	#if !(os(macOS) || os(iOS) || os(watchOS) || os(tvOS))
+	static var allTests = testCase([
+		("testProperties", testProperties),
+	])
+	#endif
 }

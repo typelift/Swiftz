@@ -6,7 +6,7 @@
 //  Copyright (c) 2014-2016 Maxwell Swadling. All rights reserved.
 //
 
-#if !XCODE_BUILD
+#if SWIFT_PACKAGE
 	import Operadics
 	import Swiftx
 #endif
@@ -17,17 +17,17 @@
 public struct NonEmptyList<Element> {
 	public let head : Element
 	public let tail : List<Element>
-
+	
 	public init(_ a : A, _ t : List<Element>) {
 		head = a
 		tail = t
 	}
-
+	
 	public init(_ a : A, _ t : NonEmptyList<Element>) {
 		head = a
 		tail = t.toList()
 	}
-
+	
 	public init?(_ list : List<Element>) {
 		switch list.match {
 		case .Nil:
@@ -36,15 +36,15 @@ public struct NonEmptyList<Element> {
 			self.init(h, t)
 		}
 	}
-
+	
 	public func toList() -> List<Element> {
 		return List(head, tail)
 	}
-
+	
 	public func reverse() -> NonEmptyList<Element> {
 		return NonEmptyList(self.toList().reverse())!
 	}
-
+	
 	/// Indexes into a non-empty list.
 	public subscript(n : UInt) -> Element {
 		if n == 0 {
@@ -52,7 +52,7 @@ public struct NonEmptyList<Element> {
 		}
 		return self.tail[n.advanced(by: -1)]
 	}
-
+	
 	/// Returns the length of the list.
 	///
 	/// For infinite lists this function will throw an exception.
@@ -81,7 +81,7 @@ extension NonEmptyList : ExpressibleByArrayLiteral {
 
 extension NonEmptyList : Sequence {
 	public typealias Iterator = ListIterator<Element>
-
+	
 	public func makeIterator() -> ListIterator<Element> {
 		return ListIterator(self.toList())
 	}
@@ -91,11 +91,11 @@ extension NonEmptyList : Collection {
 	public func index(after i: UInt) -> UInt {
 		return i + 1
 	}
-
+	
 	public typealias Index = UInt
-
+	
 	public var startIndex : UInt { return 0 }
-
+	
 	public var endIndex : UInt {
 		return self.count
 	}
@@ -112,7 +112,7 @@ extension NonEmptyList /*: Functor*/ {
 	public typealias A = Element
 	public typealias B = Any
 	public typealias FB = NonEmptyList<B>
-
+	
 	public func fmap<B>(_ f : @escaping (A) -> B) -> NonEmptyList<B> {
 		return NonEmptyList<B>(f(self.head), self.tail.fmap(f))
 	}
@@ -131,7 +131,7 @@ extension NonEmptyList /*: Pointed*/ {
 extension NonEmptyList /*: Applicative*/ {
 	public typealias FA = NonEmptyList<Element>
 	public typealias FAB = NonEmptyList<(A) -> B>
-
+	
 	public func ap<B>(_ f : NonEmptyList<(A) -> B>) -> NonEmptyList<B> {
 		return f.bind({ f in self.bind({ x in NonEmptyList<B>.pure(f(x)) }) })
 	}
@@ -146,7 +146,7 @@ extension NonEmptyList /*: Cartesian*/ {
 	public typealias FTAB = NonEmptyList<(A, B)>
 	public typealias FTABC = NonEmptyList<(A, B, C)>
 	public typealias FTABCD = NonEmptyList<(A, B, C, D)>
-
+	
 	public static var unit : NonEmptyList<()> { return [()] }
 	public func product<B>(_ r : NonEmptyList<B>) -> NonEmptyList<(A, B)> {
 		return self.mzip(r)
@@ -166,15 +166,15 @@ extension NonEmptyList /*: ApplicativeOps*/ {
 	public typealias FC = NonEmptyList<C>
 	public typealias D = Any
 	public typealias FD = NonEmptyList<D>
-
+	
 	public static func liftA<B>(_ f : @escaping (A) -> B) -> (NonEmptyList<A>) -> NonEmptyList<B> {
 		return { (a : NonEmptyList<A>) -> NonEmptyList<B> in NonEmptyList<(A) -> B>.pure(f) <*> a }
 	}
-
+	
 	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (NonEmptyList<A>) -> (NonEmptyList<B>) -> NonEmptyList<C> {
 		return { (a : NonEmptyList<A>) -> (NonEmptyList<B>) -> NonEmptyList<C> in { (b : NonEmptyList<B>) -> NonEmptyList<C> in f <^> a <*> b  } }
 	}
-
+	
 	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (NonEmptyList<A>) -> (NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> {
 		return { (a :  NonEmptyList<A>) -> (NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> in { (b : NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> in { (c : NonEmptyList<C>) -> NonEmptyList<D> in f <^> a <*> b <*> c } } }
 	}
@@ -195,7 +195,7 @@ extension NonEmptyList /*: MonadZip*/ {
 	}
 	
 	public func mzipWith<B, C>(_ other : NonEmptyList<B>, _ f : @escaping (A) -> (B) -> C) -> NonEmptyList<C> {
-		return self.mzip(other).fmap(uncurry(f))
+		return self.mzip(other).fmap { let (a, b) = $0; return uncurry(f)(a, b) }
 	}
 	
 	public static func munzip<B>(_ ftab : NonEmptyList<(A, B)>) -> (NonEmptyList<A>, NonEmptyList<B>) {
@@ -208,11 +208,11 @@ extension NonEmptyList /*: MonadOps*/ {
 	public static func liftM<B>(_ f : @escaping (A) -> B) -> (NonEmptyList<A>) -> NonEmptyList<B> {
 		return { (m1 : NonEmptyList<A>) -> NonEmptyList<B> in m1 >>- { (x1 : A) in NonEmptyList<B>.pure(f(x1)) } }
 	}
-
+	
 	public static func liftM2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (NonEmptyList<A>) -> (NonEmptyList<B>) -> NonEmptyList<C> {
 		return { (m1 : NonEmptyList<A>) -> (NonEmptyList<B>) -> NonEmptyList<C> in { (m2 : NonEmptyList<B>) -> NonEmptyList<C> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in NonEmptyList<C>.pure(f(x1)(x2)) } } } }
 	}
-
+	
 	public static func liftM3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (NonEmptyList<A>) -> (NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> {
 		return { (m1 : NonEmptyList<A>) -> (NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> in { (m2 : NonEmptyList<B>) -> (NonEmptyList<C>) -> NonEmptyList<D> in { (m3 :  NonEmptyList<C>) -> NonEmptyList<D> in m1 >>- { (x1 : A) in m2 >>- { (x2 : B) in m3 >>- { (x3 : C) in NonEmptyList<D>.pure(f(x1)(x2)(x3)) } } } } } }
 	}
@@ -238,7 +238,7 @@ extension NonEmptyList : Copointed {
 
 extension NonEmptyList /*: Comonad*/ {
 	public typealias FFA = NonEmptyList<NonEmptyList<Element>>
-
+	
 	public func duplicate() -> NonEmptyList<NonEmptyList<Element>> {
 		switch NonEmptyList(self.tail) {
 		case .none:
@@ -247,7 +247,7 @@ extension NonEmptyList /*: Comonad*/ {
 			return NonEmptyList<NonEmptyList<Element>>(self, x.duplicate().toList())
 		}
 	}
-
+	
 	public func extend<B>(_ fab : @escaping (NonEmptyList<Element>) -> B) -> NonEmptyList<B> {
 		return self.duplicate().fmap(fab)
 	}
