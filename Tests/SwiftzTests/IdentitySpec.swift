@@ -15,19 +15,9 @@ import SwiftCheck
 	import Swiftx
 #endif
 
-extension Identity where T : Arbitrary {
+extension Identity : Arbitrary where T : Arbitrary {
 	public static var arbitrary : Gen<Identity<A>> {
 		return A.arbitrary.map(Identity.pure)
-	}
-}
-
-extension Identity : WitnessedArbitrary {
-	public typealias Param = T
-
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> T, pf : @escaping (Identity<T>) -> Testable) -> Property {
-		return forAllShrink(Identity<A>.arbitrary, shrinker: const([]), f: { bl in
-			return pf(bl.fmap(wit))
-		})
 	}
 }
 

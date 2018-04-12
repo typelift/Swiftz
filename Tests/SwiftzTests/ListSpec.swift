@@ -16,23 +16,13 @@ import SwiftCheck
 #endif
 
 /// Generates an array of arbitrary values.
-extension List where Element : Arbitrary {
+extension List : Arbitrary where Element : Arbitrary {
 	public static var arbitrary : Gen<List<Element>> {
 		return [Element].arbitrary.map(List.init)
 	}
 
 	public static func shrink(_ xs : List<Element>) -> [List<Element>] {
 		return List.init <^> [Element].shrink(xs.map(identity))
-	}
-}
-
-extension List : WitnessedArbitrary {
-	public typealias Param = Element
-
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : @escaping (List<Element>) -> Testable) -> Property {
-		return forAllShrink(List<A>.arbitrary, shrinker: List<A>.shrink, f: { bl in
-			return pf(bl.map(wit))
-		})
 	}
 }
 

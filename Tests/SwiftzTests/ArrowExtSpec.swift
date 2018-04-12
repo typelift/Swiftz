@@ -79,9 +79,9 @@ class ArrowExtSpec : XCTestCase {
 			}
 		}
 
-		property("Arrow obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>) in
-			let f = { $0.getArray } • fa.getArrow
-			let g = { $0.getArray } • ga.getArrow
+		property("Arrow obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, [Int]>, ga : ArrowOf<Int, [Int]>) in
+			let f = fa.getArrow
+			let g = ga.getArrow
 			return forAll { (m : [Int]) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}

@@ -15,25 +15,15 @@ import SwiftCheck
 	import Swiftx
 #endif
 
-extension NonEmptyList where Element : Arbitrary {
+extension NonEmptyList : Arbitrary where Element : Arbitrary {
 	public static var arbitrary : Gen<NonEmptyList<Element>> {
 		return [Element].arbitrary.suchThat({ !$0.isEmpty }).map { NonEmptyList<Element>(List(fromArray: $0))! }
 	}
 
 	public static func shrink(_ xs : NonEmptyList<Element>) -> [NonEmptyList<Element>] {
-		return List<Element>.shrink(xs.toList()).filter({ !$0.isEmpty }).flatMap { xs in
+		return List<Element>.shrink(xs.toList()).filter({ !$0.isEmpty }).compactMap { xs in
 			return NonEmptyList(xs)!
 		}
-	}
-}
-
-extension NonEmptyList : WitnessedArbitrary {
-	public typealias Param = Element
-
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : @escaping (NonEmptyList<Element>) -> Testable) -> Property {
-		return forAllShrink(NonEmptyList<A>.arbitrary, shrinker: NonEmptyList<A>.shrink, f: { bl in
-			return pf(bl.fmap(wit))
-		})
 	}
 }
 

@@ -17,8 +17,8 @@ import SwiftCheck
 
 class ArrayExtSpec : XCTestCase {
 	func testProperties() {
-		property("mapFlatten is the same as removing the optionals from an array and forcing") <- forAll { (xs0 : Array<OptionalOf<Int>>) in
-			return mapFlatten(xs0.map({ $0.getOptional })) == xs0.filter({ $0.getOptional != nil }).map({ $0.getOptional! })
+		property("mapFlatten is the same as removing the optionals from an array and forcing") <- forAll { (xs0 : Array<Int?>) in
+			return mapFlatten(xs0) == xs0.filter({ $0 != nil }).map({ $0! })
 		}
 
 		property("indexArray is safe") <- forAll { (l : [Int]) in
@@ -83,8 +83,8 @@ class ArrayExtSpec : XCTestCase {
 			return (lhs == rhs) // broken up as 'too complex' for compiler
 		}
 
-		property("Array obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, ArrayOf<Int>>) in
-			let f = { $0.getArray } • fa.getArrow
+		property("Array obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, [Int]>) in
+			let f = fa.getArrow
 			return (Array.pure(a) >>- f) == f(a)
 		}
 
@@ -92,9 +92,9 @@ class ArrayExtSpec : XCTestCase {
 			return (m >>- Array.pure) == m
 		}
 
-		property("Array obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, ArrayOf<Int>>, ga : ArrowOf<Int, ArrayOf<Int>>) in
-			let f = { $0.getArray } • fa.getArrow
-			let g = { $0.getArray } • ga.getArrow
+		property("Array obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, [Int]>, ga : ArrowOf<Int, [Int]>) in
+			let f = fa.getArrow
+			let g = ga.getArrow
 			return forAll { (m : [Int]) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}
@@ -140,8 +140,7 @@ class ArrayExtSpec : XCTestCase {
 			}
 		}
 
-		property("intercalate behaves") <- forAll { (xs : [Int], xxsa : Array<ArrayOf<Int>>) in
-			let xxs = xxsa.map { $0.getArray }
+		property("intercalate behaves") <- forAll { (xs : [Int], xxs : Array<[Int]>) in
 			return intercalate(xs, nested: xxs) == concat(xxs.intersperse(xs))
 		}
 
