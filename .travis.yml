@@ -5,7 +5,7 @@ matrix:
   include:
     - os: osx
       language: objective-c
-      osx_image: xcode9
+      osx_image: xcode9.3
       before_install:
         - git submodule update --init --recursive
       script:
@@ -14,22 +14,16 @@ matrix:
         - carthage build --no-skip-current
     - os: osx
       language: objective-c
-      osx_image: xcode9
+      osx_image: xcode9.3
       before_install:
         - git submodule update --init --recursive
       script:
         - set -o pipefail
         - xcodebuild test -scheme Swiftz | xcpretty -c
-        # !!!: Make sure desired device name & OS version are suitable for the Xcode version installed on osx_image
-        - iOS_DEVICE_NAME="iPad Pro (12.9-inch) (2nd generation)"
-        - iOS_RUNTIME_VERSION="11.0"
-        # Get simulator identifier for desired device/runtime pair
-        - SIMULATOR_ID=$(xcrun instruments -s | grep -o "${iOS_DEVICE_NAME} (${iOS_RUNTIME_VERSION}) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
-        - echo $SIMULATOR_ID
-        - echo $iOS_DEVICE_NAME
-        - echo $iOS_RUNTIME_VERSION
-        - xcodebuild test -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=${iOS_DEVICE_NAME},OS=${iOS_RUNTIME_VERSION}" | xcpretty -c
-        - xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 1080p' | xcpretty -c
+        - xcodebuild build-for-testing -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
+        - xcodebuild test -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
+        - xcodebuild build-for-testing -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p)' | xcpretty -c
+        - xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p)' | xcpretty -c
     - os: linux
       language: generic
       sudo: required
@@ -37,9 +31,9 @@ matrix:
       before_install:
         - git submodule update --init --recursive
         - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
-        - wget https://swift.org/builds/swift-4.0-release/ubuntu1404/swift-4.0-RELEASE/swift-4.0-RELEASE-ubuntu14.04.tar.gz
-        - tar xzf swift-4.0-RELEASE-ubuntu14.04.tar.gz
-        - export PATH=${PWD}/swift-4.0-RELEASE-ubuntu14.04/usr/bin:"${PATH}"
+        - wget https://swift.org/builds/swift-4.1-release/ubuntu1404/swift-4.1-RELEASE/swift-4.1-RELEASE-ubuntu14.04.tar.gz
+        - tar xzf swift-4.1-RELEASE-ubuntu14.04.tar.gz
+        - export PATH=${PWD}/swift-4.1-RELEASE-ubuntu14.04/usr/bin:"${PATH}"
       script:
         - swift test
 notifications:

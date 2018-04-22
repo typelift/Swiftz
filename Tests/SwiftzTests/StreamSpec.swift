@@ -17,7 +17,7 @@ import SwiftCheck
 
 
 /// Generates a Swiftz.Stream of arbitrary values.
-extension Swiftz.Stream where Element : Arbitrary {
+extension Swiftz.Stream : Arbitrary where Element : Arbitrary {
 	public static var arbitrary : Gen<Swiftz.Stream<Element>> {
 		return Element.arbitrary.flatMap { x in
 			return Element.arbitrary.flatMap { y in
@@ -28,19 +28,6 @@ extension Swiftz.Stream where Element : Arbitrary {
 		}
 	}
 }
-
-extension Swiftz.Stream : WitnessedArbitrary {
-	public typealias Param = Element
-	
-	public static func forAllWitnessed<A : Arbitrary>(_ wit : @escaping (A) -> Element, pf : @escaping ((Swiftz.Stream<Element>) -> Testable)) -> Property {
-		return forAllShrink(Swiftz.Stream<A>.arbitrary, shrinker: Swiftz.Stream<A>.shrink, f: { bl in
-			return pf(bl.fmap(wit))
-		})
-	}
-
-	public static func shrink(_ xs : Swiftz.Stream<Element>) -> [Swiftz.Stream<Element>] { return [] }
-}
-
 
 class StreamSpec : XCTestCase {
 	func testProperties() {

@@ -78,8 +78,8 @@ class OptionalExtSpec : XCTestCase {
 			return l == r
 		}
 
-		property("Optional obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, OptionalOf<Int>>) in
-			let f = { $0.getOptional } • fa.getArrow
+		property("Optional obeys the Monad left identity law") <- forAll { (a : Int, fa : ArrowOf<Int, Optional<Int>>) in
+			let f = fa.getArrow
 			return (Optional.pure(a) >>- f) == f(a)
 		}
 
@@ -87,9 +87,9 @@ class OptionalExtSpec : XCTestCase {
 			return (m >>- Optional.pure) == m
 		}
 
-		property("Optional obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, OptionalOf<Int>>, ga : ArrowOf<Int, OptionalOf<Int>>) in
-			let f = { $0.getOptional } • fa.getArrow
-			let g = { $0.getOptional } • ga.getArrow
+		property("Optional obeys the Monad associativity law") <- forAll { (fa : ArrowOf<Int, Optional<Int>>, ga : ArrowOf<Int, Optional<Int>>) in
+			let f = fa.getArrow
+			let g = ga.getArrow
 			return forAll { (m : Optional<Int>) in
 				return ((m >>- f) >>- g) == (m >>- { x in f(x) >>- g })
 			}

@@ -446,7 +446,7 @@ extension Sequence {
 	/// a (Key, Value) pair for the dictionary, if nil is returned then the value is
 	/// not added to the dictionary.
 	public func mapAssociate<Key, Value>(_ f : (Iterator.Element) -> (Key, Value)?) -> [Key : Value] {
-		return Dictionary(flatMap(f))
+		return Dictionary(compactMap(f))
 	}
 	
 	/// Creates a dictionary of Key-Value pairs generated from the transformer function returning the key (the label)

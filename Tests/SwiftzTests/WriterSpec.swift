@@ -15,7 +15,7 @@ import SwiftCheck
 	import Swiftx
 #endif
 
-extension Writer where T : Arbitrary {
+extension Writer : Arbitrary where T : Arbitrary {
 	public static var arbitrary : Gen<Writer<W, T>> {
 		return Gen<(T, W)>.zip(T.arbitrary, Gen.pure(W.mempty)).map(Writer.init)
 	}
@@ -23,16 +23,6 @@ extension Writer where T : Arbitrary {
 	public static func shrink(_ xs : Writer<W, T>) -> [Writer<W, T>] {
 		let xs = T.shrink(xs.runWriter.0)
 		return zip(xs, Array(repeating: W.mempty, count: xs.count)).map(Writer.init)
-	}
-}
-
-extension Writer : WitnessedArbitrary {
-	public typealias Param = T
-
-	public static func forAllWitnessed<W, A : Arbitrary>(_ wit : @escaping (A) -> T, pf : @escaping (Writer<W, T>) -> Testable) -> Property {
-		return forAllShrink(Writer<W, A>.arbitrary, shrinker: Writer<W, A>.shrink, f: { bl in
-			return pf(bl.fmap(wit))
-		})
 	}
 }
 
