@@ -118,6 +118,8 @@ extension Function /*: ArrowApply*/ {
 	}
 }
 
+/*
+FIXME: This cannot work with strictness.
 extension Function /*: ArrowLoop*/ {
 	public typealias LOOP = Function<(A, D), (B, D)>
 
@@ -125,3 +127,5 @@ extension Function /*: ArrowLoop*/ {
 		return Function<B, C>.arr(Function.loop(f).apply)
 	}
 }
+*/
+

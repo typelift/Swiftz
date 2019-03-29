@@ -437,12 +437,6 @@ public struct List<Element> {
 		return (snd • ev) <^> self.find({ ev($0).0 == key })
 	}
 
-	/// Returns a List of an infinite number of iteratations of applications of 
-	/// a function to an initial value.
-	public static func iterate(_ f : @escaping (Element) -> Element, initial : Element) -> List<Element> {
-		return List(initial, self.iterate(f, initial: f(initial)))
-	}
-
 	/// Cycles a finite list into an infinite list.
 	public func cycle() -> List<Element> {
 		let (hd, tl) = self.next()
