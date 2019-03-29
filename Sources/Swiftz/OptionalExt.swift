@@ -178,10 +178,10 @@ extension Optional /*: Foldable*/ {
 }
 
 extension Optional : Sequence {
-	public typealias Iterator = IteratorOverOne<Wrapped>
+	public typealias Iterator = CollectionOfOne<Wrapped>.Iterator
 
-	public func makeIterator() -> IteratorOverOne<Wrapped> {
-		return IteratorOverOne(_elements: self)
+	public func makeIterator() -> CollectionOfOne<Wrapped>.Iterator {
+		return CollectionOfOne.Iterator(_elements: self)
 	}
 }
 

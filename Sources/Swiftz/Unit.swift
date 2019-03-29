@@ -52,9 +52,7 @@ public func >(l : Unit, r : Unit) -> Bool {
 }
 
 extension Unit : Hashable {
-	public var hashValue : Int {
-		return 0
-	}
+	public func hash(into hasher: inout Hasher) { }
 }
 
 extension Unit : Monoid {
