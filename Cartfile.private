@@ -1,3 +1,3 @@
-github "typelift/Swiftx" ~> "https://github.com/pushp1989/Swiftx.git"
-github "typelift/SwiftCheck" ~> "https://github.com/pushp1989/SwiftCheck.git"
+github "pushp1989/Swiftx"
+github "pushp1989/SwiftCheck"
 github "typelift/Operadics"
