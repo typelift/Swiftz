@@ -5,7 +5,7 @@ matrix:
   include:
     - os: osx
       language: objective-c
-      osx_image: xcode10.2
+      osx_image: xcode11.2
       before_install:
         - git submodule update --init --recursive
       script:
@@ -13,14 +13,14 @@ matrix:
         - carthage build --no-skip-current
     - os: osx
       language: objective-c
-      osx_image: xcode10.2
+      osx_image: xcode11.2
       before_install:
         - git submodule update --init --recursive
       script:
         - set -o pipefail
         - xcodebuild test -scheme Swiftz | xcpretty -c
-        - xcodebuild build-for-testing -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
-        - xcodebuild test -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
+        - xcodebuild build-for-testing -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (3rd generation)" | xcpretty -c
+        - xcodebuild test -scheme Swiftz-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (3rd generation)" | xcpretty -c
         - xcodebuild build-for-testing -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p)' | xcpretty -c
         - xcodebuild test -scheme Swiftz-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p)' | xcpretty -c
     - os: linux
