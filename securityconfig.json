@@ -1,0 +1,12 @@
+{
+  "team": "Berlin",
+  "team_owner": "Dan Eckert",
+  "team_poc": "Dimitrios Georgakopoulos",
+  "risk_assessment": {
+    "usesDeidentifiedData": false,
+    "sourcedFromPHIorPII": false,
+    "appPubliclyAccessible": true,
+    "containsPII": true,
+    "containsPHI": true
+  }
+}
